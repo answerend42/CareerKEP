@@ -39,6 +39,12 @@ python3 -m backend.app.main recommend --text "我会 Python、SQL，做过前端
 python3 -m backend.app.main serve --host 127.0.0.1 --port 8000
 ```
 
+### 3. 运行后端自测
+
+```bash
+python3 -m unittest discover -s backend/tests
+```
+
 接口：
 
 - `GET /health`

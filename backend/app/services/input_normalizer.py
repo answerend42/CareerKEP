@@ -38,7 +38,10 @@ def normalize_structured_input(payload: Any) -> dict[str, float]:
 
     if isinstance(payload, dict):
         for node_id, score in payload.items():
-            result[str(node_id).strip()] = clamp01(score)
+            normalized_node_id = str(node_id or "").strip()
+            if not normalized_node_id:
+                continue
+            result[normalized_node_id] = clamp01(score)
         return result
 
     if not isinstance(payload, list):
@@ -47,6 +50,8 @@ def normalize_structured_input(payload: Any) -> dict[str, float]:
     for item in payload:
         if isinstance(item, EvidenceInput):
             normalized = item.normalized()
+            if not normalized.node_id:
+                continue
             result[normalized.node_id] = clamp01(normalized.score)
             continue
 
@@ -69,4 +74,3 @@ def merge_evidence_maps(*maps: dict[str, float]) -> dict[str, float]:
         for node_id, score in evidence_map.items():
             merged[node_id] = max(merged.get(node_id, 0.0), clamp01(score))
     return merged
-

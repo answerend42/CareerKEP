@@ -44,14 +44,16 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
     """推荐主入口。"""
 
     if isinstance(payload, dict):
+        top_k = max(1, int(payload.get("top_k", 5)))
         request = RecommendationRequest(
             text=payload.get("text"),
             evidence=[EvidenceInput(**item) if isinstance(item, dict) else item for item in payload.get("evidence", [])],
             target_role=payload.get("target_role"),
-            top_k=int(payload.get("top_k", 5)),
+            top_k=top_k,
         )
     else:
         request = payload
+        top_k = max(1, int(request.top_k))
 
     graph = _graph()
     alias_map = load_alias_map()
@@ -79,8 +81,8 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
             near_miss_roles.append(item)
 
     bridge_recommendations: list[RecommendationItem] = []
-    if len(recommendations) < max(1, min(2, request.top_k)):
-        for bridge in suggest_bridge_nodes(graph, result, top_k=request.top_k):
+    if len(recommendations) < max(1, min(2, top_k)):
+        for bridge in suggest_bridge_nodes(graph, result, top_k=top_k):
             bridge_recommendations.append(
                 RecommendationItem(
                     node_id=bridge["node_id"],
@@ -104,12 +106,11 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
         target_role_analysis["action_simulation"] = simulate_actions(evidence_map, boost_plan)
 
     return RecommendationResponse(
-        recommendations=recommendations[: request.top_k],
-        near_miss_roles=near_miss_roles[: request.top_k],
-        bridge_recommendations=bridge_recommendations[: request.top_k],
+        recommendations=recommendations[: top_k],
+        near_miss_roles=near_miss_roles[: top_k],
+        bridge_recommendations=bridge_recommendations[: top_k],
         target_role_analysis=target_role_analysis,
         propagation_snapshot=result.to_snapshot(top_k=12),
         graph_snapshot=_snapshot_roles(graph, result, top_k=8),
         raw_evidence=evidence_map,
     )
-

@@ -9,9 +9,14 @@ from dataclasses import dataclass, field, asdict
 from typing import Any
 
 
-def clamp01(value: float) -> float:
-    """把分值夹到 0 到 1 之间。"""
+def clamp01(value: float | None) -> float:
+    """把分值夹到 0 到 1 之间。
 
+    这里对 ``None`` 做兜底，避免外部请求缺字段时直接把整条推荐链路打断。
+    """
+
+    if value is None:
+        return 0.0
     return max(0.0, min(1.0, float(value)))
 
 
@@ -26,8 +31,9 @@ class EvidenceInput:
 
     def normalized(self) -> "EvidenceInput":
         self.score = clamp01(self.score)
-        self.node_id = str(self.node_id).strip()
-        self.source = str(self.source or "structured")
+        # 节点 ID 需要做一次空值兜底，避免把 "None" 这种脏值写进图谱证据。
+        self.node_id = str(self.node_id or "").strip()
+        self.source = str(self.source or "structured").strip() or "structured"
         return self
 
     def to_dict(self) -> dict[str, Any]:
@@ -117,4 +123,3 @@ class RecommendationResponse:
             "graph_snapshot": self.graph_snapshot,
             "raw_evidence": self.raw_evidence,
         }
-
