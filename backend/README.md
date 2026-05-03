@@ -33,7 +33,12 @@ backend/
 python3 -m backend.app.main recommend --text "我会 Python、SQL，做过前端项目，也比较擅长沟通" --top-k 5
 ```
 
-如果 `--payload` 不是合法 JSON 或者不是对象，命令会返回非 0 退出码并在标准错误输出提示；参数问题返回 `2`，内部执行错误返回 `1`。
+`recommend` 子命令支持二选一的输入方式：
+
+- `--payload-json`：直接传 JSON 字符串
+- `--payload-file`：传 JSON 文件路径
+
+两者不能同时使用。参数问题返回 `2`，内部执行错误返回 `1`。如果 JSON 不是对象，也会按参数错误处理。
 
 ### 2. 启动 HTTP 服务
 

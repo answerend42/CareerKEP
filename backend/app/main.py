@@ -85,25 +85,50 @@ def serve(host: str = "127.0.0.1", port: int = 8000) -> None:
 
 
 def _read_json_argument(value: str | None) -> dict[str, Any]:
+    """解析 JSON 字符串参数。"""
+
     if not value:
         return {}
-    candidate = Path(value)
-    if candidate.exists():
-        payload_text = candidate.read_text(encoding="utf-8")
-    else:
-        payload_text = value
 
-    payload = json.loads(payload_text)
+    payload = json.loads(value)
     if not isinstance(payload, dict):
         raise TypeError("payload 必须是 JSON 对象")
     return payload
 
 
-def _run_recommend_command(payload_arg: str | None, text: str | None, target_role: str | None, top_k: int) -> int:
+def _read_json_file_argument(path_value: str | None) -> dict[str, Any]:
+    """从文件中读取 JSON 参数。"""
+
+    if not path_value:
+        return {}
+
+    path = Path(path_value)
+    if not path.exists():
+        raise FileNotFoundError(f"payload 文件不存在: {path_value}")
+
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise TypeError("payload 文件内容必须是 JSON 对象")
+    return payload
+
+
+def _run_recommend_command(
+    payload_json: str | None,
+    payload_file: str | None,
+    text: str | None,
+    target_role: str | None,
+    top_k: int,
+) -> int:
     """执行一次推荐命令，并把错误分成参数错误和内部错误。"""
 
     try:
-        payload = _read_json_argument(payload_arg)
+        if payload_json and payload_file:
+            raise ValueError("payload_json 和 payload_file 不能同时使用")
+
+        if payload_file:
+            payload = _read_json_file_argument(payload_file)
+        else:
+            payload = _read_json_argument(payload_json)
         if text is not None:
             payload["text"] = text
         if target_role is not None:
@@ -113,7 +138,7 @@ def _run_recommend_command(payload_arg: str | None, text: str | None, target_rol
         response = recommend(payload).to_dict()
         print(json.dumps(response, ensure_ascii=False, indent=2))
         return 0
-    except (json.JSONDecodeError, TypeError, OSError) as exc:
+    except (json.JSONDecodeError, TypeError, ValueError, FileNotFoundError, OSError) as exc:
         print(f"参数错误: {exc}", file=sys.stderr)
         return 2
     except Exception as exc:  # noqa: BLE001
@@ -131,7 +156,9 @@ def main() -> int:
 
     recommend_parser = subparsers.add_parser("recommend", help="直接执行一次推荐并输出 JSON")
     recommend_parser.add_argument("--text", default=None, help="自然语言画像")
-    recommend_parser.add_argument("--payload", default=None, help="JSON 字符串或 JSON 文件路径")
+    payload_group = recommend_parser.add_mutually_exclusive_group()
+    payload_group.add_argument("--payload-json", default=None, help="JSON 字符串")
+    payload_group.add_argument("--payload-file", default=None, help="JSON 文件路径")
     recommend_parser.add_argument("--target-role", default=None, help="目标岗位节点 ID")
     recommend_parser.add_argument("--top-k", type=int, default=5, help="返回条目数量")
 
@@ -141,7 +168,7 @@ def main() -> int:
         serve(args.host, args.port)
         return 0
 
-    return _run_recommend_command(args.payload, args.text, args.target_role, args.top_k)
+    return _run_recommend_command(args.payload_json, args.payload_file, args.text, args.target_role, args.top_k)
 
 
 if __name__ == "__main__":

@@ -8,10 +8,12 @@ from __future__ import annotations
 from io import BytesIO
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
+from pathlib import Path
+import tempfile
 import unittest
 
 import backend.app.main as main_module
-from backend.app.main import _RequestHandler, _read_json_argument, _run_recommend_command
+from backend.app.main import _RequestHandler, _read_json_argument, _read_json_file_argument, _run_recommend_command
 from backend.app.api.recommend import recommend
 from backend.app.schemas import EvidenceInput, clamp01
 from backend.app.services.input_normalizer import normalize_structured_input
@@ -95,6 +97,18 @@ class BackendSmokeTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             _read_json_argument("[1, 2, 3]")
 
+    def test_read_json_file_argument_requires_object_payload(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            payload_path = Path(tmp_dir) / "payload.json"
+            payload_path.write_text("[1, 2, 3]", encoding="utf-8")
+
+            with self.assertRaises(TypeError):
+                _read_json_file_argument(str(payload_path))
+
+    def test_read_json_file_argument_reports_missing_file(self) -> None:
+        with self.assertRaises(FileNotFoundError):
+            _read_json_file_argument("/tmp/not-exists-payload.json")
+
     def test_read_json_body_rejects_invalid_json_and_non_object(self) -> None:
         handler = _RequestHandler.__new__(_RequestHandler)
         handler.headers = {"Content-Length": "18"}
@@ -155,7 +169,7 @@ class BackendSmokeTest(unittest.TestCase):
         stderr = StringIO()
 
         with redirect_stdout(stdout), redirect_stderr(stderr):
-            exit_code = _run_recommend_command("[1, 2, 3]", None, None, 5)
+            exit_code = _run_recommend_command("[1, 2, 3]", None, None, None, 5)
 
         self.assertEqual(exit_code, 2)
         self.assertIn("参数错误", stderr.getvalue())
@@ -172,12 +186,23 @@ class BackendSmokeTest(unittest.TestCase):
         main_module.recommend = boom  # type: ignore[assignment]
         try:
             with redirect_stdout(stdout), redirect_stderr(stderr):
-                exit_code = _run_recommend_command(None, "我会 Python", None, 5)
+                exit_code = _run_recommend_command(None, None, "我会 Python", None, 5)
         finally:
             main_module.recommend = original_recommend  # type: ignore[assignment]
 
         self.assertEqual(exit_code, 1)
         self.assertIn("执行失败", stderr.getvalue())
+        self.assertEqual(stdout.getvalue(), "")
+
+    def test_run_recommend_command_rejects_both_payload_inputs(self) -> None:
+        stdout = StringIO()
+        stderr = StringIO()
+
+        with redirect_stdout(stdout), redirect_stderr(stderr):
+            exit_code = _run_recommend_command("{}", "payload.json", None, None, 5)
+
+        self.assertEqual(exit_code, 2)
+        self.assertIn("不能同时使用", stderr.getvalue())
         self.assertEqual(stdout.getvalue(), "")
 
 
