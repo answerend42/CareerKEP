@@ -1,0 +1,82 @@
+[
+  {"source": "python", "target": "programming_fundamentals", "relation": "supports", "weight": 0.9},
+  {"source": "python", "target": "backend_tech_stack", "relation": "supports", "weight": 0.9},
+  {"source": "python", "target": "ml_basics", "relation": "supports", "weight": 0.8},
+  {"source": "python", "target": "data_tooling", "relation": "supports", "weight": 0.78},
+
+  {"source": "sql", "target": "database_practice", "relation": "supports", "weight": 0.95},
+  {"source": "sql", "target": "data_tooling", "relation": "supports", "weight": 0.9},
+
+  {"source": "frontend_project", "target": "web_fundamentals", "relation": "evidences", "weight": 0.9},
+  {"source": "frontend_project", "target": "frontend_engineering", "relation": "supports", "weight": 0.82},
+
+  {"source": "team_collab", "target": "communication_skill", "relation": "supports", "weight": 0.88},
+  {"source": "communication", "target": "communication_skill", "relation": "supports", "weight": 0.92},
+
+  {"source": "machine_learning_basics", "target": "ml_basics", "relation": "supports", "weight": 0.95},
+  {"source": "machine_learning_basics", "target": "math_fundamentals", "relation": "supports", "weight": 0.72},
+
+  {"source": "statistics", "target": "math_fundamentals", "relation": "supports", "weight": 0.9},
+  {"source": "statistics", "target": "data_tooling", "relation": "supports", "weight": 0.7},
+
+  {"source": "linux", "target": "backend_tech_stack", "relation": "supports", "weight": 0.78},
+  {"source": "linux", "target": "data_tooling", "relation": "supports", "weight": 0.64},
+
+  {"source": "product_thinking", "target": "web_fundamentals", "relation": "prefers", "weight": 0.7},
+
+  {"source": "algorithms", "target": "programming_fundamentals", "relation": "supports", "weight": 0.86},
+  {"source": "algorithms", "target": "math_fundamentals", "relation": "supports", "weight": 0.74},
+
+  {"source": "data_cleaning", "target": "data_tooling", "relation": "supports", "weight": 0.9},
+  {"source": "data_cleaning", "target": "data_direction", "relation": "supports", "weight": 0.8},
+
+  {"source": "docker", "target": "backend_tech_stack", "relation": "supports", "weight": 0.75},
+  {"source": "docker", "target": "data_tooling", "relation": "supports", "weight": 0.68},
+
+  {"source": "api_design", "target": "backend_tech_stack", "relation": "supports", "weight": 0.92},
+  {"source": "api_design", "target": "web_backend", "relation": "supports", "weight": 0.88},
+
+  {"source": "programming_fundamentals", "target": "backend_engineering", "relation": "supports", "weight": 0.78},
+  {"source": "programming_fundamentals", "target": "frontend_engineering", "relation": "supports", "weight": 0.62},
+  {"source": "programming_fundamentals", "target": "ml_engineering", "relation": "supports", "weight": 0.55},
+  {"source": "programming_fundamentals", "target": "data_engineering", "relation": "supports", "weight": 0.64},
+
+  {"source": "database_practice", "target": "backend_engineering", "relation": "supports", "weight": 0.85},
+  {"source": "database_practice", "target": "data_engineering", "relation": "supports", "weight": 0.92},
+
+  {"source": "web_fundamentals", "target": "frontend_engineering", "relation": "supports", "weight": 0.9},
+
+  {"source": "backend_tech_stack", "target": "backend_engineering", "relation": "supports", "weight": 0.95},
+
+  {"source": "math_fundamentals", "target": "ml_engineering", "relation": "supports", "weight": 0.93},
+  {"source": "math_fundamentals", "target": "data_engineering", "relation": "supports", "weight": 0.76},
+
+  {"source": "communication_skill", "target": "backend_engineering", "relation": "supports", "weight": 0.55},
+  {"source": "communication_skill", "target": "frontend_engineering", "relation": "supports", "weight": 0.68},
+
+  {"source": "ml_basics", "target": "ml_engineering", "relation": "supports", "weight": 0.95},
+  {"source": "data_tooling", "target": "data_engineering", "relation": "supports", "weight": 0.92},
+
+  {"source": "backend_engineering", "target": "web_backend", "relation": "requires", "weight": 0.92},
+  {"source": "backend_engineering", "target": "backend_engineer", "relation": "requires", "weight": 0.92},
+  {"source": "web_backend", "target": "backend_engineer", "relation": "requires", "weight": 0.95},
+  {"source": "database_practice", "target": "backend_engineer", "relation": "requires", "weight": 0.7},
+  {"source": "communication_skill", "target": "backend_engineer", "relation": "prefers", "weight": 0.42},
+
+  {"source": "ml_engineering", "target": "machine_learning", "relation": "requires", "weight": 0.93},
+  {"source": "machine_learning", "target": "ml_engineer", "relation": "requires", "weight": 0.96},
+  {"source": "math_fundamentals", "target": "ml_engineer", "relation": "requires", "weight": 0.62},
+
+  {"source": "data_engineering", "target": "data_direction", "relation": "requires", "weight": 0.92},
+  {"source": "data_direction", "target": "data_engineer", "relation": "requires", "weight": 0.95},
+  {"source": "database_practice", "target": "data_engineer", "relation": "requires", "weight": 0.75},
+
+  {"source": "frontend_engineering", "target": "frontend_direction", "relation": "requires", "weight": 0.92},
+  {"source": "frontend_direction", "target": "frontend_engineer", "relation": "requires", "weight": 0.95},
+  {"source": "web_fundamentals", "target": "frontend_engineer", "relation": "requires", "weight": 0.72},
+
+  {"source": "weak_cpp", "target": "backend_engineering", "relation": "inhibits", "weight": 0.85},
+  {"source": "weak_cpp", "target": "web_backend", "relation": "inhibits", "weight": 0.72},
+  {"source": "weak_cpp", "target": "backend_engineer", "relation": "inhibits", "weight": 0.9}
+]
+

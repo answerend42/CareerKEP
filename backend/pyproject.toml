@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "career-kep-backend"
+version = "0.1.0"
+description = "Career KG 后端服务"
+requires-python = ">=3.10"
+
