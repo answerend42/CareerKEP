@@ -38,7 +38,7 @@ python3 -m backend.app.main recommend --text "我会 Python、SQL，做过前端
 - `--payload-json`：直接传 JSON 字符串
 - `--payload-file`：传 JSON 文件路径
 
-两者不能同时使用。参数问题返回 `2`，内部执行错误返回 `1`。如果 JSON 不是对象，也会按参数错误处理。
+两者不能同时使用。`--payload-file -` 表示从标准输入读取 JSON。参数问题返回 `2`，内部执行错误返回 `1`。如果 JSON 不是对象，也会按参数错误处理。
 
 ### 2. 启动 HTTP 服务
 

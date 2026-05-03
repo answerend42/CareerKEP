@@ -102,6 +102,13 @@ def _read_json_file_argument(path_value: str | None) -> dict[str, Any]:
     if not path_value:
         return {}
 
+    if path_value == "-":
+        payload_text = sys.stdin.read()
+        payload = json.loads(payload_text)
+        if not isinstance(payload, dict):
+            raise TypeError("payload 标准输入内容必须是 JSON 对象")
+        return payload
+
     path = Path(path_value)
     if not path.exists():
         raise FileNotFoundError(f"payload 文件不存在: {path_value}")

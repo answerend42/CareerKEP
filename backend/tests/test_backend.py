@@ -11,6 +11,7 @@ from io import StringIO
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import backend.app.main as main_module
 from backend.app.main import _RequestHandler, _read_json_argument, _read_json_file_argument, _run_recommend_command
@@ -109,6 +110,17 @@ class BackendSmokeTest(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             _read_json_file_argument("/tmp/not-exists-payload.json")
 
+    def test_read_json_file_argument_supports_stdin(self) -> None:
+        with patch("sys.stdin", StringIO('{"text": "stdin payload"}')):
+            payload = _read_json_file_argument("-")
+
+        self.assertEqual(payload, {"text": "stdin payload"})
+
+    def test_read_json_file_argument_rejects_non_object_stdin(self) -> None:
+        with patch("sys.stdin", StringIO("[1, 2, 3]")):
+            with self.assertRaises(TypeError):
+                _read_json_file_argument("-")
+
     def test_read_json_body_rejects_invalid_json_and_non_object(self) -> None:
         handler = _RequestHandler.__new__(_RequestHandler)
         handler.headers = {"Content-Length": "18"}
@@ -204,6 +216,18 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertEqual(exit_code, 2)
         self.assertIn("不能同时使用", stderr.getvalue())
         self.assertEqual(stdout.getvalue(), "")
+
+    def test_run_recommend_command_reads_payload_from_stdin(self) -> None:
+        stdout = StringIO()
+        stderr = StringIO()
+
+        with patch("backend.app.main.sys.stdin", StringIO('{"text": "stdin payload"}')):
+            with redirect_stdout(stdout), redirect_stderr(stderr):
+                exit_code = _run_recommend_command(None, "-", None, None, 5)
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr.getvalue(), "")
+        self.assertIn("\"recommendations\"", stdout.getvalue())
 
 
 if __name__ == "__main__":
