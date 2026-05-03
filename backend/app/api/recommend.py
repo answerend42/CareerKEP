@@ -40,7 +40,8 @@ def _coerce_evidence_item(item: Any) -> EvidenceInput:
     if isinstance(item, EvidenceInput):
         return item
     if not isinstance(item, dict):
-        raise TypeError("证据列表中的元素必须是 dict 或 EvidenceInput")
+        # 列表里混入脏数据时直接跳过，保证推荐主链路还能继续跑。
+        raise ValueError("证据列表中的元素不是有效的对象")
 
     node_id = str(item.get("node_id") or item.get("id") or "").strip()
     if not node_id:
@@ -55,10 +56,22 @@ def _coerce_evidence_item(item: Any) -> EvidenceInput:
     )
 
 
+def _iter_evidence_payload(value: Any) -> list[Any]:
+    """把 `evidence` 字段规范成可迭代列表。"""
+
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return value
+    if isinstance(value, dict):
+        return [value]
+    raise TypeError("evidence 必须是 list、dict 或 null")
+
+
 def _build_request(payload: dict[str, Any]) -> RecommendationRequest:
     """把原始请求体转换成内部请求对象。"""
 
-    evidence_payload = payload.get("evidence", [])
+    evidence_payload = _iter_evidence_payload(payload.get("evidence"))
     evidence_items: list[EvidenceInput] = []
     for item in evidence_payload:
         try:

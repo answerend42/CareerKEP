@@ -66,6 +66,26 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("sql", response["raw_evidence"])
         self.assertNotIn("", response["raw_evidence"])
 
+    def test_recommend_skips_malformed_evidence_items(self) -> None:
+        # 这里模拟脏数据混入证据列表的情况，后端应保留可用证据并跳过无效项。
+        response = recommend(
+            {
+                "text": "我会 Python",
+                "evidence": [
+                    None,
+                    "oops",
+                    {"node_id": "python", "score": 0.8},
+                    {"id": "sql", "score": 0.6},
+                    {"id": "   ", "score": 0.9},
+                ],
+            }
+        ).to_dict()
+
+        self.assertIn("python", response["raw_evidence"])
+        self.assertIn("sql", response["raw_evidence"])
+        self.assertNotIn("", response["raw_evidence"])
+        self.assertGreaterEqual(len(response["recommendations"]), 1)
+
 
 if __name__ == "__main__":
     unittest.main()
