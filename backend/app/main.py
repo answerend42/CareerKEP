@@ -6,6 +6,7 @@ import argparse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
+import sys
 from typing import Any
 
 from .api.recommend import recommend
@@ -98,7 +99,29 @@ def _read_json_argument(value: str | None) -> dict[str, Any]:
     return payload
 
 
-def main() -> None:
+def _run_recommend_command(payload_arg: str | None, text: str | None, target_role: str | None, top_k: int) -> int:
+    """执行一次推荐命令，并把错误分成参数错误和内部错误。"""
+
+    try:
+        payload = _read_json_argument(payload_arg)
+        if text is not None:
+            payload["text"] = text
+        if target_role is not None:
+            payload["target_role"] = target_role
+        payload["top_k"] = top_k
+
+        response = recommend(payload).to_dict()
+        print(json.dumps(response, ensure_ascii=False, indent=2))
+        return 0
+    except (json.JSONDecodeError, TypeError, OSError) as exc:
+        print(f"参数错误: {exc}", file=sys.stderr)
+        return 2
+    except Exception as exc:  # noqa: BLE001
+        print(f"执行失败: {exc}", file=sys.stderr)
+        return 1
+
+
+def main() -> int:
     parser = argparse.ArgumentParser(description="Career KG 后端入口")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -116,18 +139,10 @@ def main() -> None:
 
     if args.command == "serve":
         serve(args.host, args.port)
-        return
+        return 0
 
-    payload = _read_json_argument(args.payload)
-    if args.text is not None:
-        payload["text"] = args.text
-    if args.target_role is not None:
-        payload["target_role"] = args.target_role
-    payload["top_k"] = args.top_k
-
-    response = recommend(payload).to_dict()
-    print(json.dumps(response, ensure_ascii=False, indent=2))
+    return _run_recommend_command(args.payload, args.text, args.target_role, args.top_k)
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

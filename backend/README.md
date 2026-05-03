@@ -33,6 +33,8 @@ backend/
 python3 -m backend.app.main recommend --text "我会 Python、SQL，做过前端项目，也比较擅长沟通" --top-k 5
 ```
 
+如果 `--payload` 不是合法 JSON 或者不是对象，命令会返回非 0 退出码并在标准错误输出提示；参数问题返回 `2`，内部执行错误返回 `1`。
+
 ### 2. 启动 HTTP 服务
 
 ```bash
