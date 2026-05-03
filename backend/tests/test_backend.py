@@ -47,6 +47,25 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("action_simulation", response["target_role_analysis"])
         self.assertNotIn("", response["raw_evidence"])
 
+    def test_recommend_accepts_extra_evidence_fields(self) -> None:
+        # 这里模拟前端或脚本多塞字段的情况，后端只应读取白名单字段，不应直接报错。
+        response = recommend(
+            {
+                "text": "我也会 SQL",
+                "top_k": "2",
+                "evidence": [
+                    {"node_id": "python", "score": 0.9, "source": "form", "raw_text": "Python", "extra": "ignored"},
+                    {"id": "sql", "score": "0.7", "metadata": {"channel": "survey"}},
+                    {"score": 0.4, "extra": "missing node"},
+                ],
+            }
+        ).to_dict()
+
+        self.assertLessEqual(len(response["recommendations"]), 2)
+        self.assertIn("python", response["raw_evidence"])
+        self.assertIn("sql", response["raw_evidence"])
+        self.assertNotIn("", response["raw_evidence"])
+
 
 if __name__ == "__main__":
     unittest.main()

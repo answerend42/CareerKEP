@@ -60,6 +60,8 @@ python3 -m unittest discover -s backend/tests
 }
 ```
 
+其中 `evidence` 支持 `node_id` / `id`、`score`、`source`、`raw_text` 这几类字段，其他附加字段会被忽略，方便前端和脚本自由携带调试信息。
+
 返回中包含：
 
 - `recommendations`
