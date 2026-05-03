@@ -22,6 +22,27 @@ class _RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _read_json_body(self) -> dict[str, Any]:
+        """读取并解析请求体，统一处理 JSON 与类型错误。"""
+
+        raw_length = self.headers.get("Content-Length", "0")
+        try:
+            length = int(raw_length)
+        except (TypeError, ValueError) as exc:
+            raise ValueError("Content-Length 不是合法整数") from exc
+
+        raw = self.rfile.read(length) if length > 0 else b"{}"
+        try:
+            payload = json.loads(raw.decode("utf-8"))
+        except UnicodeDecodeError as exc:
+            raise ValueError("请求体不是合法的 UTF-8 编码") from exc
+        except json.JSONDecodeError as exc:
+            raise ValueError("请求体不是合法 JSON") from exc
+
+        if not isinstance(payload, dict):
+            raise TypeError("请求体 JSON 必须是对象")
+        return payload
+
     def do_GET(self) -> None:  # noqa: N802
         if self.path == "/health":
             self._send_json(200, {"status": "ok"})
@@ -33,14 +54,15 @@ class _RequestHandler(BaseHTTPRequestHandler):
             self._send_json(404, {"detail": "not found"})
             return
 
-        length = int(self.headers.get("Content-Length", "0"))
-        raw = self.rfile.read(length) if length > 0 else b"{}"
         try:
-            payload = json.loads(raw.decode("utf-8"))
+            payload = self._read_json_body()
             response = recommend(payload).to_dict()
             self._send_json(200, response)
-        except Exception as exc:  # noqa: BLE001
+        except (TypeError, ValueError) as exc:
             self._send_json(400, {"detail": str(exc)})
+        except Exception as exc:  # noqa: BLE001
+            # 这里保留服务端错误和客户端错误的区分，方便联调时快速定位问题。
+            self._send_json(500, {"detail": f"internal error: {exc}"})
 
     def log_message(self, format: str, *args: Any) -> None:  # noqa: A003
         # 减少控制台噪音，保持本地体验干净。
@@ -66,8 +88,14 @@ def _read_json_argument(value: str | None) -> dict[str, Any]:
         return {}
     candidate = Path(value)
     if candidate.exists():
-        return json.loads(candidate.read_text(encoding="utf-8"))
-    return json.loads(value)
+        payload_text = candidate.read_text(encoding="utf-8")
+    else:
+        payload_text = value
+
+    payload = json.loads(payload_text)
+    if not isinstance(payload, dict):
+        raise TypeError("payload 必须是 JSON 对象")
+    return payload
 
 
 def main() -> None:
@@ -103,4 +131,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

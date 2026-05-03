@@ -5,8 +5,11 @@
 
 from __future__ import annotations
 
+from io import BytesIO
 import unittest
 
+import backend.app.main as main_module
+from backend.app.main import _RequestHandler, _read_json_argument
 from backend.app.api.recommend import recommend
 from backend.app.schemas import EvidenceInput, clamp01
 from backend.app.services.input_normalizer import normalize_structured_input
@@ -85,6 +88,65 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("sql", response["raw_evidence"])
         self.assertNotIn("", response["raw_evidence"])
         self.assertGreaterEqual(len(response["recommendations"]), 1)
+
+    def test_read_json_argument_requires_object_payload(self) -> None:
+        with self.assertRaises(TypeError):
+            _read_json_argument("[1, 2, 3]")
+
+    def test_read_json_body_rejects_invalid_json_and_non_object(self) -> None:
+        handler = _RequestHandler.__new__(_RequestHandler)
+        handler.headers = {"Content-Length": "18"}
+        handler.rfile = BytesIO(b"not a json payload")
+
+        with self.assertRaises(ValueError):
+            handler._read_json_body()
+
+        handler.headers = {"Content-Length": "7"}
+        handler.rfile = BytesIO(b"[1,2,3]")
+
+        with self.assertRaises(TypeError):
+            handler._read_json_body()
+
+    def test_do_post_separates_client_error_and_server_error(self) -> None:
+        handler = _RequestHandler.__new__(_RequestHandler)
+        handler.path = "/api/recommend"
+        handler.headers = {"Content-Length": "18"}
+        handler.rfile = BytesIO(b"not a json payload")
+        handler.wfile = BytesIO()
+        calls: list[tuple[str, object]] = []
+
+        def send_response(code: int) -> None:
+            calls.append(("status", code))
+
+        def send_header(key: str, value: str) -> None:
+            calls.append(("header", (key, value)))
+
+        def end_headers() -> None:
+            calls.append(("end_headers", True))
+
+        handler.send_response = send_response  # type: ignore[method-assign]
+        handler.send_header = send_header  # type: ignore[method-assign]
+        handler.end_headers = end_headers  # type: ignore[method-assign]
+
+        handler.do_POST()
+
+        self.assertIn(("status", 400), calls)
+
+        handler.headers = {"Content-Length": "2"}
+        handler.rfile = BytesIO(b"{}")
+        original_recommend = main_module.recommend
+
+        def boom(payload: dict[str, object]) -> object:
+            raise RuntimeError("boom")
+
+        main_module.recommend = boom  # type: ignore[assignment]
+        try:
+            calls.clear()
+            handler.do_POST()
+        finally:
+            main_module.recommend = original_recommend  # type: ignore[assignment]
+
+        self.assertIn(("status", 500), calls)
 
 
 if __name__ == "__main__":
