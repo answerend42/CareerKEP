@@ -8,10 +8,13 @@ from __future__ import annotations
 from io import BytesIO
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
+from http.client import HTTPConnection
 from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+import threading
+from http.server import ThreadingHTTPServer
 
 import backend.app.main as main_module
 from backend.app.main import _RequestHandler, _read_json_argument, _read_json_file_argument, _run_recommend_command
@@ -21,6 +24,21 @@ from backend.app.services.input_normalizer import normalize_structured_input
 
 
 class BackendSmokeTest(unittest.TestCase):
+    def _start_http_server(self) -> tuple[ThreadingHTTPServer, threading.Thread]:
+        """启动一个临时 HTTP 服务，方便做真实请求验证。"""
+
+        server = ThreadingHTTPServer(("127.0.0.1", 0), _RequestHandler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        return server, thread
+
+    def _stop_http_server(self, server: ThreadingHTTPServer, thread: threading.Thread) -> None:
+        """关闭临时 HTTP 服务。"""
+
+        server.shutdown()
+        thread.join(timeout=2)
+        server.server_close()
+
     def test_clamp01_handles_none_and_bounds(self) -> None:
         # 这里专门校验一些常见的边界输入，避免外部请求把后端打崩。
         self.assertEqual(clamp01(None), 0.0)
@@ -175,6 +193,68 @@ class BackendSmokeTest(unittest.TestCase):
             main_module.recommend = original_recommend  # type: ignore[assignment]
 
         self.assertIn(("status", 500), calls)
+
+    def test_http_server_handles_health_recommend_and_errors(self) -> None:
+        server, thread = self._start_http_server()
+        try:
+            port = server.server_address[1]
+
+            conn = HTTPConnection("127.0.0.1", port, timeout=5)
+            conn.request("GET", "/health")
+            resp = conn.getresponse()
+            self.assertEqual(resp.status, 200)
+            self.assertEqual(resp.read().decode("utf-8"), '{\n  "status": "ok"\n}')
+            conn.close()
+
+            conn = HTTPConnection("127.0.0.1", port, timeout=5)
+            success_body = '{"text": "我会 Python，SQL"}'
+            conn.request(
+                "POST",
+                "/api/recommend",
+                body=success_body.encode("utf-8"),
+                headers={"Content-Type": "application/json"},
+            )
+            resp = conn.getresponse()
+            body = resp.read().decode("utf-8")
+            self.assertEqual(resp.status, 200)
+            self.assertIn('"recommendations"', body)
+            conn.close()
+
+            conn = HTTPConnection("127.0.0.1", port, timeout=5)
+            bad_body = "{bad json}"
+            conn.request(
+                "POST",
+                "/api/recommend",
+                body=bad_body.encode("utf-8"),
+                headers={"Content-Type": "application/json"},
+            )
+            resp = conn.getresponse()
+            self.assertEqual(resp.status, 400)
+            self.assertIn("请求体不是合法 JSON", resp.read().decode("utf-8"))
+            conn.close()
+
+            original_recommend = main_module.recommend
+
+            def boom(payload: dict[str, object]) -> object:
+                raise RuntimeError("boom")
+
+            main_module.recommend = boom  # type: ignore[assignment]
+            try:
+                conn = HTTPConnection("127.0.0.1", port, timeout=5)
+                conn.request(
+                    "POST",
+                    "/api/recommend",
+                    body="{}",
+                    headers={"Content-Type": "application/json"},
+                )
+                resp = conn.getresponse()
+                self.assertEqual(resp.status, 500)
+                self.assertIn("internal error", resp.read().decode("utf-8"))
+                conn.close()
+            finally:
+                main_module.recommend = original_recommend  # type: ignore[assignment]
+        finally:
+            self._stop_http_server(server, thread)
 
     def test_run_recommend_command_returns_error_code_for_bad_payload(self) -> None:
         stdout = StringIO()

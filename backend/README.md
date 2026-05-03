@@ -52,6 +52,8 @@ python3 -m backend.app.main serve --host 127.0.0.1 --port 8000
 python3 -m unittest discover -s backend/tests
 ```
 
+这套自测里包含纯函数校验、HTTP handler 校验和一次真实的本地 HTTP 往返检查，主要用来保证入口层真的能跑通。
+
 接口：
 
 - `GET /health`
