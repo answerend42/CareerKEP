@@ -12,6 +12,9 @@ from typing import Any
 from .api.recommend import recommend
 
 
+_MAX_REQUEST_BODY_BYTES = 1_048_576
+
+
 class _RequestHandler(BaseHTTPRequestHandler):
     """简单 HTTP 接口，方便本地联调。"""
 
@@ -38,6 +41,9 @@ class _RequestHandler(BaseHTTPRequestHandler):
             length = int(raw_length)
         except (TypeError, ValueError) as exc:
             raise ValueError("Content-Length 不是合法整数") from exc
+
+        if length > _MAX_REQUEST_BODY_BYTES:
+            raise _PayloadTooLargeError(f"请求体过大，最大允许 {_MAX_REQUEST_BODY_BYTES} 字节")
 
         raw = self.rfile.read(length) if length > 0 else b"{}"
         try:
@@ -70,6 +76,8 @@ class _RequestHandler(BaseHTTPRequestHandler):
             payload = self._read_json_body()
             response = recommend(payload).to_dict()
             self._send_json(200, response)
+        except _PayloadTooLargeError as exc:
+            self._send_json(413, {"detail": str(exc)})
         except (TypeError, ValueError) as exc:
             self._send_json(400, {"detail": str(exc)})
         except Exception as exc:  # noqa: BLE001
@@ -105,6 +113,10 @@ def _read_json_argument(value: str | None) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise TypeError("payload 必须是 JSON 对象")
     return payload
+
+
+class _PayloadTooLargeError(ValueError):
+    """请求体超过允许大小。"""
 
 
 def _read_json_file_argument(path_value: str | None) -> dict[str, Any]:

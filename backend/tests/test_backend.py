@@ -18,6 +18,7 @@ from http.server import ThreadingHTTPServer
 
 import backend.app.main as main_module
 from backend.app.main import _RequestHandler, _read_json_argument, _read_json_file_argument, _run_recommend_command
+from backend.app.main import _PayloadTooLargeError
 from backend.app.api.recommend import recommend
 from backend.app.schemas import EvidenceInput, clamp01
 from backend.app.services.input_normalizer import normalize_structured_input
@@ -153,6 +154,16 @@ class BackendSmokeTest(unittest.TestCase):
         with self.assertRaises(TypeError):
             handler._read_json_body()
 
+    def test_read_json_body_rejects_too_large_payload(self) -> None:
+        handler = _RequestHandler.__new__(_RequestHandler)
+        handler.headers = {"Content-Length": str(1_048_577)}
+        handler.rfile = BytesIO(b"{}")
+
+        with self.assertRaises(_PayloadTooLargeError) as context:
+            handler._read_json_body()
+
+        self.assertIn("请求体过大", str(context.exception))
+
     def test_do_post_separates_client_error_and_server_error(self) -> None:
         handler = _RequestHandler.__new__(_RequestHandler)
         handler.path = "/api/recommend"
@@ -201,6 +212,31 @@ class BackendSmokeTest(unittest.TestCase):
 
         self.assertIn(("status", 500), calls)
 
+    def test_do_post_rejects_too_large_payload(self) -> None:
+        handler = _RequestHandler.__new__(_RequestHandler)
+        handler.path = "/api/recommend"
+        handler.headers = {"Content-Length": str(1_048_577), "Content-Type": "application/json"}
+        handler.rfile = BytesIO(b"{}")
+        handler.wfile = BytesIO()
+        calls: list[tuple[str, object]] = []
+
+        def send_response(code: int) -> None:
+            calls.append(("status", code))
+
+        def send_header(key: str, value: str) -> None:
+            calls.append(("header", (key, value)))
+
+        def end_headers() -> None:
+            calls.append(("end_headers", True))
+
+        handler.send_response = send_response  # type: ignore[method-assign]
+        handler.send_header = send_header  # type: ignore[method-assign]
+        handler.end_headers = end_headers  # type: ignore[method-assign]
+
+        handler.do_POST()
+
+        self.assertIn(("status", 413), calls)
+
     def test_http_server_handles_health_recommend_and_errors(self) -> None:
         server, thread = self._start_http_server()
         try:
@@ -236,6 +272,19 @@ class BackendSmokeTest(unittest.TestCase):
             resp = conn.getresponse()
             self.assertEqual(resp.status, 415)
             self.assertIn("Content-Type 必须是 application/json", resp.read().decode("utf-8"))
+            conn.close()
+
+            conn = HTTPConnection("127.0.0.1", port, timeout=5)
+            large_body = b"{" + b'"text":"' + b"a" * 1_048_600 + b'"}'
+            conn.request(
+                "POST",
+                "/api/recommend",
+                body=large_body,
+                headers={"Content-Type": "application/json"},
+            )
+            resp = conn.getresponse()
+            self.assertEqual(resp.status, 413)
+            self.assertIn("请求体过大", resp.read().decode("utf-8"))
             conn.close()
 
             conn = HTTPConnection("127.0.0.1", port, timeout=5)
