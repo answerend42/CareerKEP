@@ -56,6 +56,23 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(documents[1].metadata["source_type"], "json")
         self.assertEqual(documents[1].metadata["category"], "backend")
 
+    def test_markdown_heading_is_used_as_title(self) -> None:
+        """Markdown 文档的首个标题应当被识别为标题，并从正文中剥离。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "note.md").write_text(
+                "# 前端方向候选人画像\n\n我熟悉前端项目，也会 Web 基础。",
+                encoding="utf-8",
+            )
+
+            documents = load_raw_documents(root)
+
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(documents[0].title, "前端方向候选人画像")
+        self.assertEqual(documents[0].text, "我熟悉前端项目，也会 Web 基础。")
+        self.assertEqual(documents[0].metadata["source_format"], "md")
+
 
 if __name__ == "__main__":
     unittest.main()

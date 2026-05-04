@@ -6,6 +6,7 @@
 
 - 读取仓库现有的 seed 节点和 alias 词典，构建与后端图谱一致的实体 catalog。
 - 从 `preprocess/raw_sources/` 递归加载原始文档快照，支持 `json`、`jsonl`、`csv`、`tsv`、`txt` 和 `md`。
+- 对 Markdown 文档自动识别首个标题作为文档标题，并从正文中剥离该标题，减少重复实体命中。
 - 对常见 JSON 容器结构做兼容，支持 `documents`、`items`、`records`、`results` 和 `data` 这类字段。
 - 为每条原始文档保留来源路径、来源格式和记录序号，方便后续回溯。
 - 保留 JSON 顶层容器的公共元数据，以及 CSV/JSON 记录里未被核心字段消费的额外列，避免采集信息丢失。

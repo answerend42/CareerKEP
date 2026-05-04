@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import csv
 import json
+import re
 from pathlib import Path
 from typing import List
 
@@ -253,11 +254,27 @@ def _load_text_document(path: Path, source_path: str) -> List[RawDocument]:
     text = path.read_text(encoding="utf-8").strip()
     if not text:
         return []
+
+    title = path.stem
+    if path.suffix.lower() == ".md":
+        # Markdown 常把第一行标题当作文档名，这里主动识别并剥离，避免标题内容
+        # 在后续实体抽取里被重复统计。
+        lines = [line.rstrip() for line in text.splitlines()]
+        for index, line in enumerate(lines):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            match = re.match(r"^#{1,6}\s+(?P<title>.+?)\s*$", stripped)
+            if match:
+                title = match.group("title").strip() or title
+                text = "\n".join(lines[index + 1 :]).strip()
+            break
+
     return [
         RawDocument(
             doc_id=path.stem,
             source=path.stem,
-            title=path.stem,
+            title=title,
             text=text,
             metadata={
                 "source_path": source_path,
