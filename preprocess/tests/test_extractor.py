@@ -69,6 +69,25 @@ class ExtractorTests(unittest.TestCase):
         self.assertEqual(resolved.entity.entity_id, "backend_engineering")
         self.assertIn("标题", resolved.reason)
 
+    def test_normalized_alias_matching_handles_punctuation_variants(self) -> None:
+        """规范化匹配应覆盖原始文本里的空格和符号变体。"""
+
+        document = RawDocument(
+            doc_id="normalized_alias",
+            source="test",
+            title="规范化匹配示例",
+            text="我熟悉Linux/Shell，也在关注Web后端方向，希望继续补强相关能力。",
+            metadata={},
+        )
+
+        mentions = extract_mentions(document, self.catalog)
+        entity_ids = {mention.entity_id for mention in mentions}
+
+        self.assertIn("linux", entity_ids)
+        self.assertIn("web_backend", entity_ids)
+        self.assertTrue(any(mention.surface == "Linux/Shell" for mention in mentions if mention.entity_id == "linux"))
+        self.assertTrue(any(mention.surface == "Web后端方向" for mention in mentions if mention.entity_id == "web_backend"))
+
 
 if __name__ == "__main__":
     unittest.main()

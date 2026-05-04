@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 from .catalog import EntityCatalog, compact_text
 from .disambiguator import resolve_entity
@@ -32,6 +32,22 @@ class AliasCandidate:
     source: str
 
 
+def _build_compact_text_index(document_text: str) -> Tuple[str, List[int]]:
+    """构建压缩文本及其原文位置映射。
+
+    压缩文本只保留中英文和数字字符，并全部转成小写。
+    这样可以把 `Linux / Shell`、`web 后端` 这类写法统一到同一匹配空间里。
+    """
+
+    compact_chars: List[str] = []
+    positions: List[int] = []
+    for index, char in enumerate(document_text):
+        if re.fullmatch(r"[0-9a-z\u4e00-\u9fff]", char.lower()):
+            compact_chars.append(char.lower())
+            positions.append(index)
+    return "".join(compact_chars), positions
+
+
 def _find_occurrences(surface: str, document_text: str) -> List[Tuple[int, int]]:
     """查找一个别名在文本中的所有命中位置。"""
 
@@ -45,6 +61,36 @@ def _find_occurrences(surface: str, document_text: str) -> List[Tuple[int, int]]
         pattern = re.compile(re.escape(normalized), re.IGNORECASE)
 
     return [(match.start(), match.end()) for match in pattern.finditer(document_text)]
+
+
+def _find_compact_occurrences(surface: str, document_text: str) -> List[Tuple[int, int]]:
+    """查找忽略空格和符号后的命中位置。
+
+    这类匹配主要用于处理原始数据里常见的变体写法。
+    例如别名是 `Linux / Shell`，文本里写成 `Linux/Shell` 也能命中。
+    """
+
+    compact_surface = compact_text(surface)
+    if not compact_surface:
+        return []
+
+    compact_document, positions = _build_compact_text_index(document_text)
+    if not compact_document:
+        return []
+
+    matches: List[Tuple[int, int]] = []
+    start_at = 0
+    while True:
+        index = compact_document.find(compact_surface, start_at)
+        if index < 0:
+            break
+
+        start = positions[index]
+        end = positions[index + len(compact_surface) - 1] + 1
+        matches.append((start, end))
+        start_at = index + 1
+
+    return matches
 
 
 def _slice_context(document_text: str, start: int, end: int) -> str:
@@ -63,12 +109,17 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
 
     # 长别名优先，能减少短词抢占长词的问题。
     alias_candidates: List[AliasCandidate] = []
+    seen_candidates = set()
     for _compact_alias, items in catalog.alias_index.items():
         # 这里只记录用于匹配的别名文本，来源在 alias_index 中保留。
         # 同一个 compact alias 可能对应多个实体，抽取阶段先收集，再交给消歧阶段。
         if not items:
             continue
         for _entity_id, surface, source in items:
+            candidate_key = (surface, source)
+            if candidate_key in seen_candidates:
+                continue
+            seen_candidates.add(candidate_key)
             alias_candidates.append(AliasCandidate(surface=surface, source=source))
 
     alias_candidates.sort(key=lambda item: len(item.surface), reverse=True)
@@ -76,7 +127,14 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
     occupied_spans: List[Tuple[int, int]] = []
     seen_spans = set()
     for candidate in alias_candidates:
-        for start, end in _find_occurrences(candidate.surface, doc_text):
+        matched_spans = _find_occurrences(candidate.surface, doc_text)
+
+        # 对原文中的空格、下划线、斜杠等变体，补一次规范化搜索。
+        # 这样可以覆盖真实采集数据里很常见的写法差异，但不会替换原始精确命中。
+        if compact_text(candidate.surface) != candidate.surface.strip().lower():
+            matched_spans.extend(_find_compact_occurrences(candidate.surface, doc_text))
+
+        for start, end in matched_spans:
             span_key = (start, end)
             if span_key in seen_spans:
                 continue
