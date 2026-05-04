@@ -39,6 +39,8 @@ class EntityMention:
     """抽取到的实体命中结果。"""
 
     doc_id: str
+    span_start: int
+    span_end: int
     entity_id: str
     entity_label: str
     layer: str
@@ -46,6 +48,7 @@ class EntityMention:
     confidence: float
     matched_by: str
     reason: str
+    context: str
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)

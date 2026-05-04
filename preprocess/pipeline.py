@@ -76,6 +76,8 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
             "mentions": len(all_mentions),
             "entities": len(entity_summary),
             "hit_entities": sum(1 for item in entity_summary if item.mention_count > 0),
+            "documents_with_mentions": len(mentions_by_doc),
+            "average_mentions_per_document": round(len(all_mentions) / len(documents), 4) if documents else 0.0,
             "source_dir": str(input_dir or RAW_SOURCE_DIR),
             "output_dir": str(resolved_output_dir),
         },

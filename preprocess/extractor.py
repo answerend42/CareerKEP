@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Dict, Iterable, List, Tuple
+from typing import Dict, List, Tuple
 
 from .catalog import EntityCatalog, compact_text
 from .disambiguator import resolve_entity
@@ -12,6 +12,7 @@ from .models import EntityMention, RawDocument
 
 
 ASCII_ALIAS_RE = re.compile(r"^[a-z0-9+#./-]+$")
+WINDOW_SIZE = 16
 
 
 @dataclass(frozen=True)
@@ -19,21 +20,39 @@ class AliasHit:
     alias: str
     compact_alias: str
     matched_by: str
+    start: int
+    end: int
 
 
-def _alias_matches_text(alias: str, document_text: str) -> bool:
-    """判断别名是否命中文本。"""
+@dataclass(frozen=True)
+class AliasCandidate:
+    """候选别名及其原始来源。"""
 
-    alias = alias.strip().lower()
-    if not alias:
-        return False
+    surface: str
+    source: str
 
-    if ASCII_ALIAS_RE.fullmatch(alias):
-        # 英文短词使用边界匹配，避免诸如 `ml` 误命中 `html`。
-        pattern = re.compile(rf"(?<![a-z0-9]){re.escape(alias)}(?![a-z0-9])")
-        return bool(pattern.search(document_text.lower()))
 
-    return compact_text(alias) in compact_text(document_text)
+def _find_occurrences(surface: str, document_text: str) -> List[Tuple[int, int]]:
+    """查找一个别名在文本中的所有命中位置。"""
+
+    normalized = surface.strip()
+    if not normalized:
+        return []
+
+    if ASCII_ALIAS_RE.fullmatch(normalized.lower()):
+        pattern = re.compile(rf"(?<![a-z0-9]){re.escape(normalized)}(?![a-z0-9])", re.IGNORECASE)
+    else:
+        pattern = re.compile(re.escape(normalized), re.IGNORECASE)
+
+    return [(match.start(), match.end()) for match in pattern.finditer(document_text)]
+
+
+def _slice_context(document_text: str, start: int, end: int) -> str:
+    """提取命中附近的上下文，方便后续回看。"""
+
+    left = max(0, start - WINDOW_SIZE)
+    right = min(len(document_text), end + WINDOW_SIZE)
+    return document_text[left:right].strip()
 
 
 def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[AliasHit]:
@@ -43,25 +62,42 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
     doc_text = document.text
 
     # 长别名优先，能减少短词抢占长词的问题。
-    alias_candidates: List[Tuple[str, str]] = []
-    for compact_alias, items in catalog.alias_index.items():
+    alias_candidates: List[AliasCandidate] = []
+    for _compact_alias, items in catalog.alias_index.items():
         # 这里只记录用于匹配的别名文本，来源在 alias_index 中保留。
         # 同一个 compact alias 可能对应多个实体，抽取阶段先收集，再交给消歧阶段。
         if not items:
             continue
         for _entity_id, surface, source in items:
-            alias_candidates.append((surface, source))
+            alias_candidates.append(AliasCandidate(surface=surface, source=source))
 
-    alias_candidates.sort(key=lambda item: len(item[0]), reverse=True)
+    alias_candidates.sort(key=lambda item: len(item.surface), reverse=True)
 
-    seen_aliases = set()
-    for alias, source in alias_candidates:
-        if alias in seen_aliases:
-            continue
-        if _alias_matches_text(alias, doc_text):
-            seen_aliases.add(alias)
-            hits.append(AliasHit(alias=alias, compact_alias=compact_text(alias), matched_by=source))
+    occupied_spans: List[Tuple[int, int]] = []
+    seen_spans = set()
+    for candidate in alias_candidates:
+        for start, end in _find_occurrences(candidate.surface, doc_text):
+            span_key = (start, end)
+            if span_key in seen_spans:
+                continue
 
+            # 先保留更长的别名，避免短词切进更长的命中区间。
+            if any(start < used_end and end > used_start for used_start, used_end in occupied_spans):
+                continue
+
+            seen_spans.add(span_key)
+            occupied_spans.append(span_key)
+            hits.append(
+                AliasHit(
+                    alias=doc_text[start:end],
+                    compact_alias=compact_text(candidate.surface),
+                    matched_by=candidate.source,
+                    start=start,
+                    end=end,
+                )
+            )
+
+    hits.sort(key=lambda item: (item.start, -(item.end - item.start), item.alias))
     return hits
 
 
@@ -69,7 +105,6 @@ def extract_mentions(document: RawDocument, catalog: EntityCatalog) -> List[Enti
     """从单篇文档里抽取实体命中。"""
 
     mentions: List[EntityMention] = []
-    emitted: Dict[str, float] = {}
 
     for hit in _collect_alias_hits(catalog, document):
         candidates = catalog.alias_index.get(hit.compact_alias, [])
@@ -87,14 +122,11 @@ def extract_mentions(document: RawDocument, catalog: EntityCatalog) -> List[Enti
             matched_alias=hit.alias,
         )
 
-        current = emitted.get(resolved.entity.entity_id, 0.0)
-        if resolved.score <= current:
-            continue
-
-        emitted[resolved.entity.entity_id] = resolved.score
         mentions.append(
             EntityMention(
                 doc_id=document.doc_id,
+                span_start=hit.start,
+                span_end=hit.end,
                 entity_id=resolved.entity.entity_id,
                 entity_label=resolved.entity.label,
                 layer=resolved.entity.layer,
@@ -102,6 +134,7 @@ def extract_mentions(document: RawDocument, catalog: EntityCatalog) -> List[Enti
                 confidence=round(resolved.score, 4),
                 matched_by=hit.matched_by,
                 reason=resolved.reason,
+                context=_slice_context(document.text, hit.start, hit.end),
             )
         )
 
