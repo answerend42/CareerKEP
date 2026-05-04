@@ -116,6 +116,23 @@ class ExtractorTests(unittest.TestCase):
         self.assertTrue(any(mention.entity_id == "machine_learning" and mention.surface == "机器学习" for mention in mentions))
         self.assertTrue(any(mention.entity_id == "data_engineering" and mention.surface == "数据工程" for mention in mentions))
 
+    def test_short_generated_aliases_do_not_overmatch_inside_longer_phrases(self) -> None:
+        """过短的词干型别名不应在更长短语里产生明显噪声。"""
+
+        document = RawDocument(
+            doc_id="short_generated_alias_noise",
+            source="test",
+            title="短词干降噪示例",
+            text="我做过数据库实践，也在补数据库表设计。",
+            metadata={},
+        )
+
+        mentions = extract_mentions(document, self.catalog)
+
+        self.assertTrue(any(mention.entity_id == "database_practice" for mention in mentions))
+        self.assertFalse(any(mention.entity_id == "data_engineer" for mention in mentions))
+        self.assertFalse(any(mention.entity_id == "data_engineering" and mention.surface == "数据" for mention in mentions))
+
 
 if __name__ == "__main__":
     unittest.main()
