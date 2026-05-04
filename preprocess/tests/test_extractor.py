@@ -6,6 +6,7 @@ import unittest
 
 from preprocess.catalog import load_entity_catalog
 from preprocess.extractor import extract_mentions
+from preprocess.disambiguator import resolve_entity
 from preprocess.models import RawDocument
 from preprocess.pipeline import run_pipeline
 
@@ -44,6 +45,29 @@ class ExtractorTests(unittest.TestCase):
         self.assertGreaterEqual(result["mentions"], 1)
         self.assertGreaterEqual(result["entities"], 1)
         self.assertIn("output_dir", result)
+
+    def test_title_guides_ambiguous_entity_resolution(self) -> None:
+        """标题信息应能帮助同义别名在多个候选实体之间做消歧。"""
+
+        document = RawDocument(
+            doc_id="title_disambiguation",
+            source="test",
+            title="后端工程能力提升",
+            text="我想做后端。",
+            metadata={},
+        )
+
+        backend_engineering = self.catalog.entities["backend_engineering"]
+        backend_engineer = self.catalog.entities["backend_engineer"]
+
+        resolved = resolve_entity(
+            [(backend_engineering, "explicit"), (backend_engineer, "explicit")],
+            document=document,
+            matched_alias="后端",
+        )
+
+        self.assertEqual(resolved.entity.entity_id, "backend_engineering")
+        self.assertIn("标题", resolved.reason)
 
 
 if __name__ == "__main__":

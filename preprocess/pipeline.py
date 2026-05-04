@@ -73,6 +73,7 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
         resolved_output_dir / "summary.json",
         {
             "documents": len(documents),
+            "source_files": len({doc.metadata.get("source_path", doc.doc_id) for doc in documents}),
             "mentions": len(all_mentions),
             "entities": len(entity_summary),
             "hit_entities": sum(1 for item in entity_summary if item.mention_count > 0),

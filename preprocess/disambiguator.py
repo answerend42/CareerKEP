@@ -23,6 +23,7 @@ class CandidateScore:
     entity: EntityDefinition
     score: float
     reason: str
+    title_rank: int
 
 
 def _layer_priority(layer: str) -> int:
@@ -45,11 +46,13 @@ def _score_entity(
     """根据文档上下文给候选实体打分。"""
 
     text = compact_text(document.text)
+    title = compact_text(document.title)
     label = compact_text(entity.label)
     alias = compact_text(matched_alias)
 
     score = 0.0
     reasons: List[str] = []
+    title_rank = 0
 
     if candidate_source == "explicit":
         score += 0.92
@@ -72,6 +75,16 @@ def _score_entity(
         score += 0.12
         reasons.append("别名完全命中")
 
+    if label and label in title:
+        score += 0.1
+        title_rank = max(title_rank, 2)
+        reasons.append("标题完全命中")
+
+    if alias and alias in title:
+        score += 0.08
+        title_rank = max(title_rank, 1)
+        reasons.append("标题别名命中")
+
     for hint in LAYER_HINTS.get(entity.layer, []):
         if compact_text(hint) in text:
             score += 0.05
@@ -81,7 +94,12 @@ def _score_entity(
     score += _layer_priority(entity.layer) * 0.01
 
     # 评分限制到 1.0，方便后续输出。
-    return CandidateScore(entity=entity, score=min(score, 1.0), reason="；".join(reasons))
+    return CandidateScore(
+        entity=entity,
+        score=min(score, 1.0),
+        reason="；".join(reasons),
+        title_rank=title_rank,
+    )
 
 
 def resolve_entity(
@@ -92,5 +110,13 @@ def resolve_entity(
     """在多个候选实体之间做消歧。"""
 
     scored = [_score_entity(entity, document, matched_alias, source) for entity, source in candidates]
-    scored.sort(key=lambda item: (item.score, _layer_priority(item.entity.layer), len(item.entity.label)), reverse=True)
+    scored.sort(
+        key=lambda item: (
+            item.score,
+            item.title_rank,
+            _layer_priority(item.entity.layer),
+            len(item.entity.label),
+        ),
+        reverse=True,
+    )
     return scored[0]

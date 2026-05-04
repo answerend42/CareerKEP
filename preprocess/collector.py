@@ -15,6 +15,7 @@ from .models import RawDocument
 
 
 RAW_SOURCE_DIR = Path(__file__).resolve().parent / "raw_sources"
+COMMON_COLLECTION_KEYS = ("documents", "items", "records", "data", "results")
 
 
 def _coerce_text(value: object) -> str:
@@ -37,7 +38,38 @@ def _coerce_metadata(value: object) -> dict:
     return {"raw": value}
 
 
-def _build_document(item: dict, fallback_id: str, fallback_source: str, fallback_title: str) -> RawDocument:
+def _enrich_metadata(metadata: object, source_path: str, source_format: str, record_index: int | None = None) -> dict:
+    """补充原始文件来源，方便后续回溯。"""
+
+    enriched = dict(_coerce_metadata(metadata))
+    enriched.setdefault("source_path", source_path)
+    enriched.setdefault("source_format", source_format)
+    if record_index is not None:
+        enriched.setdefault("record_index", record_index)
+    return enriched
+
+
+def _looks_like_collection_container(payload: dict) -> bool:
+    """判断一个字典是否更像“集合容器”而不是单条文档。"""
+
+    for key in COMMON_COLLECTION_KEYS:
+        value = payload.get(key)
+        if isinstance(value, list) and any(isinstance(item, dict) for item in value):
+            return True
+        if isinstance(value, dict) and _looks_like_collection_container(value):
+            return True
+    return False
+
+
+def _build_document(
+    item: dict,
+    fallback_id: str,
+    fallback_source: str,
+    fallback_title: str,
+    source_path: str,
+    source_format: str,
+    record_index: int | None = None,
+) -> RawDocument:
     """从单条原始记录构造统一的文档对象。"""
 
     doc_id = _coerce_text(item.get("doc_id") or item.get("id") or fallback_id).strip() or fallback_id
@@ -68,11 +100,39 @@ def _build_document(item: dict, fallback_id: str, fallback_source: str, fallback
         source=source,
         title=title,
         text=text,
-        metadata=_coerce_metadata(item.get("metadata") or item.get("extra")),
+        metadata=_enrich_metadata(item.get("metadata") or item.get("extra"), source_path, source_format, record_index),
     )
 
 
-def _load_json_documents(path: Path) -> List[RawDocument]:
+def _extract_document_items(payload: object) -> List[dict]:
+    """从常见的 JSON 容器结构中提取文档列表。
+
+    说明：
+    - 支持 `documents` / `items` / `records` / `results` / `data` 这类快照结构。
+    - 如果没有命中任何容器字段，则把整个对象当成单条记录。
+    """
+
+    if isinstance(payload, list):
+        return [item for item in payload if isinstance(item, dict)]
+
+    if not isinstance(payload, dict):
+        return []
+
+    for key in COMMON_COLLECTION_KEYS:
+        value = payload.get(key)
+        if isinstance(value, list):
+            records = [item for item in value if isinstance(item, dict)]
+            if records:
+                return records
+        elif isinstance(value, dict) and _looks_like_collection_container(value):
+            nested_records = _extract_document_items(value)
+            if nested_records:
+                return nested_records
+
+    return [payload]
+
+
+def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
     if path.suffix.lower() == ".jsonl":
         documents: List[dict] = []
         for line in path.read_text(encoding="utf-8").splitlines():
@@ -83,25 +143,27 @@ def _load_json_documents(path: Path) -> List[RawDocument]:
         payload: object = documents
     else:
         payload = json.loads(path.read_text(encoding="utf-8"))
-    if isinstance(payload, dict):
-        if "documents" in payload and isinstance(payload["documents"], list):
-            documents = payload["documents"]
-        else:
-            documents = [payload]
-    elif isinstance(payload, list):
-        documents = payload
-    else:
+    documents = _extract_document_items(payload)
+    if not documents:
         raise ValueError(f"原始文档文件格式不支持: {path}")
 
     result: List[RawDocument] = []
     for index, item in enumerate(documents, 1):
-        if not isinstance(item, dict):
-            continue
-        result.append(_build_document(item, f"{path.stem}_{index}", path.stem, f"未命名文档{index}"))
+        result.append(
+                _build_document(
+                    item,
+                    f"{path.stem}_{index}",
+                    path.stem,
+                    f"未命名文档{index}",
+                    source_path=source_path,
+                    source_format=path.suffix.lower().lstrip("."),
+                    record_index=index,
+                )
+            )
     return result
 
 
-def _load_tabular_documents(path: Path) -> List[RawDocument]:
+def _load_tabular_documents(path: Path, source_path: str) -> List[RawDocument]:
     """加载 CSV/TSV 这类表格型原始数据。"""
 
     delimiter = "\t" if path.suffix.lower() == ".tsv" else ","
@@ -114,11 +176,21 @@ def _load_tabular_documents(path: Path) -> List[RawDocument]:
 
     result: List[RawDocument] = []
     for index, row in enumerate(rows, 1):
-        result.append(_build_document(row, f"{path.stem}_{index}", path.stem, f"未命名文档{index}"))
+        result.append(
+                _build_document(
+                    row,
+                    f"{path.stem}_{index}",
+                    path.stem,
+                    f"未命名文档{index}",
+                    source_path=source_path,
+                    source_format=path.suffix.lower().lstrip("."),
+                    record_index=index,
+                )
+            )
     return result
 
 
-def _load_text_document(path: Path) -> List[RawDocument]:
+def _load_text_document(path: Path, source_path: str) -> List[RawDocument]:
     text = path.read_text(encoding="utf-8").strip()
     if not text:
         return []
@@ -128,7 +200,10 @@ def _load_text_document(path: Path) -> List[RawDocument]:
             source=path.stem,
             title=path.stem,
             text=text,
-            metadata={},
+            metadata={
+                "source_path": source_path,
+                "source_format": path.suffix.lower().lstrip("."),
+            },
         )
     ]
 
@@ -146,13 +221,14 @@ def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
     for path in paths:
         if path.is_dir():
             continue
+        source_path = str(path.relative_to(directory))
         suffix = path.suffix.lower()
         if suffix in {".json", ".jsonl"}:
-            documents.extend(_load_json_documents(path))
+            documents.extend(_load_json_documents(path, source_path))
         elif suffix in {".csv", ".tsv"}:
-            documents.extend(_load_tabular_documents(path))
+            documents.extend(_load_tabular_documents(path, source_path))
         elif suffix in {".txt", ".md"}:
-            documents.extend(_load_text_document(path))
+            documents.extend(_load_text_document(path, source_path))
 
     if not documents:
         raise ValueError(f"在目录 {directory} 中没有找到可用的原始数据文件")

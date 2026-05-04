@@ -23,7 +23,7 @@ class CollectorTests(unittest.TestCase):
             (nested / "docs.json").write_text(
                 """
                 {
-                  "documents": [
+                  "items": [
                     {
                       "doc_id": "json_doc",
                       "title": "JSON 文档",
@@ -46,6 +46,9 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual([doc.doc_id for doc in documents], ["csv_doc", "json_doc"])
         self.assertEqual(documents[0].text, "前端项目经验很重要")
         self.assertEqual(documents[0].source, "csv_source")
+        self.assertEqual(documents[0].metadata["source_path"], "docs.csv")
+        self.assertEqual(documents[1].metadata["source_path"], "nested/docs.json")
+        self.assertEqual(documents[1].metadata["source_format"], "json")
         self.assertEqual(documents[1].metadata["source_type"], "json")
 
 
