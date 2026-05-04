@@ -64,6 +64,8 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
             mentions_by_doc[document.doc_id].append(payload)
 
     entity_summary = _build_entity_summary(catalog, mentions_by_doc)
+    covered_entities = sum(1 for item in entity_summary if item.mention_count > 0)
+    total_entities = len(entity_summary)
 
     resolved_output_dir = output_dir or OUTPUT_DIR
     _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
@@ -75,8 +77,11 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
             "documents": len(documents),
             "source_files": len({doc.metadata.get("source_path", doc.doc_id) for doc in documents}),
             "mentions": len(all_mentions),
-            "entities": len(entity_summary),
-            "hit_entities": sum(1 for item in entity_summary if item.mention_count > 0),
+            "entities": total_entities,
+            "catalog_entities": len(catalog.entities),
+            "hit_entities": covered_entities,
+            "covered_entities": covered_entities,
+            "uncovered_entities": total_entities - covered_entities,
             "documents_with_mentions": len(mentions_by_doc),
             "average_mentions_per_document": round(len(all_mentions) / len(documents), 4) if documents else 0.0,
             "source_dir": str(input_dir or RAW_SOURCE_DIR),

@@ -15,6 +15,7 @@
 - 对空格、斜杠、下划线这类原始写法差异做规范化匹配，尽量抓到真实文本里的变体写法。
 - 对由标签词干生成的别名，允许在长实体内部继续命中，避免 `机器学习方向` 这类表达把基础实体吞掉。
 - 导出 `documents.json`、`mentions.json`、`entities.json` 和 `summary.json`。
+- `entities.json` 会保留图谱目录里的全部实体，不会因为本轮没有命中就被丢掉。
 
 ## 运行方式
 
@@ -52,8 +53,8 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 
 - `documents.json`：采集到的原始文档快照，保留 `source_path`、`source_format`、`record_index` 以及原始记录中的额外元数据。
 - `mentions.json`：每条实体命中的抽取结果，包含 `span_start`、`span_end` 和 `context`。
-- `entities.json`：按实体汇总后的统计结果。
-- `summary.json`：这次预处理的整体统计信息，包含文档数、来源文件数、命中数、覆盖实体数和平均命中数。
+- `entities.json`：按实体汇总后的统计结果，完整保留图谱目录中的所有实体。
+- `summary.json`：这次预处理的整体统计信息，包含文档数、来源文件数、命中数、图谱总实体数、覆盖实体数、未覆盖实体数和平均命中数。
 
 ## 原始数据格式
 

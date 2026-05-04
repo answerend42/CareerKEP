@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+import tempfile
+from pathlib import Path
 import unittest
 
 from preprocess.catalog import load_entity_catalog
@@ -39,12 +42,21 @@ class ExtractorTests(unittest.TestCase):
     def test_pipeline_emits_summary(self) -> None:
         """流水线应该能直接产出结构化统计结果。"""
 
-        result = run_pipeline()
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            output_dir = Path(tmp_dir) / "output"
+            result = run_pipeline(output_dir=output_dir)
+            entities_payload = json.loads((output_dir / "entities.json").read_text(encoding="utf-8"))
+            summary_payload = json.loads((output_dir / "summary.json").read_text(encoding="utf-8"))
 
         self.assertGreaterEqual(result["documents"], 1)
         self.assertGreaterEqual(result["mentions"], 1)
         self.assertGreaterEqual(result["entities"], 1)
         self.assertIn("output_dir", result)
+        self.assertEqual(len(entities_payload), len(self.catalog.entities))
+        self.assertEqual(summary_payload["catalog_entities"], len(self.catalog.entities))
+        self.assertEqual(summary_payload["entities"], len(self.catalog.entities))
+        self.assertGreaterEqual(summary_payload["covered_entities"], 1)
+        self.assertGreaterEqual(summary_payload["uncovered_entities"], 0)
 
     def test_title_guides_ambiguous_entity_resolution(self) -> None:
         """标题信息应能帮助同义别名在多个候选实体之间做消歧。"""
