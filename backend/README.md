@@ -58,6 +58,7 @@ python3 -m unittest discover -s backend/tests
 
 - `GET /health`
 - `POST /api/recommend`
+- `POST /api/recommend` 需要带 `Content-Type: application/json`，否则返回 `415`
 - `POST /api/recommend` 会把请求体解析错误返回 `400`，服务端内部异常返回 `500`
 
 请求体示例：

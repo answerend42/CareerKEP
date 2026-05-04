@@ -176,9 +176,16 @@ class BackendSmokeTest(unittest.TestCase):
 
         handler.do_POST()
 
+        self.assertIn(("status", 415), calls)
+
+        handler.headers = {"Content-Length": "18", "Content-Type": "application/json"}
+        handler.rfile = BytesIO(b"not a json payload")
+        calls.clear()
+        handler.do_POST()
+
         self.assertIn(("status", 400), calls)
 
-        handler.headers = {"Content-Length": "2"}
+        handler.headers = {"Content-Length": "2", "Content-Type": "application/json"}
         handler.rfile = BytesIO(b"{}")
         original_recommend = main_module.recommend
 
@@ -212,12 +219,23 @@ class BackendSmokeTest(unittest.TestCase):
                 "POST",
                 "/api/recommend",
                 body=success_body.encode("utf-8"),
-                headers={"Content-Type": "application/json"},
+                headers={"Content-Type": "application/json; charset=utf-8"},
             )
             resp = conn.getresponse()
             body = resp.read().decode("utf-8")
             self.assertEqual(resp.status, 200)
             self.assertIn('"recommendations"', body)
+            conn.close()
+
+            conn = HTTPConnection("127.0.0.1", port, timeout=5)
+            conn.request(
+                "POST",
+                "/api/recommend",
+                body="{}",
+            )
+            resp = conn.getresponse()
+            self.assertEqual(resp.status, 415)
+            self.assertIn("Content-Type 必须是 application/json", resp.read().decode("utf-8"))
             conn.close()
 
             conn = HTTPConnection("127.0.0.1", port, timeout=5)

@@ -23,6 +23,13 @@ class _RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _is_json_content_type(self) -> bool:
+        """判断请求头是否声明为 JSON。"""
+
+        raw_content_type = self.headers.get("Content-Type", "")
+        media_type = raw_content_type.split(";", 1)[0].strip().lower()
+        return media_type == "application/json" or media_type.endswith("+json")
+
     def _read_json_body(self) -> dict[str, Any]:
         """读取并解析请求体，统一处理 JSON 与类型错误。"""
 
@@ -53,6 +60,10 @@ class _RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:  # noqa: N802
         if self.path != "/api/recommend":
             self._send_json(404, {"detail": "not found"})
+            return
+
+        if not self._is_json_content_type():
+            self._send_json(415, {"detail": "Content-Type 必须是 application/json"})
             return
 
         try:
