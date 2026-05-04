@@ -7,6 +7,7 @@
 from .catalog import EntityCatalog, EntityDefinition, load_entity_catalog
 from .collector import RawDocument, load_raw_documents
 from .extractor import EntityMention, extract_mentions
+from .pipeline import run_pipeline
 
 __all__ = [
     "EntityCatalog",
@@ -16,4 +17,5 @@ __all__ = [
     "extract_mentions",
     "load_entity_catalog",
     "load_raw_documents",
+    "run_pipeline",
 ]

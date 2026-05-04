@@ -19,6 +19,12 @@
 python3 -m preprocess.pipeline
 ```
 
+也可以直接运行包入口：
+
+```bash
+python3 -m preprocess
+```
+
 默认输入目录：
 
 - `preprocess/raw_sources/`
@@ -31,6 +37,12 @@ python3 -m preprocess.pipeline
 
 ```bash
 python3 -m preprocess.pipeline --input-dir preprocess/raw_sources --output-dir preprocess/output
+```
+
+或：
+
+```bash
+python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess/output
 ```
 
 ## 输出说明
