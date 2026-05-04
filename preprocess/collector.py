@@ -37,6 +37,20 @@ CORE_DOCUMENT_KEYS = {
 }
 
 
+def _build_fallback_doc_id(source_path: str, record_index: int | None = None) -> str:
+    """根据来源路径生成稳定的兜底文档编号。
+
+    这样同名文件放在不同子目录时，不会在后续汇总里撞 ID。
+    """
+
+    path_key = Path(source_path).with_suffix("").as_posix()
+    path_key = re.sub(r"[^0-9A-Za-z\u4e00-\u9fff]+", "_", path_key)
+    path_key = re.sub(r"_+", "_", path_key).strip("_")
+    if record_index is not None:
+        path_key = f"{path_key}_{record_index}"
+    return path_key or (f"document_{record_index}" if record_index is not None else "document")
+
+
 def _coerce_text(value: object) -> str:
     """把可能来自不同采集源的字段统一转成文本。"""
 
@@ -211,7 +225,7 @@ def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
         result.append(
             _build_document(
                 item,
-                f"{path.stem}_{index}",
+                _build_fallback_doc_id(source_path, index),
                 path.stem,
                 f"未命名文档{index}",
                 source_path=source_path,
@@ -239,7 +253,7 @@ def _load_tabular_documents(path: Path, source_path: str) -> List[RawDocument]:
         result.append(
             _build_document(
                 row,
-                f"{path.stem}_{index}",
+                _build_fallback_doc_id(source_path, index),
                 path.stem,
                 f"未命名文档{index}",
                 source_path=source_path,
@@ -272,7 +286,7 @@ def _load_text_document(path: Path, source_path: str) -> List[RawDocument]:
 
     return [
         RawDocument(
-            doc_id=path.stem,
+            doc_id=_build_fallback_doc_id(source_path),
             source=path.stem,
             title=title,
             text=text,
