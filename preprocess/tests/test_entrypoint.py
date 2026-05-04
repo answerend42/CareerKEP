@@ -37,6 +37,7 @@ class EntrypointTests(unittest.TestCase):
             )
 
             self.assertIn("预处理完成", completed.stdout)
+            self.assertEqual("", completed.stderr.strip())
             self.assertTrue((output_dir / "summary.json").exists())
 
 
