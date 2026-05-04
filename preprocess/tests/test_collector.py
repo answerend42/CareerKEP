@@ -23,12 +23,14 @@ class CollectorTests(unittest.TestCase):
             (nested / "docs.json").write_text(
                 """
                 {
+                  "platform": "demo_portal",
                   "items": [
                     {
                       "doc_id": "json_doc",
                       "title": "JSON 文档",
                       "text": "后端工程能力很重要。",
-                      "metadata": {"source_type": "json"}
+                      "metadata": {"source_type": "json"},
+                      "category": "backend"
                     }
                   ]
                 }
@@ -36,8 +38,8 @@ class CollectorTests(unittest.TestCase):
                 encoding="utf-8",
             )
             (root / "docs.csv").write_text(
-                "doc_id,title,content,source\n"
-                "csv_doc,CSV 文档,前端项目经验很重要,csv_source\n",
+                "doc_id,title,content,source,channel\n"
+                "csv_doc,CSV 文档,前端项目经验很重要,csv_source,job_board\n",
                 encoding="utf-8",
             )
 
@@ -46,10 +48,13 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual([doc.doc_id for doc in documents], ["csv_doc", "json_doc"])
         self.assertEqual(documents[0].text, "前端项目经验很重要")
         self.assertEqual(documents[0].source, "csv_source")
+        self.assertEqual(documents[0].metadata["channel"], "job_board")
         self.assertEqual(documents[0].metadata["source_path"], "docs.csv")
         self.assertEqual(documents[1].metadata["source_path"], "nested/docs.json")
         self.assertEqual(documents[1].metadata["source_format"], "json")
+        self.assertEqual(documents[1].metadata["platform"], "demo_portal")
         self.assertEqual(documents[1].metadata["source_type"], "json")
+        self.assertEqual(documents[1].metadata["category"], "backend")
 
 
 if __name__ == "__main__":

@@ -16,6 +16,24 @@ from .models import RawDocument
 
 RAW_SOURCE_DIR = Path(__file__).resolve().parent / "raw_sources"
 COMMON_COLLECTION_KEYS = ("documents", "items", "records", "data", "results")
+CORE_DOCUMENT_KEYS = {
+    "doc_id",
+    "id",
+    "source",
+    "origin",
+    "title",
+    "name",
+    "heading",
+    "text",
+    "content",
+    "body",
+    "description",
+    "summary",
+    "url",
+    "link",
+    "metadata",
+    "extra",
+}
 
 
 def _coerce_text(value: object) -> str:
@@ -49,6 +67,19 @@ def _enrich_metadata(metadata: object, source_path: str, source_format: str, rec
     return enriched
 
 
+def _collect_inline_metadata(item: dict, excluded_keys: set[str]) -> dict:
+    """保留记录里未被核心字段消费的原始列，便于后续回溯。"""
+
+    metadata: dict = {}
+    for key, value in item.items():
+        if key in excluded_keys:
+            continue
+        if value in (None, ""):
+            continue
+        metadata[key] = value
+    return metadata
+
+
 def _looks_like_collection_container(payload: dict) -> bool:
     """判断一个字典是否更像“集合容器”而不是单条文档。"""
 
@@ -69,6 +100,7 @@ def _build_document(
     source_path: str,
     source_format: str,
     record_index: int | None = None,
+    shared_metadata: object | None = None,
 ) -> RawDocument:
     """从单条原始记录构造统一的文档对象。"""
 
@@ -95,13 +127,37 @@ def _build_document(
     if not text:
         text = _coerce_text(item.get("url") or item.get("link")).strip()
 
+    # 先继承容器级公共元数据，再补当前记录自己的 metadata/extra 和其余字段。
+    merged_metadata: dict = {}
+    merged_metadata.update(_coerce_metadata(shared_metadata))
+    merged_metadata.update(_coerce_metadata(item.get("metadata")))
+    merged_metadata.update(_coerce_metadata(item.get("extra")))
+    merged_metadata.update(
+        _collect_inline_metadata(
+            item,
+            excluded_keys=CORE_DOCUMENT_KEYS,
+        )
+    )
+
     return RawDocument(
         doc_id=doc_id,
         source=source,
         title=title,
         text=text,
-        metadata=_enrich_metadata(item.get("metadata") or item.get("extra"), source_path, source_format, record_index),
+        metadata=_enrich_metadata(merged_metadata, source_path, source_format, record_index),
     )
+
+
+def _extract_shared_metadata(payload: object) -> dict:
+    """提取 JSON 容器的公共元数据，供其中每条记录继承。"""
+
+    if not isinstance(payload, dict):
+        return {}
+
+    shared_metadata = _collect_inline_metadata(payload, excluded_keys=set(COMMON_COLLECTION_KEYS) | CORE_DOCUMENT_KEYS)
+    shared_metadata.update(_coerce_metadata(payload.get("metadata")))
+    shared_metadata.update(_coerce_metadata(payload.get("extra")))
+    return shared_metadata
 
 
 def _extract_document_items(payload: object) -> List[dict]:
@@ -133,6 +189,7 @@ def _extract_document_items(payload: object) -> List[dict]:
 
 
 def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
+    shared_metadata: dict = {}
     if path.suffix.lower() == ".jsonl":
         documents: List[dict] = []
         for line in path.read_text(encoding="utf-8").splitlines():
@@ -143,6 +200,7 @@ def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
         payload: object = documents
     else:
         payload = json.loads(path.read_text(encoding="utf-8"))
+        shared_metadata = _extract_shared_metadata(payload)
     documents = _extract_document_items(payload)
     if not documents:
         raise ValueError(f"原始文档文件格式不支持: {path}")
@@ -150,16 +208,17 @@ def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
     result: List[RawDocument] = []
     for index, item in enumerate(documents, 1):
         result.append(
-                _build_document(
-                    item,
-                    f"{path.stem}_{index}",
-                    path.stem,
-                    f"未命名文档{index}",
-                    source_path=source_path,
-                    source_format=path.suffix.lower().lstrip("."),
-                    record_index=index,
-                )
+            _build_document(
+                item,
+                f"{path.stem}_{index}",
+                path.stem,
+                f"未命名文档{index}",
+                source_path=source_path,
+                source_format=path.suffix.lower().lstrip("."),
+                record_index=index,
+                shared_metadata=shared_metadata,
             )
+        )
     return result
 
 
@@ -177,16 +236,16 @@ def _load_tabular_documents(path: Path, source_path: str) -> List[RawDocument]:
     result: List[RawDocument] = []
     for index, row in enumerate(rows, 1):
         result.append(
-                _build_document(
-                    row,
-                    f"{path.stem}_{index}",
-                    path.stem,
-                    f"未命名文档{index}",
-                    source_path=source_path,
-                    source_format=path.suffix.lower().lstrip("."),
-                    record_index=index,
-                )
+            _build_document(
+                row,
+                f"{path.stem}_{index}",
+                path.stem,
+                f"未命名文档{index}",
+                source_path=source_path,
+                source_format=path.suffix.lower().lstrip("."),
+                record_index=index,
             )
+        )
     return result
 
 
