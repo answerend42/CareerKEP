@@ -88,6 +88,22 @@ class ExtractorTests(unittest.TestCase):
         self.assertTrue(any(mention.surface == "Linux/Shell" for mention in mentions if mention.entity_id == "linux"))
         self.assertTrue(any(mention.surface == "Web后端方向" for mention in mentions if mention.entity_id == "web_backend"))
 
+    def test_generated_alias_stems_survive_longer_mentions(self) -> None:
+        """词干型生成别名不应该被长实体完全吞掉。"""
+
+        document = RawDocument(
+            doc_id="generated_stem",
+            source="test",
+            title="词干别名示例",
+            text="我更想走机器学习方向，也在考虑数据工程方向。",
+            metadata={},
+        )
+
+        mentions = extract_mentions(document, self.catalog)
+
+        self.assertTrue(any(mention.entity_id == "machine_learning" and mention.surface == "机器学习" for mention in mentions))
+        self.assertTrue(any(mention.entity_id == "data_engineering" and mention.surface == "数据工程" for mention in mentions))
+
 
 if __name__ == "__main__":
     unittest.main()
