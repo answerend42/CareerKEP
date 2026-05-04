@@ -243,6 +243,16 @@ class BackendSmokeTest(unittest.TestCase):
             port = server.server_address[1]
 
             conn = HTTPConnection("127.0.0.1", port, timeout=5)
+            conn.request("GET", "/api/meta")
+            resp = conn.getresponse()
+            meta_body = resp.read().decode("utf-8")
+            self.assertEqual(resp.status, 200)
+            self.assertIn('"service": "career-kg-backend"', meta_body)
+            self.assertIn('"graph"', meta_body)
+            self.assertIn('"endpoints"', meta_body)
+            conn.close()
+
+            conn = HTTPConnection("127.0.0.1", port, timeout=5)
             conn.request("GET", "/health")
             resp = conn.getresponse()
             self.assertEqual(resp.status, 200)

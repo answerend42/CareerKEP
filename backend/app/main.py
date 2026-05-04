@@ -10,6 +10,8 @@ import sys
 from typing import Any
 
 from .api.recommend import recommend
+from .services.graph_loader import load_graph_summary
+from .services.input_normalizer import load_alias_map
 
 
 _MAX_REQUEST_BODY_BYTES = 1_048_576
@@ -61,6 +63,19 @@ class _RequestHandler(BaseHTTPRequestHandler):
         if self.path == "/health":
             self._send_json(200, {"status": "ok"})
             return
+        if self.path == "/api/meta":
+            # 元信息接口尽量只返回稳定的结构，方便前端启动时读取能力概览。
+            self._send_json(
+                200,
+                {
+                    "service": "career-kg-backend",
+                    "version": "0.1.0",
+                    "graph": load_graph_summary(),
+                    "aliases_count": len(load_alias_map()),
+                    "endpoints": ["/health", "/api/meta", "/api/recommend"],
+                },
+            )
+            return
         self._send_json(404, {"detail": "not found"})
 
     def do_POST(self) -> None:  # noqa: N802
@@ -94,7 +109,7 @@ def serve(host: str = "127.0.0.1", port: int = 8000) -> None:
 
     server = ThreadingHTTPServer((host, port), _RequestHandler)
     print(f"Career KG 后端已启动：http://{host}:{port}")
-    print("接口：GET /health, POST /api/recommend")
+    print("接口：GET /health, GET /api/meta, POST /api/recommend")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

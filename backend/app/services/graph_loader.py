@@ -68,6 +68,32 @@ class GraphData:
     def node(self, node_id: str) -> GraphNode:
         return self.nodes[node_id]
 
+    def summary(self) -> dict[str, Any]:
+        """返回适合接口层输出的图谱概览。"""
+
+        layer_counts: dict[str, int] = {}
+        for node in self.nodes.values():
+            layer_counts[node.layer] = layer_counts.get(node.layer, 0) + 1
+
+        relation_counts: dict[str, int] = {}
+        for edge in self.edges:
+            relation_counts[edge.relation] = relation_counts.get(edge.relation, 0) + 1
+
+        role_nodes = [
+            node.to_dict()
+            for node in self.nodes.values()
+            if node.layer == "role"
+        ]
+        role_nodes.sort(key=lambda item: item["label"])
+
+        return {
+            "node_count": len(self.nodes),
+            "edge_count": len(self.edges),
+            "layers": layer_counts,
+            "relations": relation_counts,
+            "role_nodes": role_nodes,
+        }
+
 
 def _base_dir() -> Path:
     return Path(__file__).resolve().parents[2]
@@ -143,3 +169,9 @@ def load_graph_data() -> GraphData:
     edges_payload = _load_json(edges_path)
     return _build_graph(nodes_payload, edges_payload)
 
+
+@lru_cache(maxsize=1)
+def load_graph_summary() -> dict[str, Any]:
+    """加载图谱概览，供 HTTP 元信息接口直接使用。"""
+
+    return load_graph_data().summary()

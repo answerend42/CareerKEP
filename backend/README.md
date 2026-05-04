@@ -8,7 +8,8 @@
 - 结构化输入归一：把前端或脚本传来的节点分值统一到 `node_id -> score`。
 - 图谱推理：按 DAG 拓扑序传播分值，支持 `supports / evidences / requires / prefers / inhibits`。
 - 推荐编排：输出正式推荐、near miss、桥接建议、目标岗位分析和传播快照。
-- 本地服务：提供 `GET /health` 和 `POST /api/recommend`。
+- 元信息接口：提供图谱概览，方便前端启动时读取节点层级和职业节点列表。
+- 本地服务：提供 `GET /health`、`GET /api/meta` 和 `POST /api/recommend`。
 
 ## 目录
 
@@ -57,7 +58,11 @@ python3 -m unittest discover -s backend/tests
 接口：
 
 - `GET /health`
+- `GET /api/meta`
 - `POST /api/recommend`
+
+`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计和所有 `role` 节点列表。
+
 - `POST /api/recommend` 需要带 `Content-Type: application/json`，否则返回 `415`
 - `POST /api/recommend` 的请求体上限是 `1 MiB`，超过后返回 `413`
 - `POST /api/recommend` 会把请求体解析错误返回 `400`，服务端内部异常返回 `500`
