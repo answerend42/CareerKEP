@@ -17,6 +17,7 @@
 - 对由标签词干生成的别名，允许在长实体内部继续命中，避免 `机器学习方向` 这类表达把基础实体吞掉。
 - 对过短的词干型别名，会在被更长实体完全包住时自动降噪，减少 `数据`、`前端`、`后端` 这类短词误判。
 - 导出 `documents.json`、`mentions.json`、`entities.json` 和 `summary.json`。
+- 额外导出 `entity_coverage.json`，用于查看未覆盖实体、单次命中实体和按层级的覆盖统计。
 - `entities.json` 会保留图谱目录里的全部实体，不会因为本轮没有命中就被丢掉。
 
 ## 运行方式
@@ -56,6 +57,7 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 - `documents.json`：采集到的原始文档快照，保留 `source_path`、`source_format`、`record_index` 以及原始记录中的额外元数据。
 - `mentions.json`：每条实体命中的抽取结果，包含 `span_start`、`span_end` 和 `context`。
 - `entities.json`：按实体汇总后的统计结果，完整保留图谱目录中的所有实体。
+- `entity_coverage.json`：实体覆盖报告，包含未覆盖实体、单次命中实体、按层级的统计以及命中数最高的实体。
 - `summary.json`：这次预处理的整体统计信息，包含文档数、来源文件数、命中数、图谱总实体数、覆盖实体数、未覆盖实体数和平均命中数。
 
 ## 原始数据格式

@@ -46,6 +46,7 @@ class ExtractorTests(unittest.TestCase):
             output_dir = Path(tmp_dir) / "output"
             result = run_pipeline(output_dir=output_dir)
             entities_payload = json.loads((output_dir / "entities.json").read_text(encoding="utf-8"))
+            coverage_payload = json.loads((output_dir / "entity_coverage.json").read_text(encoding="utf-8"))
             summary_payload = json.loads((output_dir / "summary.json").read_text(encoding="utf-8"))
 
         self.assertGreaterEqual(result["documents"], 1)
@@ -53,6 +54,8 @@ class ExtractorTests(unittest.TestCase):
         self.assertGreaterEqual(result["entities"], 1)
         self.assertIn("output_dir", result)
         self.assertEqual(len(entities_payload), len(self.catalog.entities))
+        self.assertEqual(coverage_payload["catalog_entities"], len(self.catalog.entities))
+        self.assertEqual(coverage_payload["uncovered_entities"], 0)
         self.assertEqual(summary_payload["catalog_entities"], len(self.catalog.entities))
         self.assertEqual(summary_payload["entities"], len(self.catalog.entities))
         self.assertGreaterEqual(summary_payload["covered_entities"], 1)
