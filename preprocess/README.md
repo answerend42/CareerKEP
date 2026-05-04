@@ -6,14 +6,19 @@
 
 - 读取仓库现有的 seed 节点和 alias 词典，构建与后端图谱一致的实体 catalog。
 - 从 `preprocess/raw_sources/` 递归加载原始文档快照，支持 `json`、`jsonl`、`csv`、`tsv`、`txt` 和 `md`。
+- 对 Markdown 文档自动识别首个标题作为文档标题，并从正文中剥离该标题，减少重复实体命中。
 - 对常见 JSON 容器结构做兼容，支持 `documents`、`items`、`records`、`results` 和 `data` 这类字段。
 - 为每条原始文档保留来源路径、来源格式和记录序号，方便后续回溯。
+- 对没有显式 `doc_id` 的记录，使用相对来源路径生成稳定的兜底编号，避免不同目录下同名文件撞 ID。
 - 保留 JSON 顶层容器的公共元数据，以及 CSV/JSON 记录里未被核心字段消费的额外列，避免采集信息丢失。
 - 对原始文本做实体抽取，保留每一次命中位置与上下文。
 - 对同一别名可能对应多个实体的情况做消歧，并把标题信号纳入判断。
 - 对空格、斜杠、下划线这类原始写法差异做规范化匹配，尽量抓到真实文本里的变体写法。
 - 对由标签词干生成的别名，允许在长实体内部继续命中，避免 `机器学习方向` 这类表达把基础实体吞掉。
+- 对过短的词干型别名，会在被更长实体完全包住时自动降噪，减少 `数据`、`前端`、`后端` 这类短词误判。
 - 导出 `documents.json`、`mentions.json`、`entities.json` 和 `summary.json`。
+- 额外导出 `entity_coverage.json`，用于查看未覆盖实体、单次命中实体和按层级的覆盖统计。
+- `entities.json` 会保留图谱目录里的全部实体，不会因为本轮没有命中就被丢掉。
 
 ## 运行方式
 
@@ -51,8 +56,9 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 
 - `documents.json`：采集到的原始文档快照，保留 `source_path`、`source_format`、`record_index` 以及原始记录中的额外元数据。
 - `mentions.json`：每条实体命中的抽取结果，包含 `span_start`、`span_end` 和 `context`。
-- `entities.json`：按实体汇总后的统计结果。
-- `summary.json`：这次预处理的整体统计信息，包含文档数、来源文件数、命中数、覆盖实体数和平均命中数。
+- `entities.json`：按实体汇总后的统计结果，完整保留图谱目录中的所有实体。
+- `entity_coverage.json`：实体覆盖报告，包含未覆盖实体、单次命中实体、按层级的统计以及命中数最高的实体。
+- `summary.json`：这次预处理的整体统计信息，包含文档数、来源文件数、命中数、图谱总实体数、覆盖实体数、未覆盖实体数和平均命中数。
 
 ## 原始数据格式
 

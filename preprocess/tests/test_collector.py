@@ -56,6 +56,41 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(documents[1].metadata["source_type"], "json")
         self.assertEqual(documents[1].metadata["category"], "backend")
 
+    def test_markdown_heading_is_used_as_title(self) -> None:
+        """Markdown 文档的首个标题应当被识别为标题，并从正文中剥离。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "note.md").write_text(
+                "# 前端方向候选人画像\n\n我熟悉前端项目，也会 Web 基础。",
+                encoding="utf-8",
+            )
+
+            documents = load_raw_documents(root)
+
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(documents[0].title, "前端方向候选人画像")
+        self.assertEqual(documents[0].text, "我熟悉前端项目，也会 Web 基础。")
+        self.assertEqual(documents[0].metadata["source_format"], "md")
+
+    def test_fallback_doc_id_uses_relative_source_path(self) -> None:
+        """同名文件放在不同目录时，兜底文档编号不应撞车。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            left = root / "left"
+            right = root / "right"
+            left.mkdir(parents=True, exist_ok=True)
+            right.mkdir(parents=True, exist_ok=True)
+
+            (left / "note.md").write_text("### 左侧文档\n后端工程能力。", encoding="utf-8")
+            (right / "note.md").write_text("### 右侧文档\n前端工程能力。", encoding="utf-8")
+
+            documents = load_raw_documents(root)
+
+        self.assertEqual([doc.doc_id for doc in documents], ["left_note", "right_note"])
+        self.assertEqual([doc.metadata["source_path"] for doc in documents], ["left/note.md", "right/note.md"])
+
 
 if __name__ == "__main__":
     unittest.main()

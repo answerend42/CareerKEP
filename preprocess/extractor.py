@@ -126,7 +126,7 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
 
     occupied_spans: List[Tuple[int, int]] = []
     seen_spans = set()
-    
+
     def _append_candidate_hits(candidate_pool: List[AliasCandidate], allow_nested_hits: bool) -> None:
         """按候选别名补充命中。
 
@@ -135,11 +135,12 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
         """
 
         for candidate in candidate_pool:
+            compact_candidate = compact_text(candidate.surface)
             matched_spans = _find_occurrences(candidate.surface, doc_text)
 
             # 对原文中的空格、下划线、斜杠等变体，补一次规范化搜索。
             # 这样可以覆盖真实采集数据里很常见的写法差异，但不会替换原始精确命中。
-            if compact_text(candidate.surface) != candidate.surface.strip().lower():
+            if compact_candidate != candidate.surface.strip().lower():
                 matched_spans.extend(_find_compact_occurrences(candidate.surface, doc_text))
 
             for start, end in matched_spans:
@@ -147,8 +148,14 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
                 if span_key in seen_spans:
                     continue
 
-                # 词干型生成别名允许在长别名内部继续命中，方便保留基础实体。
-                if not allow_nested_hits and any(start < used_end and end > used_start for used_start, used_end in occupied_spans):
+                overlaps_existing = any(start < used_end and end > used_start for used_start, used_end in occupied_spans)
+
+                # 词干型生成别名默认允许在长别名内部继续命中，方便保留基础实体。
+                # 但过短的词干（比如“后端”“前端”“数据”）很容易被更长短语吞掉后产生噪声，
+                # 所以这类命中只有在没有被更长实体包住时才保留。
+                if not allow_nested_hits and overlaps_existing:
+                    continue
+                if allow_nested_hits and len(compact_candidate) <= 2 and overlaps_existing:
                     continue
 
                 seen_spans.add(span_key)
@@ -156,7 +163,7 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
                 hits.append(
                     AliasHit(
                         alias=doc_text[start:end],
-                        compact_alias=compact_text(candidate.surface),
+                        compact_alias=compact_candidate,
                         matched_by=candidate.source,
                         start=start,
                         end=end,

@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+import tempfile
+from pathlib import Path
 import unittest
 
 from preprocess.catalog import load_entity_catalog
@@ -39,12 +42,24 @@ class ExtractorTests(unittest.TestCase):
     def test_pipeline_emits_summary(self) -> None:
         """流水线应该能直接产出结构化统计结果。"""
 
-        result = run_pipeline()
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            output_dir = Path(tmp_dir) / "output"
+            result = run_pipeline(output_dir=output_dir)
+            entities_payload = json.loads((output_dir / "entities.json").read_text(encoding="utf-8"))
+            coverage_payload = json.loads((output_dir / "entity_coverage.json").read_text(encoding="utf-8"))
+            summary_payload = json.loads((output_dir / "summary.json").read_text(encoding="utf-8"))
 
         self.assertGreaterEqual(result["documents"], 1)
         self.assertGreaterEqual(result["mentions"], 1)
         self.assertGreaterEqual(result["entities"], 1)
         self.assertIn("output_dir", result)
+        self.assertEqual(len(entities_payload), len(self.catalog.entities))
+        self.assertEqual(coverage_payload["catalog_entities"], len(self.catalog.entities))
+        self.assertEqual(coverage_payload["uncovered_entities"], 0)
+        self.assertEqual(summary_payload["catalog_entities"], len(self.catalog.entities))
+        self.assertEqual(summary_payload["entities"], len(self.catalog.entities))
+        self.assertGreaterEqual(summary_payload["covered_entities"], 1)
+        self.assertGreaterEqual(summary_payload["uncovered_entities"], 0)
 
     def test_title_guides_ambiguous_entity_resolution(self) -> None:
         """标题信息应能帮助同义别名在多个候选实体之间做消歧。"""
@@ -103,6 +118,23 @@ class ExtractorTests(unittest.TestCase):
 
         self.assertTrue(any(mention.entity_id == "machine_learning" and mention.surface == "机器学习" for mention in mentions))
         self.assertTrue(any(mention.entity_id == "data_engineering" and mention.surface == "数据工程" for mention in mentions))
+
+    def test_short_generated_aliases_do_not_overmatch_inside_longer_phrases(self) -> None:
+        """过短的词干型别名不应在更长短语里产生明显噪声。"""
+
+        document = RawDocument(
+            doc_id="short_generated_alias_noise",
+            source="test",
+            title="短词干降噪示例",
+            text="我做过数据库实践，也在补数据库表设计。",
+            metadata={},
+        )
+
+        mentions = extract_mentions(document, self.catalog)
+
+        self.assertTrue(any(mention.entity_id == "database_practice" for mention in mentions))
+        self.assertFalse(any(mention.entity_id == "data_engineer" for mention in mentions))
+        self.assertFalse(any(mention.entity_id == "data_engineering" and mention.surface == "数据" for mention in mentions))
 
 
 if __name__ == "__main__":
