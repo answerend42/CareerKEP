@@ -127,6 +127,16 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
     nl_evidence = parse_natural_language(request.text or "", alias_map) if request.text else {}
     evidence_map = merge_evidence_maps(structured_evidence, nl_evidence)
     result = infer(graph, evidence_map)
+    input_trace = {
+        "text": request.text,
+        "target_role": request.target_role,
+        "top_k": top_k,
+        # 这里把输入解析过程拆开返回，方便前端直接定位“为什么这个节点被命中”。
+        "structured_evidence": [item.to_dict() for item in request.evidence],
+        "structured_evidence_map": structured_evidence,
+        "parsed_natural_language_evidence": nl_evidence,
+        "merged_evidence": evidence_map,
+    }
 
     role_states = [state for state in result.states.values() if state.layer == "role"]
     role_states.sort(key=lambda item: item.score, reverse=True)
@@ -171,6 +181,7 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
         target_role_analysis["action_simulation"] = simulate_actions(evidence_map, boost_plan)
 
     return RecommendationResponse(
+        input_trace=input_trace,
         recommendations=recommendations[: top_k],
         near_miss_roles=near_miss_roles[: top_k],
         bridge_recommendations=bridge_recommendations[: top_k],

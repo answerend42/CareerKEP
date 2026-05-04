@@ -70,6 +70,9 @@ class BackendSmokeTest(unittest.TestCase):
 
         self.assertLessEqual(len(response["recommendations"]), 3)
         self.assertGreaterEqual(len(response["recommendations"]), 1)
+        self.assertIn("input_trace", response)
+        self.assertIn("merged_evidence", response["input_trace"])
+        self.assertIn("parsed_natural_language_evidence", response["input_trace"])
         self.assertIn("learning_path", response["target_role_analysis"])
         self.assertIn("action_simulation", response["target_role_analysis"])
         self.assertNotIn("", response["raw_evidence"])
@@ -112,6 +115,26 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("sql", response["raw_evidence"])
         self.assertNotIn("", response["raw_evidence"])
         self.assertGreaterEqual(len(response["recommendations"]), 1)
+
+    def test_recommend_exposes_input_trace_details(self) -> None:
+        # 这里验证输入轨迹是否把结构化证据、自然语言解析和最终合并结果都返回了。
+        response = recommend(
+            {
+                "text": "我会 Python，也做过前端项目",
+                "evidence": [
+                    {"node_id": "sql", "score": 0.7, "source": "form"},
+                ],
+                "top_k": 2,
+            }
+        ).to_dict()
+
+        trace = response["input_trace"]
+        self.assertEqual(trace["top_k"], 2)
+        self.assertEqual(trace["text"], "我会 Python，也做过前端项目")
+        self.assertIn({"node_id": "sql", "score": 0.7, "source": "form", "raw_text": None}, trace["structured_evidence"])
+        self.assertIn("python", trace["parsed_natural_language_evidence"])
+        self.assertIn("sql", trace["merged_evidence"])
+        self.assertGreaterEqual(trace["merged_evidence"]["sql"], trace["structured_evidence_map"]["sql"])
 
     def test_read_json_argument_requires_object_payload(self) -> None:
         with self.assertRaises(TypeError):

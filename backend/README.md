@@ -81,12 +81,15 @@ python3 -m unittest discover -s backend/tests
 
 返回中包含：
 
+- `input_trace`
 - `recommendations`
 - `near_miss_roles`
 - `bridge_recommendations`
 - `target_role_analysis`
 - `propagation_snapshot`
 - `graph_snapshot`
+
+`input_trace` 会拆开返回原始文本、结构化证据、自然语言解析结果、合并后的证据映射，便于前端调试“为什么这个岗位被推荐出来”。
 
 ## 设计说明
 
