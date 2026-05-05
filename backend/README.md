@@ -72,11 +72,12 @@ python3 -m unittest discover -s backend/tests
 ```json
 {
   "text": "我会 Python、SQL，做过前端项目，也比较擅长沟通",
-  "target_role": "backend_engineer",
+  "target_role": "后端开发工程师",
   "top_k": 5
 }
 ```
 
+`target_role` 支持 `node_id`、中文标签和词典别名，后端会自动统一解析成图谱中的岗位节点。
 其中 `evidence` 支持 `node_id` / `id`、`score`、`source`、`raw_text` 这几类字段，其他附加字段会被忽略；`evidence` 也可以是单个对象或列表，列表里的无效项会被跳过，方便前端和脚本自由携带调试信息。
 
 返回中包含：
@@ -90,6 +91,7 @@ python3 -m unittest discover -s backend/tests
 - `graph_snapshot`
 
 `input_trace` 会拆开返回原始文本、结构化证据、自然语言解析结果、合并后的证据映射，便于前端调试“为什么这个岗位被推荐出来”。
+`input_trace` 里会额外返回 `resolved_target_role`，方便前端确认目标岗位最终命中了图谱里的哪个节点。
 `target_role_analysis` 里会附带目标岗位路径、覆盖度、优势项和缺口项，方便前端直接做“我离目标岗位还差什么”的展示。
 `bridge_recommendations` 也会返回图路径，不再只是孤立节点名。
 

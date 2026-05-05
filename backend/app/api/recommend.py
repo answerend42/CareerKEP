@@ -31,6 +31,56 @@ def _coerce_top_k(value: Any, default: int = 5) -> int:
     return max(1, top_k)
 
 
+def _normalize_identifier(value: str) -> str:
+    """把输入字符串统一成便于匹配的形式。"""
+
+    return "".join(str(value).strip().casefold().split())
+
+
+def _resolve_target_role(graph: GraphData, alias_map: dict[str, list[str]], raw_target_role: str | None) -> str | None:
+    """把目标岗位输入统一解析成图谱中的 role 节点 ID。
+
+    这里同时支持三种输入方式：
+    - 直接传节点 ID
+    - 传中文/英文标签
+    - 传词典别名
+
+    这样前端既可以保留内部节点 ID，也可以直接让用户选中文岗位名。
+    """
+
+    if not raw_target_role:
+        return None
+
+    normalized_input = _normalize_identifier(raw_target_role)
+    if not normalized_input:
+        return None
+
+    # 优先匹配节点 ID，避免别名和标签误命中。
+    for node_id, node in graph.nodes.items():
+        if node.layer != "role":
+            continue
+        if _normalize_identifier(node_id) == normalized_input:
+            return node_id
+
+    # 再匹配节点标签。
+    for node_id, node in graph.nodes.items():
+        if node.layer != "role":
+            continue
+        if _normalize_identifier(node.label) == normalized_input:
+            return node_id
+
+    # 最后匹配别名词典。
+    for node_id, aliases in alias_map.items():
+        node = graph.nodes.get(node_id)
+        if node is None or node.layer != "role":
+            continue
+        for alias in aliases:
+            if _normalize_identifier(alias) == normalized_input:
+                return node_id
+
+    return None
+
+
 def _coerce_evidence_item(item: Any) -> EvidenceInput:
     """把单条证据对象归一成 `EvidenceInput`。
 
@@ -122,6 +172,7 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
 
     graph = _graph()
     alias_map = load_alias_map()
+    resolved_target_role = _resolve_target_role(graph, alias_map, request.target_role)
 
     structured_evidence = normalize_structured_input(request.evidence)
     nl_evidence = parse_natural_language(request.text or "", alias_map) if request.text else {}
@@ -130,6 +181,7 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
     input_trace = {
         "text": request.text,
         "target_role": request.target_role,
+        "resolved_target_role": resolved_target_role,
         "top_k": top_k,
         # 这里把输入解析过程拆开返回，方便前端直接定位“为什么这个节点被命中”。
         "structured_evidence": [item.to_dict() for item in request.evidence],
@@ -167,15 +219,17 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
                     reasons=["可作为成长桥接点"],
                     path=bridge["path"],
                 )
-            )
+    )
 
     target_role_analysis: dict[str, Any] = {}
-    if request.target_role and request.target_role in result.states:
-        target_role_analysis = analyze_role_gap(graph, result, request.target_role)
+    if resolved_target_role and resolved_target_role in result.states:
+        target_role_analysis = analyze_role_gap(graph, result, resolved_target_role)
+        target_role_analysis["matched_target_role"] = request.target_role
+        target_role_analysis["resolved_target_role"] = resolved_target_role
         target_role_analysis["learning_path"] = build_learning_path(target_role_analysis)
 
     # 这里顺手准备一次轻量模拟，方便前端后续扩展“如果补强某项会怎样”。
-    if request.target_role and request.target_role in result.states:
+    if resolved_target_role and resolved_target_role in result.states:
         gap_items = target_role_analysis.get("requirements", [])
         boost_plan = {item["node_id"]: min(0.2, max(0.05, item["gap"])) for item in gap_items[:3]}
         target_role_analysis["action_simulation"] = simulate_actions(evidence_map, boost_plan)

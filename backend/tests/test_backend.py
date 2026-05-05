@@ -63,7 +63,7 @@ class BackendSmokeTest(unittest.TestCase):
         response = recommend(
             {
                 "text": "我会 Python、SQL，做过前端项目，也比较擅长沟通",
-                "target_role": "backend_engineer",
+                "target_role": "后端开发工程师",
                 "top_k": 3,
             }
         ).to_dict()
@@ -78,6 +78,9 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("path", response["target_role_analysis"])
         self.assertIn("coverage_score", response["target_role_analysis"])
         self.assertIn("summary", response["target_role_analysis"])
+        self.assertEqual(response["input_trace"]["resolved_target_role"], "backend_engineer")
+        self.assertEqual(response["target_role_analysis"]["resolved_target_role"], "backend_engineer")
+        self.assertEqual(response["target_role_analysis"]["matched_target_role"], "后端开发工程师")
         self.assertNotIn("", response["raw_evidence"])
 
     def test_recommend_accepts_extra_evidence_fields(self) -> None:
@@ -153,6 +156,20 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("path", first_bridge)
         self.assertTrue(first_bridge["path"])
         self.assertIsInstance(first_bridge["path"], list)
+
+    def test_recommend_resolves_target_role_by_label(self) -> None:
+        # 目标岗位输入不应只认节点 ID，中文标签也要能直接命中。
+        response = recommend(
+            {
+                "text": "我会 Python、SQL",
+                "target_role": "后端开发工程师",
+                "top_k": 2,
+            }
+        ).to_dict()
+
+        trace = response["input_trace"]
+        self.assertEqual(trace["resolved_target_role"], "backend_engineer")
+        self.assertEqual(response["target_role_analysis"]["role_id"], "backend_engineer")
 
     def test_read_json_argument_requires_object_payload(self) -> None:
         with self.assertRaises(TypeError):

@@ -204,7 +204,7 @@ def main() -> int:
     payload_group = recommend_parser.add_mutually_exclusive_group()
     payload_group.add_argument("--payload-json", default=None, help="JSON 字符串")
     payload_group.add_argument("--payload-file", default=None, help="JSON 文件路径")
-    recommend_parser.add_argument("--target-role", default=None, help="目标岗位节点 ID")
+    recommend_parser.add_argument("--target-role", default=None, help="目标岗位节点 ID / 中文标签 / 别名")
     recommend_parser.add_argument("--top-k", type=int, default=5, help="返回条目数量")
 
     args = parser.parse_args()
