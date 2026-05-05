@@ -55,29 +55,64 @@ def _resolve_target_role(graph: GraphData, alias_map: dict[str, list[str]], raw_
     if not normalized_input:
         return None
 
-    # 优先匹配节点 ID，避免别名和标签误命中。
+    generic_terms = {
+        "工程师",
+        "开发",
+        "岗位",
+        "方向",
+        "职业",
+        "技术",
+        "能力",
+    }
+    if normalized_input in generic_terms:
+        return None
+
+    exact_matches: list[tuple[str, str]] = []
+    partial_matches: list[tuple[int, str, str]] = []
+
+    def _consider(node_id: str, candidate: str, exact_score: str) -> None:
+        candidate_norm = _normalize_identifier(candidate)
+        if not candidate_norm:
+            return
+        if candidate_norm == normalized_input:
+            exact_matches.append((exact_score, node_id))
+            return
+        if normalized_input in candidate_norm or candidate_norm in normalized_input:
+            # 用长度差粗略区分“更像”的候选，短输入优先匹配更短的唯一目标。
+            distance = abs(len(candidate_norm) - len(normalized_input))
+            partial_matches.append((distance, candidate_norm, node_id))
+
+    # 优先匹配节点 ID 和标签，避免别名误命中。
     for node_id, node in graph.nodes.items():
         if node.layer != "role":
             continue
-        if _normalize_identifier(node_id) == normalized_input:
-            return node_id
+        _consider(node_id, node_id, "id")
+        _consider(node_id, node.label, "label")
 
-    # 再匹配节点标签。
-    for node_id, node in graph.nodes.items():
-        if node.layer != "role":
-            continue
-        if _normalize_identifier(node.label) == normalized_input:
-            return node_id
-
-    # 最后匹配别名词典。
+    # 再匹配别名词典。
     for node_id, aliases in alias_map.items():
         node = graph.nodes.get(node_id)
         if node is None or node.layer != "role":
             continue
         for alias in aliases:
-            if _normalize_identifier(alias) == normalized_input:
-                return node_id
+            _consider(node_id, alias, "alias")
 
+    if exact_matches:
+        # exact 匹配可能同时命中别名和标签，但都指向同一个节点时是安全的。
+        matched_nodes = {node_id for _, node_id in exact_matches}
+        if len(matched_nodes) == 1:
+            return matched_nodes.pop()
+        return None
+
+    if not partial_matches:
+        return None
+
+    partial_matches.sort(key=lambda item: (item[0], item[1], item[2]))
+    best_distance = partial_matches[0][0]
+    best_candidates = [item for item in partial_matches if item[0] == best_distance]
+    matched_nodes = {node_id for _, _, node_id in best_candidates}
+    if len(matched_nodes) == 1:
+        return matched_nodes.pop()
     return None
 
 

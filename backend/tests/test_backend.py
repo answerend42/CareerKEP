@@ -171,6 +171,33 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertEqual(trace["resolved_target_role"], "backend_engineer")
         self.assertEqual(response["target_role_analysis"]["role_id"], "backend_engineer")
 
+    def test_recommend_resolves_target_role_by_partial_label(self) -> None:
+        # 短一些的中文岗位关键词也应该能稳定命中唯一的目标角色。
+        response = recommend(
+            {
+                "text": "我会 Python、SQL",
+                "target_role": "后端",
+                "top_k": 2,
+            }
+        ).to_dict()
+
+        trace = response["input_trace"]
+        self.assertEqual(trace["resolved_target_role"], "backend_engineer")
+        self.assertEqual(response["target_role_analysis"]["role_id"], "backend_engineer")
+
+    def test_recommend_leaves_ambiguous_target_role_unresolved(self) -> None:
+        # 如果输入过于宽泛，后端不应胡乱猜一个岗位。
+        response = recommend(
+            {
+                "text": "我会 Python、SQL",
+                "target_role": "工程师",
+                "top_k": 2,
+            }
+        ).to_dict()
+
+        self.assertIsNone(response["input_trace"]["resolved_target_role"])
+        self.assertEqual(response["target_role_analysis"], {})
+
     def test_read_json_argument_requires_object_payload(self) -> None:
         with self.assertRaises(TypeError):
             _read_json_argument("[1, 2, 3]")
@@ -307,6 +334,7 @@ class BackendSmokeTest(unittest.TestCase):
             self.assertEqual(resp.status, 200)
             self.assertIn('"service": "career-kg-backend"', meta_body)
             self.assertIn('"graph"', meta_body)
+            self.assertIn('"role_options"', meta_body)
             self.assertIn('"endpoints"', meta_body)
             conn.close()
 

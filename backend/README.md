@@ -61,7 +61,7 @@ python3 -m unittest discover -s backend/tests
 - `GET /api/meta`
 - `POST /api/recommend`
 
-`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计和所有 `role` 节点列表。
+`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计、所有 `role` 节点列表，以及可直接用于前端搜索下拉的 `role_options`。
 
 - `POST /api/recommend` 需要带 `Content-Type: application/json`，否则返回 `415`
 - `POST /api/recommend` 的请求体上限是 `1 MiB`，超过后返回 `413`
@@ -94,6 +94,8 @@ python3 -m unittest discover -s backend/tests
 `input_trace` 里会额外返回 `resolved_target_role`，方便前端确认目标岗位最终命中了图谱里的哪个节点。
 `target_role_analysis` 里会附带目标岗位路径、覆盖度、优势项和缺口项，方便前端直接做“我离目标岗位还差什么”的展示。
 `bridge_recommendations` 也会返回图路径，不再只是孤立节点名。
+
+`role_options` 里的每一项都包含 `node_id`、`label` 和 `search_terms`，前端可以直接拿来做岗位选择器，不需要再自己处理空格或大小写归一化。
 
 ## 设计说明
 
