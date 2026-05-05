@@ -75,6 +75,9 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("parsed_natural_language_evidence", response["input_trace"])
         self.assertIn("learning_path", response["target_role_analysis"])
         self.assertIn("action_simulation", response["target_role_analysis"])
+        self.assertIn("path", response["target_role_analysis"])
+        self.assertIn("coverage_score", response["target_role_analysis"])
+        self.assertIn("summary", response["target_role_analysis"])
         self.assertNotIn("", response["raw_evidence"])
 
     def test_recommend_accepts_extra_evidence_fields(self) -> None:
@@ -135,6 +138,21 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("python", trace["parsed_natural_language_evidence"])
         self.assertIn("sql", trace["merged_evidence"])
         self.assertGreaterEqual(trace["merged_evidence"]["sql"], trace["structured_evidence_map"]["sql"])
+
+    def test_recommend_exposes_bridge_paths(self) -> None:
+        # 桥接推荐不应只是单个节点名，至少要给出可回溯的图路径。
+        response = recommend(
+            {
+                "text": "沟通能力不错",
+                "top_k": 3,
+            }
+        ).to_dict()
+
+        self.assertGreaterEqual(len(response["bridge_recommendations"]), 1)
+        first_bridge = response["bridge_recommendations"][0]
+        self.assertIn("path", first_bridge)
+        self.assertTrue(first_bridge["path"])
+        self.assertIsInstance(first_bridge["path"], list)
 
     def test_read_json_argument_requires_object_payload(self) -> None:
         with self.assertRaises(TypeError):
