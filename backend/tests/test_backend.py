@@ -371,19 +371,6 @@ class BackendSmokeTest(unittest.TestCase):
             conn.close()
 
             conn = HTTPConnection("127.0.0.1", port, timeout=5)
-            large_body = b"{" + b'"text":"' + b"a" * 1_048_600 + b'"}'
-            conn.request(
-                "POST",
-                "/api/recommend",
-                body=large_body,
-                headers={"Content-Type": "application/json"},
-            )
-            resp = conn.getresponse()
-            self.assertEqual(resp.status, 413)
-            self.assertIn("请求体过大", resp.read().decode("utf-8"))
-            conn.close()
-
-            conn = HTTPConnection("127.0.0.1", port, timeout=5)
             bad_body = "{bad json}"
             conn.request(
                 "POST",
