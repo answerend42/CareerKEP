@@ -114,6 +114,97 @@ class GraphLoaderTest(unittest.TestCase):
 
         self.assertIn("边引用了不存在的节点", str(context.exception))
 
+    def test_build_graph_accepts_numeric_boundaries(self) -> None:
+        nodes = [
+            {
+                "id": "python",
+                "label": "Python",
+                "layer": "evidence",
+                "aggregator": "source",
+                "cap": 0,
+                "required_threshold": 0.0,
+                "required_floor": 1.0,
+                "penalty_floor": "1.0",
+                "min_support_count": "0",
+            },
+            {
+                "id": "programming",
+                "label": "编程基础",
+                "layer": "ability",
+                "cap": 1,
+                "min_support_count": 2,
+            },
+        ]
+        edges = [
+            {"source": "python", "target": "programming", "relation": "supports", "weight": "1.0"},
+        ]
+
+        graph = _build_graph(nodes, edges)
+
+        self.assertEqual(graph.node("python").cap, 0.0)
+        self.assertEqual(graph.node("programming").min_support_count, 2)
+        self.assertEqual(graph.edges[0].weight, 1.0)
+
+    def test_build_graph_rejects_non_finite_numeric_values(self) -> None:
+        nodes = [
+            {
+                "id": "python",
+                "label": "Python",
+                "layer": "evidence",
+                "aggregator": "source",
+                "cap": "nan",
+            },
+            {
+                "id": "programming",
+                "label": "编程基础",
+                "layer": "ability",
+                "required_threshold": float("inf"),
+            },
+        ]
+        edges = [
+            {"source": "python", "target": "programming", "relation": "supports", "weight": "-inf"},
+        ]
+
+        with self.assertRaises(GraphValidationError) as context:
+            _build_graph(nodes, edges)
+
+        message = str(context.exception)
+        self.assertIn("nodes[0].cap: 必须是有限数", message)
+        self.assertIn("nodes[1].required_threshold: 必须是有限数", message)
+        self.assertIn("edges[0].weight: 必须是有限数", message)
+
+    def test_build_graph_rejects_out_of_range_numeric_values(self) -> None:
+        nodes = [
+            {
+                "id": "python",
+                "label": "Python",
+                "layer": "evidence",
+                "aggregator": "source",
+                "cap": 1.1,
+                "required_floor": -0.1,
+                "penalty_floor": True,
+            },
+            {
+                "id": "programming",
+                "label": "编程基础",
+                "layer": "ability",
+                "min_support_count": -1,
+            },
+        ]
+        edges = [
+            {"source": "python", "target": "programming", "relation": "supports", "weight": 1.2},
+        ]
+
+        with self.assertRaises(GraphValidationError) as context:
+            _build_graph(nodes, edges)
+
+        message = str(context.exception)
+        self.assertIn("nodes[0].cap: 必须位于 0..1", message)
+        self.assertIn("nodes[0].required_floor: 必须位于 0..1", message)
+        self.assertIn("nodes[0].penalty_floor: 必须是有限数", message)
+        self.assertIn("nodes[1].min_support_count: 必须是非负整数", message)
+        self.assertIn("edges[0].weight: 必须位于 0..1", message)
+
 
 if __name__ == "__main__":
     unittest.main()

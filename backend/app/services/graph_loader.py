@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from functools import lru_cache
+import math
 from pathlib import Path
 import json
 import re
@@ -13,6 +14,13 @@ from typing import Any
 VALID_LAYERS = frozenset({"evidence", "ability", "composite", "direction", "role"})
 VALID_RELATIONS = frozenset({"supports", "evidences", "requires", "prefers", "inhibits"})
 VALID_AGGREGATORS = frozenset({"source", "weighted_sum_capped", "max_pool", "soft_and", "penalty_gate", "hard_gate"})
+SCORE_FIELD_RANGES = {
+    "cap": (0.0, 1.0),
+    "required_threshold": (0.0, 1.0),
+    "required_floor": (0.0, 1.0),
+    "penalty_floor": (0.0, 1.0),
+}
+EDGE_WEIGHT_RANGE = (0.0, 1.0)
 _NODE_ID_PATTERN = re.compile(r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$")
 
 
@@ -122,6 +130,42 @@ def _require_mapping(item: Any, location: str, errors: list[str]) -> dict[str, A
     return item
 
 
+def _coerce_finite_float(value: Any, location: str, errors: list[str]) -> float | None:
+    if isinstance(value, bool):
+        errors.append(f"{location}: 必须是有限数")
+        return None
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        errors.append(f"{location}: 必须是有限数")
+        return None
+    if not math.isfinite(number):
+        errors.append(f"{location}: 必须是有限数")
+        return None
+    return number
+
+
+def _validate_float_range(value: Any, location: str, min_value: float, max_value: float, errors: list[str]) -> None:
+    number = _coerce_finite_float(value, location, errors)
+    if number is None:
+        return
+    if number < min_value or number > max_value:
+        errors.append(f"{location}: 必须位于 {min_value:g}..{max_value:g}")
+
+
+def _validate_non_negative_int(value: Any, location: str, errors: list[str]) -> None:
+    if isinstance(value, bool):
+        errors.append(f"{location}: 必须是非负整数")
+        return
+    try:
+        number = int(value)
+    except (TypeError, ValueError):
+        errors.append(f"{location}: 必须是非负整数")
+        return
+    if number < 0 or str(value).strip() not in {str(number), f"{number}.0"}:
+        errors.append(f"{location}: 必须是非负整数")
+
+
 def _validate_node_payloads(nodes_payload: list[dict[str, Any]]) -> list[str]:
     errors: list[str] = []
     seen_ids: set[str] = set()
@@ -154,6 +198,12 @@ def _validate_node_payloads(nodes_payload: list[dict[str, Any]]) -> list[str]:
         if aggregator == "source" and item.get("layer") != "evidence":
             errors.append(f"{location}.aggregator: source 聚合器只能用于 evidence 节点")
 
+        for field_name, (min_value, max_value) in SCORE_FIELD_RANGES.items():
+            if field_name in item:
+                _validate_float_range(item[field_name], f"{location}.{field_name}", min_value, max_value, errors)
+        if "min_support_count" in item:
+            _validate_non_negative_int(item["min_support_count"], f"{location}.min_support_count", errors)
+
     return errors
 
 
@@ -176,6 +226,9 @@ def _validate_edge_payloads(edges_payload: list[dict[str, Any]]) -> list[str]:
             errors.append(f"{location}.relation: 必须填写")
         elif str(relation) not in VALID_RELATIONS:
             errors.append(f"{location}.relation: 未知关系 {relation!r}")
+
+        if "weight" in item:
+            _validate_float_range(item["weight"], f"{location}.weight", *EDGE_WEIGHT_RANGE, errors)
 
     return errors
 
