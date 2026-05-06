@@ -26,6 +26,32 @@ backend/
   pyproject.toml
 ```
 
+## 图谱数据契约
+
+后端把 `backend/data/seeds/` 和 `backend/data/dictionaries/` 视为已编译的运行时图谱边界。这里的 `nodes.json`、`edges.json` 和 `aliases.json` 不是临时演示文件；它们是推荐链路启动前必须满足的输入契约。
+
+运行时图谱节点需要满足这些基本规则：
+
+- `id` 必须唯一、非空，并使用小写 `snake_case`。
+- `layer` 只允许 `evidence`、`ability`、`composite`、`direction`、`role`。
+- `aggregator` 只允许 `source`、`weighted_sum_capped`、`max_pool`、`soft_and`、`penalty_gate`、`hard_gate`。
+- 除非代码中有明确例外，`source` 聚合器只用于 `evidence` 节点。
+- 节点分数字段 `cap`、`required_threshold`、`required_floor`、`penalty_floor` 必须是有限数，并位于 `0..1`。
+- `min_support_count` 必须是非负整数。
+
+运行时图谱边需要满足这些基本规则：
+
+- `source` 和 `target` 必须指向已有节点。
+- `relation` 只允许 `supports`、`evidences`、`requires`、`prefers`、`inhibits`。
+- `weight` 必须是有限数，并位于 `0..1`。
+- 图谱必须是 DAG，并保持从 `evidence` 到 `role` 的正向层级流动；允许跳层时必须由后端校验规则显式定义。
+
+别名词典需要满足这些基本规则：
+
+- `aliases.json` 的每个 key 必须指向已有节点。
+- alias 在归一化后不应在无关节点之间静默冲突。
+- 目标岗位解析、自然语言解析和本地图谱诊断应复用一致的 alias 归一化语义。
+
 ## 启动方式
 
 ### 1. 直接跑一次推荐
