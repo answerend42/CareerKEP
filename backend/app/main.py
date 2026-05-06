@@ -11,6 +11,7 @@ from typing import Any
 
 from .api.recommend import recommend
 from .services.graph_loader import GraphValidationError, build_graph_diagnostics, load_graph_data, load_graph_summary
+from .services.graph_quality import validate_graph_quality
 from .services.input_normalizer import load_alias_map, validate_alias_map
 
 
@@ -232,7 +233,8 @@ def _run_validate_graph_command() -> int:
         graph = load_graph_data()
         alias_map = load_alias_map()
         alias_warnings = validate_alias_map(graph, alias_map)
-        diagnostics = build_graph_diagnostics(graph, alias_map, alias_warnings)
+        quality_warnings = validate_graph_quality(graph)
+        diagnostics = build_graph_diagnostics(graph, alias_map, alias_warnings + quality_warnings)
         print(json.dumps(diagnostics, ensure_ascii=False, indent=2))
         return 0
     except GraphValidationError as exc:
