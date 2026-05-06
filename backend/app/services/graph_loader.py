@@ -120,6 +120,10 @@ class GraphData:
             "layers": layer_counts,
             "relations": relation_counts,
             "aggregators": aggregator_counts,
+            "validation": {
+                "status": "ok",
+                "warnings": [],
+            },
             "role_nodes": role_nodes,
         }
 

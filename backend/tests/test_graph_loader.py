@@ -67,6 +67,17 @@ class GraphLoaderTest(unittest.TestCase):
                 "evidences": 1,
             },
         )
+        self.assertEqual(
+            summary["aggregators"],
+            {
+                "source": 14,
+                "weighted_sum_capped": 8,
+                "soft_and": 4,
+                "penalty_gate": 4,
+                "hard_gate": 4,
+            },
+        )
+        self.assertEqual(summary["validation"], {"status": "ok", "warnings": []})
 
     def test_real_alias_map_matches_seed_graph(self) -> None:
         graph = load_graph_data()

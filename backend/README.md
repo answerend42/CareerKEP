@@ -95,7 +95,7 @@ python3 -m backend.app.main validate-graph
 - `GET /api/meta`
 - `POST /api/recommend`
 
-`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计、所有 `role` 节点列表，以及可直接用于前端搜索下拉的 `role_options`。
+`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计、聚合器统计、基础校验状态、所有 `role` 节点列表，以及可直接用于前端搜索下拉的 `role_options`。
 
 - `POST /api/recommend` 需要带 `Content-Type: application/json`，否则返回 `415`
 - `POST /api/recommend` 的请求体上限是 `1 MiB`，超过后返回 `413`

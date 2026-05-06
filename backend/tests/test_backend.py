@@ -335,6 +335,8 @@ class BackendSmokeTest(unittest.TestCase):
             self.assertEqual(resp.status, 200)
             self.assertIn('"service": "career-kg-backend"', meta_body)
             self.assertIn('"graph"', meta_body)
+            self.assertIn('"aggregators"', meta_body)
+            self.assertIn('"validation"', meta_body)
             self.assertIn('"role_options"', meta_body)
             self.assertIn('"endpoints"', meta_body)
             conn.close()
