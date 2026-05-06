@@ -1,0 +1,11 @@
+{
+  "entity_count": 17,
+  "evidence_count": 6,
+  "matched_edge_count": 20,
+  "source_files": {
+    "entities": "F:\\本科\\学习\\知识工程\\auto-evol-project\\projects\\CareerKEP\\data\\input\\sample_entities.json",
+    "evidence": "F:\\本科\\学习\\知识工程\\auto-evol-project\\projects\\CareerKEP\\data\\input\\sample_evidence.json",
+    "schema": "F:\\本科\\学习\\知识工程\\auto-evol-project\\projects\\CareerKEP\\data\\config\\relation_schema.json",
+    "rules": "F:\\本科\\学习\\知识工程\\auto-evol-project\\projects\\CareerKEP\\data\\config\\weight_rules.json"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "relations": [
+    {
+      "relation_type": "requires_skill",
+      "source_types": ["occupation"],
+      "target_types": ["skill"],
+      "base_weight": 1.0,
+      "description": "职业要求掌握的核心技能"
+    },
+    {
+      "relation_type": "preferred_skill",
+      "source_types": ["occupation"],
+      "target_types": ["skill"],
+      "base_weight": 0.7,
+      "description": "职业加分项或优先技能"
+    },
+    {
+      "relation_type": "uses_tool",
+      "source_types": ["occupation"],
+      "target_types": ["tool"],
+      "base_weight": 0.85,
+      "description": "职业工作中常用的工具或技术栈"
+    },
+    {
+      "relation_type": "requires_education",
+      "source_types": ["occupation"],
+      "target_types": ["education"],
+      "base_weight": 0.65,
+      "description": "职业常见学历要求"
+    },
+    {
+      "relation_type": "related_role",
+      "source_types": ["occupation"],
+      "target_types": ["occupation"],
+      "base_weight": 0.5,
+      "description": "相近或可迁移的岗位关系"
+    },
+    {
+      "relation_type": "needs_trait",
+      "source_types": ["occupation"],
+      "target_types": ["trait"],
+      "base_weight": 0.55,
+      "description": "职业偏好的能力或性格特征"
+    }
+  ]
+}
+

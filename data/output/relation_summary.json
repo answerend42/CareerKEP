@@ -1,0 +1,18 @@
+{
+  "edge_count": 20,
+  "relation_count": {
+    "needs_trait": 2,
+    "preferred_skill": 4,
+    "related_role": 1,
+    "requires_education": 1,
+    "requires_skill": 7,
+    "uses_tool": 5
+  },
+  "type_pair_count": {
+    "occupation->education": 1,
+    "occupation->occupation": 1,
+    "occupation->skill": 11,
+    "occupation->tool": 5,
+    "occupation->trait": 2
+  }
+}

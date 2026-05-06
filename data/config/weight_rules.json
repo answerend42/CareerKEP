@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "weight_rules": {
+    "evidence_bonus_per_extra_sentence": 0.08,
+    "max_evidence_bonus": 0.24,
+    "entity_confidence_floor": 0.5,
+    "entity_confidence_ceiling": 1.0,
+    "relation_confidence_multiplier": 0.5,
+    "weight_min": 0.1,
+    "weight_max": 1.2
+  }
+}
+
