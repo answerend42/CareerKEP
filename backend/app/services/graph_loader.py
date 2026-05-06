@@ -98,8 +98,10 @@ class GraphData:
         """返回适合接口层输出的图谱概览。"""
 
         layer_counts: dict[str, int] = {}
+        aggregator_counts: dict[str, int] = {}
         for node in self.nodes.values():
             layer_counts[node.layer] = layer_counts.get(node.layer, 0) + 1
+            aggregator_counts[node.aggregator] = aggregator_counts.get(node.aggregator, 0) + 1
 
         relation_counts: dict[str, int] = {}
         for edge in self.edges:
@@ -117,6 +119,7 @@ class GraphData:
             "edge_count": len(self.edges),
             "layers": layer_counts,
             "relations": relation_counts,
+            "aggregators": aggregator_counts,
             "role_nodes": role_nodes,
         }
 
@@ -357,3 +360,26 @@ def load_graph_summary() -> dict[str, Any]:
     """加载图谱概览，供 HTTP 元信息接口直接使用。"""
 
     return load_graph_data().summary()
+
+
+def build_graph_diagnostics(
+    graph: GraphData,
+    alias_map: dict[str, list[str]],
+    alias_warnings: list[str],
+) -> dict[str, Any]:
+    """构造本地图谱诊断信息。
+
+    诊断命令需要比线上元信息多一些本地检查细节，但仍复用同一份 summary，
+    避免 API 和 CLI 对图谱规模的理解分叉。
+    """
+
+    summary = graph.summary()
+    return {
+        **summary,
+        "alias_count": sum(len(aliases) for aliases in alias_map.values()),
+        "alias_node_count": len(alias_map),
+        "validation": {
+            "status": "ok",
+            "warnings": alias_warnings,
+        },
+    }

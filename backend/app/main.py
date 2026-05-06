@@ -10,8 +10,8 @@ import sys
 from typing import Any
 
 from .api.recommend import recommend
-from .services.graph_loader import load_graph_summary
-from .services.input_normalizer import load_alias_map
+from .services.graph_loader import GraphValidationError, build_graph_diagnostics, load_graph_data, load_graph_summary
+from .services.input_normalizer import load_alias_map, validate_alias_map
 
 
 _MAX_REQUEST_BODY_BYTES = 1_048_576
@@ -225,6 +225,24 @@ def _run_recommend_command(
         return 1
 
 
+def _run_validate_graph_command() -> int:
+    """校验本地运行时图谱产物并输出诊断 JSON。"""
+
+    try:
+        graph = load_graph_data()
+        alias_map = load_alias_map()
+        alias_warnings = validate_alias_map(graph, alias_map)
+        diagnostics = build_graph_diagnostics(graph, alias_map, alias_warnings)
+        print(json.dumps(diagnostics, ensure_ascii=False, indent=2))
+        return 0
+    except GraphValidationError as exc:
+        print(f"图谱校验失败: {exc}", file=sys.stderr)
+        return 2
+    except Exception as exc:  # noqa: BLE001
+        print(f"执行失败: {exc}", file=sys.stderr)
+        return 1
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Career KG 后端入口")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -241,11 +259,16 @@ def main() -> int:
     recommend_parser.add_argument("--target-role", default=None, help="目标岗位节点 ID / 中文标签 / 别名")
     recommend_parser.add_argument("--top-k", type=int, default=5, help="返回条目数量")
 
+    subparsers.add_parser("validate-graph", help="校验运行时图谱产物并输出本地诊断")
+
     args = parser.parse_args()
 
     if args.command == "serve":
         serve(args.host, args.port)
         return 0
+
+    if args.command == "validate-graph":
+        return _run_validate_graph_command()
 
     return _run_recommend_command(args.payload_json, args.payload_file, args.text, args.target_role, args.top_k)
 

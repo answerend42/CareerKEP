@@ -18,9 +18,10 @@ from http.server import ThreadingHTTPServer
 
 import backend.app.main as main_module
 from backend.app.main import _RequestHandler, _read_json_argument, _read_json_file_argument, _run_recommend_command
-from backend.app.main import _PayloadTooLargeError
+from backend.app.main import _PayloadTooLargeError, _run_validate_graph_command
 from backend.app.api.recommend import recommend
 from backend.app.schemas import EvidenceInput, clamp01
+from backend.app.services.graph_loader import GraphValidationError
 from backend.app.services.input_normalizer import normalize_structured_input
 
 
@@ -458,6 +459,34 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertEqual(stderr.getvalue(), "")
         self.assertIn("\"recommendations\"", stdout.getvalue())
+
+    def test_run_validate_graph_command_outputs_diagnostics(self) -> None:
+        stdout = StringIO()
+        stderr = StringIO()
+
+        with redirect_stdout(stdout), redirect_stderr(stderr):
+            exit_code = _run_validate_graph_command()
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(stderr.getvalue(), "")
+        body = stdout.getvalue()
+        self.assertIn('"node_count": 34', body)
+        self.assertIn('"edge_count": 56', body)
+        self.assertIn('"aggregators"', body)
+        self.assertIn('"alias_count"', body)
+        self.assertIn('"status": "ok"', body)
+
+    def test_run_validate_graph_command_returns_error_code_for_validation_error(self) -> None:
+        stdout = StringIO()
+        stderr = StringIO()
+
+        with patch("backend.app.main.load_graph_data", side_effect=GraphValidationError("bad graph")):
+            with redirect_stdout(stdout), redirect_stderr(stderr):
+                exit_code = _run_validate_graph_command()
+
+        self.assertEqual(exit_code, 2)
+        self.assertEqual(stdout.getvalue(), "")
+        self.assertIn("图谱校验失败", stderr.getvalue())
 
 
 if __name__ == "__main__":

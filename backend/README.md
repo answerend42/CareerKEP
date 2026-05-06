@@ -81,6 +81,14 @@ python3 -m unittest discover -s backend/tests
 
 这套自测里包含纯函数校验、HTTP handler 校验和一次真实的本地 HTTP 往返检查，主要用来保证入口层真的能跑通。
 
+### 4. 校验本地图谱产物
+
+```bash
+python3 -m backend.app.main validate-graph
+```
+
+这个命令会加载 `backend/data/seeds/` 和 `backend/data/dictionaries/` 下的运行时产物，输出节点数、边数、层级分布、关系分布、聚合器分布、alias 数量和校验 warning。校验通过返回 `0`，图谱契约错误返回 `2`。
+
 接口：
 
 - `GET /health`
