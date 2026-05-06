@@ -14,6 +14,13 @@ from typing import Any
 VALID_LAYERS = frozenset({"evidence", "ability", "composite", "direction", "role"})
 VALID_RELATIONS = frozenset({"supports", "evidences", "requires", "prefers", "inhibits"})
 VALID_AGGREGATORS = frozenset({"source", "weighted_sum_capped", "max_pool", "soft_and", "penalty_gate", "hard_gate"})
+LAYER_ORDER = {
+    "evidence": 0,
+    "ability": 1,
+    "composite": 2,
+    "direction": 3,
+    "role": 4,
+}
 SCORE_FIELD_RANGES = {
     "cap": (0.0, 1.0),
     "required_threshold": (0.0, 1.0),
@@ -248,6 +255,35 @@ def _validate_graph_payloads(nodes_payload: Any, edges_payload: Any) -> None:
         raise GraphValidationError("图谱校验失败:\n- " + "\n- ".join(errors))
 
 
+def _raise_validation_errors(errors: list[str]) -> None:
+    if errors:
+        raise GraphValidationError("图谱校验失败:\n- " + "\n- ".join(errors))
+
+
+def _validate_edge_topology(nodes: dict[str, GraphNode], edges: list[GraphEdge]) -> None:
+    errors: list[str] = []
+
+    for index, edge in enumerate(edges):
+        location = f"edges[{index}]"
+        source_node = nodes.get(edge.source)
+        target_node = nodes.get(edge.target)
+        if source_node is None or target_node is None:
+            errors.append(f"{location}: 边引用了不存在的节点 {edge.source!r} -> {edge.target!r}")
+            continue
+
+        source_order = LAYER_ORDER[source_node.layer]
+        target_order = LAYER_ORDER[target_node.layer]
+        # 允许跳层是为了保留 seed 中 evidence 直接影响 direction/role 的业务捷径；
+        # 但边必须严格向后流动，避免把推荐图谱变成难以解释的反馈网络。
+        if source_order >= target_order:
+            errors.append(
+                f"{location}: 层级方向必须向后流动，"
+                f"{edge.source}({source_node.layer}) -> {edge.target}({target_node.layer}) 不合法"
+            )
+
+    _raise_validation_errors(errors)
+
+
 def _build_graph(nodes_payload: list[dict[str, Any]], edges_payload: list[dict[str, Any]]) -> GraphData:
     _validate_graph_payloads(nodes_payload, edges_payload)
 
@@ -276,13 +312,13 @@ def _build_graph(nodes_payload: list[dict[str, Any]], edges_payload: list[dict[s
         for item in edges_payload
     ]
 
+    _validate_edge_topology(nodes, edges)
+
     incoming: dict[str, list[GraphEdge]] = {node_id: [] for node_id in nodes}
     outgoing: dict[str, list[GraphEdge]] = {node_id: [] for node_id in nodes}
     indegree: dict[str, int] = {node_id: 0 for node_id in nodes}
 
     for edge in edges:
-        if edge.source not in nodes or edge.target not in nodes:
-            raise GraphValidationError(f"图谱校验失败:\n- 边引用了不存在的节点: {edge}")
         incoming[edge.target].append(edge)
         outgoing[edge.source].append(edge)
         indegree[edge.target] += 1

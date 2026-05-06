@@ -114,6 +114,61 @@ class GraphLoaderTest(unittest.TestCase):
 
         self.assertIn("边引用了不存在的节点", str(context.exception))
 
+    def test_build_graph_allows_explicit_forward_layer_jump(self) -> None:
+        nodes = self._valid_nodes() + [
+            {"id": "backend_engineer", "label": "后端开发工程师", "layer": "role", "aggregator": "hard_gate"},
+        ]
+        edges = [
+            {"source": "python", "target": "backend_engineer", "relation": "supports", "weight": 0.4},
+        ]
+
+        graph = _build_graph(nodes, edges)
+
+        self.assertEqual(graph.edges[0].source, "python")
+        self.assertEqual(graph.edges[0].target, "backend_engineer")
+
+    def test_build_graph_rejects_backward_layer_edge(self) -> None:
+        nodes = self._valid_nodes()
+        edges = [
+            {"source": "programming", "target": "python", "relation": "supports"},
+        ]
+
+        with self.assertRaises(GraphValidationError) as context:
+            _build_graph(nodes, edges)
+
+        message = str(context.exception)
+        self.assertIn("edges[0]", message)
+        self.assertIn("层级方向必须向后流动", message)
+        self.assertIn("programming(ability) -> python(evidence)", message)
+
+    def test_build_graph_rejects_same_layer_edge(self) -> None:
+        nodes = self._valid_nodes() + [
+            {"id": "sql", "label": "SQL", "layer": "evidence", "aggregator": "source"},
+        ]
+        edges = [
+            {"source": "python", "target": "sql", "relation": "supports"},
+        ]
+
+        with self.assertRaises(GraphValidationError) as context:
+            _build_graph(nodes, edges)
+
+        self.assertIn("python(evidence) -> sql(evidence)", str(context.exception))
+
+    def test_build_graph_reports_cycle_as_graph_validation_error(self) -> None:
+        nodes = [
+            {"id": "first", "label": "第一层", "layer": "evidence", "aggregator": "source"},
+            {"id": "second", "label": "第二层", "layer": "ability"},
+        ]
+        edges = [
+            {"source": "first", "target": "second", "relation": "supports"},
+            {"source": "second", "target": "first", "relation": "supports"},
+        ]
+
+        with self.assertRaises(GraphValidationError) as context:
+            _build_graph(nodes, edges)
+
+        self.assertIn("层级方向必须向后流动", str(context.exception))
+
     def test_build_graph_accepts_numeric_boundaries(self) -> None:
         nodes = [
             {
