@@ -4,10 +4,21 @@ from __future__ import annotations
 
 import unittest
 
-from backend.app.services.graph_loader import load_graph_data, load_graph_summary
+from backend.app.services.graph_loader import GraphValidationError, _build_graph, load_graph_data, load_graph_summary
 
 
 class GraphLoaderTest(unittest.TestCase):
+    def _valid_nodes(self) -> list[dict[str, object]]:
+        return [
+            {"id": "python", "label": "Python", "layer": "evidence", "aggregator": "source"},
+            {"id": "programming", "label": "编程基础", "layer": "ability"},
+        ]
+
+    def _valid_edges(self) -> list[dict[str, object]]:
+        return [
+            {"source": "python", "target": "programming", "relation": "supports", "weight": 0.9},
+        ]
+
     def test_load_real_seed_graph_builds_topology(self) -> None:
         graph = load_graph_data()
 
@@ -44,6 +55,64 @@ class GraphLoaderTest(unittest.TestCase):
                 "evidences": 1,
             },
         )
+
+    def test_build_graph_rejects_duplicate_node_id(self) -> None:
+        nodes = self._valid_nodes() + [
+            {"id": "python", "label": "Python duplicate", "layer": "evidence", "aggregator": "source"},
+        ]
+
+        with self.assertRaises(GraphValidationError) as context:
+            _build_graph(nodes, self._valid_edges())
+
+        self.assertIn("nodes[2].id", str(context.exception))
+        self.assertIn("节点 ID 重复", str(context.exception))
+
+    def test_build_graph_reports_missing_required_fields_together(self) -> None:
+        nodes = [
+            {"id": "", "label": "空节点"},
+            {"id": "bad role", "label": "坏 ID", "layer": "role", "aggregator": "source"},
+        ]
+        edges = [
+            {"source": "", "target": "programming"},
+        ]
+
+        with self.assertRaises(GraphValidationError) as context:
+            _build_graph(nodes, edges)
+
+        message = str(context.exception)
+        self.assertIn("nodes[0].id: 必须填写", message)
+        self.assertIn("nodes[0].layer: 必须填写", message)
+        self.assertIn("nodes[1].id: 必须使用小写 snake_case", message)
+        self.assertIn("nodes[1].aggregator: source 聚合器只能用于 evidence 节点", message)
+        self.assertIn("edges[0].source: 必须填写", message)
+        self.assertIn("edges[0].relation: 必须填写", message)
+
+    def test_build_graph_rejects_unknown_layer_relation_and_aggregator(self) -> None:
+        nodes = [
+            {"id": "python", "label": "Python", "layer": "signal", "aggregator": "source"},
+            {"id": "programming", "label": "编程基础", "layer": "ability", "aggregator": "mystery"},
+        ]
+        edges = [
+            {"source": "python", "target": "programming", "relation": "boosts"},
+        ]
+
+        with self.assertRaises(GraphValidationError) as context:
+            _build_graph(nodes, edges)
+
+        message = str(context.exception)
+        self.assertIn("nodes[0].layer: 未知层级 'signal'", message)
+        self.assertIn("nodes[1].aggregator: 未知聚合器 'mystery'", message)
+        self.assertIn("edges[0].relation: 未知关系 'boosts'", message)
+
+    def test_build_graph_rejects_missing_edge_node_reference(self) -> None:
+        edges = [
+            {"source": "python", "target": "missing_node", "relation": "supports"},
+        ]
+
+        with self.assertRaises(GraphValidationError) as context:
+            _build_graph(self._valid_nodes(), edges)
+
+        self.assertIn("边引用了不存在的节点", str(context.exception))
 
 
 if __name__ == "__main__":

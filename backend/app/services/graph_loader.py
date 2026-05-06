@@ -6,7 +6,18 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
 import json
+import re
 from typing import Any
+
+
+VALID_LAYERS = frozenset({"evidence", "ability", "composite", "direction", "role"})
+VALID_RELATIONS = frozenset({"supports", "evidences", "requires", "prefers", "inhibits"})
+VALID_AGGREGATORS = frozenset({"source", "weighted_sum_capped", "max_pool", "soft_and", "penalty_gate", "hard_gate"})
+_NODE_ID_PATTERN = re.compile(r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$")
+
+
+class GraphValidationError(ValueError):
+    """运行时图谱产物不满足后端契约。"""
 
 
 @dataclass(slots=True)
@@ -104,7 +115,89 @@ def _load_json(path: Path) -> Any:
         return json.load(handle)
 
 
+def _require_mapping(item: Any, location: str, errors: list[str]) -> dict[str, Any]:
+    if not isinstance(item, dict):
+        errors.append(f"{location}: 必须是 JSON 对象")
+        return {}
+    return item
+
+
+def _validate_node_payloads(nodes_payload: list[dict[str, Any]]) -> list[str]:
+    errors: list[str] = []
+    seen_ids: set[str] = set()
+
+    for index, raw_item in enumerate(nodes_payload):
+        location = f"nodes[{index}]"
+        item = _require_mapping(raw_item, location, errors)
+        if not item:
+            continue
+
+        node_id = str(item.get("id") or "").strip()
+        if not node_id:
+            errors.append(f"{location}.id: 必须填写")
+        elif not _NODE_ID_PATTERN.fullmatch(node_id):
+            errors.append(f"{location}.id: 必须使用小写 snake_case，当前为 {node_id!r}")
+        elif node_id in seen_ids:
+            errors.append(f"{location}.id: 节点 ID 重复 {node_id!r}")
+        else:
+            seen_ids.add(node_id)
+
+        layer = item.get("layer")
+        if layer is None:
+            errors.append(f"{location}.layer: 必须填写")
+        elif str(layer) not in VALID_LAYERS:
+            errors.append(f"{location}.layer: 未知层级 {layer!r}")
+
+        aggregator = str(item.get("aggregator", "weighted_sum_capped"))
+        if aggregator not in VALID_AGGREGATORS:
+            errors.append(f"{location}.aggregator: 未知聚合器 {aggregator!r}")
+        if aggregator == "source" and item.get("layer") != "evidence":
+            errors.append(f"{location}.aggregator: source 聚合器只能用于 evidence 节点")
+
+    return errors
+
+
+def _validate_edge_payloads(edges_payload: list[dict[str, Any]]) -> list[str]:
+    errors: list[str] = []
+
+    for index, raw_item in enumerate(edges_payload):
+        location = f"edges[{index}]"
+        item = _require_mapping(raw_item, location, errors)
+        if not item:
+            continue
+
+        for field_name in ("source", "target"):
+            value = str(item.get(field_name) or "").strip()
+            if not value:
+                errors.append(f"{location}.{field_name}: 必须填写")
+
+        relation = item.get("relation")
+        if relation is None:
+            errors.append(f"{location}.relation: 必须填写")
+        elif str(relation) not in VALID_RELATIONS:
+            errors.append(f"{location}.relation: 未知关系 {relation!r}")
+
+    return errors
+
+
+def _validate_graph_payloads(nodes_payload: Any, edges_payload: Any) -> None:
+    errors: list[str] = []
+    if not isinstance(nodes_payload, list):
+        errors.append("nodes: 必须是 JSON 数组")
+    if not isinstance(edges_payload, list):
+        errors.append("edges: 必须是 JSON 数组")
+
+    if not errors:
+        errors.extend(_validate_node_payloads(nodes_payload))
+        errors.extend(_validate_edge_payloads(edges_payload))
+
+    if errors:
+        raise GraphValidationError("图谱校验失败:\n- " + "\n- ".join(errors))
+
+
 def _build_graph(nodes_payload: list[dict[str, Any]], edges_payload: list[dict[str, Any]]) -> GraphData:
+    _validate_graph_payloads(nodes_payload, edges_payload)
+
     nodes = {
         item["id"]: GraphNode(
             id=item["id"],
@@ -136,7 +229,7 @@ def _build_graph(nodes_payload: list[dict[str, Any]], edges_payload: list[dict[s
 
     for edge in edges:
         if edge.source not in nodes or edge.target not in nodes:
-            raise ValueError(f"边引用了不存在的节点: {edge}")
+            raise GraphValidationError(f"图谱校验失败:\n- 边引用了不存在的节点: {edge}")
         incoming[edge.target].append(edge)
         outgoing[edge.source].append(edge)
         indegree[edge.target] += 1
@@ -153,7 +246,7 @@ def _build_graph(nodes_payload: list[dict[str, Any]], edges_payload: list[dict[s
                 queue.append(edge.target)
 
     if len(topo_order) != len(nodes):
-        raise ValueError("图谱不是 DAG，无法进行拓扑推理")
+        raise GraphValidationError("图谱校验失败:\n- 图谱不是 DAG，无法进行拓扑推理")
 
     return GraphData(nodes=nodes, edges=edges, incoming=incoming, outgoing=outgoing, topo_order=topo_order)
 
