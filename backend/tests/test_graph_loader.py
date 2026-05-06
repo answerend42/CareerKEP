@@ -5,6 +5,7 @@ from __future__ import annotations
 import unittest
 
 from backend.app.services.graph_loader import GraphValidationError, _build_graph, load_graph_data, load_graph_summary
+from backend.app.services.input_normalizer import load_alias_map, normalize_alias_text, validate_alias_map
 
 
 class GraphLoaderTest(unittest.TestCase):
@@ -18,6 +19,17 @@ class GraphLoaderTest(unittest.TestCase):
         return [
             {"source": "python", "target": "programming", "relation": "supports", "weight": 0.9},
         ]
+
+    def _valid_role_graph(self):
+        nodes = self._valid_nodes() + [
+            {"id": "backend_engineer", "label": "后端开发工程师", "layer": "role", "aggregator": "hard_gate"},
+            {"id": "frontend_engineer", "label": "前端开发工程师", "layer": "role", "aggregator": "hard_gate"},
+        ]
+        edges = [
+            {"source": "python", "target": "backend_engineer", "relation": "supports", "weight": 0.7},
+            {"source": "programming", "target": "frontend_engineer", "relation": "supports", "weight": 0.7},
+        ]
+        return _build_graph(nodes, edges)
 
     def test_load_real_seed_graph_builds_topology(self) -> None:
         graph = load_graph_data()
@@ -55,6 +67,16 @@ class GraphLoaderTest(unittest.TestCase):
                 "evidences": 1,
             },
         )
+
+    def test_real_alias_map_matches_seed_graph(self) -> None:
+        graph = load_graph_data()
+        warnings = validate_alias_map(graph, load_alias_map())
+
+        self.assertEqual(warnings, [])
+
+    def test_normalize_alias_text_compacts_case_and_spaces(self) -> None:
+        self.assertEqual(normalize_alias_text(" Web 后端 "), "web后端")
+        self.assertEqual(normalize_alias_text("REST API"), "restapi")
 
     def test_build_graph_rejects_duplicate_node_id(self) -> None:
         nodes = self._valid_nodes() + [
@@ -259,6 +281,44 @@ class GraphLoaderTest(unittest.TestCase):
         self.assertIn("nodes[0].penalty_floor: 必须是有限数", message)
         self.assertIn("nodes[1].min_support_count: 必须是非负整数", message)
         self.assertIn("edges[0].weight: 必须位于 0..1", message)
+
+    def test_validate_alias_map_rejects_missing_node_reference(self) -> None:
+        graph = _build_graph(self._valid_nodes(), self._valid_edges())
+
+        with self.assertRaises(GraphValidationError) as context:
+            validate_alias_map(graph, {"missing_node": ["不存在"]})
+
+        self.assertIn("aliases['missing_node']: 指向不存在的节点", str(context.exception))
+
+    def test_validate_alias_map_rejects_role_alias_conflict_after_normalization(self) -> None:
+        graph = self._valid_role_graph()
+
+        with self.assertRaises(GraphValidationError) as context:
+            validate_alias_map(
+                graph,
+                {
+                    "backend_engineer": ["Web 后端"],
+                    "frontend_engineer": ["web后端"],
+                },
+            )
+
+        message = str(context.exception)
+        self.assertIn("role 别名冲突", message)
+        self.assertIn("backend_engineer", message)
+        self.assertIn("frontend_engineer", message)
+
+    def test_validate_alias_map_returns_warning_for_non_role_alias_conflict(self) -> None:
+        graph = _build_graph(self._valid_nodes(), self._valid_edges())
+
+        warnings = validate_alias_map(
+            graph,
+            {
+                "python": ["编程"],
+                "programming": [" 编 程 "],
+            },
+        )
+
+        self.assertEqual(warnings, ["alias '编程': 普通别名冲突，命中 programming, python"])
 
 
 if __name__ == "__main__":

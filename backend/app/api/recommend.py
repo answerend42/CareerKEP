@@ -10,7 +10,7 @@ from ..services.action_simulator import simulate_actions
 from ..services.explainer import build_explanation
 from ..services.graph_loader import GraphData, load_graph_data
 from ..services.inference_engine import infer
-from ..services.input_normalizer import load_alias_map, merge_evidence_maps, normalize_structured_input
+from ..services.input_normalizer import load_alias_map, merge_evidence_maps, normalize_alias_text, normalize_structured_input
 from ..services.learning_path_planner import build_learning_path
 from ..services.nl_parser import parse_natural_language
 from ..services.role_gap_analyzer import analyze_role_gap, suggest_bridge_nodes
@@ -34,7 +34,7 @@ def _coerce_top_k(value: Any, default: int = 5) -> int:
 def _normalize_identifier(value: str) -> str:
     """把输入字符串统一成便于匹配的形式。"""
 
-    return "".join(str(value).strip().casefold().split())
+    return normalize_alias_text(value)
 
 
 def _resolve_target_role(graph: GraphData, alias_map: dict[str, list[str]], raw_target_role: str | None) -> str | None:
