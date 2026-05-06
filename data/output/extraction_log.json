@@ -1,11 +1,30 @@
 {
   "entity_count": 17,
   "evidence_count": 6,
+  "relation_instance_count": 20,
   "matched_edge_count": 20,
   "source_files": {
     "entities": "F:\\本科\\学习\\知识工程\\auto-evol-project\\projects\\CareerKEP\\data\\input\\sample_entities.json",
     "evidence": "F:\\本科\\学习\\知识工程\\auto-evol-project\\projects\\CareerKEP\\data\\input\\sample_evidence.json",
     "schema": "F:\\本科\\学习\\知识工程\\auto-evol-project\\projects\\CareerKEP\\data\\config\\relation_schema.json",
     "rules": "F:\\本科\\学习\\知识工程\\auto-evol-project\\projects\\CareerKEP\\data\\config\\weight_rules.json"
+  },
+  "instance_summary": {
+    "relation_instance_count": 20,
+    "relation_instance_count_by_type": {
+      "needs_trait": 2,
+      "preferred_skill": 4,
+      "related_role": 1,
+      "requires_education": 1,
+      "requires_skill": 7,
+      "uses_tool": 5
+    },
+    "relation_instance_count_by_pair": {
+      "occupation->education": 1,
+      "occupation->occupation": 1,
+      "occupation->skill": 11,
+      "occupation->tool": 5,
+      "occupation->trait": 2
+    }
   }
 }
