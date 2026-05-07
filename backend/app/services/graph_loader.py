@@ -35,7 +35,7 @@ class GraphValidationError(ValueError):
     """运行时图谱产物不满足后端契约。"""
 
 
-@dataclass
+@dataclass(slots=True)
 class GraphNode:
     """运行时图谱节点。"""
 
@@ -63,7 +63,7 @@ class GraphNode:
         }
 
 
-@dataclass
+@dataclass(slots=True)
 class GraphEdge:
     """运行时图谱边。"""
 
@@ -81,7 +81,7 @@ class GraphEdge:
         }
 
 
-@dataclass
+@dataclass(slots=True)
 class GraphData:
     """完整图谱数据与邻接关系。"""
 

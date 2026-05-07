@@ -24,19 +24,11 @@ def _normalize_lookup_term(value: str) -> str:
     return "".join(str(value).strip().casefold().split())
 
 
-def _append_search_term(search_terms: list[str], value: str) -> None:
-    """把单个检索词归一化后追加到列表里，并自动去重。"""
-
-    normalized = _normalize_lookup_term(value)
-    if normalized and normalized not in search_terms:
-        search_terms.append(normalized)
-
-
-def _build_role_options(graph_summary: dict[str, Any], alias_map: dict[str, list[str]]) -> list[dict[str, Any]]:
+def _build_role_options(graph_summary: dict[str, Any]) -> list[dict[str, Any]]:
     """把角色节点整理成前端更容易直接使用的选项列表。
 
     这里额外附带 `search_terms`，方便前端做搜索下拉，不需要再自己处理
-    节点 ID、标签、别名里的空格或大小写问题。
+    节点 ID、标签里的空格或大小写问题。
     """
 
     role_options: list[dict[str, Any]] = []
@@ -44,10 +36,10 @@ def _build_role_options(graph_summary: dict[str, Any], alias_map: dict[str, list
         node_id = str(node.get("id") or "").strip()
         label = str(node.get("label") or node_id).strip()
         search_terms: list[str] = []
-        _append_search_term(search_terms, node_id)
-        _append_search_term(search_terms, label)
-        for alias in alias_map.get(node_id, []):
-            _append_search_term(search_terms, alias)
+        for term in (node_id, label):
+            normalized = _normalize_lookup_term(term)
+            if normalized and normalized not in search_terms:
+                search_terms.append(normalized)
         role_options.append(
             {
                 "node_id": node_id,
@@ -107,15 +99,14 @@ class _RequestHandler(BaseHTTPRequestHandler):
         if self.path == "/api/meta":
             # 元信息接口尽量只返回稳定的结构，方便前端启动时读取能力概览。
             graph_summary = load_graph_summary()
-            alias_map = load_alias_map()
             self._send_json(
                 200,
                 {
                     "service": "career-kg-backend",
                     "version": "0.1.0",
                     "graph": graph_summary,
-                    "role_options": _build_role_options(graph_summary, alias_map),
-                    "aliases_count": len(alias_map),
+                    "role_options": _build_role_options(graph_summary),
+                    "aliases_count": len(load_alias_map()),
                     "endpoints": ["/health", "/api/meta", "/api/recommend"],
                 },
             )

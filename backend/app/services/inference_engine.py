@@ -20,7 +20,7 @@ RELATION_FACTORS = {
 INHIBIT_FACTOR = 0.82
 
 
-@dataclass
+@dataclass(slots=True)
 class InferenceResult:
     """一次推理的完整结果。"""
 
@@ -190,3 +190,4 @@ def infer(graph: GraphData, evidence_map: dict[str, float]) -> InferenceResult:
         states[node_id] = state
 
     return InferenceResult(states=states, topo_order=list(graph.topo_order))
+
