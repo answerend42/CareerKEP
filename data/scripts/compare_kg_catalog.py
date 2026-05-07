@@ -6,15 +6,18 @@ from pathlib import Path
 from typing import Any
 
 
+ROOT = Path(__file__).resolve().parents[1]
+
+
 def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as fh:
         return json.load(fh)
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="比较两个 data_catalog.json 的差异")
-    parser.add_argument("--left", type=Path, required=True, help="左侧目录清单")
-    parser.add_argument("--right", type=Path, required=True, help="右侧目录清单")
+    parser = argparse.ArgumentParser(description="比较两个 data/output 目录的构建差异")
+    parser.add_argument("--left-dir", type=Path, required=True, help="左侧输出目录")
+    parser.add_argument("--right-dir", type=Path, required=True, help="右侧输出目录")
     parser.add_argument(
         "--report",
         type=Path,
@@ -24,20 +27,35 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def resolve_catalog_path(output_dir: Path) -> Path:
+    """从输出目录中定位目录清单文件。"""
+
+    catalog_path = output_dir / "data_catalog.json"
+    if not catalog_path.exists():
+        raise FileNotFoundError(f"目录中缺少 data_catalog.json: {output_dir}")
+    return catalog_path
+
+
 def normalize_catalog(catalog: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     """把目录清单按文件名索引，方便做差异比对。"""
 
-    return {item["file_name"]: item for item in catalog}
+    indexed: dict[str, dict[str, Any]] = {}
+    for item in catalog:
+        file_name = item.get("file_name")
+        if not file_name:
+            continue
+        indexed[str(file_name)] = item
+    return indexed
 
 
-def compare_catalogs(left: Path, right: Path) -> dict[str, Any]:
-    left_catalog = load_json(left)
-    right_catalog = load_json(right)
+def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
+    left_catalog = load_json(resolve_catalog_path(left_dir))
+    right_catalog = load_json(resolve_catalog_path(right_dir))
 
     if not isinstance(left_catalog, list):
-        raise ValueError("left 必须是列表格式的 data_catalog.json")
+        raise ValueError("左侧目录中的 data_catalog.json 必须是列表")
     if not isinstance(right_catalog, list):
-        raise ValueError("right 必须是列表格式的 data_catalog.json")
+        raise ValueError("右侧目录中的 data_catalog.json 必须是列表")
 
     left_map = normalize_catalog(left_catalog)
     right_map = normalize_catalog(right_catalog)
@@ -63,8 +81,10 @@ def compare_catalogs(left: Path, right: Path) -> dict[str, Any]:
             changed.append({"file_name": file_name, "diffs": diffs})
 
     return {
-        "left": str(left),
-        "right": str(right),
+        "left_dir": str(left_dir),
+        "right_dir": str(right_dir),
+        "left_catalog": str(resolve_catalog_path(left_dir)),
+        "right_catalog": str(resolve_catalog_path(right_dir)),
         "added": added,
         "removed": removed,
         "changed": changed,
@@ -79,7 +99,7 @@ def compare_catalogs(left: Path, right: Path) -> dict[str, Any]:
 
 def main() -> int:
     args = parse_args()
-    report = compare_catalogs(args.left, args.right)
+    report = compare_catalogs(args.left_dir, args.right_dir)
 
     if args.report is not None:
         args.report.parent.mkdir(parents=True, exist_ok=True)
