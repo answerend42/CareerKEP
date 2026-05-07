@@ -65,6 +65,12 @@ class ExtractorTests(unittest.TestCase):
         self.assertGreaterEqual(summary_payload["covered_entities"], 1)
         self.assertGreaterEqual(summary_payload["uncovered_entities"], 0)
         self.assertEqual(summary_payload["uncertain_mentions"], 3)
+        self.assertIn("error_source_files", summary_payload)
+        self.assertIn("loaded_with_errors_source_files", summary_payload)
+        self.assertIn("parse_error_count", summary_payload)
+        self.assertEqual(summary_payload["error_source_files"], 0)
+        self.assertEqual(summary_payload["loaded_with_errors_source_files"], 0)
+        self.assertEqual(summary_payload["parse_error_count"], 0)
 
     def test_title_guides_ambiguous_entity_resolution(self) -> None:
         """标题信息应能帮助同义别名在多个候选实体之间做消歧。"""

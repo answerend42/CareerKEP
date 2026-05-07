@@ -204,6 +204,8 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(manifest["scanned_files"], 1)
         self.assertEqual(manifest["loaded_files"], 1)
         self.assertEqual(manifest["error_files"], 1)
+        self.assertEqual(manifest["loaded_with_errors_files"], 1)
+        self.assertEqual(manifest["parse_error_count"], 1)
         self.assertEqual(manifest["files"][0]["status"], "loaded_with_errors")
         self.assertEqual(manifest["files"][0]["error_count"], 1)
         self.assertEqual(len(documents), 2)

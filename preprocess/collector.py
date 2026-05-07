@@ -432,6 +432,8 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
     loaded_by_format: dict[str, int] = {}
     skipped_by_format: dict[str, int] = {}
     error_by_format: dict[str, int] = {}
+    loaded_with_errors_by_format: dict[str, int] = {}
+    parse_error_count = 0
 
     for path in files:
         source_path = str(path.relative_to(directory))
@@ -449,9 +451,12 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
                     entry["record_count"] = len(_records)
                     entry["error_count"] = len(errors)
                     entry["errors"] = errors[:5]
+                    parse_error_count += len(errors)
                     error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
                 if _records:
                     loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
+                    if errors:
+                        loaded_with_errors_by_format[source_format] = loaded_with_errors_by_format.get(source_format, 0) + 1
             else:
                 loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
         else:
@@ -465,9 +470,12 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
         "loaded_files": sum(loaded_by_format.values()),
         "skipped_files": sum(skipped_by_format.values()),
         "error_files": sum(error_by_format.values()),
+        "loaded_with_errors_files": sum(loaded_with_errors_by_format.values()),
+        "parse_error_count": parse_error_count,
         "loaded_by_format": loaded_by_format,
         "skipped_by_format": skipped_by_format,
         "error_by_format": error_by_format,
+        "loaded_with_errors_by_format": loaded_with_errors_by_format,
         "files": manifest_entries,
     }
 
