@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-07T09:16:17",
+  "generated_at": "2026-05-07T09:20:09",
   "entity_count": 17,
   "evidence_count": 6,
   "relation_instance_count": 20,
@@ -18,6 +18,7 @@
     "graph_index.json",
     "graph_quality.json",
     "career_profiles.json",
+    "recommendation_index.json",
     "relation_summary.json",
     "extraction_log.json"
   ],

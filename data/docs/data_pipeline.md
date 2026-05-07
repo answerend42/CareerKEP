@@ -19,7 +19,7 @@
 2. 读取 `input/sample_evidence.json`，按实体名和别名做长词优先匹配。
 3. 结合 `config/relation_keywords.json` 和 `config/relation_schema.json` 抽取关系实例。
 4. 结合 `config/weight_rules.json` 计算边权重。
-5. 输出 `output/nodes.json`、`output/relation_instances.json`、`output/edges.json`、`output/graph_index.json`、`output/graph_quality.json`、`output/career_profiles.json`、`output/relation_summary.json`、`output/extraction_log.json` 和 `output/graph_manifest.json`。
+5. 输出 `output/nodes.json`、`output/relation_instances.json`、`output/edges.json`、`output/graph_index.json`、`output/graph_quality.json`、`output/career_profiles.json`、`output/recommendation_index.json`、`output/relation_summary.json`、`output/extraction_log.json` 和 `output/graph_manifest.json`。
 
 ## 关系设计原则
 
@@ -30,6 +30,7 @@
 - 构建清单会记录输入来源和输出文件，方便快速确认本轮产物是否完整。
 - 质量报告会显式列出孤立节点和类型覆盖率，便于持续补齐 preprocess 产物。
 - 职业画像会把职业出边整理成可直接用于推荐的结构，减少 backend 的重复聚合工作。
+- 反向推荐索引会把目标要素映射回职业，适合做召回层输入。
 
 ## 输出要求
 

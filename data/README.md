@@ -29,6 +29,8 @@
   - 图谱质量报告，记录孤立节点、覆盖率和度分布，方便检查数据完整性。
 - `output/career_profiles.json`
   - 职业画像聚合结果，按职业整理技能、工具、学历、特质和相关岗位，便于推荐模块直接消费。
+- `output/recommendation_index.json`
+  - 反向推荐索引，按目标技能、工具、学历、特质或岗位聚合可推荐的职业，便于候选召回。
 - `output/relation_summary.json`
   - 关系统计摘要，用于快速检查抽取结果。
 - `output/extraction_log.json`
@@ -56,7 +58,7 @@ python scripts/build_kg_data.py --entities input/sample_entities.json --evidence
 2. 再按实体名和别名在证据中做长词优先匹配，找到共现实体对。
 3. 根据实体类型组合和关键词规则抽取关系实例。
 4. 按关系类型、证据数和实体置信度计算边权重。
-5. 最终输出节点、实例、边、图索引、质量报告、职业画像和统计清单，保证 backend 可以直接消费。
+5. 最终输出节点、实例、边、图索引、质量报告、职业画像、反向推荐索引和统计清单，保证 backend 可以直接消费。
 
 ## 维护原则
 

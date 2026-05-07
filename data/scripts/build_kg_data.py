@@ -686,6 +686,83 @@ def build_career_profiles(
     return profiles
 
 
+def build_recommendation_index(
+    entities: dict[str, Entity],
+    edges: list[Edge],
+) -> list[dict[str, Any]]:
+    """把目标实体反向映射到可推荐职业，便于 backend 做候选召回。"""
+
+    target_matches: dict[str, dict[str, Any]] = {}
+
+    for edge in edges:
+        if edge.source_type != "occupation":
+            continue
+
+        target = entities[edge.target_id]
+        if target.id not in target_matches:
+            target_matches[target.id] = {
+                "target_id": target.id,
+                "target_name": target.name,
+                "target_type": target.type,
+                "source": target.source,
+                "occupation_matches": {},
+            }
+
+        occupation_map: dict[str, Any] = target_matches[target.id]["occupation_matches"]
+        occupation_entry = occupation_map.setdefault(
+            edge.source_id,
+            {
+                "occupation_id": edge.source_id,
+                "occupation_name": edge.source_name,
+                "occupation_type": edge.source_type,
+                "score": 0.0,
+                "max_weight": 0.0,
+                "relation_types": [],
+                "evidence_count": 0,
+                "matched_keywords": set(),
+            },
+        )
+        occupation_entry["score"] = round(occupation_entry["score"] + edge.weight, 4)
+        occupation_entry["max_weight"] = max(occupation_entry["max_weight"], edge.weight)
+        occupation_entry["relation_types"].append(edge.relation_type)
+        occupation_entry["evidence_count"] += edge.evidence_count
+        occupation_entry["matched_keywords"].update(edge.matched_keywords)
+
+    recommendation_index: list[dict[str, Any]] = []
+    for target_id in sorted(target_matches):
+        payload = target_matches[target_id]
+        occupation_matches = []
+        for occupation_entry in payload["occupation_matches"].values():
+            occupation_matches.append(
+                {
+                    "occupation_id": occupation_entry["occupation_id"],
+                    "occupation_name": occupation_entry["occupation_name"],
+                    "occupation_type": occupation_entry["occupation_type"],
+                    "score": occupation_entry["score"],
+                    "max_weight": round(occupation_entry["max_weight"], 4),
+                    "relation_types": sorted(set(occupation_entry["relation_types"])),
+                    "evidence_count": occupation_entry["evidence_count"],
+                    "matched_keywords": sorted(occupation_entry["matched_keywords"]),
+                }
+            )
+
+        occupation_matches.sort(
+            key=lambda item: (-item["score"], item["occupation_name"], item["occupation_id"])
+        )
+        recommendation_index.append(
+            {
+                "target_id": payload["target_id"],
+                "target_name": payload["target_name"],
+                "target_type": payload["target_type"],
+                "source": payload["source"],
+                "match_count": len(occupation_matches),
+                "occupation_matches": occupation_matches,
+            }
+        )
+
+    return recommendation_index
+
+
 def build_manifest(
     nodes: list[dict[str, Any]],
     relation_instances: list[RelationInstance],
@@ -710,6 +787,7 @@ def build_manifest(
             "graph_index.json",
             "graph_quality.json",
             "career_profiles.json",
+            "recommendation_index.json",
             "relation_summary.json",
             "extraction_log.json",
         ],
@@ -755,6 +833,7 @@ def main() -> int:
     graph_index = build_graph_index(nodes, edges)
     quality_report = build_quality_report(nodes, edges, graph_index)
     career_profiles = build_career_profiles(entities, edges)
+    recommendation_index = build_recommendation_index(entities, edges)
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -765,6 +844,7 @@ def main() -> int:
     write_json(output_dir / "graph_index.json", graph_index)
     write_json(output_dir / "graph_quality.json", quality_report)
     write_json(output_dir / "career_profiles.json", career_profiles)
+    write_json(output_dir / "recommendation_index.json", recommendation_index)
     write_json(output_dir / "relation_summary.json", summarize_edges(edges))
     write_json(
         output_dir / "extraction_log.json",
@@ -776,6 +856,7 @@ def main() -> int:
             "graph_index_node_count": graph_index["node_count"],
             "graph_index_edge_count": graph_index["edge_count"],
             "career_profile_count": len(career_profiles),
+            "recommendation_index_count": len(recommendation_index),
             "isolated_node_count": quality_report["isolated_node_count"],
             "connected_node_count": quality_report["connected_node_count"],
             "source_files": {
@@ -792,6 +873,7 @@ def main() -> int:
                 "keyword_group_count": len(relation_keyword_map),
                 "has_isolated_node": quality_report["quality_flags"]["has_isolated_node"],
                 "career_profile_count": len(career_profiles),
+                "recommendation_index_count": len(recommendation_index),
             },
         },
     )
