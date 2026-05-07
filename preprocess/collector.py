@@ -298,6 +298,34 @@ def _load_text_document(path: Path, source_path: str) -> List[RawDocument]:
     ]
 
 
+def _ensure_unique_doc_ids(documents: List[RawDocument]) -> None:
+    """校验文档 ID 是否重复。
+
+    预处理阶段后面要按 `doc_id` 聚合实体命中，如果这里存在重复 ID，
+    很容易把不同来源的文档统计到一起，导致实体覆盖率和命中次数失真。
+    """
+
+    seen: dict[str, str] = {}
+    duplicates: dict[str, List[str]] = {}
+
+    for document in documents:
+        source_path = str(document.metadata.get("source_path", document.doc_id))
+        previous_source = seen.get(document.doc_id)
+        if previous_source is None:
+            seen[document.doc_id] = source_path
+            continue
+
+        duplicate_sources = duplicates.setdefault(document.doc_id, [previous_source])
+        if source_path not in duplicate_sources:
+            duplicate_sources.append(source_path)
+
+    if duplicates:
+        detail = "; ".join(
+            f"{doc_id}: {', '.join(source_paths)}" for doc_id, source_paths in sorted(duplicates.items())
+        )
+        raise ValueError(f"发现重复的文档 ID，请先清理原始数据: {detail}")
+
+
 def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
     """加载原始文档快照。"""
 
@@ -323,4 +351,5 @@ def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
     if not documents:
         raise ValueError(f"在目录 {directory} 中没有找到可用的原始数据文件")
 
+    _ensure_unique_doc_ids(documents)
     return documents

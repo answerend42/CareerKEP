@@ -91,6 +91,45 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual([doc.doc_id for doc in documents], ["left_note", "right_note"])
         self.assertEqual([doc.metadata["source_path"] for doc in documents], ["left/note.md", "right/note.md"])
 
+    def test_duplicate_doc_ids_are_rejected(self) -> None:
+        """重复 doc_id 会破坏后续实体聚合，采集阶段应直接报错。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "a.json").write_text(
+                """
+                {
+                  "documents": [
+                    {
+                      "doc_id": "duplicate_doc",
+                      "title": "文档 A",
+                      "text": "后端工程能力。",
+                      "source": "source_a"
+                    }
+                  ]
+                }
+                """.strip(),
+                encoding="utf-8",
+            )
+            (root / "b.json").write_text(
+                """
+                {
+                  "documents": [
+                    {
+                      "doc_id": "duplicate_doc",
+                      "title": "文档 B",
+                      "text": "前端项目经验。",
+                      "source": "source_b"
+                    }
+                  ]
+                }
+                """.strip(),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(ValueError, "重复的文档 ID"):
+                load_raw_documents(root)
+
 
 if __name__ == "__main__":
     unittest.main()
