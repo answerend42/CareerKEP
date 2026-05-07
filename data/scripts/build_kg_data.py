@@ -455,6 +455,58 @@ def summarize_instances(instances: list[RelationInstance]) -> dict[str, Any]:
     }
 
 
+def build_graph_index(
+    nodes: list[dict[str, Any]],
+    edges: list[Edge],
+) -> dict[str, Any]:
+    """生成 backend 更容易直接消费的图索引结构。"""
+
+    node_ids = [node["id"] for node in nodes]
+    node_type_index: dict[str, list[str]] = defaultdict(list)
+    for node in nodes:
+        node_type_index[node["type"]].append(node["id"])
+
+    adjacency: dict[str, dict[str, list[dict[str, Any]]]] = {
+        node_id: {"outgoing": [], "incoming": []} for node_id in node_ids
+    }
+    relation_type_index: dict[str, list[dict[str, Any]]] = defaultdict(list)
+
+    for edge in edges:
+        edge_ref = {
+            "source_id": edge.source_id,
+            "target_id": edge.target_id,
+            "relation_type": edge.relation_type,
+            "weight": edge.weight,
+            "evidence_count": edge.evidence_count,
+        }
+        adjacency[edge.source_id]["outgoing"].append(edge_ref)
+        adjacency[edge.target_id]["incoming"].append(edge_ref)
+        relation_type_index[edge.relation_type].append(edge_ref)
+
+    for node_id in adjacency:
+        adjacency[node_id]["outgoing"].sort(
+            key=lambda item: (-item["weight"], item["target_id"], item["relation_type"])
+        )
+        adjacency[node_id]["incoming"].sort(
+            key=lambda item: (-item["weight"], item["source_id"], item["relation_type"])
+        )
+
+    for key in node_type_index:
+        node_type_index[key].sort()
+    for key in relation_type_index:
+        relation_type_index[key].sort(
+            key=lambda item: (-item["weight"], item["source_id"], item["target_id"])
+        )
+
+    return {
+        "node_count": len(nodes),
+        "edge_count": len(edges),
+        "node_type_index": dict(sorted(node_type_index.items())),
+        "relation_type_index": dict(sorted(relation_type_index.items())),
+        "adjacency": adjacency,
+    }
+
+
 def build_manifest(
     nodes: list[dict[str, Any]],
     relation_instances: list[RelationInstance],
@@ -472,6 +524,14 @@ def build_manifest(
         "relation_instance_count": len(relation_instances),
         "edge_count": len(edges),
         "node_type_count": dict(sorted(node_type_counter.items())),
+        "output_files": [
+            "nodes.json",
+            "relation_instances.json",
+            "edges.json",
+            "graph_index.json",
+            "relation_summary.json",
+            "extraction_log.json",
+        ],
         "source_files": {
             "entities": relative_path(args.entities),
             "evidence": relative_path(args.evidence),
@@ -511,6 +571,7 @@ def main() -> int:
     )
     edges = build_edges(entities, relation_instances, relation_map, weight_rules)
     nodes = build_nodes(entities)
+    graph_index = build_graph_index(nodes, edges)
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -518,6 +579,7 @@ def main() -> int:
     write_json(output_dir / "nodes.json", nodes)
     write_json(output_dir / "relation_instances.json", [asdict(item) for item in relation_instances])
     write_json(output_dir / "edges.json", [asdict(edge) for edge in edges])
+    write_json(output_dir / "graph_index.json", graph_index)
     write_json(output_dir / "relation_summary.json", summarize_edges(edges))
     write_json(
         output_dir / "extraction_log.json",
@@ -526,6 +588,8 @@ def main() -> int:
             "evidence_count": len(evidence_items),
             "relation_instance_count": len(relation_instances),
             "matched_edge_count": len(edges),
+            "graph_index_node_count": graph_index["node_count"],
+            "graph_index_edge_count": graph_index["edge_count"],
             "source_files": {
                 "entities": relative_path(args.entities),
                 "evidence": relative_path(args.evidence),

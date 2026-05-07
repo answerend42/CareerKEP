@@ -19,13 +19,15 @@
 2. 读取 `input/sample_evidence.json`，按实体名和别名做长词优先匹配。
 3. 结合 `config/relation_keywords.json` 和 `config/relation_schema.json` 抽取关系实例。
 4. 结合 `config/weight_rules.json` 计算边权重。
-5. 输出 `output/nodes.json`、`output/relation_instances.json`、`output/edges.json`、`output/relation_summary.json`、`output/extraction_log.json` 和 `output/graph_manifest.json`。
+5. 输出 `output/nodes.json`、`output/relation_instances.json`、`output/edges.json`、`output/graph_index.json`、`output/relation_summary.json`、`output/extraction_log.json` 和 `output/graph_manifest.json`。
 
 ## 关系设计原则
 
 - 关系类型必须和实体类型组合绑定，避免无约束扩散。
 - 关键词规则和关系 schema 分离，便于后续扩充抽取逻辑。
 - 权重计算优先体现“是否相关”，再体现“证据覆盖度”和“实体置信度”。
+- 图索引优先按节点类型和边方向组织，方便后续传播算法直接读取。
+- 构建清单会记录输入来源和输出文件，方便快速确认本轮产物是否完整。
 
 ## 输出要求
 

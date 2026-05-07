@@ -23,12 +23,14 @@
   - 证据级关系实例，保留原始证据和命中的关键词。
 - `output/edges.json`
   - 聚合后的图谱边，包含权重、证据数和关键词。
+- `output/graph_index.json`
+  - 给 backend 直接使用的图索引，包含按类型归类的节点和邻接表。
 - `output/relation_summary.json`
   - 关系统计摘要，用于快速检查抽取结果。
 - `output/extraction_log.json`
   - 构建日志与计数信息，便于调试和复核。
 - `output/graph_manifest.json`
-  - 图谱构建清单，给 backend 或人工检查使用。
+  - 图谱构建清单，记录输入来源和输出文件列表，给 backend 或人工检查使用。
 
 ## 使用方式
 
@@ -50,7 +52,7 @@ python scripts/build_kg_data.py --entities input/sample_entities.json --evidence
 2. 再按实体名和别名在证据中做长词优先匹配，找到共现实体对。
 3. 根据实体类型组合和关键词规则抽取关系实例。
 4. 按关系类型、证据数和实体置信度计算边权重。
-5. 最终输出节点、实例、边和统计清单，保证 backend 可以直接消费。
+5. 最终输出节点、实例、边、图索引和统计清单，保证 backend 可以直接消费。
 
 ## 维护原则
 

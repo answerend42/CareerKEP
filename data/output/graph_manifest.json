@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-07T09:03:45",
+  "generated_at": "2026-05-07T09:07:51",
   "entity_count": 17,
   "evidence_count": 6,
   "relation_instance_count": 20,
@@ -11,6 +11,14 @@
     "tool": 3,
     "trait": 2
   },
+  "output_files": [
+    "nodes.json",
+    "relation_instances.json",
+    "edges.json",
+    "graph_index.json",
+    "relation_summary.json",
+    "extraction_log.json"
+  ],
   "source_files": {
     "entities": "input\\sample_entities.json",
     "evidence": "input\\sample_evidence.json",

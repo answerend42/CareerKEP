@@ -3,6 +3,8 @@
   "evidence_count": 6,
   "relation_instance_count": 20,
   "matched_edge_count": 20,
+  "graph_index_node_count": 17,
+  "graph_index_edge_count": 20,
   "source_files": {
     "entities": "input\\sample_entities.json",
     "evidence": "input\\sample_evidence.json",
