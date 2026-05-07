@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-05-07T09:03:45",
+  "entity_count": 17,
+  "evidence_count": 6,
+  "relation_instance_count": 20,
+  "edge_count": 20,
+  "node_type_count": {
+    "education": 1,
+    "occupation": 5,
+    "skill": 6,
+    "tool": 3,
+    "trait": 2
+  },
+  "source_files": {
+    "entities": "input\\sample_entities.json",
+    "evidence": "input\\sample_evidence.json",
+    "schema": "config\\relation_schema.json",
+    "keywords": "config\\relation_keywords.json",
+    "rules": "config\\weight_rules.json"
+  }
+}

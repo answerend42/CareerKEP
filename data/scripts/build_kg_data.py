@@ -4,6 +4,7 @@ import argparse
 import json
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -12,30 +13,11 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ENTITIES = ROOT / "input" / "sample_entities.json"
 DEFAULT_EVIDENCE = ROOT / "input" / "sample_evidence.json"
 DEFAULT_SCHEMA = ROOT / "config" / "relation_schema.json"
+DEFAULT_KEYWORDS = ROOT / "config" / "relation_keywords.json"
 DEFAULT_RULES = ROOT / "config" / "weight_rules.json"
 DEFAULT_OUTPUT = ROOT / "output"
 
-
-# 关系关键词尽量保持集中管理，避免关系规则散落在多个分支里。
-RELATION_KEYWORDS: dict[tuple[str, str], list[tuple[str, list[str]]]] = {
-    ("occupation", "tool"): [
-        ("uses_tool", ["使用", "借助", "基于", "依赖"]),
-        ("uses_tool", ["需要", "要求", "掌握", "熟悉", "具备", "必须"]),
-    ],
-    ("occupation", "skill"): [
-        ("preferred_skill", ["优先", "加分", "更佳", "建议"]),
-        ("requires_skill", ["需要", "要求", "掌握", "熟悉", "具备", "必须"]),
-    ],
-    ("occupation", "education"): [
-        ("requires_education", ["学历", "本科", "硕士", "专科", "研究生"]),
-    ],
-    ("occupation", "trait"): [
-        ("needs_trait", ["能力", "素质", "沟通", "思维", "细致", "耐心"]),
-    ],
-    ("occupation", "occupation"): [
-        ("related_role", ["相关", "方向", "转向", "可迁移", "延伸"]),
-    ],
-}
+ALLOWED_ENTITY_TYPES = {"occupation", "skill", "tool", "education", "trait"}
 
 
 @dataclass(frozen=True)
@@ -57,7 +39,7 @@ class Entity:
 
 @dataclass(frozen=True)
 class RelationInstance:
-    """证据级关系实例，后续可以直接回溯到原始句子。"""
+    """证据级关系实例，保留原始证据便于回溯。"""
 
     evidence_id: str
     evidence_source: str
@@ -74,7 +56,7 @@ class RelationInstance:
 
 @dataclass
 class Edge:
-    """图谱边，包含关系证据与权重。"""
+    """聚合后的图谱边。"""
 
     source_id: str
     target_id: str
@@ -94,32 +76,177 @@ def load_json(path: Path) -> Any:
         return json.load(fh)
 
 
+def write_json(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as fh:
+        json.dump(payload, fh, ensure_ascii=False, indent=2)
+        fh.write("\n")
+
+
+def relative_path(path: Path) -> str:
+    """日志里优先写相对路径，方便不同机器之间对比。"""
+
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def ensure_list(value: Any, field_name: str, context: str) -> list[Any]:
+    if not isinstance(value, list):
+        raise ValueError(f"{context} 的字段 {field_name} 必须是列表")
+    return value
+
+
 def normalize_entities(raw_entities: Iterable[dict[str, Any]]) -> dict[str, Entity]:
-    """把预处理阶段输出的实体统一成内部节点结构。"""
+    """把预处理阶段输出统一成可构图的实体结构。"""
 
     entities: dict[str, Entity] = {}
-    for item in raw_entities:
+    for index, item in enumerate(raw_entities, start=1):
+        if not isinstance(item, dict):
+            raise ValueError(f"entities[{index}] 必须是对象")
+
+        for key in ("id", "name", "type"):
+            if key not in item or item[key] in (None, ""):
+                raise ValueError(f"entities[{index}] 缺少必要字段: {key}")
+
+        entity_type = str(item["type"])
+        if entity_type not in ALLOWED_ENTITY_TYPES:
+            raise ValueError(f"entities[{index}] 的 type 不合法: {entity_type}")
+
+        aliases = item.get("aliases", [])
+        if aliases is None:
+            aliases = []
+        aliases_list = ensure_list(aliases, "aliases", f"entities[{index}]")
+
         entity = Entity(
             id=str(item["id"]),
             name=str(item["name"]),
-            type=str(item["type"]),
-            aliases=tuple(str(alias) for alias in item.get("aliases", []) if alias),
+            type=entity_type,
+            aliases=tuple(str(alias) for alias in aliases_list if alias),
             confidence=float(item.get("confidence", 0.9)),
             source=str(item.get("source", "unknown")),
         )
         entities[entity.id] = entity
+
     return entities
 
 
-def load_relevant_config(schema_path: Path, rules_path: Path) -> tuple[dict[str, dict[str, Any]], dict[str, Any]]:
+def validate_evidence_items(evidence_items: list[dict[str, Any]]) -> None:
+    """校验原始证据的最低结构要求。"""
+
+    for index, item in enumerate(evidence_items, start=1):
+        if not isinstance(item, dict):
+            raise ValueError(f"evidence[{index}] 必须是对象")
+        for key in ("text", "source"):
+            if key not in item or item[key] in (None, ""):
+                raise ValueError(f"evidence[{index}] 缺少必要字段: {key}")
+
+
+def validate_schema(schema: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """校验关系 schema，并整理成 relation_type -> 配置 的映射。"""
+
+    relations = ensure_list(schema.get("relations"), "relations", "relation_schema")
+    relation_map: dict[str, dict[str, Any]] = {}
+    for index, item in enumerate(relations, start=1):
+        if not isinstance(item, dict):
+            raise ValueError(f"relation_schema.relations[{index}] 必须是对象")
+        for key in ("relation_type", "source_types", "target_types", "base_weight"):
+            if key not in item:
+                raise ValueError(f"relation_schema.relations[{index}] 缺少必要字段: {key}")
+
+        relation_type = str(item["relation_type"])
+        source_types = ensure_list(item["source_types"], "source_types", f"relation_schema.relations[{index}]")
+        target_types = ensure_list(item["target_types"], "target_types", f"relation_schema.relations[{index}]")
+
+        relation_map[relation_type] = {
+            "relation_type": relation_type,
+            "source_types": [str(value) for value in source_types],
+            "target_types": [str(value) for value in target_types],
+            "base_weight": float(item["base_weight"]),
+            "description": str(item.get("description", "")),
+        }
+
+    return relation_map
+
+
+def validate_keyword_config(keyword_config: dict[str, Any], relation_map: dict[str, dict[str, Any]]) -> dict[tuple[str, str], list[tuple[str, list[str]]]]:
+    """把关系关键词配置转成查询表，并确保和 schema 对齐。"""
+
+    keyword_groups = ensure_list(keyword_config.get("relation_keywords"), "relation_keywords", "relation_keywords")
+    relation_keyword_map: dict[tuple[str, str], list[tuple[str, list[str]]]] = {}
+
+    for index, item in enumerate(keyword_groups, start=1):
+        if not isinstance(item, dict):
+            raise ValueError(f"relation_keywords[{index}] 必须是对象")
+        for key in ("source_type", "target_type", "relations"):
+            if key not in item:
+                raise ValueError(f"relation_keywords[{index}] 缺少必要字段: {key}")
+
+        source_type = str(item["source_type"])
+        target_type = str(item["target_type"])
+        if source_type not in ALLOWED_ENTITY_TYPES:
+            raise ValueError(f"relation_keywords[{index}] 的 source_type 不合法: {source_type}")
+        if target_type not in ALLOWED_ENTITY_TYPES:
+            raise ValueError(f"relation_keywords[{index}] 的 target_type 不合法: {target_type}")
+        relations = ensure_list(item["relations"], "relations", f"relation_keywords[{index}]")
+        relation_items: list[tuple[str, list[str]]] = []
+
+        for relation_index, relation_item in enumerate(relations, start=1):
+            if not isinstance(relation_item, dict):
+                raise ValueError(f"relation_keywords[{index}].relations[{relation_index}] 必须是对象")
+            for key in ("relation_type", "keywords"):
+                if key not in relation_item:
+                    raise ValueError(
+                        f"relation_keywords[{index}].relations[{relation_index}] 缺少必要字段: {key}"
+                    )
+
+            relation_type = str(relation_item["relation_type"])
+            if relation_type not in relation_map:
+                raise ValueError(f"关键词配置引用了未定义的关系类型: {relation_type}")
+
+            keywords = ensure_list(
+                relation_item["keywords"],
+                "keywords",
+                f"relation_keywords[{index}].relations[{relation_index}]",
+            )
+            relation_items.append((relation_type, [str(keyword) for keyword in keywords if keyword]))
+
+        relation_keyword_map[(source_type, target_type)] = relation_items
+
+    return relation_keyword_map
+
+
+def load_configs(
+    schema_path: Path,
+    keywords_path: Path,
+    rules_path: Path,
+) -> tuple[dict[str, dict[str, Any]], dict[tuple[str, str], list[tuple[str, list[str]]]], dict[str, Any]]:
     schema = load_json(schema_path)
+    relation_map = validate_schema(schema)
+    keyword_config = load_json(keywords_path)
+    relation_keyword_map = validate_keyword_config(keyword_config, relation_map)
     rules = load_json(rules_path)
-    relation_map = {item["relation_type"]: item for item in schema["relations"]}
-    return relation_map, rules["weight_rules"]
+    weight_rules = rules.get("weight_rules")
+    if not isinstance(weight_rules, dict):
+        raise ValueError("weight_rules 文件中的 weight_rules 必须是对象")
+    required_rule_keys = {
+        "evidence_bonus_per_extra_sentence",
+        "max_evidence_bonus",
+        "entity_confidence_floor",
+        "entity_confidence_ceiling",
+        "relation_confidence_multiplier",
+        "weight_min",
+        "weight_max",
+    }
+    missing_rule_keys = sorted(required_rule_keys - set(weight_rules))
+    if missing_rule_keys:
+        raise ValueError(f"weight_rules 缺少必要字段: {', '.join(missing_rule_keys)}")
+    return relation_map, relation_keyword_map, weight_rules
 
 
 def entity_terms(entities: dict[str, Entity]) -> list[tuple[str, str]]:
-    """把实体名称和别名展开成可匹配词表。"""
+    """把实体名和别名展开成可匹配词表，长词优先。"""
 
     pairs: list[tuple[str, str]] = []
     for entity in entities.values():
@@ -130,10 +257,7 @@ def entity_terms(entities: dict[str, Entity]) -> list[tuple[str, str]]:
 
 
 def find_mentions(text: str, entities: dict[str, Entity]) -> list[str]:
-    """在句子里寻找出现的实体。
-
-    这里采用最长词优先，减少短词覆盖长词的问题。
-    """
+    """在句子里找实体，采用长词优先，减少短词误命中。"""
 
     matched: list[str] = []
     seen: set[str] = set()
@@ -146,17 +270,21 @@ def find_mentions(text: str, entities: dict[str, Entity]) -> list[str]:
     return matched
 
 
-def choose_relation(source: Entity, target: Entity, text: str) -> tuple[str | None, list[str]]:
-    """根据实体类型和关键词判断关系类型。"""
+def choose_relation(
+    source: Entity,
+    target: Entity,
+    text: str,
+    relation_keyword_map: dict[tuple[str, str], list[tuple[str, list[str]]]],
+) -> tuple[str | None, list[str]]:
+    """根据实体类型组合和关键词判断关系类型。"""
 
     def hit(keywords: list[str]) -> list[str]:
         return [word for word in keywords if word in text]
 
-    for relation_type, keywords in RELATION_KEYWORDS.get((source.type, target.type), []):
+    for relation_type, keywords in relation_keyword_map.get((source.type, target.type), []):
         matched = hit(keywords)
         if matched:
             return relation_type, matched
-
     return None, []
 
 
@@ -164,6 +292,7 @@ def extract_relation_instances(
     entities: dict[str, Entity],
     evidence_items: list[dict[str, Any]],
     relation_map: dict[str, dict[str, Any]],
+    relation_keyword_map: dict[tuple[str, str], list[tuple[str, list[str]]]],
 ) -> list[RelationInstance]:
     """从原始证据中抽取句子级关系实例。"""
 
@@ -177,19 +306,23 @@ def extract_relation_instances(
         if len(mentions) < 2:
             continue
 
-        for idx, source_id in enumerate(mentions):
+        for index, source_id in enumerate(mentions):
             source = entities[source_id]
-            for target_id in mentions[idx + 1 :]:
+            for target_id in mentions[index + 1 :]:
                 if source_id == target_id:
                     continue
 
                 target = entities[target_id]
-                relation_type, matched_keywords = choose_relation(source, target, text)
+                relation_type, matched_keywords = choose_relation(
+                    source, target, text, relation_keyword_map
+                )
                 source_entity = source
                 target_entity = target
 
                 if relation_type is None:
-                    relation_type, matched_keywords = choose_relation(target, source, text)
+                    relation_type, matched_keywords = choose_relation(
+                        target, source, text, relation_keyword_map
+                    )
                     if relation_type is None:
                         continue
                     source_entity = target
@@ -228,7 +361,7 @@ def build_edges(
     relation_map: dict[str, dict[str, Any]],
     weight_rules: dict[str, Any],
 ) -> list[Edge]:
-    """把证据级关系实例聚合成可供图传播使用的边。"""
+    """把证据级实例聚合成图谱边，并结合权重规则打分。"""
 
     pair_hits: dict[tuple[str, str, str], list[RelationInstance]] = defaultdict(list)
     for item in relation_instances:
@@ -244,14 +377,21 @@ def build_edges(
             float(weight_rules["max_evidence_bonus"]),
             max(0, evidence_count - 1) * float(weight_rules["evidence_bonus_per_extra_sentence"]),
         )
+
         confidence = (source.confidence + target.confidence) / 2
         confidence_floor = float(weight_rules["entity_confidence_floor"])
         confidence_ceiling = float(weight_rules["entity_confidence_ceiling"])
         confidence = min(confidence_ceiling, max(confidence_floor, confidence))
-        confidence_bonus = (confidence - confidence_floor) * float(weight_rules["relation_confidence_multiplier"])
+        confidence_bonus = (confidence - confidence_floor) * float(
+            weight_rules["relation_confidence_multiplier"]
+        )
+
         weight = base_weight + evidence_bonus + confidence_bonus
-        weight = min(float(weight_rules["weight_max"]), max(float(weight_rules["weight_min"]), round(weight, 4)))
-        keywords = sorted({kw for item in hits for kw in item.matched_keywords})
+        weight = min(
+            float(weight_rules["weight_max"]),
+            max(float(weight_rules["weight_min"]), round(weight, 4)),
+        )
+        keywords = sorted({keyword for item in hits for keyword in item.matched_keywords})
 
         edges.append(
             Edge(
@@ -273,7 +413,7 @@ def build_edges(
 
 
 def build_nodes(entities: dict[str, Entity]) -> list[dict[str, Any]]:
-    """输出给后续 backend 的节点数据。"""
+    """输出给 backend 使用的标准节点数据。"""
 
     nodes: list[dict[str, Any]] = []
     for entity in sorted(entities.values(), key=lambda item: item.name):
@@ -290,13 +430,18 @@ def build_nodes(entities: dict[str, Entity]) -> list[dict[str, Any]]:
     return nodes
 
 
-def summarize(edges: list[Edge]) -> dict[str, Any]:
+def summarize_edges(edges: list[Edge]) -> dict[str, Any]:
     relation_counter = Counter(edge.relation_type for edge in edges)
     type_counter = Counter(f"{edge.source_type}->{edge.target_type}" for edge in edges)
+    weights = [edge.weight for edge in edges]
     return {
         "edge_count": len(edges),
         "relation_count": dict(sorted(relation_counter.items())),
         "type_pair_count": dict(sorted(type_counter.items())),
+        "weight_range": {
+            "min": min(weights) if weights else None,
+            "max": max(weights) if weights else None,
+        },
     }
 
 
@@ -310,11 +455,31 @@ def summarize_instances(instances: list[RelationInstance]) -> dict[str, Any]:
     }
 
 
-def write_json(path: Path, payload: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as fh:
-        json.dump(payload, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+def build_manifest(
+    nodes: list[dict[str, Any]],
+    relation_instances: list[RelationInstance],
+    edges: list[Edge],
+    evidence_count: int,
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    """生成图谱构建清单，方便 backend 和人工核对。"""
+
+    node_type_counter = Counter(node["type"] for node in nodes)
+    return {
+        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "entity_count": len(nodes),
+        "evidence_count": evidence_count,
+        "relation_instance_count": len(relation_instances),
+        "edge_count": len(edges),
+        "node_type_count": dict(sorted(node_type_counter.items())),
+        "source_files": {
+            "entities": relative_path(args.entities),
+            "evidence": relative_path(args.evidence),
+            "schema": relative_path(args.schema),
+            "keywords": relative_path(args.keywords),
+            "rules": relative_path(args.rules),
+        },
+    }
 
 
 def parse_args() -> argparse.Namespace:
@@ -322,6 +487,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--entities", type=Path, default=DEFAULT_ENTITIES, help="实体输入文件")
     parser.add_argument("--evidence", type=Path, default=DEFAULT_EVIDENCE, help="原始证据输入文件")
     parser.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA, help="关系类型定义文件")
+    parser.add_argument("--keywords", type=Path, default=DEFAULT_KEYWORDS, help="关系关键词定义文件")
     parser.add_argument("--rules", type=Path, default=DEFAULT_RULES, help="权重规则文件")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT, help="输出目录")
     return parser.parse_args()
@@ -329,11 +495,20 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+
     entities = normalize_entities(load_json(args.entities))
     evidence_items = load_json(args.evidence)
-    relation_map, weight_rules = load_relevant_config(args.schema, args.rules)
+    if not isinstance(evidence_items, list):
+        raise ValueError("evidence 输入文件必须是列表")
+    validate_evidence_items(evidence_items)
 
-    relation_instances = extract_relation_instances(entities, evidence_items, relation_map)
+    relation_map, relation_keyword_map, weight_rules = load_configs(
+        args.schema, args.keywords, args.rules
+    )
+
+    relation_instances = extract_relation_instances(
+        entities, evidence_items, relation_map, relation_keyword_map
+    )
     edges = build_edges(entities, relation_instances, relation_map, weight_rules)
     nodes = build_nodes(entities)
 
@@ -343,7 +518,7 @@ def main() -> int:
     write_json(output_dir / "nodes.json", nodes)
     write_json(output_dir / "relation_instances.json", [asdict(item) for item in relation_instances])
     write_json(output_dir / "edges.json", [asdict(edge) for edge in edges])
-    write_json(output_dir / "relation_summary.json", summarize(edges))
+    write_json(output_dir / "relation_summary.json", summarize_edges(edges))
     write_json(
         output_dir / "extraction_log.json",
         {
@@ -352,13 +527,23 @@ def main() -> int:
             "relation_instance_count": len(relation_instances),
             "matched_edge_count": len(edges),
             "source_files": {
-                "entities": str(args.entities),
-                "evidence": str(args.evidence),
-                "schema": str(args.schema),
-                "rules": str(args.rules),
+                "entities": relative_path(args.entities),
+                "evidence": relative_path(args.evidence),
+                "schema": relative_path(args.schema),
+                "keywords": relative_path(args.keywords),
+                "rules": relative_path(args.rules),
             },
             "instance_summary": summarize_instances(relation_instances),
+            "validation": {
+                "allowed_entity_types": sorted(ALLOWED_ENTITY_TYPES),
+                "relation_type_count": len(relation_map),
+                "keyword_group_count": len(relation_keyword_map),
+            },
         },
+    )
+    write_json(
+        output_dir / "graph_manifest.json",
+        build_manifest(nodes, relation_instances, edges, len(evidence_items), args),
     )
 
     print(

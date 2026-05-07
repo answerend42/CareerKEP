@@ -1,53 +1,59 @@
 # data 模块说明
 
-`data/` 目录负责承接 `preprocess` 阶段产出的实体与原始文本，完成关系抽取、权重定性、图谱数据沉淀，并输出给后续 `backend` 使用的稳定输入文件。
+`data/` 目录负责承接 `preprocess` 阶段输出的实体与原始证据，完成关系抽取、权重计算和图谱数据沉淀，并把稳定的构图结果提供给后续 `backend` 使用。
 
-## 当前约定
-
-### 输入
+## 当前输入
 
 - `input/sample_entities.json`
-  - 规范化后的实体列表，来自 `preprocess` 阶段。
+  - 预处理阶段输出的实体列表，包含名称、别名、类型和置信度。
 - `input/sample_evidence.json`
-  - 原始文本证据或句子级语料，用于关系抽取。
+  - 句子级原始证据，用于关系抽取。
+- `config/relation_schema.json`
+  - 关系类型定义，约束 source / target 的实体类型组合。
+- `config/relation_keywords.json`
+  - 关系关键词规则，负责把证据中的关键词映射为具体关系类型。
+- `config/weight_rules.json`
+  - 边权重计算规则。
 
-### 输出
+## 当前输出
 
 - `output/nodes.json`
-  - 图谱节点，去重后的实体集合。
+  - 去重后的实体节点。
 - `output/relation_instances.json`
-  - 证据级关系实例，保留每条抽取结果对应的原始证据、实体和关键词。
+  - 证据级关系实例，保留原始证据和命中的关键词。
 - `output/edges.json`
-  - 图谱边，包含关系类型、证据与权重。
+  - 聚合后的图谱边，包含权重、证据数和关键词。
 - `output/relation_summary.json`
-  - 关系统计摘要，便于检查抽取质量。
+  - 关系统计摘要，用于快速检查抽取结果。
 - `output/extraction_log.json`
-  - 抽取过程日志，便于排查规则命中情况，也包含实例级统计。
+  - 构建日志与计数信息，便于调试和复核。
+- `output/graph_manifest.json`
+  - 图谱构建清单，给 backend 或人工检查使用。
 
 ## 使用方式
 
-在 `data/` 目录下运行：
+在 `data/` 目录下执行：
 
 ```powershell
 python scripts/build_kg_data.py
 ```
 
-默认会读取 `input/` 下的示例数据，并生成 `output/` 下的图谱结果。
-
-也可以显式指定输入文件：
+也可以显式指定输入和输出：
 
 ```powershell
 python scripts/build_kg_data.py --entities input/sample_entities.json --evidence input/sample_evidence.json --output-dir output
 ```
 
-## 处理思路
+## 构建思路
 
-1. 先将实体统一规范成节点。
-2. 再基于句子中的实体共现和关键词规则抽取证据级关系实例。
-3. 最后按关系类型、证据数量、实体置信度计算边权值，并聚合成可供 backend 使用的边。
+1. 先统一实体结构，生成稳定的节点集合。
+2. 再按实体名和别名在证据中做长词优先匹配，找到共现实体对。
+3. 根据实体类型组合和关键词规则抽取关系实例。
+4. 按关系类型、证据数和实体置信度计算边权重。
+5. 最终输出节点、实例、边和统计清单，保证 backend 可以直接消费。
 
-## 关系设计原则
+## 维护原则
 
-- 关系类型尽量少而稳定，避免后续图传播时语义发散。
-- 关系权重优先反映“是否强相关”，再反映“证据覆盖度”。
-- 预处理产物不完整时，允许先用示例数据和规则管线占位，但输出格式要保持稳定。
+- 关系类型尽量少而稳定，避免图传播阶段语义发散。
+- 关键词规则单独放在 `config/`，方便后续补充新关系。
+- 输出格式尽量稳定，新增字段优先追加，不随意改名。

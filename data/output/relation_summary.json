@@ -14,5 +14,9 @@
     "occupation->skill": 11,
     "occupation->tool": 5,
     "occupation->trait": 2
+  },
+  "weight_range": {
+    "min": 0.7375,
+    "max": 1.2
   }
 }

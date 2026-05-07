@@ -1,41 +1,48 @@
-# 图谱数据流水线
+# 数据流水线说明
 
-这个目录只负责 `data/` 内的知识图谱数据构建，不碰 `preprocess/`、`backend/`、`frontend/`。
+本文档只描述 `data/` 目录内部的数据构建流程，目标是为知识图谱推荐模块提供稳定、可追溯的输入。
 
-## 输入
+## 目录职责
 
-- `input/sample_entities.json`
-  - 预处理阶段输出的实体集合。
-- `input/sample_evidence.json`
-  - 句子级原始证据，用来做关系抽取。
-- `config/relation_schema.json`
-  - 关系类型定义，约束 source/target 类型组合。
-- `config/weight_rules.json`
-  - 边权重计算规则。
+- `input/`
+  - 放置预处理阶段产出的实体和原始证据样例。
+- `config/`
+  - 放置关系类型、关键词规则和权重规则。
+- `scripts/`
+  - 放置图谱构建脚本。
+- `output/`
+  - 放置构建后的节点、边、关系实例和统计结果。
 
-## 输出
+## 构建步骤
 
-- `output/nodes.json`
-  - 节点层数据，直接给后续图构建或推荐模块使用。
-- `output/relation_instances.json`
-  - 证据级关系实例，便于追溯每条边来自哪条句子。
-- `output/edges.json`
-  - 聚合后的边数据，包含权重、命中证据和关键词。
-- `output/relation_summary.json`
-  - 关系统计汇总，用于快速检查抽取结果是否合理。
-- `output/extraction_log.json`
-  - 运行日志与计数信息，便于调试和复核。
+1. 读取 `input/sample_entities.json`，统一实体字段结构并去重。
+2. 读取 `input/sample_evidence.json`，按实体名和别名做长词优先匹配。
+3. 结合 `config/relation_keywords.json` 和 `config/relation_schema.json` 抽取关系实例。
+4. 结合 `config/weight_rules.json` 计算边权重。
+5. 输出 `output/nodes.json`、`output/relation_instances.json`、`output/edges.json`、`output/relation_summary.json`、`output/extraction_log.json` 和 `output/graph_manifest.json`。
 
-## 构建原则
+## 关系设计原则
 
-1. 先规范实体，再抽取关系实例。
-2. 关系抽取优先看实体类型，再看关键词命中。
-3. 边权重综合基础权重、证据数量和实体置信度。
-4. 输出格式尽量稳定，方便 backend 直接消费。
+- 关系类型必须和实体类型组合绑定，避免无约束扩散。
+- 关键词规则和关系 schema 分离，便于后续扩充抽取逻辑。
+- 权重计算优先体现“是否相关”，再体现“证据覆盖度”和“实体置信度”。
 
-## 运行命令
+## 输出要求
+
+- 节点、边、关系实例的字段名保持稳定。
+- 所有输出文件均为 UTF-8 编码的 JSON。
+- 新增字段尽量追加，不要随意替换已有字段。
+
+## 运行建议
+
+在 `data/` 目录下执行：
 
 ```powershell
 python scripts/build_kg_data.py
 ```
 
+如果要验证某一版输入，可以指定参数单独构建：
+
+```powershell
+python scripts/build_kg_data.py --entities input/sample_entities.json --evidence input/sample_evidence.json --schema config/relation_schema.json --keywords config/relation_keywords.json --rules config/weight_rules.json --output-dir output
+```

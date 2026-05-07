@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "relation_keywords": [
+    {
+      "source_type": "occupation",
+      "target_type": "tool",
+      "relations": [
+        {
+          "relation_type": "uses_tool",
+          "keywords": ["使用", "借助", "基于", "依赖"]
+        },
+        {
+          "relation_type": "uses_tool",
+          "keywords": ["需要", "要求", "掌握", "熟悉", "具备", "必须"]
+        }
+      ]
+    },
+    {
+      "source_type": "occupation",
+      "target_type": "skill",
+      "relations": [
+        {
+          "relation_type": "preferred_skill",
+          "keywords": ["优先", "加分", "更佳", "建议"]
+        },
+        {
+          "relation_type": "requires_skill",
+          "keywords": ["需要", "要求", "掌握", "熟悉", "具备", "必须"]
+        }
+      ]
+    },
+    {
+      "source_type": "occupation",
+      "target_type": "education",
+      "relations": [
+        {
+          "relation_type": "requires_education",
+          "keywords": ["学历", "本科", "硕士", "专科", "研究生"]
+        }
+      ]
+    },
+    {
+      "source_type": "occupation",
+      "target_type": "trait",
+      "relations": [
+        {
+          "relation_type": "needs_trait",
+          "keywords": ["能力", "素质", "沟通", "思维", "细致", "耐心"]
+        }
+      ]
+    },
+    {
+      "source_type": "occupation",
+      "target_type": "occupation",
+      "relations": [
+        {
+          "relation_type": "related_role",
+          "keywords": ["相关", "方向", "转向", "可迁移", "延伸"]
+        }
+      ]
+    }
+  ]
+}
