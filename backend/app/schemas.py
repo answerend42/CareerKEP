@@ -20,7 +20,7 @@ def clamp01(value: float | None) -> float:
     return max(0.0, min(1.0, float(value)))
 
 
-@dataclass(slots=True)
+@dataclass
 class EvidenceInput:
     """一条结构化画像证据。"""
 
@@ -40,7 +40,7 @@ class EvidenceInput:
         return asdict(self)
 
 
-@dataclass(slots=True)
+@dataclass
 class RecommendationRequest:
     """推荐请求。"""
 
@@ -58,7 +58,7 @@ class RecommendationRequest:
         }
 
 
-@dataclass(slots=True)
+@dataclass
 class NodeState:
     """图中节点在一次推理里的状态。"""
 
@@ -79,7 +79,7 @@ class NodeState:
         return data
 
 
-@dataclass(slots=True)
+@dataclass
 class RecommendationItem:
     """排序后的推荐条目。"""
 
@@ -101,7 +101,7 @@ class RecommendationItem:
         }
 
 
-@dataclass(slots=True)
+@dataclass
 class RecommendationResponse:
     """推荐接口的统一响应。"""
 
