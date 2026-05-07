@@ -71,6 +71,19 @@ class Edge:
     matched_keywords: list[str]
 
 
+@dataclass(frozen=True)
+class CareerProfileItem:
+    """职业画像中的单条推荐项。"""
+
+    target_id: str
+    target_name: str
+    target_type: str
+    relation_type: str
+    weight: float
+    evidence_count: int
+    matched_keywords: list[str]
+
+
 def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as fh:
         return json.load(fh)
@@ -572,6 +585,107 @@ def build_quality_report(
     }
 
 
+def build_career_profiles(
+    entities: dict[str, Entity],
+    edges: list[Edge],
+) -> list[dict[str, Any]]:
+    """把职业节点的出边聚合成推荐画像，方便 backend 直接消费。"""
+
+    section_mapping = {
+        "requires_skill": "required_skills",
+        "preferred_skill": "preferred_skills",
+        "uses_tool": "tools",
+        "requires_education": "education",
+        "needs_trait": "traits",
+        "related_role": "related_roles",
+    }
+
+    occupation_edges: dict[str, list[Edge]] = defaultdict(list)
+    for edge in edges:
+        if edge.source_type == "occupation":
+            occupation_edges[edge.source_id].append(edge)
+
+    profiles: list[dict[str, Any]] = []
+    occupation_entities = sorted(
+        (entity for entity in entities.values() if entity.type == "occupation"),
+        key=lambda item: item.name,
+    )
+
+    for entity in occupation_entities:
+        source_edges = occupation_edges.get(entity.id, [])
+        grouped_items: dict[str, list[CareerProfileItem]] = {
+            "required_skills": [],
+            "preferred_skills": [],
+            "tools": [],
+            "education": [],
+            "traits": [],
+            "related_roles": [],
+        }
+        seen_relation_targets: set[tuple[str, str]] = set()
+
+        for edge in sorted(source_edges, key=lambda item: (-item.weight, item.target_name, item.relation_type)):
+            bucket_name = section_mapping.get(edge.relation_type)
+            if bucket_name is None:
+                continue
+
+            dedupe_key = (edge.target_id, edge.relation_type)
+            if dedupe_key in seen_relation_targets:
+                continue
+            seen_relation_targets.add(dedupe_key)
+
+            grouped_items[bucket_name].append(
+                CareerProfileItem(
+                    target_id=edge.target_id,
+                    target_name=edge.target_name,
+                    target_type=edge.target_type,
+                    relation_type=edge.relation_type,
+                    weight=edge.weight,
+                    evidence_count=edge.evidence_count,
+                    matched_keywords=edge.matched_keywords,
+                )
+            )
+
+        profile_items = {
+            key: [asdict(item) for item in value]
+            for key, value in grouped_items.items()
+        }
+        flat_items = [
+            asdict(item)
+            for bucket in (
+                grouped_items["required_skills"],
+                grouped_items["preferred_skills"],
+                grouped_items["tools"],
+                grouped_items["education"],
+                grouped_items["traits"],
+                grouped_items["related_roles"],
+            )
+            for item in bucket
+        ]
+
+        profiles.append(
+            {
+                "occupation_id": entity.id,
+                "occupation_name": entity.name,
+                "occupation_type": entity.type,
+                "confidence": entity.confidence,
+                "source": entity.source,
+                "recommendation_score": round(sum(edge.weight for edge in source_edges), 4),
+                "counts": {
+                    "required_skills": len(profile_items["required_skills"]),
+                    "preferred_skills": len(profile_items["preferred_skills"]),
+                    "tools": len(profile_items["tools"]),
+                    "education": len(profile_items["education"]),
+                    "traits": len(profile_items["traits"]),
+                    "related_roles": len(profile_items["related_roles"]),
+                },
+                "items": profile_items,
+                "flat_items": flat_items,
+            }
+        )
+
+    return profiles
+
+
 def build_manifest(
     nodes: list[dict[str, Any]],
     relation_instances: list[RelationInstance],
@@ -595,6 +709,7 @@ def build_manifest(
             "edges.json",
             "graph_index.json",
             "graph_quality.json",
+            "career_profiles.json",
             "relation_summary.json",
             "extraction_log.json",
         ],
@@ -639,6 +754,7 @@ def main() -> int:
     nodes = build_nodes(entities)
     graph_index = build_graph_index(nodes, edges)
     quality_report = build_quality_report(nodes, edges, graph_index)
+    career_profiles = build_career_profiles(entities, edges)
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -648,6 +764,7 @@ def main() -> int:
     write_json(output_dir / "edges.json", [asdict(edge) for edge in edges])
     write_json(output_dir / "graph_index.json", graph_index)
     write_json(output_dir / "graph_quality.json", quality_report)
+    write_json(output_dir / "career_profiles.json", career_profiles)
     write_json(output_dir / "relation_summary.json", summarize_edges(edges))
     write_json(
         output_dir / "extraction_log.json",
@@ -658,6 +775,7 @@ def main() -> int:
             "matched_edge_count": len(edges),
             "graph_index_node_count": graph_index["node_count"],
             "graph_index_edge_count": graph_index["edge_count"],
+            "career_profile_count": len(career_profiles),
             "isolated_node_count": quality_report["isolated_node_count"],
             "connected_node_count": quality_report["connected_node_count"],
             "source_files": {
@@ -673,6 +791,7 @@ def main() -> int:
                 "relation_type_count": len(relation_map),
                 "keyword_group_count": len(relation_keyword_map),
                 "has_isolated_node": quality_report["quality_flags"]["has_isolated_node"],
+                "career_profile_count": len(career_profiles),
             },
         },
     )

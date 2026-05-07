@@ -1,0 +1,636 @@
+[
+  {
+    "occupation_id": "occ_python_engineer",
+    "occupation_name": "Python开发工程师",
+    "occupation_type": "occupation",
+    "confidence": 0.97,
+    "source": "preprocess",
+    "recommendation_score": 4.3375,
+    "counts": {
+      "required_skills": 3,
+      "preferred_skills": 0,
+      "tools": 0,
+      "education": 0,
+      "traits": 0,
+      "related_roles": 1
+    },
+    "items": {
+      "required_skills": [
+        {
+          "target_id": "skill_pandas",
+          "target_name": "Pandas",
+          "target_type": "skill",
+          "relation_type": "requires_skill",
+          "weight": 1.2,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "掌握",
+            "熟悉",
+            "需要"
+          ]
+        },
+        {
+          "target_id": "skill_python",
+          "target_name": "Python",
+          "target_type": "skill",
+          "relation_type": "requires_skill",
+          "weight": 1.2,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "掌握",
+            "熟悉",
+            "需要"
+          ]
+        },
+        {
+          "target_id": "skill_sql",
+          "target_name": "SQL",
+          "target_type": "skill",
+          "relation_type": "requires_skill",
+          "weight": 1.2,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "掌握",
+            "熟悉",
+            "需要"
+          ]
+        }
+      ],
+      "preferred_skills": [],
+      "tools": [],
+      "education": [],
+      "traits": [],
+      "related_roles": [
+        {
+          "target_id": "occ_backend_engineer",
+          "target_name": "后端开发工程师",
+          "target_type": "occupation",
+          "relation_type": "related_role",
+          "weight": 0.7375,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "方向",
+            "相关"
+          ]
+        }
+      ]
+    },
+    "flat_items": [
+      {
+        "target_id": "skill_pandas",
+        "target_name": "Pandas",
+        "target_type": "skill",
+        "relation_type": "requires_skill",
+        "weight": 1.2,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "掌握",
+          "熟悉",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "skill_python",
+        "target_name": "Python",
+        "target_type": "skill",
+        "relation_type": "requires_skill",
+        "weight": 1.2,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "掌握",
+          "熟悉",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "skill_sql",
+        "target_name": "SQL",
+        "target_type": "skill",
+        "relation_type": "requires_skill",
+        "weight": 1.2,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "掌握",
+          "熟悉",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "occ_backend_engineer",
+        "target_name": "后端开发工程师",
+        "target_type": "occupation",
+        "relation_type": "related_role",
+        "weight": 0.7375,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "方向",
+          "相关"
+        ]
+      }
+    ]
+  },
+  {
+    "occupation_id": "occ_backend_engineer",
+    "occupation_name": "后端开发工程师",
+    "occupation_type": "occupation",
+    "confidence": 0.98,
+    "source": "preprocess",
+    "recommendation_score": 5.66,
+    "counts": {
+      "required_skills": 2,
+      "preferred_skills": 0,
+      "tools": 3,
+      "education": 0,
+      "traits": 0,
+      "related_roles": 0
+    },
+    "items": {
+      "required_skills": [
+        {
+          "target_id": "skill_java",
+          "target_name": "Java",
+          "target_type": "skill",
+          "relation_type": "requires_skill",
+          "weight": 1.2,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "掌握",
+            "熟悉",
+            "需要"
+          ]
+        },
+        {
+          "target_id": "skill_sql",
+          "target_name": "SQL",
+          "target_type": "skill",
+          "relation_type": "requires_skill",
+          "weight": 1.2,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "掌握",
+            "熟悉",
+            "需要"
+          ]
+        }
+      ],
+      "preferred_skills": [],
+      "tools": [
+        {
+          "target_id": "skill_linux",
+          "target_name": "Linux",
+          "target_type": "tool",
+          "relation_type": "uses_tool",
+          "weight": 1.0875,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "掌握",
+            "熟悉",
+            "需要"
+          ]
+        },
+        {
+          "target_id": "skill_mysql",
+          "target_name": "MySQL",
+          "target_type": "tool",
+          "relation_type": "uses_tool",
+          "weight": 1.0875,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "掌握",
+            "熟悉",
+            "需要"
+          ]
+        },
+        {
+          "target_id": "skill_git",
+          "target_name": "Git",
+          "target_type": "tool",
+          "relation_type": "uses_tool",
+          "weight": 1.085,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "掌握",
+            "熟悉",
+            "需要"
+          ]
+        }
+      ],
+      "education": [],
+      "traits": [],
+      "related_roles": []
+    },
+    "flat_items": [
+      {
+        "target_id": "skill_java",
+        "target_name": "Java",
+        "target_type": "skill",
+        "relation_type": "requires_skill",
+        "weight": 1.2,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "掌握",
+          "熟悉",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "skill_sql",
+        "target_name": "SQL",
+        "target_type": "skill",
+        "relation_type": "requires_skill",
+        "weight": 1.2,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "掌握",
+          "熟悉",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "skill_linux",
+        "target_name": "Linux",
+        "target_type": "tool",
+        "relation_type": "uses_tool",
+        "weight": 1.0875,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "掌握",
+          "熟悉",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "skill_mysql",
+        "target_name": "MySQL",
+        "target_type": "tool",
+        "relation_type": "uses_tool",
+        "weight": 1.0875,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "掌握",
+          "熟悉",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "skill_git",
+        "target_name": "Git",
+        "target_type": "tool",
+        "relation_type": "uses_tool",
+        "weight": 1.085,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "掌握",
+          "熟悉",
+          "需要"
+        ]
+      }
+    ]
+  },
+  {
+    "occupation_id": "occ_data_analyst",
+    "occupation_name": "数据分析师",
+    "occupation_type": "occupation",
+    "confidence": 0.96,
+    "source": "preprocess",
+    "recommendation_score": 4.4975,
+    "counts": {
+      "required_skills": 0,
+      "preferred_skills": 4,
+      "tools": 0,
+      "education": 0,
+      "traits": 1,
+      "related_roles": 0
+    },
+    "items": {
+      "required_skills": [],
+      "preferred_skills": [
+        {
+          "target_id": "skill_python",
+          "target_name": "Python",
+          "target_type": "skill",
+          "relation_type": "preferred_skill",
+          "weight": 0.9375,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "优先"
+          ]
+        },
+        {
+          "target_id": "skill_sql",
+          "target_name": "SQL",
+          "target_type": "skill",
+          "relation_type": "preferred_skill",
+          "weight": 0.935,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "优先"
+          ]
+        },
+        {
+          "target_id": "skill_excel",
+          "target_name": "Excel",
+          "target_type": "skill",
+          "relation_type": "preferred_skill",
+          "weight": 0.9275,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "优先"
+          ]
+        },
+        {
+          "target_id": "skill_pandas",
+          "target_name": "Pandas",
+          "target_type": "skill",
+          "relation_type": "preferred_skill",
+          "weight": 0.9275,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "优先"
+          ]
+        }
+      ],
+      "tools": [],
+      "education": [],
+      "traits": [
+        {
+          "target_id": "trait_logic",
+          "target_name": "逻辑思维",
+          "target_type": "trait",
+          "relation_type": "needs_trait",
+          "weight": 0.77,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "思维",
+            "能力"
+          ]
+        }
+      ],
+      "related_roles": []
+    },
+    "flat_items": [
+      {
+        "target_id": "skill_python",
+        "target_name": "Python",
+        "target_type": "skill",
+        "relation_type": "preferred_skill",
+        "weight": 0.9375,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "优先"
+        ]
+      },
+      {
+        "target_id": "skill_sql",
+        "target_name": "SQL",
+        "target_type": "skill",
+        "relation_type": "preferred_skill",
+        "weight": 0.935,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "优先"
+        ]
+      },
+      {
+        "target_id": "skill_excel",
+        "target_name": "Excel",
+        "target_type": "skill",
+        "relation_type": "preferred_skill",
+        "weight": 0.9275,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "优先"
+        ]
+      },
+      {
+        "target_id": "skill_pandas",
+        "target_name": "Pandas",
+        "target_type": "skill",
+        "relation_type": "preferred_skill",
+        "weight": 0.9275,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "优先"
+        ]
+      },
+      {
+        "target_id": "trait_logic",
+        "target_name": "逻辑思维",
+        "target_type": "trait",
+        "relation_type": "needs_trait",
+        "weight": 0.77,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "思维",
+          "能力"
+        ]
+      }
+    ]
+  },
+  {
+    "occupation_id": "occ_test_engineer",
+    "occupation_name": "测试工程师",
+    "occupation_type": "occupation",
+    "confidence": 0.95,
+    "source": "preprocess",
+    "recommendation_score": 3.81,
+    "counts": {
+      "required_skills": 0,
+      "preferred_skills": 0,
+      "tools": 2,
+      "education": 1,
+      "traits": 1,
+      "related_roles": 0
+    },
+    "items": {
+      "required_skills": [],
+      "preferred_skills": [],
+      "tools": [
+        {
+          "target_id": "skill_linux",
+          "target_name": "Linux",
+          "target_type": "tool",
+          "relation_type": "uses_tool",
+          "weight": 1.08,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "具备",
+            "掌握",
+            "需要"
+          ]
+        },
+        {
+          "target_id": "skill_git",
+          "target_name": "Git",
+          "target_type": "tool",
+          "relation_type": "uses_tool",
+          "weight": 1.0775,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "具备",
+            "掌握",
+            "需要"
+          ]
+        }
+      ],
+      "education": [
+        {
+          "target_id": "edu_bachelor",
+          "target_name": "本科",
+          "target_type": "education",
+          "relation_type": "requires_education",
+          "weight": 0.885,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "学历",
+            "本科"
+          ]
+        }
+      ],
+      "traits": [
+        {
+          "target_id": "trait_communication",
+          "target_name": "沟通能力",
+          "target_type": "trait",
+          "relation_type": "needs_trait",
+          "weight": 0.7675,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "沟通",
+            "细致",
+            "能力"
+          ]
+        }
+      ],
+      "related_roles": []
+    },
+    "flat_items": [
+      {
+        "target_id": "skill_linux",
+        "target_name": "Linux",
+        "target_type": "tool",
+        "relation_type": "uses_tool",
+        "weight": 1.08,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "具备",
+          "掌握",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "skill_git",
+        "target_name": "Git",
+        "target_type": "tool",
+        "relation_type": "uses_tool",
+        "weight": 1.0775,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "具备",
+          "掌握",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "edu_bachelor",
+        "target_name": "本科",
+        "target_type": "education",
+        "relation_type": "requires_education",
+        "weight": 0.885,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "学历",
+          "本科"
+        ]
+      },
+      {
+        "target_id": "trait_communication",
+        "target_name": "沟通能力",
+        "target_type": "trait",
+        "relation_type": "needs_trait",
+        "weight": 0.7675,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "沟通",
+          "细致",
+          "能力"
+        ]
+      }
+    ]
+  },
+  {
+    "occupation_id": "occ_algo_engineer",
+    "occupation_name": "算法工程师",
+    "occupation_type": "occupation",
+    "confidence": 0.96,
+    "source": "preprocess",
+    "recommendation_score": 2.4,
+    "counts": {
+      "required_skills": 2,
+      "preferred_skills": 0,
+      "tools": 0,
+      "education": 0,
+      "traits": 0,
+      "related_roles": 0
+    },
+    "items": {
+      "required_skills": [
+        {
+          "target_id": "skill_numpy",
+          "target_name": "NumPy",
+          "target_type": "skill",
+          "relation_type": "requires_skill",
+          "weight": 1.2,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "掌握",
+            "需要"
+          ]
+        },
+        {
+          "target_id": "skill_python",
+          "target_name": "Python",
+          "target_type": "skill",
+          "relation_type": "requires_skill",
+          "weight": 1.2,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "掌握",
+            "需要"
+          ]
+        }
+      ],
+      "preferred_skills": [],
+      "tools": [],
+      "education": [],
+      "traits": [],
+      "related_roles": []
+    },
+    "flat_items": [
+      {
+        "target_id": "skill_numpy",
+        "target_name": "NumPy",
+        "target_type": "skill",
+        "relation_type": "requires_skill",
+        "weight": 1.2,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "掌握",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "skill_python",
+        "target_name": "Python",
+        "target_type": "skill",
+        "relation_type": "requires_skill",
+        "weight": 1.2,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "掌握",
+          "需要"
+        ]
+      }
+    ]
+  }
+]
