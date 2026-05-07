@@ -47,19 +47,24 @@ class ExtractorTests(unittest.TestCase):
             result = run_pipeline(output_dir=output_dir)
             entities_payload = json.loads((output_dir / "entities.json").read_text(encoding="utf-8"))
             coverage_payload = json.loads((output_dir / "entity_coverage.json").read_text(encoding="utf-8"))
+            review_payload = json.loads((output_dir / "disambiguation_review.json").read_text(encoding="utf-8"))
             summary_payload = json.loads((output_dir / "summary.json").read_text(encoding="utf-8"))
 
         self.assertGreaterEqual(result["documents"], 1)
         self.assertGreaterEqual(result["mentions"], 1)
         self.assertGreaterEqual(result["entities"], 1)
+        self.assertGreaterEqual(result["uncertain_mentions"], 0)
         self.assertIn("output_dir", result)
         self.assertEqual(len(entities_payload), len(self.catalog.entities))
         self.assertEqual(coverage_payload["catalog_entities"], len(self.catalog.entities))
         self.assertEqual(coverage_payload["uncovered_entities"], 0)
+        self.assertEqual(review_payload["threshold"], 0.98)
+        self.assertEqual(review_payload["uncertain_count"], 3)
         self.assertEqual(summary_payload["catalog_entities"], len(self.catalog.entities))
         self.assertEqual(summary_payload["entities"], len(self.catalog.entities))
         self.assertGreaterEqual(summary_payload["covered_entities"], 1)
         self.assertGreaterEqual(summary_payload["uncovered_entities"], 0)
+        self.assertEqual(summary_payload["uncertain_mentions"], 3)
 
     def test_title_guides_ambiguous_entity_resolution(self) -> None:
         """标题信息应能帮助同义别名在多个候选实体之间做消歧。"""

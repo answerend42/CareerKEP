@@ -31,6 +31,7 @@
 - `source_manifest.json`：原始数据扫描清单，包含已加载和被跳过的文件
 - `mentions.json`：每一条实体命中记录
 - `entities.json`：按实体聚合后的统计结果
+- `disambiguation_review.json`：低置信度命中复核清单
 - `entity_coverage.json`：实体覆盖率报告
 - `summary.json`：整体运行摘要
 
@@ -39,7 +40,7 @@
 在仓库根目录执行：
 
 ```bash
-python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess/output
+python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess/output --review-threshold 0.98
 ```
 
 如果不传参数，默认读取 `preprocess/raw_sources/`，并写入 `preprocess/output/`。
@@ -50,6 +51,7 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 - 采集阶段会额外输出原始数据清单，显式记录被跳过的文件，避免数据源里有文件但流水线完全不知道。
 - 抽取阶段优先匹配长别名，再补充词干型生成别名，减少短词噪声。
 - 消歧阶段会综合标题命中、正文命中和实体层级先验，避免同名实体随机落点。
+- 复核阶段会把低于阈值的命中单独输出，方便人工检查和继续补词典。
 
 ## 后续扩展建议
 

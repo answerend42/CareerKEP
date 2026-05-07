@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, List
 
@@ -82,12 +82,57 @@ def _build_entity_coverage_report(entity_summary: List[ResolvedEntity]) -> dict:
     }
 
 
+def _build_disambiguation_review(mentions: List[dict], threshold: float) -> dict:
+    """构建消歧复核清单。
+
+    这里不直接改写原始命中结果，而是把低置信度样本单独输出，
+    方便后续人工检查别名覆盖是否足够、消歧规则是否需要补强。
+    """
+
+    uncertain_mentions = [
+        mention
+        for mention in mentions
+        if float(mention.get("confidence", 0.0)) < threshold
+    ]
+    uncertain_mentions.sort(
+        key=lambda item: (
+            float(item.get("confidence", 0.0)),
+            item.get("doc_id", ""),
+            int(item.get("span_start", 0)),
+            int(item.get("span_end", 0)),
+        )
+    )
+
+    entity_counter = Counter(mention["entity_id"] for mention in uncertain_mentions)
+    doc_counter = Counter(mention["doc_id"] for mention in uncertain_mentions)
+
+    return {
+        "threshold": threshold,
+        "uncertain_count": len(uncertain_mentions),
+        "uncertain_document_count": len(doc_counter),
+        "uncertain_entity_count": len(entity_counter),
+        "top_uncertain_entities": [
+            {"entity_id": entity_id, "count": count}
+            for entity_id, count in entity_counter.most_common(10)
+        ],
+        "top_uncertain_documents": [
+            {"doc_id": doc_id, "count": count}
+            for doc_id, count in doc_counter.most_common(10)
+        ],
+        "uncertain_mentions": uncertain_mentions,
+    }
+
+
 def _dump_json(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) -> Dict[str, object]:
+def run_pipeline(
+    input_dir: Path | None = None,
+    output_dir: Path | None = None,
+    review_threshold: float = 0.98,
+) -> Dict[str, object]:
     """执行完整预处理流程。"""
 
     catalog = load_entity_catalog()
@@ -108,12 +153,14 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
     covered_entities = sum(1 for item in entity_summary if item.mention_count > 0)
     total_entities = len(entity_summary)
     coverage_report = _build_entity_coverage_report(entity_summary)
+    disambiguation_review = _build_disambiguation_review(all_mentions, review_threshold)
 
     resolved_output_dir = output_dir or OUTPUT_DIR
     _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
     _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
     _dump_json(resolved_output_dir / "mentions.json", all_mentions)
     _dump_json(resolved_output_dir / "entities.json", [item.to_dict() for item in entity_summary])
+    _dump_json(resolved_output_dir / "disambiguation_review.json", disambiguation_review)
     _dump_json(
         resolved_output_dir / "entity_coverage.json",
         {
@@ -139,6 +186,8 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
             "uncovered_entities": total_entities - covered_entities,
             "documents_with_mentions": len(mentions_by_doc),
             "average_mentions_per_document": round(len(all_mentions) / len(documents), 4) if documents else 0.0,
+            "review_threshold": review_threshold,
+            "uncertain_mentions": disambiguation_review["uncertain_count"],
             "source_dir": str(input_dir or RAW_SOURCE_DIR),
             "output_dir": str(resolved_output_dir),
         },
@@ -148,6 +197,8 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
         "documents": len(documents),
         "mentions": len(all_mentions),
         "entities": len(entity_summary),
+        "uncertain_mentions": disambiguation_review["uncertain_count"],
+        "review_threshold": review_threshold,
         "scanned_source_files": source_manifest["scanned_files"],
         "loaded_source_files": source_manifest["loaded_files"],
         "skipped_source_files": source_manifest["skipped_files"],
@@ -169,17 +220,28 @@ def _parse_args() -> argparse.Namespace:
         default=OUTPUT_DIR,
         help="输出目录，默认写入 preprocess/output/",
     )
+    parser.add_argument(
+        "--review-threshold",
+        type=float,
+        default=0.98,
+        help="消歧复核阈值，低于该分数的命中会写入 disambiguation_review.json",
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = _parse_args()
-    result = run_pipeline(input_dir=args.input_dir, output_dir=args.output_dir)
+    result = run_pipeline(
+        input_dir=args.input_dir,
+        output_dir=args.output_dir,
+        review_threshold=args.review_threshold,
+    )
     print(
         "预处理完成: "
         f"documents={result['documents']}, "
         f"mentions={result['mentions']}, "
         f"entities={result['entities']}, "
+        f"review={result['uncertain_mentions']}, "
         f"output_dir={result['output_dir']}"
     )
 
