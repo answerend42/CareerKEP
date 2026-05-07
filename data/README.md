@@ -54,6 +54,12 @@ python scripts/build_kg_data.py
 python scripts/validate_kg_data.py
 ```
 
+如果需要比较两版构建目录，可以执行：
+
+```powershell
+python scripts/compare_kg_catalog.py --left output/data_catalog.json --right output/data_catalog.json
+```
+
 也可以显式指定输入和输出：
 
 ```powershell

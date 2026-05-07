@@ -53,6 +53,12 @@ python scripts/build_kg_data.py
 python scripts/validate_kg_data.py
 ```
 
+如果要比较两版 `data_catalog.json`，可以执行：
+
+```powershell
+python scripts/compare_kg_catalog.py --left output/data_catalog.json --right output/data_catalog.json
+```
+
 如果要验证某一版输入，可以指定参数单独构建：
 
 ```powershell
