@@ -184,6 +184,31 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(len(documents), 1)
         self.assertEqual(documents[0].metadata["source_path"], "keep.txt")
 
+    def test_jsonl_partial_parse_errors_are_recorded(self) -> None:
+        """JSONL 局部坏行不应拖垮整份文件，并且需要在清单里留下痕迹。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "mixed.jsonl").write_text(
+                """
+                {"doc_id": "jsonl_good_1", "title": "第一条", "text": "后端工程能力。"}
+                {"doc_id": "jsonl_bad", "title": "第二条", "text": "这行少了结尾"
+                {"doc_id": "jsonl_good_2", "title": "第三条", "text": "前端项目经验。"}
+                """.strip(),
+                encoding="utf-8",
+            )
+
+            manifest = collect_source_manifest(root)
+            documents = load_raw_documents(root)
+
+        self.assertEqual(manifest["scanned_files"], 1)
+        self.assertEqual(manifest["loaded_files"], 1)
+        self.assertEqual(manifest["error_files"], 1)
+        self.assertEqual(manifest["files"][0]["status"], "loaded_with_errors")
+        self.assertEqual(manifest["files"][0]["error_count"], 1)
+        self.assertEqual(len(documents), 2)
+        self.assertEqual([doc.doc_id for doc in documents], ["jsonl_good_1", "jsonl_good_2"])
+
 
 if __name__ == "__main__":
     unittest.main()

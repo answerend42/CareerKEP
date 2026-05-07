@@ -254,21 +254,60 @@ def _extract_document_items(payload: object) -> List[dict]:
     return [payload]
 
 
+def _load_jsonl_records(path: Path) -> tuple[List[dict], List[dict]]:
+    """加载 JSONL 记录，并容忍单行坏数据。
+
+    真实采集场景里，JSONL 文件经常会因为某一行截断、拼接错误或编码问题
+    出现局部损坏。这里选择“能读多少算多少”，同时把错误行单独记录下来，
+    避免一条坏行把整份文件都丢掉。
+    """
+
+    records: List[dict] = []
+    errors: List[dict] = []
+
+    for line_number, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        line = raw_line.strip()
+        if not line:
+            continue
+        try:
+            item = json.loads(line)
+        except json.JSONDecodeError as exc:
+            errors.append(
+                {
+                    "line_number": line_number,
+                    "error": exc.msg,
+                }
+            )
+            continue
+
+        if isinstance(item, dict):
+            records.append(item)
+        else:
+            errors.append(
+                {
+                    "line_number": line_number,
+                    "error": "JSONL 行内容不是对象",
+                }
+            )
+
+    return records, errors
+
+
 def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
     shared_metadata: dict = {}
     if path.suffix.lower() == ".jsonl":
-        documents: List[dict] = []
-        for line in path.read_text(encoding="utf-8").splitlines():
-            line = line.strip()
-            if not line:
-                continue
-            documents.append(json.loads(line))
+        documents, errors = _load_jsonl_records(path)
         payload: object = documents
     else:
         payload = json.loads(path.read_text(encoding="utf-8"))
         shared_metadata = _extract_shared_metadata(payload)
     documents = _extract_document_items(payload)
     if not documents:
+        if path.suffix.lower() == ".jsonl" and errors:
+            error_detail = "; ".join(
+                f"第{item['line_number']}行: {item['error']}" for item in errors[:5]
+            )
+            raise ValueError(f"原始文档文件中没有可用的 JSONL 记录: {path}，{error_detail}")
         raise ValueError(f"原始文档文件格式不支持: {path}")
 
     result: List[RawDocument] = []
@@ -392,6 +431,7 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
     manifest_entries: List[dict] = []
     loaded_by_format: dict[str, int] = {}
     skipped_by_format: dict[str, int] = {}
+    error_by_format: dict[str, int] = {}
 
     for path in files:
         source_path = str(path.relative_to(directory))
@@ -402,7 +442,18 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
             "status": "loaded" if is_supported else "skipped",
         }
         if is_supported:
-            loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
+            if path.suffix.lower() == ".jsonl":
+                _records, errors = _load_jsonl_records(path)
+                if errors:
+                    entry["status"] = "loaded_with_errors" if _records else "error"
+                    entry["record_count"] = len(_records)
+                    entry["error_count"] = len(errors)
+                    entry["errors"] = errors[:5]
+                    error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
+                if _records:
+                    loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
+            else:
+                loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
         else:
             skipped_by_format[source_format] = skipped_by_format.get(source_format, 0) + 1
             entry["reason"] = "不支持的文件类型"
@@ -413,8 +464,10 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
         "scanned_files": len(files),
         "loaded_files": sum(loaded_by_format.values()),
         "skipped_files": sum(skipped_by_format.values()),
+        "error_files": sum(error_by_format.values()),
         "loaded_by_format": loaded_by_format,
         "skipped_by_format": skipped_by_format,
+        "error_by_format": error_by_format,
         "files": manifest_entries,
     }
 

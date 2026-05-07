@@ -178,6 +178,7 @@ def run_pipeline(
             "scanned_source_files": source_manifest["scanned_files"],
             "loaded_source_files": source_manifest["loaded_files"],
             "skipped_source_files": source_manifest["skipped_files"],
+            "error_source_files": source_manifest.get("error_files", 0),
             "mentions": len(all_mentions),
             "entities": total_entities,
             "catalog_entities": len(catalog.entities),
@@ -202,6 +203,7 @@ def run_pipeline(
         "scanned_source_files": source_manifest["scanned_files"],
         "loaded_source_files": source_manifest["loaded_files"],
         "skipped_source_files": source_manifest["skipped_files"],
+        "error_source_files": source_manifest.get("error_files", 0),
         "output_dir": str(resolved_output_dir),
     }
 
