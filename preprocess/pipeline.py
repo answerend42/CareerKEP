@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from .catalog import EntityCatalog, load_entity_catalog
-from .collector import RAW_SOURCE_DIR, load_raw_documents
+from .collector import RAW_SOURCE_DIR, collect_source_manifest, load_raw_documents
 from .extractor import extract_mentions
 from .models import RawDocument, ResolvedEntity
 
@@ -91,6 +91,7 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
     """执行完整预处理流程。"""
 
     catalog = load_entity_catalog()
+    source_manifest = collect_source_manifest(input_dir)
     documents = load_raw_documents(input_dir)
 
     all_mentions: List[dict] = []
@@ -110,6 +111,7 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
 
     resolved_output_dir = output_dir or OUTPUT_DIR
     _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
+    _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
     _dump_json(resolved_output_dir / "mentions.json", all_mentions)
     _dump_json(resolved_output_dir / "entities.json", [item.to_dict() for item in entity_summary])
     _dump_json(
@@ -126,6 +128,9 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
         {
             "documents": len(documents),
             "source_files": len({doc.metadata.get("source_path", doc.doc_id) for doc in documents}),
+            "scanned_source_files": source_manifest["scanned_files"],
+            "loaded_source_files": source_manifest["loaded_files"],
+            "skipped_source_files": source_manifest["skipped_files"],
             "mentions": len(all_mentions),
             "entities": total_entities,
             "catalog_entities": len(catalog.entities),
@@ -143,6 +148,9 @@ def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) 
         "documents": len(documents),
         "mentions": len(all_mentions),
         "entities": len(entity_summary),
+        "scanned_source_files": source_manifest["scanned_files"],
+        "loaded_source_files": source_manifest["loaded_files"],
+        "skipped_source_files": source_manifest["skipped_files"],
         "output_dir": str(resolved_output_dir),
     }
 

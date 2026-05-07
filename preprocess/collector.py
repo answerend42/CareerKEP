@@ -35,6 +35,7 @@ CORE_DOCUMENT_KEYS = {
     "metadata",
     "extra",
 }
+SUPPORTED_SOURCE_SUFFIXES = {".json", ".jsonl", ".csv", ".tsv", ".txt", ".md"}
 
 
 def _build_fallback_doc_id(source_path: str, record_index: int | None = None) -> str:
@@ -49,6 +50,21 @@ def _build_fallback_doc_id(source_path: str, record_index: int | None = None) ->
     if record_index is not None:
         path_key = f"{path_key}_{record_index}"
     return path_key or (f"document_{record_index}" if record_index is not None else "document")
+
+
+def _scan_source_files(directory: Path) -> List[Path]:
+    """扫描目录下所有文件，统一供采集和清单生成复用。"""
+
+    return [path for path in sorted(directory.rglob("*")) if path.is_file()]
+
+
+def _classify_source_file(path: Path) -> tuple[bool, str]:
+    """判断文件是否属于当前预处理阶段支持的数据源。"""
+
+    suffix = path.suffix.lower()
+    if suffix in SUPPORTED_SOURCE_SUFFIXES:
+        return True, suffix.lstrip(".")
+    return False, suffix.lstrip(".") or "unknown"
 
 
 def _coerce_text(value: object) -> str:
@@ -326,6 +342,48 @@ def _ensure_unique_doc_ids(documents: List[RawDocument]) -> None:
         raise ValueError(f"发现重复的文档 ID，请先清理原始数据: {detail}")
 
 
+def collect_source_manifest(input_dir: Path | None = None) -> dict:
+    """收集原始数据清单。
+
+    这个清单会把扫描到但未纳入预处理的文件也记录下来，避免数据源里有
+    新文件却没有被流水线感知到。
+    """
+
+    directory = input_dir or RAW_SOURCE_DIR
+    if not directory.exists():
+        raise FileNotFoundError(f"原始数据目录不存在: {directory}")
+
+    files = _scan_source_files(directory)
+    manifest_entries: List[dict] = []
+    loaded_by_format: dict[str, int] = {}
+    skipped_by_format: dict[str, int] = {}
+
+    for path in files:
+        source_path = str(path.relative_to(directory))
+        is_supported, source_format = _classify_source_file(path)
+        entry = {
+            "source_path": source_path,
+            "source_format": source_format,
+            "status": "loaded" if is_supported else "skipped",
+        }
+        if is_supported:
+            loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
+        else:
+            skipped_by_format[source_format] = skipped_by_format.get(source_format, 0) + 1
+            entry["reason"] = "不支持的文件类型"
+        manifest_entries.append(entry)
+
+    return {
+        "input_dir": str(directory),
+        "scanned_files": len(files),
+        "loaded_files": sum(loaded_by_format.values()),
+        "skipped_files": sum(skipped_by_format.values()),
+        "loaded_by_format": loaded_by_format,
+        "skipped_by_format": skipped_by_format,
+        "files": manifest_entries,
+    }
+
+
 def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
     """加载原始文档快照。"""
 
@@ -335,11 +393,13 @@ def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
 
     documents: List[RawDocument] = []
     # 递归读取子目录，方便把爬虫、人工整理和导出数据按主题分层存放。
-    paths = [path for path in sorted(directory.rglob("*")) if path.is_file()]
+    paths = _scan_source_files(directory)
     for path in paths:
-        if path.is_dir():
-            continue
         source_path = str(path.relative_to(directory))
+        is_supported, _source_format = _classify_source_file(path)
+        if not is_supported:
+            continue
+
         suffix = path.suffix.lower()
         if suffix in {".json", ".jsonl"}:
             documents.extend(_load_json_documents(path, source_path))

@@ -6,7 +6,7 @@ import tempfile
 from pathlib import Path
 import unittest
 
-from preprocess.collector import load_raw_documents
+from preprocess.collector import collect_source_manifest, load_raw_documents
 
 
 class CollectorTests(unittest.TestCase):
@@ -129,6 +129,26 @@ class CollectorTests(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "重复的文档 ID"):
                 load_raw_documents(root)
+
+    def test_manifest_records_skipped_files(self) -> None:
+        """原始数据清单应显式记录不支持的文件，避免静默漏采。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "keep.txt").write_text("后端工程能力。", encoding="utf-8")
+            (root / "ignore.pdf").write_text("这是一份不支持的原始文件。", encoding="utf-8")
+
+            manifest = collect_source_manifest(root)
+            documents = load_raw_documents(root)
+
+        self.assertEqual(manifest["scanned_files"], 2)
+        self.assertEqual(manifest["loaded_files"], 1)
+        self.assertEqual(manifest["skipped_files"], 1)
+        self.assertEqual(manifest["loaded_by_format"]["txt"], 1)
+        self.assertEqual(manifest["skipped_by_format"]["pdf"], 1)
+        self.assertEqual([entry["status"] for entry in manifest["files"]], ["skipped", "loaded"])
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(documents[0].metadata["source_path"], "keep.txt")
 
 
 if __name__ == "__main__":

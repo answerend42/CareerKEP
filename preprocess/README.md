@@ -28,6 +28,7 @@
 默认会写入 `preprocess/output/`，包含以下文件：
 
 - `documents.json`：标准化后的原始文档快照
+- `source_manifest.json`：原始数据扫描清单，包含已加载和被跳过的文件
 - `mentions.json`：每一条实体命中记录
 - `entities.json`：按实体聚合后的统计结果
 - `entity_coverage.json`：实体覆盖率报告
@@ -46,6 +47,7 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 ## 设计说明
 
 - 采集阶段会对 `doc_id` 做唯一性校验，避免不同来源的文档在后续统计中互相覆盖。
+- 采集阶段会额外输出原始数据清单，显式记录被跳过的文件，避免数据源里有文件但流水线完全不知道。
 - 抽取阶段优先匹配长别名，再补充词干型生成别名，减少短词噪声。
 - 消歧阶段会综合标题命中、正文命中和实体层级先验，避免同名实体随机落点。
 
