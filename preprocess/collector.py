@@ -35,6 +35,22 @@ CORE_DOCUMENT_KEYS = {
     "metadata",
     "extra",
 }
+DOCUMENT_HINT_KEYS = {
+    "doc_id",
+    "id",
+    "source",
+    "origin",
+    "title",
+    "name",
+    "heading",
+    "text",
+    "content",
+    "body",
+    "description",
+    "summary",
+    "url",
+    "link",
+}
 SUPPORTED_SOURCE_SUFFIXES = {".json", ".jsonl", ".csv", ".tsv", ".txt", ".md"}
 
 
@@ -121,6 +137,16 @@ def _looks_like_collection_container(payload: dict) -> bool:
         if isinstance(value, dict) and _looks_like_collection_container(value):
             return True
     return False
+
+
+def _looks_like_document_record(payload: dict) -> bool:
+    """判断一个字典是否更像单条文档记录。
+
+    如果一个字典本身已经具备标题、正文或文档编号，就优先把它当成文档，
+    避免把文档内部的评论、标签或其他列表误判成新的文档集合。
+    """
+
+    return any(key in payload and payload.get(key) not in (None, "") for key in DOCUMENT_HINT_KEYS)
 
 
 def _build_document(
@@ -215,6 +241,15 @@ def _extract_document_items(payload: object) -> List[dict]:
             nested_records = _extract_document_items(value)
             if nested_records:
                 return nested_records
+
+    # 如果当前字典本身不像一条文档记录，就继续向下找更深层的包装结构。
+    # 这样可以兼容 `response -> data -> items` 这类常见的接口快照。
+    if not _looks_like_document_record(payload):
+        for value in payload.values():
+            if isinstance(value, (dict, list)):
+                nested_records = _extract_document_items(value)
+                if nested_records:
+                    return nested_records
 
     return [payload]
 

@@ -56,6 +56,40 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(documents[1].metadata["source_type"], "json")
         self.assertEqual(documents[1].metadata["category"], "backend")
 
+    def test_deeply_nested_json_wrappers_are_unpacked(self) -> None:
+        """接口快照常见的多层包装结构也应能被采集器识别。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "wrapped.json").write_text(
+                """
+                {
+                  "response": {
+                    "payload": {
+                      "results": [
+                        {
+                          "doc_id": "wrapped_doc",
+                          "title": "套壳文档",
+                          "text": "后端工程能力需要持续积累。",
+                          "metadata": {"source_type": "wrapped"}
+                        }
+                      ]
+                    }
+                  }
+                }
+                """.strip(),
+                encoding="utf-8",
+            )
+
+            documents = load_raw_documents(root)
+
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(documents[0].doc_id, "wrapped_doc")
+        self.assertEqual(documents[0].title, "套壳文档")
+        self.assertEqual(documents[0].metadata["source_type"], "wrapped")
+        self.assertEqual(documents[0].metadata["source_path"], "wrapped.json")
+        self.assertEqual(documents[0].metadata["source_format"], "json")
+
     def test_markdown_heading_is_used_as_title(self) -> None:
         """Markdown 文档的首个标题应当被识别为标题，并从正文中剥离。"""
 
