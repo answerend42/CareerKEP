@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
@@ -94,6 +95,16 @@ def write_json(path: Path, payload: Any) -> None:
     with path.open("w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False, indent=2)
         fh.write("\n")
+
+
+def file_sha256(path: Path) -> str:
+    """计算文件 SHA256，方便做构建产物完整性校验。"""
+
+    digest = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(8192), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def relative_path(path: Path) -> str:
@@ -790,6 +801,8 @@ def build_manifest(
             "recommendation_index.json",
             "relation_summary.json",
             "extraction_log.json",
+            "data_catalog.json",
+            "graph_manifest.json",
         ],
         "source_files": {
             "entities": relative_path(args.entities),
@@ -799,6 +812,72 @@ def build_manifest(
             "rules": relative_path(args.rules),
         },
     }
+
+
+def build_data_catalog(
+    output_dir: Path,
+    manifest: dict[str, Any],
+    graph_index: dict[str, Any],
+    quality_report: dict[str, Any],
+    career_profiles: list[dict[str, Any]],
+    recommendation_index: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """生成所有输出文件的目录和校验信息。"""
+
+    file_items = [
+        ("nodes.json", "节点数据"),
+        ("relation_instances.json", "证据级关系实例"),
+        ("edges.json", "图谱边"),
+        ("graph_index.json", "图索引"),
+        ("graph_quality.json", "图谱质量报告"),
+        ("career_profiles.json", "职业画像"),
+        ("recommendation_index.json", "反向推荐索引"),
+        ("relation_summary.json", "关系统计摘要"),
+        ("extraction_log.json", "构建日志"),
+        ("graph_manifest.json", "构建清单"),
+    ]
+
+    file_overrides = {
+        "graph_manifest.json": manifest,
+        "graph_index.json": graph_index,
+        "graph_quality.json": quality_report,
+        "career_profiles.json": career_profiles,
+        "recommendation_index.json": recommendation_index,
+    }
+
+    catalog: list[dict[str, Any]] = []
+    for file_name, description in file_items:
+        file_path = output_dir / file_name
+        if file_name in file_overrides:
+            payload = file_overrides[file_name]
+        else:
+            payload = load_json(file_path)
+
+        if isinstance(payload, list):
+            item_count = len(payload)
+        elif isinstance(payload, dict):
+            if "edge_count" in payload:
+                item_count = int(payload["edge_count"])
+            elif "node_count" in payload:
+                item_count = int(payload["node_count"])
+            elif "entity_count" in payload:
+                item_count = int(payload["entity_count"])
+            else:
+                item_count = len(payload)
+        else:
+            item_count = 1
+
+        catalog.append(
+            {
+                "file_name": file_name,
+                "description": description,
+                "item_count": item_count,
+                "size_bytes": file_path.stat().st_size,
+                "sha256": file_sha256(file_path),
+            }
+        )
+
+    return catalog
 
 
 def parse_args() -> argparse.Namespace:
@@ -877,10 +956,17 @@ def main() -> int:
             },
         },
     )
-    write_json(
-        output_dir / "graph_manifest.json",
-        build_manifest(nodes, relation_instances, edges, len(evidence_items), args),
+    graph_manifest = build_manifest(nodes, relation_instances, edges, len(evidence_items), args)
+    write_json(output_dir / "graph_manifest.json", graph_manifest)
+    data_catalog = build_data_catalog(
+        output_dir,
+        graph_manifest,
+        graph_index,
+        quality_report,
+        career_profiles,
+        recommendation_index,
     )
+    write_json(output_dir / "data_catalog.json", data_catalog)
 
     print(
         f"已生成 {len(nodes)} 个节点、{len(relation_instances)} 条关系实例、"

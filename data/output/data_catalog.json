@@ -1,0 +1,72 @@
+[
+  {
+    "file_name": "nodes.json",
+    "description": "节点数据",
+    "item_count": 17,
+    "size_bytes": 3091,
+    "sha256": "0b62bcefba4ec76d1da4cff549abf89c84839c6645c1967b06cfafe8314ca1fa"
+  },
+  {
+    "file_name": "relation_instances.json",
+    "description": "证据级关系实例",
+    "item_count": 20,
+    "size_bytes": 10763,
+    "sha256": "7e0596bcbf9654b14fa36da7fe84e647a616ed9e5933659674ee4c2560c6ba98"
+  },
+  {
+    "file_name": "edges.json",
+    "description": "图谱边",
+    "item_count": 20,
+    "size_bytes": 8644,
+    "sha256": "18862d34c77701ff2d83e78ca940ba6667b25898ac28aeff2dd765e5cf467481"
+  },
+  {
+    "file_name": "graph_index.json",
+    "description": "图索引",
+    "item_count": 20,
+    "size_bytes": 14728,
+    "sha256": "0f6a9cff203c5a64c9214e02290fbd3ba31a3236fb79d092e1f250c69c0f98a2"
+  },
+  {
+    "file_name": "graph_quality.json",
+    "description": "图谱质量报告",
+    "item_count": 20,
+    "size_bytes": 3006,
+    "sha256": "6d0f3b8827ae13f659b2bc394b63dc847f7cad999d6387c31c2fe0c5461831b5"
+  },
+  {
+    "file_name": "career_profiles.json",
+    "description": "职业画像",
+    "item_count": 5,
+    "size_bytes": 16098,
+    "sha256": "8790a30f57b8c91eac00496e47109959748e69a4ec214d02bb2167a8cc439a30"
+  },
+  {
+    "file_name": "recommendation_index.json",
+    "description": "反向推荐索引",
+    "item_count": 13,
+    "size_bytes": 10529,
+    "sha256": "5f4c89fe6b616466a6bd12f8f6cfca17cda1605280d38c8bb596fbff58016382"
+  },
+  {
+    "file_name": "relation_summary.json",
+    "description": "关系统计摘要",
+    "item_count": 20,
+    "size_bytes": 451,
+    "sha256": "59f60d2c0bb8116d120e1c50106066afef254b60cbb959efd4049abb3a175797"
+  },
+  {
+    "file_name": "extraction_log.json",
+    "description": "构建日志",
+    "item_count": 17,
+    "size_bytes": 1378,
+    "sha256": "9aa19e53d8bedfe0ebc54a2af7e3fb0939a765328046957766437246c08f6830"
+  },
+  {
+    "file_name": "graph_manifest.json",
+    "description": "构建清单",
+    "item_count": 20,
+    "size_bytes": 857,
+    "sha256": "62a8643fe85162772eb73d418fcbf623b0d7477b11e6fd3991d8f60e99a24301"
+  }
+]

@@ -35,6 +35,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "recommendation_index": output_dir / "recommendation_index.json",
         "relation_summary": output_dir / "relation_summary.json",
         "extraction_log": output_dir / "extraction_log.json",
+        "data_catalog": output_dir / "data_catalog.json",
         "graph_manifest": output_dir / "graph_manifest.json",
     }
 
@@ -42,6 +43,8 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(not missing_files, f"缺少输出文件: {', '.join(missing_files)}", errors)
     if errors:
         return {"ok": False, "errors": errors}
+
+    file_paths_by_name = {path.name: path for path in files.values()}
 
     nodes = load_json(files["nodes"])
     relation_instances = load_json(files["relation_instances"])
@@ -52,6 +55,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     recommendation_index = load_json(files["recommendation_index"])
     relation_summary = load_json(files["relation_summary"])
     extraction_log = load_json(files["extraction_log"])
+    data_catalog = load_json(files["data_catalog"])
     graph_manifest = load_json(files["graph_manifest"])
 
     assert_condition(isinstance(nodes, list), "nodes.json 必须是列表", errors)
@@ -63,6 +67,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(isinstance(recommendation_index, list), "recommendation_index.json 必须是列表", errors)
     assert_condition(isinstance(relation_summary, dict), "relation_summary.json 必须是对象", errors)
     assert_condition(isinstance(extraction_log, dict), "extraction_log.json 必须是对象", errors)
+    assert_condition(isinstance(data_catalog, list), "data_catalog.json 必须是列表", errors)
     assert_condition(isinstance(graph_manifest, dict), "graph_manifest.json 必须是对象", errors)
     if errors:
         return {"ok": False, "errors": errors}
@@ -194,6 +199,32 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         errors,
     )
 
+    catalog_file_names = {item.get("file_name") for item in data_catalog}
+    expected_catalog_files = set(file_paths_by_name.keys()) - {"data_catalog.json"}
+    assert_condition(
+        catalog_file_names == expected_catalog_files,
+        "data_catalog 的文件清单与 output 实际文件不一致",
+        errors,
+    )
+    for item in data_catalog:
+        file_name = item.get("file_name")
+        file_path = file_paths_by_name.get(file_name)
+        assert_condition(
+            file_path is not None and file_path.exists(),
+            f"data_catalog 引用了不存在的文件: {file_name}",
+            errors,
+        )
+        assert_condition(
+            isinstance(item.get("sha256"), str) and len(item["sha256"]) == 64,
+            f"data_catalog 中的 sha256 不合法: {file_name}",
+            errors,
+        )
+        assert_condition(
+            isinstance(item.get("size_bytes"), int) and item["size_bytes"] > 0,
+            f"data_catalog 中的 size_bytes 不合法: {file_name}",
+            errors,
+        )
+
     return {
         "ok": not errors,
         "errors": errors,
@@ -202,6 +233,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
             "edge_count": len(edges),
             "career_profile_count": len(career_profiles),
             "recommendation_index_count": len(recommendation_index),
+            "catalog_file_count": len(data_catalog),
             "relation_types": dict(sorted(relation_counter.items())),
         },
     }
@@ -236,7 +268,8 @@ def main() -> int:
             f"{summary.get('node_count', 0)} 个节点、"
             f"{summary.get('edge_count', 0)} 条边、"
             f"{summary.get('career_profile_count', 0)} 个职业画像、"
-            f"{summary.get('recommendation_index_count', 0)} 个反向索引项"
+            f"{summary.get('recommendation_index_count', 0)} 个反向索引项、"
+            f"{summary.get('catalog_file_count', 0)} 个目录项"
         )
         return 0
 

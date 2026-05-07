@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-07T09:20:09",
+  "generated_at": "2026-05-07T09:30:03",
   "entity_count": 17,
   "evidence_count": 6,
   "relation_instance_count": 20,
@@ -20,7 +20,9 @@
     "career_profiles.json",
     "recommendation_index.json",
     "relation_summary.json",
-    "extraction_log.json"
+    "extraction_log.json",
+    "data_catalog.json",
+    "graph_manifest.json"
   ],
   "source_files": {
     "entities": "input\\sample_entities.json",

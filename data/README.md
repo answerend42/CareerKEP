@@ -31,6 +31,8 @@
   - 职业画像聚合结果，按职业整理技能、工具、学历、特质和相关岗位，便于推荐模块直接消费。
 - `output/recommendation_index.json`
   - 反向推荐索引，按目标技能、工具、学历、特质或岗位聚合可推荐的职业，便于候选召回。
+- `output/data_catalog.json`
+  - 构建产物目录，记录每个输出文件的大小、条目数和 SHA256，方便做版本对比和完整性校验。
 - `output/relation_summary.json`
   - 关系统计摘要，用于快速检查抽取结果。
 - `output/extraction_log.json`
