@@ -25,6 +25,8 @@
   - 聚合后的图谱边，包含权重、证据数和关键词。
 - `output/graph_index.json`
   - 给 backend 直接使用的图索引，包含按类型归类的节点和邻接表。
+- `output/graph_quality.json`
+  - 图谱质量报告，记录孤立节点、覆盖率和度分布，方便检查数据完整性。
 - `output/relation_summary.json`
   - 关系统计摘要，用于快速检查抽取结果。
 - `output/extraction_log.json`
@@ -52,7 +54,7 @@ python scripts/build_kg_data.py --entities input/sample_entities.json --evidence
 2. 再按实体名和别名在证据中做长词优先匹配，找到共现实体对。
 3. 根据实体类型组合和关键词规则抽取关系实例。
 4. 按关系类型、证据数和实体置信度计算边权重。
-5. 最终输出节点、实例、边、图索引和统计清单，保证 backend 可以直接消费。
+5. 最终输出节点、实例、边、图索引、质量报告和统计清单，保证 backend 可以直接消费。
 
 ## 维护原则
 

@@ -507,6 +507,71 @@ def build_graph_index(
     }
 
 
+def build_quality_report(
+    nodes: list[dict[str, Any]],
+    edges: list[Edge],
+    graph_index: dict[str, Any],
+) -> dict[str, Any]:
+    """生成图谱质量报告，用于快速发现孤立节点和覆盖率问题。"""
+
+    node_degree: dict[str, dict[str, int]] = {}
+    for node in nodes:
+        node_id = node["id"]
+        adjacency = graph_index["adjacency"].get(node_id, {"incoming": [], "outgoing": []})
+        incoming_count = len(adjacency["incoming"])
+        outgoing_count = len(adjacency["outgoing"])
+        node_degree[node_id] = {
+            "incoming": incoming_count,
+            "outgoing": outgoing_count,
+            "total": incoming_count + outgoing_count,
+        }
+
+    isolated_nodes = sorted(
+        node_id for node_id, degree in node_degree.items() if degree["total"] == 0
+    )
+    connected_nodes = len(nodes) - len(isolated_nodes)
+    total_degree = sum(item["total"] for item in node_degree.values())
+    average_degree = round(total_degree / len(nodes), 4) if nodes else 0.0
+
+    node_type_coverage: dict[str, dict[str, Any]] = {}
+    for node_type, node_ids in graph_index["node_type_index"].items():
+        connected_count = sum(1 for node_id in node_ids if node_degree[node_id]["total"] > 0)
+        node_type_coverage[node_type] = {
+            "total": len(node_ids),
+            "connected": connected_count,
+            "coverage_rate": round(connected_count / len(node_ids), 4) if node_ids else 0.0,
+        }
+
+    top_nodes = sorted(
+        (
+            {
+                "node_id": node_id,
+                "degree": degree["total"],
+                "incoming": degree["incoming"],
+                "outgoing": degree["outgoing"],
+            }
+            for node_id, degree in node_degree.items()
+        ),
+        key=lambda item: (-item["degree"], item["node_id"]),
+    )[:5]
+
+    return {
+        "node_count": len(nodes),
+        "edge_count": len(edges),
+        "connected_node_count": connected_nodes,
+        "isolated_node_count": len(isolated_nodes),
+        "isolated_nodes": isolated_nodes,
+        "average_degree": average_degree,
+        "node_degree": node_degree,
+        "top_nodes_by_degree": top_nodes,
+        "node_type_coverage": dict(sorted(node_type_coverage.items())),
+        "quality_flags": {
+            "has_isolated_node": bool(isolated_nodes),
+            "edge_density": round((len(edges) / len(nodes)) if nodes else 0.0, 4),
+        },
+    }
+
+
 def build_manifest(
     nodes: list[dict[str, Any]],
     relation_instances: list[RelationInstance],
@@ -529,6 +594,7 @@ def build_manifest(
             "relation_instances.json",
             "edges.json",
             "graph_index.json",
+            "graph_quality.json",
             "relation_summary.json",
             "extraction_log.json",
         ],
@@ -572,6 +638,7 @@ def main() -> int:
     edges = build_edges(entities, relation_instances, relation_map, weight_rules)
     nodes = build_nodes(entities)
     graph_index = build_graph_index(nodes, edges)
+    quality_report = build_quality_report(nodes, edges, graph_index)
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -580,6 +647,7 @@ def main() -> int:
     write_json(output_dir / "relation_instances.json", [asdict(item) for item in relation_instances])
     write_json(output_dir / "edges.json", [asdict(edge) for edge in edges])
     write_json(output_dir / "graph_index.json", graph_index)
+    write_json(output_dir / "graph_quality.json", quality_report)
     write_json(output_dir / "relation_summary.json", summarize_edges(edges))
     write_json(
         output_dir / "extraction_log.json",
@@ -590,6 +658,8 @@ def main() -> int:
             "matched_edge_count": len(edges),
             "graph_index_node_count": graph_index["node_count"],
             "graph_index_edge_count": graph_index["edge_count"],
+            "isolated_node_count": quality_report["isolated_node_count"],
+            "connected_node_count": quality_report["connected_node_count"],
             "source_files": {
                 "entities": relative_path(args.entities),
                 "evidence": relative_path(args.evidence),
@@ -602,6 +672,7 @@ def main() -> int:
                 "allowed_entity_types": sorted(ALLOWED_ENTITY_TYPES),
                 "relation_type_count": len(relation_map),
                 "keyword_group_count": len(relation_keyword_map),
+                "has_isolated_node": quality_report["quality_flags"]["has_isolated_node"],
             },
         },
     )
