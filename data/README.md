@@ -46,6 +46,12 @@
 python scripts/build_kg_data.py
 ```
 
+构建完成后，可以继续执行校验脚本检查输出一致性：
+
+```powershell
+python scripts/validate_kg_data.py
+```
+
 也可以显式指定输入和输出：
 
 ```powershell

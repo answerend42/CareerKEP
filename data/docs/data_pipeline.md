@@ -46,6 +46,12 @@
 python scripts/build_kg_data.py
 ```
 
+构建完后建议再执行：
+
+```powershell
+python scripts/validate_kg_data.py
+```
+
 如果要验证某一版输入，可以指定参数单独构建：
 
 ```powershell
