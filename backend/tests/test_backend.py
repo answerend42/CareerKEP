@@ -17,12 +17,12 @@ import threading
 from http.server import ThreadingHTTPServer
 
 import backend.app.main as main_module
-from backend.app.main import _RequestHandler, _read_json_argument, _read_json_file_argument, _run_recommend_command
+from backend.app.main import _RequestHandler, _build_role_options, _read_json_argument, _read_json_file_argument, _run_recommend_command
 from backend.app.main import _PayloadTooLargeError, _run_validate_graph_command
 from backend.app.api.recommend import recommend
 from backend.app.schemas import EvidenceInput, clamp01
 from backend.app.services.graph_loader import GraphValidationError
-from backend.app.services.input_normalizer import normalize_structured_input
+from backend.app.services.input_normalizer import load_alias_map, normalize_structured_input
 
 
 class BackendSmokeTest(unittest.TestCase):
@@ -157,6 +157,16 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("path", first_bridge)
         self.assertTrue(first_bridge["path"])
         self.assertIsInstance(first_bridge["path"], list)
+
+    def test_build_role_options_includes_alias_terms(self) -> None:
+        graph_summary = main_module.load_graph_summary()
+        role_options = _build_role_options(graph_summary, load_alias_map())
+
+        backend_role = next(item for item in role_options if item["node_id"] == "backend_engineer")
+        self.assertIn("后端开发工程师", backend_role["search_terms"])
+        self.assertIn("后端工程师", backend_role["search_terms"])
+        self.assertIn("backendengineer", backend_role["search_terms"])
+        self.assertEqual(len(backend_role["search_terms"]), len(set(backend_role["search_terms"])))
 
     def test_recommend_resolves_target_role_by_label(self) -> None:
         # 目标岗位输入不应只认节点 ID，中文标签也要能直接命中。
