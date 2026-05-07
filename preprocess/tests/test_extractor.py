@@ -108,6 +108,33 @@ class ExtractorTests(unittest.TestCase):
         self.assertTrue(any(mention.surface == "Linux/Shell" for mention in mentions if mention.entity_id == "linux"))
         self.assertTrue(any(mention.surface == "Web后端方向" for mention in mentions if mention.entity_id == "web_backend"))
 
+    def test_title_and_metadata_participate_in_extraction(self) -> None:
+        """标题和结构化元数据也应进入实体抽取范围。"""
+
+        document = RawDocument(
+            doc_id="title_metadata_scope",
+            source="test",
+            title="Web 后端方向候选画像",
+            text="",
+            metadata={
+                "skills": ["Python", "SQL"],
+                "profile": {
+                    "preferred_stack": "Linux / Shell",
+                },
+                "source_path": "ignored/value.json",
+            },
+        )
+
+        mentions = extract_mentions(document, self.catalog)
+        entity_ids = {mention.entity_id for mention in mentions}
+
+        self.assertIn("web_backend", entity_ids)
+        self.assertIn("python", entity_ids)
+        self.assertIn("sql", entity_ids)
+        self.assertIn("linux", entity_ids)
+        self.assertTrue(any(mention.entity_id == "web_backend" and "Web 后端" in mention.context for mention in mentions))
+        self.assertTrue(any(mention.entity_id == "python" and mention.surface.lower() == "python" for mention in mentions))
+
     def test_generated_alias_stems_survive_longer_mentions(self) -> None:
         """词干型生成别名不应该被长实体完全吞掉。"""
 

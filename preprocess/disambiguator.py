@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import Any, List, Tuple
 
 from .catalog import compact_text
 from .models import EntityDefinition, RawDocument
@@ -26,6 +26,48 @@ class CandidateScore:
     title_rank: int
 
 
+def _flatten_text_values(value: Any) -> List[str]:
+    """把元数据中的文本压平，供消歧阶段一起参考。"""
+
+    flattened: List[str] = []
+    if value is None:
+        return flattened
+    if isinstance(value, str):
+        text = value.strip()
+        if text:
+            flattened.append(text)
+        return flattened
+    if isinstance(value, (int, float, bool)):
+        flattened.append(str(value))
+        return flattened
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key in {"source_path", "source_format", "record_index"}:
+                continue
+            flattened.extend(_flatten_text_values(item))
+        return flattened
+    if isinstance(value, (list, tuple, set)):
+        for item in value:
+            flattened.extend(_flatten_text_values(item))
+        return flattened
+    text = str(value).strip()
+    if text:
+        flattened.append(text)
+    return flattened
+
+
+def _build_search_text(document: RawDocument) -> str:
+    """构建与抽取阶段一致的上下文文本。"""
+
+    parts: List[str] = []
+    if document.title.strip():
+        parts.append(document.title.strip())
+    if document.text.strip():
+        parts.append(document.text.strip())
+    parts.extend(_flatten_text_values(document.metadata))
+    return "\n\n".join(part for part in parts if part)
+
+
 def _layer_priority(layer: str) -> int:
     order = {
         "role": 5,
@@ -45,7 +87,7 @@ def _score_entity(
 ) -> CandidateScore:
     """根据文档上下文给候选实体打分。"""
 
-    text = compact_text(document.text)
+    text = compact_text(_build_search_text(document))
     title = compact_text(document.title)
     label = compact_text(entity.label)
     alias = compact_text(matched_alias)

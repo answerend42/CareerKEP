@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import List, Tuple
+from typing import Any, List, Tuple
 
 from .catalog import EntityCatalog, compact_text
 from .disambiguator import resolve_entity
@@ -13,6 +13,7 @@ from .models import EntityMention, RawDocument
 
 ASCII_ALIAS_RE = re.compile(r"^[a-z0-9+#./-]+$")
 WINDOW_SIZE = 16
+METADATA_SKIP_KEYS = {"source_path", "source_format", "record_index"}
 
 
 @dataclass(frozen=True)
@@ -30,6 +31,57 @@ class AliasCandidate:
 
     surface: str
     source: str
+
+
+def _flatten_text_values(value: Any) -> List[str]:
+    """把元数据里可能嵌套的文本值压平，作为补充搜索语料。
+
+    这里会保留字符串、数字和布尔值对应的文本，但会跳过预处理自身写入的
+    `source_path` / `source_format` / `record_index` 这类技术字段，避免把噪声
+    当成实体上下文。
+    """
+
+    flattened: List[str] = []
+    if value is None:
+        return flattened
+    if isinstance(value, str):
+        text = value.strip()
+        if text:
+            flattened.append(text)
+        return flattened
+    if isinstance(value, (int, float, bool)):
+        flattened.append(str(value))
+        return flattened
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key in METADATA_SKIP_KEYS:
+                continue
+            flattened.extend(_flatten_text_values(item))
+        return flattened
+    if isinstance(value, (list, tuple, set)):
+        for item in value:
+            flattened.extend(_flatten_text_values(item))
+        return flattened
+    text = str(value).strip()
+    if text:
+        flattened.append(text)
+    return flattened
+
+
+def _build_search_corpus(document: RawDocument) -> str:
+    """构建统一的搜索语料。
+
+    实际抽取时不只看正文，还要把标题和结构化元数据一起纳入搜索范围，
+    这样原始数据里常见的“标题带关键信息、正文只有补充说明”的情况也能命中。
+    """
+
+    parts: List[str] = []
+    if document.title.strip():
+        parts.append(document.title.strip())
+    if document.text.strip():
+        parts.append(document.text.strip())
+    parts.extend(_flatten_text_values(document.metadata))
+    return "\n\n".join(part for part in parts if part)
 
 
 def _build_compact_text_index(document_text: str) -> Tuple[str, List[int]]:
@@ -105,7 +157,7 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
     """收集所有命中的别名，后续再统一消歧。"""
 
     hits: List[AliasHit] = []
-    doc_text = document.text
+    doc_text = _build_search_corpus(document)
 
     # 长别名优先，能减少短词抢占长词的问题。
     alias_candidates: List[AliasCandidate] = []
@@ -184,6 +236,7 @@ def extract_mentions(document: RawDocument, catalog: EntityCatalog) -> List[Enti
     """从单篇文档里抽取实体命中。"""
 
     mentions: List[EntityMention] = []
+    search_corpus = _build_search_corpus(document)
 
     for hit in _collect_alias_hits(catalog, document):
         candidates = catalog.alias_index.get(hit.compact_alias, [])
@@ -213,7 +266,7 @@ def extract_mentions(document: RawDocument, catalog: EntityCatalog) -> List[Enti
                 confidence=round(resolved.score, 4),
                 matched_by=hit.matched_by,
                 reason=resolved.reason,
-                context=_slice_context(document.text, hit.start, hit.end),
+                context=_slice_context(search_corpus, hit.start, hit.end),
             )
         )
 
