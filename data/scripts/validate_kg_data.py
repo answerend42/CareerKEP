@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from collections import Counter
 from pathlib import Path
@@ -14,6 +15,16 @@ DEFAULT_OUTPUT = ROOT / "output"
 def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as fh:
         return json.load(fh)
+
+
+def file_sha256(path: Path) -> str:
+    """计算文件 SHA256，用于比对 data_catalog 中记录的摘要。"""
+
+    digest = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(8192), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def assert_condition(condition: bool, message: str, errors: list[str]) -> None:
@@ -224,6 +235,23 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
             f"data_catalog 中的 size_bytes 不合法: {file_name}",
             errors,
         )
+        if file_path is not None and file_path.exists():
+            assert_condition(
+                item.get("size_bytes") == file_path.stat().st_size,
+                f"data_catalog 中的 size_bytes 与实际文件不一致: {file_name}",
+                errors,
+            )
+            assert_condition(
+                item.get("sha256") == file_sha256(file_path),
+                f"data_catalog 中的 sha256 与实际文件不一致: {file_name}",
+                errors,
+            )
+
+    assert_condition(
+        set(graph_manifest.get("output_files", [])) == set(file_paths_by_name.keys()),
+        "graph_manifest 的 output_files 与 output 实际文件不一致",
+        errors,
+    )
 
     return {
         "ok": not errors,
