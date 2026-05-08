@@ -89,6 +89,7 @@ class RecommendationItem:
     score: float
     reasons: list[str] = field(default_factory=list)
     path: list[str] = field(default_factory=list)
+    explanation: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -98,6 +99,7 @@ class RecommendationItem:
             "score": round(float(self.score), 6),
             "reasons": list(self.reasons),
             "path": list(self.path),
+            "explanation": self.explanation,
         }
 
 
@@ -106,6 +108,7 @@ class RecommendationResponse:
     """推荐接口的统一响应。"""
 
     input_trace: dict[str, Any] = field(default_factory=dict)
+    result_summary: dict[str, Any] = field(default_factory=dict)
     recommendations: list[RecommendationItem] = field(default_factory=list)
     near_miss_roles: list[RecommendationItem] = field(default_factory=list)
     bridge_recommendations: list[RecommendationItem] = field(default_factory=list)
@@ -117,6 +120,7 @@ class RecommendationResponse:
     def to_dict(self) -> dict[str, Any]:
         return {
             "input_trace": self.input_trace,
+            "result_summary": self.result_summary,
             "recommendations": [item.to_dict() for item in self.recommendations],
             "near_miss_roles": [item.to_dict() for item in self.near_miss_roles],
             "bridge_recommendations": [item.to_dict() for item in self.bridge_recommendations],

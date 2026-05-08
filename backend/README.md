@@ -8,7 +8,7 @@
 - 结构化输入归一：把前端或脚本传来的节点分值统一到 `node_id -> score`。
 - 图谱推理：按 DAG 拓扑序传播分值，支持 `supports / evidences / requires / prefers / inhibits`。
 - 推荐编排：输出正式推荐、near miss、桥接建议、目标岗位分析和传播快照。
-- 元信息接口：提供图谱概览，方便前端启动时读取节点层级和职业节点列表。
+- 元信息接口：提供图谱概览和本地诊断，方便前端启动时读取节点层级、职业节点列表和图谱健康状态。
 - 本地服务：提供 `GET /health`、`GET /api/meta` 和 `POST /api/recommend`。
 
 ## 目录
@@ -95,7 +95,7 @@ python3 -m backend.app.main validate-graph
 - `GET /api/meta`
 - `POST /api/recommend`
 
-`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计、聚合器统计、基础校验状态、所有 `role` 节点列表，以及可直接用于前端搜索下拉的 `role_options`。
+`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计、聚合器统计、别名统计、基础校验状态、所有 `role` 节点列表，以及可直接用于前端搜索下拉的 `role_options`。`graph.validation.warnings` 会把当前图谱和别名词典的本地告警一起带出来，前端或启动脚本可以直接据此判断要不要提示用户。
 
 - `POST /api/recommend` 需要带 `Content-Type: application/json`，否则返回 `415`
 - `POST /api/recommend` 的请求体上限是 `1 MiB`，超过后返回 `413`
@@ -117,6 +117,7 @@ python3 -m backend.app.main validate-graph
 返回中包含：
 
 - `input_trace`
+- `result_summary`
 - `recommendations`
 - `near_miss_roles`
 - `bridge_recommendations`
@@ -126,7 +127,9 @@ python3 -m backend.app.main validate-graph
 
 `input_trace` 会拆开返回原始文本、结构化证据、自然语言解析结果、合并后的证据映射，便于前端调试“为什么这个岗位被推荐出来”。
 `input_trace` 里会额外返回 `resolved_target_role`，方便前端确认目标岗位最终命中了图谱里的哪个节点。
-`target_role_analysis` 里会附带目标岗位路径、覆盖度、优势项和缺口项，方便前端直接做“我离目标岗位还差什么”的展示。
+`result_summary` 会给出这一轮推荐的总览信息，包括推荐数、near miss 数、桥接建议数、是否命中目标岗位、准备度分级，以及首条正式推荐、首条桥接建议和 `highlights` 卡片列表，方便前端首页直接渲染概览卡片。
+每个 `recommendations`、`near_miss_roles` 和 `bridge_recommendations` 条目里都会带 `explanation`，其中包含 `path`、`evidence`、`evidence_details` 和 `diagnostics`，前端可以直接拿来做展开式解释面板。
+`target_role_analysis` 里会附带目标岗位路径、覆盖度、准备度分级、当前聚焦提示、优先级分组、优势项和缺口项，`learning_path` 还会给出带 `rank`、`priority`、`gap`、`estimated_effort` 的行动计划，方便前端直接做“我离目标岗位还差什么、先做什么”的展示。
 `bridge_recommendations` 也会返回图路径，不再只是孤立节点名。
 
 `role_options` 里的每一项都包含 `node_id`、`label` 和 `search_terms`，前端可以直接拿来做岗位选择器，不需要再自己处理空格或大小写归一化。

@@ -37,6 +37,17 @@ def _normalize_identifier(value: str) -> str:
     return normalize_alias_text(value)
 
 
+def _state_sort_key(item: Any) -> tuple[float, str, str]:
+    """给推荐结果排序用的稳定键。
+
+    同分时按标签、再按节点 ID 排序，避免结果顺序受遍历顺序影响。
+    """
+
+    label = str(getattr(item, "label", "") or "").casefold()
+    node_id = str(getattr(item, "node_id", "") or "").casefold()
+    return (-float(getattr(item, "score", 0.0)), label, node_id)
+
+
 def _resolve_target_role(graph: GraphData, alias_map: dict[str, list[str]], raw_target_role: str | None) -> str | None:
     """把目标岗位输入统一解析成图谱中的 role 节点 ID。
 
@@ -179,21 +190,85 @@ def _build_request(payload: dict[str, Any]) -> RecommendationRequest:
 
 def _build_recommendation_item(graph: GraphData, result, node_id: str, reasons: list[str] | None = None) -> RecommendationItem:
     state = result.states[node_id]
-    path = build_explanation(graph, result, node_id)["path"]
+    explanation = build_explanation(graph, result, node_id)
     return RecommendationItem(
         node_id=node_id,
         label=state.label,
         layer=state.layer,
         score=state.score,
         reasons=reasons or [],
-        path=path,
+        path=explanation["path"],
+        explanation=explanation,
     )
 
 
 def _snapshot_roles(graph: GraphData, result, top_k: int = 10) -> list[dict[str, Any]]:
     role_states = [state for state in result.states.values() if state.layer == "role"]
-    role_states.sort(key=lambda item: item.score, reverse=True)
+    role_states.sort(key=_state_sort_key)
     return [build_explanation(graph, result, item.node_id) | {"layer": item.layer} for item in role_states[:top_k]]
+
+
+def _build_result_summary(
+    recommendations: list[RecommendationItem],
+    near_miss_roles: list[RecommendationItem],
+    bridge_recommendations: list[RecommendationItem],
+    target_role_analysis: dict[str, Any],
+    graph_snapshot: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """把本次推荐结果整理成给前端首页用的总览信息。"""
+
+    top_recommendation = recommendations[0].to_dict() if recommendations else None
+    top_bridge = bridge_recommendations[0].to_dict() if bridge_recommendations else None
+    top_missing_requirement = target_role_analysis.get("top_missing_requirement")
+    highlights: list[dict[str, Any]] = []
+    if top_recommendation is not None:
+        highlights.append(
+            {
+                "kind": "recommendation",
+                "title": top_recommendation["label"],
+                "subtitle": "正式推荐",
+                "score": top_recommendation["score"],
+                "node_id": top_recommendation["node_id"],
+                "path": top_recommendation["path"],
+                "reason": top_recommendation["reasons"][:1],
+            }
+        )
+    if top_missing_requirement is not None:
+        highlights.append(
+            {
+                "kind": "gap",
+                "title": top_missing_requirement["label"],
+                "subtitle": "目标岗位最大缺口",
+                "gap": top_missing_requirement["gap"],
+                "expected": top_missing_requirement["expected"],
+                "priority": top_missing_requirement.get("priority"),
+                "node_id": top_missing_requirement["node_id"],
+            }
+        )
+    if top_bridge is not None:
+        highlights.append(
+            {
+                "kind": "bridge",
+                "title": top_bridge["label"],
+                "subtitle": "成长桥接点",
+                "score": top_bridge["score"],
+                "node_id": top_bridge["node_id"],
+                "path": top_bridge["path"],
+                "reason": top_bridge["reasons"][:1],
+            }
+        )
+    return {
+        "recommendation_count": len(recommendations),
+        "near_miss_count": len(near_miss_roles),
+        "bridge_count": len(bridge_recommendations),
+        "graph_snapshot_count": len(graph_snapshot),
+        "has_target_role_analysis": bool(target_role_analysis),
+        "resolved_target_role": target_role_analysis.get("resolved_target_role"),
+        "readiness_level": target_role_analysis.get("readiness_level"),
+        "top_recommendation": top_recommendation,
+        "top_bridge": top_bridge,
+        "highlights": highlights,
+    }
 
 
 def recommend(payload: RecommendationRequest | dict[str, Any]) -> RecommendationResponse:
@@ -226,7 +301,7 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
     }
 
     role_states = [state for state in result.states.values() if state.layer == "role"]
-    role_states.sort(key=lambda item: item.score, reverse=True)
+    role_states.sort(key=_state_sort_key)
 
     recommendations: list[RecommendationItem] = []
     near_miss_roles: list[RecommendationItem] = []
@@ -245,6 +320,7 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
     bridge_recommendations: list[RecommendationItem] = []
     if len(recommendations) < max(1, min(2, top_k)):
         for bridge in suggest_bridge_nodes(graph, result, top_k=top_k):
+            bridge_explanation = build_explanation(graph, result, bridge["node_id"])
             bridge_recommendations.append(
                 RecommendationItem(
                     node_id=bridge["node_id"],
@@ -253,8 +329,9 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
                     score=bridge["score"],
                     reasons=["可作为成长桥接点"],
                     path=bridge["path"],
+                    explanation=bridge_explanation | {"bridge_hint": bridge},
                 )
-    )
+            )
 
     target_role_analysis: dict[str, Any] = {}
     if resolved_target_role and resolved_target_role in result.states:
@@ -269,13 +346,23 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
         boost_plan = {item["node_id"]: min(0.2, max(0.05, item["gap"])) for item in gap_items[:3]}
         target_role_analysis["action_simulation"] = simulate_actions(evidence_map, boost_plan)
 
+    graph_snapshot = _snapshot_roles(graph, result, top_k=8)
+    result_summary = _build_result_summary(
+        recommendations=recommendations[: top_k],
+        near_miss_roles=near_miss_roles[: top_k],
+        bridge_recommendations=bridge_recommendations[: top_k],
+        target_role_analysis=target_role_analysis,
+        graph_snapshot=graph_snapshot,
+    )
+
     return RecommendationResponse(
         input_trace=input_trace,
+        result_summary=result_summary,
         recommendations=recommendations[: top_k],
         near_miss_roles=near_miss_roles[: top_k],
         bridge_recommendations=bridge_recommendations[: top_k],
         target_role_analysis=target_role_analysis,
         propagation_snapshot=result.to_snapshot(top_k=12),
-        graph_snapshot=_snapshot_roles(graph, result, top_k=8),
+        graph_snapshot=graph_snapshot,
         raw_evidence=evidence_map,
     )
