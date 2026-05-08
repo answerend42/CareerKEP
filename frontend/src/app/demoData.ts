@@ -5,8 +5,11 @@ import type {
   RecommendationCard,
   RecommendationResponse,
   RoleOption,
+  RobustnessCaseResult,
+  RobustnessReport,
   StageEdge,
   StageNode,
+  ScenarioPreset,
   TargetRoleAnalysis
 } from './types';
 
@@ -35,6 +38,7 @@ interface NodeDefinition {
   layer: StageNode['layer'];
   aliases: string[];
   scoreHint: number;
+  polarity?: 'positive' | 'negative';
 }
 
 const clamp01 = (value: number): number => Math.max(0, Math.min(1, value));
@@ -44,7 +48,7 @@ const nodeCatalog: NodeDefinition[] = [
   { id: 'sql', label: 'SQL', layer: 'evidence', aliases: ['sql', '数据库'], scoreHint: 0.92 },
   { id: 'frontend_project', label: '前端项目', layer: 'evidence', aliases: ['前端项目', 'web项目'], scoreHint: 0.9 },
   { id: 'communication', label: '沟通表达', layer: 'evidence', aliases: ['沟通', '表达'], scoreHint: 0.88 },
-  { id: 'cpp_gap', label: '不擅长 C++', layer: 'evidence', aliases: ['c++', 'cpp', '不擅长 c++'], scoreHint: 0.7 },
+  { id: 'cpp_gap', label: '不擅长 C++', layer: 'evidence', aliases: ['c++', 'cpp', '不擅长 c++', '不会 c++'], scoreHint: 0.82, polarity: 'negative' },
   { id: 'math', label: '数学基础', layer: 'evidence', aliases: ['数学', '线代'], scoreHint: 0.82 },
   { id: 'data_viz', label: '数据分析', layer: 'evidence', aliases: ['数据分析', '分析'], scoreHint: 0.8 },
   { id: 'cloud', label: '云平台', layer: 'evidence', aliases: ['云', '云平台', 'docker'], scoreHint: 0.78 },
@@ -66,6 +70,36 @@ const nodeCatalog: NodeDefinition[] = [
   { id: 'ml_role', label: '机器学习工程师', layer: 'role', aliases: ['机器学习工程师'], scoreHint: 0.5 },
   { id: 'pm_role', label: '技术产品经理', layer: 'role', aliases: ['技术产品经理'], scoreHint: 0.5 }
 ];
+
+const NEGATION_WORDS = [
+  '不',
+  '没',
+  '无',
+  '否',
+  '不会',
+  '不擅长',
+  '不熟悉',
+  '不太',
+  '缺少',
+  '欠缺',
+  '拒绝',
+  '避免',
+  'not',
+  'no',
+  'never',
+  'without',
+  "don't",
+  'do not'
+];
+
+const normalizeToken = (value: string): string => value.normalize('NFKC').trim().toLowerCase();
+
+const extractClauses = (text: string): string[] =>
+  text
+    .normalize('NFKC')
+    .split(/[\n\r。！？!?；;，,、|/\\]+/)
+    .map((part) => part.trim())
+    .filter(Boolean);
 
 const roleOptions: RoleOption[] = nodeCatalog
   .filter((item) => item.layer === 'role')
@@ -131,13 +165,6 @@ const evidenceTemplates: EvidenceItem[] = [
   { nodeId: 'cpp_gap', label: '不擅长 C++', score: 0.7, source: '用户输入', rawText: '不太擅长 C++' }
 ];
 
-const normaliseText = (value: string): string => value.trim().toLowerCase();
-
-const matchNode = (text: string): NodeDefinition | undefined => {
-  const token = normaliseText(text);
-  return nodeCatalog.find((item) => item.aliases.some((alias) => token.includes(normaliseText(alias))));
-};
-
 const buildEvidenceMap = (text: string, evidence: EvidenceItem[]): Map<string, number> => {
   const map = new Map<string, number>();
 
@@ -145,19 +172,39 @@ const buildEvidenceMap = (text: string, evidence: EvidenceItem[]): Map<string, n
     map.set(item.nodeId, clamp01(item.score));
   }
 
-  const tokens = text
-    .split(/[\s，。；,.;!?、/\\|]+/)
-    .map((part) => part.trim())
-    .filter(Boolean);
+  const clauses = extractClauses(text);
 
-  for (const token of tokens) {
-    const matched = matchNode(token);
-    if (!matched) {
-      continue;
+  for (const clause of clauses) {
+    const clauseToken = normalizeToken(clause);
+
+    for (const item of nodeCatalog) {
+      let bestScore = 0;
+
+      for (const alias of item.aliases) {
+        const aliasToken = normalizeToken(alias);
+        if (!aliasToken || !clauseToken.includes(aliasToken)) {
+          continue;
+        }
+
+        const aliasIndex = clauseToken.indexOf(aliasToken);
+        const prefix = clauseToken.slice(Math.max(0, aliasIndex - 8), aliasIndex);
+        const negated = NEGATION_WORDS.some((word) => prefix.includes(word));
+
+        if (item.polarity === 'negative') {
+          bestScore = Math.max(bestScore, negated ? item.scoreHint : item.scoreHint * 0.85);
+        } else if (!negated) {
+          bestScore = Math.max(bestScore, item.scoreHint);
+        }
+      }
+
+      if (bestScore <= 0) {
+        continue;
+      }
+
+      const current = map.get(item.id) ?? 0;
+      // 同一节点可能在多段文本里被反复提到，这里只保留最强一次，避免噪声重复放大。
+      map.set(item.id, clamp01(Math.max(current, bestScore)));
     }
-
-    const current = map.get(matched.id) ?? 0;
-    map.set(matched.id, clamp01(Math.max(current, matched.scoreHint)));
   }
 
   return map;
@@ -188,13 +235,13 @@ const scoreProfile = (
 
   for (const blocker of profile.blockers) {
     const value = evidenceMap.get(blocker) ?? 0;
-    blockerPenalty += value * 0.22;
+    blockerPenalty += value * 0.26;
   }
 
   const directionBoost = evidenceMap.get(profile.direction) ?? 0;
   // 负向容忍度越高，对 blocker 的惩罚越弱，适合演示“放宽筛选”的效果。
-  const penaltyRelief = 1 - clamp01(tuning.penaltyTolerance * 0.7);
-  const tuningBoost = tuning.confidence * 0.08 + tuning.exploration * 0.05;
+  const penaltyRelief = 1 - clamp01(tuning.penaltyTolerance * 0.85);
+  const tuningBoost = tuning.confidence * 0.06 + tuning.exploration * 0.04;
   const score = clamp01(supportScore + preferredScore + directionBoost * 0.25 + tuningBoost - blockerPenalty * penaltyRelief);
   const missing = profile.required
     .filter((item) => !(evidenceMap.get(item) ?? 0))
@@ -391,11 +438,12 @@ export const defaultDemoState: DemoState = {
 
 export const roleCatalog = roleOptions;
 
-export const scenarioPresets = [
+export const scenarioPresets: ScenarioPreset[] = [
   {
     id: 'backend',
     label: '后端转向',
     description: '偏工程化、数据库和云平台信号更强',
+    kind: 'normal',
     state: {
       text: '我会 Python 和 SQL，做过接口联调，也接触过云平台部署。',
       targetRole: '后端开发工程师',
@@ -416,6 +464,7 @@ export const scenarioPresets = [
     id: 'frontend',
     label: '前端优先',
     description: '前端项目和协作表达更明显',
+    kind: 'normal',
     state: {
       text: '我做过前端项目，喜欢和产品、设计协作，愿意继续做 Web 开发。',
       targetRole: '前端开发工程师',
@@ -435,6 +484,7 @@ export const scenarioPresets = [
     id: 'data',
     label: '数据方向',
     description: 'SQL、数据分析和数学基础更突出',
+    kind: 'normal',
     state: {
       text: '我更熟悉 SQL、数据分析和一些数学基础，想看数据工程或机器学习方向。',
       targetRole: '数据工程师',
@@ -450,13 +500,135 @@ export const scenarioPresets = [
         penaltyTolerance: 0.4
       }
     }
+  },
+  {
+    id: 'noise',
+    label: '噪声输入',
+    description: '长文本、重复词和无关语句混在一起',
+    kind: 'stress',
+    state: {
+      text:
+        '日志、报错、日报、会议纪要都塞进来，但是我还是会 Python、SQL、Python、SQL，还做过前端项目。' +
+        '其他内容全部是噪声：abc123、###、!!!、临时文档、重复重复重复。',
+      targetRole: '后端开发工程师',
+      topK: 5,
+      evidence: [
+        { nodeId: 'python', label: 'Python', score: 0.86, source: '压力测试', rawText: 'Python' },
+        { nodeId: 'sql', label: 'SQL', score: 0.84, source: '压力测试', rawText: 'SQL' }
+      ],
+      tuning: {
+        confidence: 0.7,
+        exploration: 0.52,
+        penaltyTolerance: 0.36
+      }
+    }
+  },
+  {
+    id: 'conflict',
+    label: '冲突输入',
+    description: '同一段话同时包含正向和否定信号',
+    kind: 'stress',
+    state: {
+      text: '我会 Python 和 SQL，但不想做后端，也不太擅长 C++，更想试试前端或产品协作。',
+      targetRole: '前端开发工程师',
+      topK: 5,
+      evidence: [
+        { nodeId: 'python', label: 'Python', score: 0.9, source: '压力测试', rawText: 'Python' },
+        { nodeId: 'sql', label: 'SQL', score: 0.87, source: '压力测试', rawText: 'SQL' },
+        { nodeId: 'cpp_gap', label: '不擅长 C++', score: 0.78, source: '压力测试', rawText: '不太擅长 C++' }
+      ],
+      tuning: {
+        confidence: 0.64,
+        exploration: 0.68,
+        penaltyTolerance: 0.58
+      }
+    }
+  },
+  {
+    id: 'sparse',
+    label: '稀疏输入',
+    description: '几乎没有明确技能信号',
+    kind: 'stress',
+    state: {
+      text: '目前就是想看看自己适合什么方向，暂时没有特别明确的项目经历。',
+      targetRole: '机器学习工程师',
+      topK: 5,
+      evidence: [],
+      tuning: {
+        confidence: 0.5,
+        exploration: 0.82,
+        penaltyTolerance: 0.6
+      }
+    }
+  },
+  {
+    id: 'mixed',
+    label: '中英混合',
+    description: '英文缩写、符号和中文混写',
+    kind: 'stress',
+    state: {
+      text: 'I have done frontend project, know SQL / Python, and want to keep doing Web dev with team communication.',
+      targetRole: '前端开发工程师',
+      topK: 5,
+      evidence: [
+        { nodeId: 'frontend_project', label: '前端项目', score: 0.88, source: '压力测试', rawText: 'frontend project' },
+        { nodeId: 'communication', label: '沟通表达', score: 0.76, source: '压力测试', rawText: 'team communication' }
+      ],
+      tuning: {
+        confidence: 0.66,
+        exploration: 0.62,
+        penaltyTolerance: 0.45
+      }
+    }
   }
 ] satisfies Array<{
   id: string;
   label: string;
   description: string;
+  kind: 'normal' | 'stress';
   state: DemoState;
 }>;
+
+export const buildRobustnessReport = (state: DemoState): RobustnessReport => {
+  const cases: RobustnessCaseResult[] = scenarioPresets
+    .filter((item) => item.kind === 'stress')
+    .map((preset) => {
+      const response = buildRecommendationResponse(preset.state);
+      const topCard = response.recommendations[0];
+      const topScore = topCard?.score ?? response.nearMissRoles[0]?.score ?? 0;
+      const coverage = response.targetRoleAnalysis.coverage;
+      const warningParts = [
+        topCard ? `主推荐：${topCard.label}` : '没有正式推荐',
+        response.nearMissRoles.length ? `near miss：${response.nearMissRoles.length}` : '无 near miss',
+        coverage < 0.5 ? '目标岗位覆盖偏弱' : '目标岗位覆盖尚可'
+      ];
+
+      return {
+        id: preset.id,
+        label: preset.label,
+        description: preset.description,
+        topRole: topCard?.label ?? response.targetRoleAnalysis.label,
+        topScore,
+        recommendationCount: response.recommendations.length,
+        nearMissCount: response.nearMissRoles.length,
+        coverage,
+        warning: warningParts.join('；')
+      };
+    });
+
+  const averageTopScore = cases.length ? cases.reduce((sum, item) => sum + item.topScore, 0) / cases.length : 0;
+  const fragileCount = cases.filter((item) => item.topScore < 0.42 || item.recommendationCount === 0).length;
+
+  return {
+    averageTopScore,
+    fragileCount,
+    headline:
+      fragileCount > 0
+        ? `有 ${fragileCount} 个极端输入场景需要继续加固解析和权重`
+        : '极端输入下整体表现稳定，暂未发现明显脆弱点',
+    cases
+  };
+};
 
 export const getRoleOptions = (): RoleOption[] => roleCatalog;
 

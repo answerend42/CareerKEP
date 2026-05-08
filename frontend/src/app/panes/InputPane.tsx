@@ -1,15 +1,26 @@
-import type { DemoState, RoleOption } from '../types';
+import type { DemoState, RoleOption, ScenarioPreset } from '../types';
 
 interface InputPaneProps {
   state: DemoState;
   roleOptions: RoleOption[];
+  presets: ScenarioPreset[];
+  stressPresets: ScenarioPreset[];
   onChange: <K extends keyof DemoState>(key: K, value: DemoState[K]) => void;
   onPreset: (presetId: string) => void;
   onRun: () => void;
   isRunning: boolean;
 }
 
-export function InputPane({ state, roleOptions, onChange, onPreset, onRun, isRunning }: InputPaneProps) {
+export function InputPane({
+  state,
+  roleOptions,
+  presets,
+  stressPresets,
+  onChange,
+  onPreset,
+  onRun,
+  isRunning
+}: InputPaneProps) {
   return (
     <div className="pane-stack">
       <div className="pane-header">
@@ -59,15 +70,22 @@ export function InputPane({ state, roleOptions, onChange, onPreset, onRun, isRun
       <div className="preset-row">
         <span className="field-caption">快速场景</span>
         <div className="chip-row">
-          <button type="button" className="chip" onClick={() => onPreset('backend')}>
-            后端转向
-          </button>
-          <button type="button" className="chip" onClick={() => onPreset('frontend')}>
-            前端优先
-          </button>
-          <button type="button" className="chip" onClick={() => onPreset('data')}>
-            数据方向
-          </button>
+          {presets.map((preset) => (
+            <button key={preset.id} type="button" className="chip" onClick={() => onPreset(preset.id)}>
+              {preset.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="preset-row">
+        <span className="field-caption">极端测试</span>
+        <div className="chip-row">
+          {stressPresets.map((preset) => (
+            <button key={preset.id} type="button" className="chip stress" onClick={() => onPreset(preset.id)}>
+              {preset.label}
+            </button>
+          ))}
         </div>
       </div>
 

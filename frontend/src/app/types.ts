@@ -91,3 +91,30 @@ export interface DemoState {
   evidence: EvidenceItem[];
   tuning: TuningState;
 }
+
+export interface ScenarioPreset {
+  id: string;
+  label: string;
+  description: string;
+  kind: 'normal' | 'stress';
+  state: DemoState;
+}
+
+export interface RobustnessCaseResult {
+  id: string;
+  label: string;
+  description: string;
+  topRole: string;
+  topScore: number;
+  recommendationCount: number;
+  nearMissCount: number;
+  coverage: number;
+  warning: string;
+}
+
+export interface RobustnessReport {
+  averageTopScore: number;
+  fragileCount: number;
+  headline: string;
+  cases: RobustnessCaseResult[];
+}

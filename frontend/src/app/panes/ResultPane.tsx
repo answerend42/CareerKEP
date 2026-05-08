@@ -1,13 +1,14 @@
-import type { RecommendationResponse } from '../types';
+import type { RecommendationResponse, RobustnessReport } from '../types';
 
 interface ResultPaneProps {
   response: RecommendationResponse;
   activeStep: string;
+  robustnessReport: RobustnessReport;
 }
 
 const formatPercent = (value: number) => `${Math.round(value * 100)}%`;
 
-export function ResultPane({ response, activeStep }: ResultPaneProps) {
+export function ResultPane({ response, activeStep, robustnessReport }: ResultPaneProps) {
   return (
     <div className="pane-stack">
       <div className="pane-header">
@@ -93,6 +94,29 @@ export function ResultPane({ response, activeStep }: ResultPaneProps) {
             ))}
           </div>
         </article>
+      </section>
+
+      <section className="result-block">
+        <div className="section-head">
+          <h3>鲁棒性测试</h3>
+          <span>{formatPercent(robustnessReport.averageTopScore)}</span>
+        </div>
+        <p className="result-intro">{robustnessReport.headline}</p>
+        <div className="result-list compact">
+          {robustnessReport.cases.map((item) => (
+            <article key={item.id} className="result-card">
+              <div className="node-row">
+                <strong>{item.label}</strong>
+                <span>{formatPercent(item.topScore)}</span>
+              </div>
+              <p>{item.description}</p>
+              <small>
+                {item.warning} · 推荐 {item.recommendationCount} 个 · near miss {item.nearMissCount} 个 · 覆盖率{' '}
+                {formatPercent(item.coverage)}
+              </small>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section className="result-block trace-panel">
