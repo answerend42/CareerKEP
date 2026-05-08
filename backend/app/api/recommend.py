@@ -179,14 +179,15 @@ def _build_request(payload: dict[str, Any]) -> RecommendationRequest:
 
 def _build_recommendation_item(graph: GraphData, result, node_id: str, reasons: list[str] | None = None) -> RecommendationItem:
     state = result.states[node_id]
-    path = build_explanation(graph, result, node_id)["path"]
+    explanation = build_explanation(graph, result, node_id)
     return RecommendationItem(
         node_id=node_id,
         label=state.label,
         layer=state.layer,
         score=state.score,
         reasons=reasons or [],
-        path=path,
+        path=explanation["path"],
+        explanation=explanation,
     )
 
 
@@ -245,6 +246,7 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
     bridge_recommendations: list[RecommendationItem] = []
     if len(recommendations) < max(1, min(2, top_k)):
         for bridge in suggest_bridge_nodes(graph, result, top_k=top_k):
+            bridge_explanation = build_explanation(graph, result, bridge["node_id"])
             bridge_recommendations.append(
                 RecommendationItem(
                     node_id=bridge["node_id"],
@@ -253,8 +255,9 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
                     score=bridge["score"],
                     reasons=["可作为成长桥接点"],
                     path=bridge["path"],
+                    explanation=bridge_explanation | {"bridge_hint": bridge},
                 )
-    )
+            )
 
     target_role_analysis: dict[str, Any] = {}
     if resolved_target_role and resolved_target_role in result.states:

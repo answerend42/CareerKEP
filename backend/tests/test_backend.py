@@ -84,6 +84,11 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertEqual(response["target_role_analysis"]["resolved_target_role"], "backend_engineer")
         self.assertEqual(response["target_role_analysis"]["matched_target_role"], "后端开发工程师")
         self.assertNotIn("", response["raw_evidence"])
+        first_recommendation = response["recommendations"][0]
+        self.assertIn("explanation", first_recommendation)
+        self.assertIn("evidence_details", first_recommendation["explanation"])
+        self.assertIn("diagnostics", first_recommendation["explanation"])
+        self.assertTrue(first_recommendation["explanation"]["path"])
 
     def test_recommend_accepts_extra_evidence_fields(self) -> None:
         # 这里模拟前端或脚本多塞字段的情况，后端只应读取白名单字段，不应直接报错。
@@ -156,6 +161,8 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertGreaterEqual(len(response["bridge_recommendations"]), 1)
         first_bridge = response["bridge_recommendations"][0]
         self.assertIn("path", first_bridge)
+        self.assertIn("explanation", first_bridge)
+        self.assertIn("evidence_details", first_bridge["explanation"])
         self.assertTrue(first_bridge["path"])
         self.assertIsInstance(first_bridge["path"], list)
 

@@ -89,6 +89,7 @@ class RecommendationItem:
     score: float
     reasons: list[str] = field(default_factory=list)
     path: list[str] = field(default_factory=list)
+    explanation: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -98,6 +99,7 @@ class RecommendationItem:
             "score": round(float(self.score), 6),
             "reasons": list(self.reasons),
             "path": list(self.path),
+            "explanation": self.explanation,
         }
 
 

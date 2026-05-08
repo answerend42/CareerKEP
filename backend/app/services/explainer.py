@@ -44,6 +44,20 @@ def summarize_contributions(result: InferenceResult, node_id: str, top_k: int = 
     return [f"{root_id}:{value:.2f}" for root_id, value in items]
 
 
+def _build_contribution_details(result: InferenceResult, node_id: str, top_k: int = 3) -> list[dict[str, Any]]:
+    """把节点证据整理成结构化贡献明细。"""
+
+    state = result.states[node_id]
+    items = sorted(state.evidence.items(), key=lambda item: item[1], reverse=True)[:top_k]
+    return [
+        {
+            "node_id": root_id,
+            "score": round(float(value), 6),
+        }
+        for root_id, value in items
+    ]
+
+
 def build_explanation(graph: GraphData, result: InferenceResult, node_id: str) -> dict[str, Any]:
     """构造单个节点的解释信息。"""
 
@@ -54,6 +68,6 @@ def build_explanation(graph: GraphData, result: InferenceResult, node_id: str) -
         "score": round(state.score, 6),
         "path": build_role_path(graph, result, node_id),
         "evidence": summarize_contributions(result, node_id),
+        "evidence_details": _build_contribution_details(result, node_id),
         "diagnostics": state.diagnostics,
     }
-
