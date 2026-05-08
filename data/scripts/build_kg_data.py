@@ -866,7 +866,11 @@ def build_data_catalog(
         if isinstance(payload, list):
             item_count = len(payload)
         elif isinstance(payload, dict):
-            if "edge_count" in payload:
+            if file_name == "graph_manifest.json":
+                # graph_manifest 的核心含义是“输出文件清单”，因此这里按清单条目数统计，
+                # 比按 edge_count 这类内部统计字段更稳定、更符合目录语义。
+                item_count = len(payload.get("output_files", []))
+            elif "edge_count" in payload:
                 item_count = int(payload["edge_count"])
             elif "node_count" in payload:
                 item_count = int(payload["node_count"])

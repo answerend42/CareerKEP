@@ -65,8 +65,8 @@
   {
     "file_name": "graph_manifest.json",
     "description": "构建清单",
-    "item_count": 20,
+    "item_count": 11,
     "size_bytes": 1532,
-    "sha256": "dd9433176445b81764569718c5e20aa9f0da1bedb78ad7346a4cad2f6740ff1a"
+    "sha256": "f2e7d042bb7ab24ac6c5554714ad79bab016aa0e3003668ccae96c9ded9d313b"
   }
 ]

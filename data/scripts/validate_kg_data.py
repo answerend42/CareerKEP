@@ -320,6 +320,19 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "graph_manifest 的 output_files 与 output 实际文件不一致",
         errors,
     )
+    manifest_output_files = graph_manifest.get("output_files", [])
+    if isinstance(manifest_output_files, list):
+        manifest_output_count = len(manifest_output_files)
+        manifest_catalog_item = next(
+            (item for item in data_catalog if item.get("file_name") == "graph_manifest.json"),
+            None,
+        )
+        assert_condition(
+            isinstance(manifest_catalog_item, dict)
+            and manifest_catalog_item.get("item_count") == manifest_output_count,
+            "data_catalog 中 graph_manifest.json 的 item_count 应与 output_files 条目数一致",
+            errors,
+        )
 
     return {
         "ok": not errors,
