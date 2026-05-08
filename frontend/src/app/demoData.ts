@@ -663,12 +663,18 @@ export const buildRobustnessReport = (state: DemoState): RobustnessReport => {
   const averageDelta = cases.length ? cases.reduce((sum, item) => sum + item.scoreDelta, 0) / cases.length : 0;
   const improvedCount = cases.filter((item) => item.scoreDelta > 0).length;
   const fragileCount = cases.filter((item) => item.topScore < 0.42 || item.recommendationCount === 0).length;
+  const bestImprovement = [...cases].sort((left, right) => right.scoreDelta - left.scoreDelta)[0];
+  const worstRegression = [...cases].sort((left, right) => left.scoreDelta - right.scoreDelta)[0];
 
   return {
     averageTopScore,
     averageDelta,
     improvedCount,
     fragileCount,
+    bestImprovementLabel: bestImprovement ? bestImprovement.label : '暂无',
+    bestImprovementDelta: bestImprovement?.scoreDelta ?? 0,
+    worstRegressionLabel: worstRegression ? worstRegression.label : '暂无',
+    worstRegressionDelta: worstRegression?.scoreDelta ?? 0,
     headline:
       fragileCount > 0
         ? `有 ${fragileCount} 个极端输入场景需要继续加固解析和权重，当前平均变化 ${Math.round(averageDelta * 100)}%`

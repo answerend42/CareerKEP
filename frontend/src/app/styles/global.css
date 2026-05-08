@@ -623,6 +623,12 @@ pre {
   color: var(--warning);
 }
 
+.summary-note-inline {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+}
+
 .clause-list {
   display: flex;
   flex-wrap: wrap;

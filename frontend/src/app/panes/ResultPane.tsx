@@ -122,6 +122,22 @@ export function ResultPane({ response, activeStep, robustnessReport }: ResultPan
             <strong>{robustnessReport.fragileCount} 个</strong>
           </div>
         </div>
+        <div className="result-summary-row">
+          <div className="result-summary-card">
+            <span>最佳提升</span>
+            <strong>{robustnessReport.bestImprovementLabel}</strong>
+            <small className="summary-note-inline">{formatDelta(robustnessReport.bestImprovementDelta)}</small>
+          </div>
+          <div className="result-summary-card">
+            <span>最差回落</span>
+            <strong>{robustnessReport.worstRegressionLabel}</strong>
+            <small className="summary-note-inline">{formatDelta(robustnessReport.worstRegressionDelta)}</small>
+          </div>
+          <div className="result-summary-card">
+            <span>改进率</span>
+            <strong>{formatPercent(robustnessReport.cases.length ? robustnessReport.improvedCount / robustnessReport.cases.length : 0)}</strong>
+          </div>
+        </div>
         <div className="result-list compact">
           {robustnessReport.cases.map((item) => (
             <article key={item.id} className="result-card">

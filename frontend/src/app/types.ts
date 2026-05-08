@@ -124,6 +124,10 @@ export interface RobustnessReport {
   averageDelta: number;
   improvedCount: number;
   fragileCount: number;
+  bestImprovementLabel: string;
+  bestImprovementDelta: number;
+  worstRegressionLabel: string;
+  worstRegressionDelta: number;
   headline: string;
   cases: RobustnessCaseResult[];
 }
