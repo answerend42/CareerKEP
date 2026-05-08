@@ -37,6 +37,17 @@ def _normalize_identifier(value: str) -> str:
     return normalize_alias_text(value)
 
 
+def _state_sort_key(item: Any) -> tuple[float, str, str]:
+    """给推荐结果排序用的稳定键。
+
+    同分时按标签、再按节点 ID 排序，避免结果顺序受遍历顺序影响。
+    """
+
+    label = str(getattr(item, "label", "") or "").casefold()
+    node_id = str(getattr(item, "node_id", "") or "").casefold()
+    return (-float(getattr(item, "score", 0.0)), label, node_id)
+
+
 def _resolve_target_role(graph: GraphData, alias_map: dict[str, list[str]], raw_target_role: str | None) -> str | None:
     """把目标岗位输入统一解析成图谱中的 role 节点 ID。
 
@@ -193,7 +204,7 @@ def _build_recommendation_item(graph: GraphData, result, node_id: str, reasons: 
 
 def _snapshot_roles(graph: GraphData, result, top_k: int = 10) -> list[dict[str, Any]]:
     role_states = [state for state in result.states.values() if state.layer == "role"]
-    role_states.sort(key=lambda item: item.score, reverse=True)
+    role_states.sort(key=_state_sort_key)
     return [build_explanation(graph, result, item.node_id) | {"layer": item.layer} for item in role_states[:top_k]]
 
 
@@ -227,7 +238,7 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
     }
 
     role_states = [state for state in result.states.values() if state.layer == "role"]
-    role_states.sort(key=lambda item: item.score, reverse=True)
+    role_states.sort(key=_state_sort_key)
 
     recommendations: list[RecommendationItem] = []
     near_miss_roles: list[RecommendationItem] = []

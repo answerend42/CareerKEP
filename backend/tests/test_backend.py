@@ -18,11 +18,12 @@ import threading
 from http.server import ThreadingHTTPServer
 
 import backend.app.main as main_module
+import backend.app.api.recommend as recommend_module
 from backend.app.main import _RequestHandler, _read_json_argument, _read_json_file_argument, _run_recommend_command
 from backend.app.main import _PayloadTooLargeError, _run_validate_graph_command
 from backend.app.api.recommend import recommend
 from backend.app.schemas import EvidenceInput, clamp01
-from backend.app.services.graph_loader import GraphValidationError
+from backend.app.services.graph_loader import GraphValidationError, _build_graph
 from backend.app.services.input_normalizer import normalize_structured_input
 
 
@@ -89,6 +90,31 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("evidence_details", first_recommendation["explanation"])
         self.assertIn("diagnostics", first_recommendation["explanation"])
         self.assertTrue(first_recommendation["explanation"]["path"])
+
+    def test_recommend_orders_same_score_roles_stably(self) -> None:
+        nodes = [
+            {"id": "evidence_a", "label": "证据 A", "layer": "evidence", "aggregator": "source"},
+            {"id": "role_alpha", "label": "Alpha", "layer": "role", "aggregator": "hard_gate"},
+            {"id": "role_beta", "label": "Beta", "layer": "role", "aggregator": "hard_gate"},
+        ]
+        edges = [
+            {"source": "evidence_a", "target": "role_alpha", "relation": "supports", "weight": 0.6},
+            {"source": "evidence_a", "target": "role_beta", "relation": "supports", "weight": 0.6},
+        ]
+        graph = _build_graph(nodes, edges)
+
+        with patch.object(recommend_module, "_graph", return_value=graph), patch.object(
+            recommend_module, "load_alias_map", return_value={}
+        ):
+            response = recommend(
+                {
+                    "evidence": [{"node_id": "evidence_a", "score": 1.0}],
+                    "top_k": 2,
+                }
+            ).to_dict()
+
+        self.assertEqual([item["label"] for item in response["recommendations"]], ["Alpha", "Beta"])
+        self.assertEqual([item["node_id"] for item in response["graph_snapshot"][:2]], ["role_alpha", "role_beta"])
 
     def test_recommend_accepts_extra_evidence_fields(self) -> None:
         # 这里模拟前端或脚本多塞字段的情况，后端只应读取白名单字段，不应直接报错。

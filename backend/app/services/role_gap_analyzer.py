@@ -103,7 +103,7 @@ def suggest_bridge_nodes(graph: GraphData, result: InferenceResult, top_k: int =
         for state in result.states.values()
         if state.layer in bridge_layers and state.score > 0.12
     ]
-    candidates.sort(key=lambda item: item.score, reverse=True)
+    candidates.sort(key=lambda item: (-item.score, item.label.casefold(), item.node_id.casefold()))
 
     return [
         {
