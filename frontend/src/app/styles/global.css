@@ -629,6 +629,18 @@ pre {
   color: var(--muted);
 }
 
+.advice-card {
+  margin: 0;
+}
+
+.advice-list {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+  display: grid;
+  gap: 8px;
+}
+
 .clause-list {
   display: flex;
   flex-wrap: wrap;

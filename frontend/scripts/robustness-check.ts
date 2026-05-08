@@ -44,6 +44,8 @@ assert(defaultReport.improvedCount >= 0 && defaultReport.improvedCount <= defaul
 assert(defaultReport.fragileCount >= 0 && defaultReport.fragileCount <= defaultReport.cases.length, '脆弱场景计数应在合理范围内');
 assert(defaultReport.bestImprovementLabel.length > 0, '最佳提升场景标签不能为空');
 assert(defaultReport.worstRegressionLabel.length > 0, '最差回落场景标签不能为空');
+assert(defaultReport.tuningAdvice.length >= 2, '调参建议至少应包含两条');
+assert(defaultReport.tuningAdvice.some((item) => item.includes('探索权重')), '调参建议应包含探索权重提示');
 assert(defaultReport.cases.every((item) => item.coverage >= 0 && item.coverage <= 1), '覆盖率必须在 0 到 1 之间');
 assert(defaultReport.cases.every((item) => item.baselineTopScore >= 0 && item.baselineTopScore <= 1), '默认权重分数必须在 0 到 1 之间');
 

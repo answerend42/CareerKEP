@@ -128,6 +128,7 @@ export interface RobustnessReport {
   bestImprovementDelta: number;
   worstRegressionLabel: string;
   worstRegressionDelta: number;
+  tuningAdvice: string[];
   headline: string;
   cases: RobustnessCaseResult[];
 }

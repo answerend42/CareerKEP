@@ -106,6 +106,17 @@ export function ResultPane({ response, activeStep, robustnessReport }: ResultPan
           <span>{formatPercent(robustnessReport.averageTopScore)}</span>
         </div>
         <p className="result-intro">{robustnessReport.headline}</p>
+        <div className="analysis-card advice-card">
+          <div className="section-head">
+            <h3>下一步调参建议</h3>
+            <span>{robustnessReport.tuningAdvice.length} 条</span>
+          </div>
+          <ul className="advice-list">
+            {robustnessReport.tuningAdvice.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
         <div className="result-summary-row">
           <div className="result-summary-card">
             <span>平均变化</span>

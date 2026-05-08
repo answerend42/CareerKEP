@@ -665,6 +665,17 @@ export const buildRobustnessReport = (state: DemoState): RobustnessReport => {
   const fragileCount = cases.filter((item) => item.topScore < 0.42 || item.recommendationCount === 0).length;
   const bestImprovement = [...cases].sort((left, right) => right.scoreDelta - left.scoreDelta)[0];
   const worstRegression = [...cases].sort((left, right) => left.scoreDelta - right.scoreDelta)[0];
+  const tuningAdvice = [
+    fragileCount > 0
+      ? '优先提高探索权重，先把稀疏输入和中英混合输入的桥接建议稳住。'
+      : '当前鲁棒性整体稳定，可以先保持探索权重不变。',
+    worstRegression && worstRegression.scoreDelta < 0
+      ? `重点检查「${worstRegression.label}」，必要时降低信心权重或收紧证据触发阈值。`
+      : '当前没有明显退化场景，可以继续观察默认权重与当前权重的差异。',
+    worstRegression?.id === 'conflict'
+      ? '冲突输入仍有回落时，优先加强否定词识别和 blocker 抑制。'
+      : '如果后续出现冲突输入回落，再补强否定词和抑制逻辑。'
+  ];
 
   return {
     averageTopScore,
@@ -675,6 +686,7 @@ export const buildRobustnessReport = (state: DemoState): RobustnessReport => {
     bestImprovementDelta: bestImprovement?.scoreDelta ?? 0,
     worstRegressionLabel: worstRegression ? worstRegression.label : '暂无',
     worstRegressionDelta: worstRegression?.scoreDelta ?? 0,
+    tuningAdvice,
     headline:
       fragileCount > 0
         ? `有 ${fragileCount} 个极端输入场景需要继续加固解析和权重，当前平均变化 ${Math.round(averageDelta * 100)}%`
