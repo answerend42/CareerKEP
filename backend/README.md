@@ -127,7 +127,7 @@ python3 -m backend.app.main validate-graph
 `input_trace` 会拆开返回原始文本、结构化证据、自然语言解析结果、合并后的证据映射，便于前端调试“为什么这个岗位被推荐出来”。
 `input_trace` 里会额外返回 `resolved_target_role`，方便前端确认目标岗位最终命中了图谱里的哪个节点。
 每个 `recommendations`、`near_miss_roles` 和 `bridge_recommendations` 条目里都会带 `explanation`，其中包含 `path`、`evidence`、`evidence_details` 和 `diagnostics`，前端可以直接拿来做展开式解释面板。
-`target_role_analysis` 里会附带目标岗位路径、覆盖度、优势项和缺口项，`learning_path` 还会给出带 `rank`、`priority`、`gap`、`estimated_effort` 的行动计划，方便前端直接做“我离目标岗位还差什么、先做什么”的展示。
+`target_role_analysis` 里会附带目标岗位路径、覆盖度、准备度分级、当前聚焦提示、优势项和缺口项，`learning_path` 还会给出带 `rank`、`priority`、`gap`、`estimated_effort` 的行动计划，方便前端直接做“我离目标岗位还差什么、先做什么”的展示。
 `bridge_recommendations` 也会返回图路径，不再只是孤立节点名。
 
 `role_options` 里的每一项都包含 `node_id`、`label` 和 `search_terms`，前端可以直接拿来做岗位选择器，不需要再自己处理空格或大小写归一化。

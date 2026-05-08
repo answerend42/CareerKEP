@@ -80,7 +80,10 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("action_simulation", response["target_role_analysis"])
         self.assertIn("path", response["target_role_analysis"])
         self.assertIn("coverage_score", response["target_role_analysis"])
+        self.assertIn("readiness_level", response["target_role_analysis"])
+        self.assertIn("focus_message", response["target_role_analysis"])
         self.assertIn("summary", response["target_role_analysis"])
+        self.assertIn("top_missing_requirement", response["target_role_analysis"])
         self.assertTrue(response["target_role_analysis"]["learning_path"])
         first_step = response["target_role_analysis"]["learning_path"][0]
         self.assertIn("rank", first_step)
@@ -88,6 +91,7 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("gap", first_step)
         self.assertIn("estimated_effort", first_step)
         self.assertIn("why_now", first_step)
+        self.assertIn(response["target_role_analysis"]["readiness_level"], {"ready", "close", "building", "early"})
         self.assertEqual(response["input_trace"]["resolved_target_role"], "backend_engineer")
         self.assertEqual(response["target_role_analysis"]["resolved_target_role"], "backend_engineer")
         self.assertEqual(response["target_role_analysis"]["matched_target_role"], "后端开发工程师")
