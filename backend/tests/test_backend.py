@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import json
 from io import BytesIO
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
@@ -332,13 +333,17 @@ class BackendSmokeTest(unittest.TestCase):
             conn.request("GET", "/api/meta")
             resp = conn.getresponse()
             meta_body = resp.read().decode("utf-8")
+            meta_json = json.loads(meta_body)
             self.assertEqual(resp.status, 200)
-            self.assertIn('"service": "career-kg-backend"', meta_body)
-            self.assertIn('"graph"', meta_body)
-            self.assertIn('"aggregators"', meta_body)
-            self.assertIn('"validation"', meta_body)
-            self.assertIn('"role_options"', meta_body)
-            self.assertIn('"endpoints"', meta_body)
+            self.assertEqual(meta_json["service"], "career-kg-backend")
+            self.assertIn("graph", meta_json)
+            self.assertIn("aggregators", meta_json["graph"])
+            self.assertIn("validation", meta_json["graph"])
+            self.assertIn("role_options", meta_json)
+            self.assertIn("endpoints", meta_json)
+            self.assertIn("alias_count", meta_json["graph"])
+            self.assertIn("alias_node_count", meta_json["graph"])
+            self.assertIn("warnings", meta_json["graph"]["validation"])
             conn.close()
 
             conn = HTTPConnection("127.0.0.1", port, timeout=5)

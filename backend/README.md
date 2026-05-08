@@ -8,7 +8,7 @@
 - 结构化输入归一：把前端或脚本传来的节点分值统一到 `node_id -> score`。
 - 图谱推理：按 DAG 拓扑序传播分值，支持 `supports / evidences / requires / prefers / inhibits`。
 - 推荐编排：输出正式推荐、near miss、桥接建议、目标岗位分析和传播快照。
-- 元信息接口：提供图谱概览，方便前端启动时读取节点层级和职业节点列表。
+- 元信息接口：提供图谱概览和本地诊断，方便前端启动时读取节点层级、职业节点列表和图谱健康状态。
 - 本地服务：提供 `GET /health`、`GET /api/meta` 和 `POST /api/recommend`。
 
 ## 目录
@@ -95,7 +95,7 @@ python3 -m backend.app.main validate-graph
 - `GET /api/meta`
 - `POST /api/recommend`
 
-`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计、聚合器统计、基础校验状态、所有 `role` 节点列表，以及可直接用于前端搜索下拉的 `role_options`。
+`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计、聚合器统计、别名统计、基础校验状态、所有 `role` 节点列表，以及可直接用于前端搜索下拉的 `role_options`。`graph.validation.warnings` 会把当前图谱和别名词典的本地告警一起带出来，前端或启动脚本可以直接据此判断要不要提示用户。
 
 - `POST /api/recommend` 需要带 `Content-Type: application/json`，否则返回 `415`
 - `POST /api/recommend` 的请求体上限是 `1 MiB`，超过后返回 `413`

@@ -10,7 +10,7 @@ import sys
 from typing import Any
 
 from .api.recommend import recommend
-from .services.graph_loader import GraphValidationError, build_graph_diagnostics, load_graph_data, load_graph_summary
+from .services.graph_loader import GraphValidationError, build_graph_diagnostics, load_graph_data
 from .services.graph_quality import validate_graph_quality
 from .services.input_normalizer import load_alias_map, validate_alias_map
 
@@ -97,19 +97,30 @@ class _RequestHandler(BaseHTTPRequestHandler):
             self._send_json(200, {"status": "ok"})
             return
         if self.path == "/api/meta":
-            # 元信息接口尽量只返回稳定的结构，方便前端启动时读取能力概览。
-            graph_summary = load_graph_summary()
-            self._send_json(
-                200,
-                {
-                    "service": "career-kg-backend",
-                    "version": "0.1.0",
-                    "graph": graph_summary,
-                    "role_options": _build_role_options(graph_summary),
-                    "aliases_count": len(load_alias_map()),
-                    "endpoints": ["/health", "/api/meta", "/api/recommend"],
-                },
-            )
+            try:
+                graph = load_graph_data()
+                alias_map = load_alias_map()
+                alias_warnings = validate_alias_map(graph, alias_map)
+                quality_warnings = validate_graph_quality(graph)
+                graph_summary = build_graph_diagnostics(graph, alias_map, alias_warnings + quality_warnings)
+                # 元信息接口既要稳定，也要把本地诊断尽量暴露出来，方便前端启动时直接判断图谱健康状态。
+                self._send_json(
+                    200,
+                    {
+                        "service": "career-kg-backend",
+                        "version": "0.1.0",
+                        "graph": graph_summary,
+                        "role_options": _build_role_options(graph_summary),
+                        "aliases_count": len(alias_map),
+                        "alias_count": graph_summary["alias_count"],
+                        "alias_node_count": graph_summary["alias_node_count"],
+                        "endpoints": ["/health", "/api/meta", "/api/recommend"],
+                    },
+                )
+            except GraphValidationError as exc:
+                self._send_json(500, {"detail": f"graph validation failed: {exc}"})
+            except Exception as exc:  # noqa: BLE001
+                self._send_json(500, {"detail": f"internal error: {exc}"})
             return
         self._send_json(404, {"detail": "not found"})
 
