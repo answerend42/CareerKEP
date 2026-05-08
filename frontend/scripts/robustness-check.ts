@@ -31,6 +31,7 @@ assert(
   conflictResponse.inputTrace.signalTrace.negatedSignals.includes('不擅长 C++'),
   '冲突输入应该识别出不擅长 C++ 这个否定信号'
 );
+assert(conflictResponse.inputTrace.signalTrace.clauses.length >= 2, '冲突输入应该能切分出多个句子片段');
 
 const sparseResponse = buildRecommendationResponse(stressPresets.find((item) => item.id === 'sparse')!.state);
 assert(sparseResponse.bridgeRecommendations.length > 0, '稀疏输入应该保留桥接建议');

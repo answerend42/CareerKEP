@@ -124,6 +124,20 @@ export function ResultPane({ response, activeStep, robustnessReport }: ResultPan
           <h3>输入追踪</h3>
           <span>{response.inputTrace.resolvedTargetRole}</span>
         </div>
+        <div className="trace-metrics">
+          <div className="trace-metric">
+            <strong>{response.inputTrace.signalTrace.clauses.length}</strong>
+            <span>句子片段</span>
+          </div>
+          <div className="trace-metric">
+            <strong>{response.inputTrace.signalTrace.matchedSignals.length}</strong>
+            <span>命中信号</span>
+          </div>
+          <div className="trace-metric">
+            <strong>{response.inputTrace.signalTrace.negatedSignals.length}</strong>
+            <span>否定信号</span>
+          </div>
+        </div>
         <div className="trace-summary">
           <div className="trace-box">
             <span>命中证据</span>
@@ -133,6 +147,13 @@ export function ResultPane({ response, activeStep, robustnessReport }: ResultPan
             <span>否定信号</span>
             <p>{response.inputTrace.signalTrace.negatedSignals.join('、') || '暂无否定信号'}</p>
           </div>
+        </div>
+        <div className="clause-list">
+          {response.inputTrace.signalTrace.clauses.map((clause, index) => (
+            <span key={`${index}-${clause}`} className="clause-chip">
+              {clause}
+            </span>
+          ))}
         </div>
         <pre>{JSON.stringify(response.inputTrace, null, 2)}</pre>
       </section>

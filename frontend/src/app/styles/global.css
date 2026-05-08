@@ -550,6 +550,29 @@ pre {
   gap: 12px;
 }
 
+.trace-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.trace-metric {
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(156, 176, 210, 0.14);
+  background: rgba(6, 11, 23, 0.72);
+}
+
+.trace-metric strong {
+  display: block;
+  font-size: 1.2rem;
+}
+
+.trace-metric span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .trace-box {
   padding: 14px;
   border-radius: 14px;
@@ -566,6 +589,20 @@ pre {
 .trace-box p {
   margin: 0;
   color: var(--muted);
+}
+
+.clause-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.clause-chip {
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(156, 176, 210, 0.14);
+  background: rgba(114, 240, 192, 0.08);
+  color: var(--text);
 }
 
 @keyframes reveal {
@@ -597,6 +634,7 @@ pre {
   .evidence-grid,
   .field-grid,
   .micro-summary,
+  .trace-metrics,
   .trace-summary,
   .hero-metrics {
     grid-template-columns: 1fr;

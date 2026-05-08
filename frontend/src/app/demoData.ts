@@ -47,6 +47,11 @@ interface SignalTrace {
   negatedSignals: string[];
 }
 
+interface TextAnalysis {
+  evidenceMap: Map<string, number>;
+  signalTrace: SignalTrace;
+}
+
 const clamp01 = (value: number): number => Math.max(0, Math.min(1, value));
 
 const nodeCatalog: NodeDefinition[] = [
@@ -107,7 +112,13 @@ const extractClauses = (text: string): string[] =>
     .map((part) => part.trim())
     .filter(Boolean);
 
-const buildSignalTrace = (text: string): SignalTrace => {
+const analyzeInputText = (text: string, evidence: EvidenceItem[]): TextAnalysis => {
+  const evidenceMap = new Map<string, number>();
+
+  for (const item of evidence) {
+    evidenceMap.set(item.nodeId, clamp01(item.score));
+  }
+
   const clauses = extractClauses(text);
   const matchedSignals = new Set<string>();
   const negatedSignals = new Set<string>();
@@ -126,19 +137,38 @@ const buildSignalTrace = (text: string): SignalTrace => {
         const prefix = clauseToken.slice(Math.max(0, aliasIndex - 8), aliasIndex);
         const negated = NEGATION_WORDS.some((word) => prefix.includes(word));
 
-        if (negated || item.polarity === 'negative') {
+        if (item.polarity === 'negative') {
           negatedSignals.add(item.label);
-        } else {
+        } else if (!negated) {
           matchedSignals.add(item.label);
+        }
+
+        if (item.polarity === 'negative') {
+          const current = evidenceMap.get(item.id) ?? 0;
+          const nextScore = negated ? item.scoreHint : item.scoreHint * 0.85;
+          evidenceMap.set(item.id, clamp01(Math.max(current, nextScore)));
+        } else if (!negated) {
+          const current = evidenceMap.get(item.id) ?? 0;
+          evidenceMap.set(item.id, clamp01(Math.max(current, item.scoreHint)));
+        }
+
+        if (item.id === 'frontend_project') {
+          const programmingScore = clamp01(item.scoreHint * 0.72);
+          const existingProgramming = evidenceMap.get('programming') ?? 0;
+          // 前端项目通常也能间接说明一定的编程基础，所以这里给一个温和的桥接增益。
+          evidenceMap.set('programming', clamp01(Math.max(existingProgramming, programmingScore)));
         }
       }
     }
   }
 
   return {
-    clauses,
-    matchedSignals: [...matchedSignals],
-    negatedSignals: [...negatedSignals]
+    evidenceMap,
+    signalTrace: {
+      clauses,
+      matchedSignals: [...matchedSignals],
+      negatedSignals: [...negatedSignals]
+    }
   };
 };
 
@@ -205,58 +235,6 @@ const evidenceTemplates: EvidenceItem[] = [
   { nodeId: 'communication', label: '沟通表达', score: 0.8, source: '用户输入', rawText: '也比较擅长沟通协作' },
   { nodeId: 'cpp_gap', label: '不擅长 C++', score: 0.7, source: '用户输入', rawText: '不太擅长 C++' }
 ];
-
-const buildEvidenceMap = (text: string, evidence: EvidenceItem[]): Map<string, number> => {
-  const map = new Map<string, number>();
-
-  for (const item of evidence) {
-    map.set(item.nodeId, clamp01(item.score));
-  }
-
-  const clauses = extractClauses(text);
-
-  for (const clause of clauses) {
-    const clauseToken = normalizeToken(clause);
-
-    for (const item of nodeCatalog) {
-      let bestScore = 0;
-
-      for (const alias of item.aliases) {
-        const aliasToken = normalizeToken(alias);
-        if (!aliasToken || !clauseToken.includes(aliasToken)) {
-          continue;
-        }
-
-        const aliasIndex = clauseToken.indexOf(aliasToken);
-        const prefix = clauseToken.slice(Math.max(0, aliasIndex - 8), aliasIndex);
-        const negated = NEGATION_WORDS.some((word) => prefix.includes(word));
-
-        if (item.polarity === 'negative') {
-          bestScore = Math.max(bestScore, negated ? item.scoreHint : item.scoreHint * 0.85);
-        } else if (!negated) {
-          bestScore = Math.max(bestScore, item.scoreHint);
-        }
-      }
-
-      if (bestScore <= 0) {
-        continue;
-      }
-
-      const current = map.get(item.id) ?? 0;
-      // 同一节点可能在多段文本里被反复提到，这里只保留最强一次，避免噪声重复放大。
-      map.set(item.id, clamp01(Math.max(current, bestScore)));
-
-      if (item.id === 'frontend_project') {
-        const programmingScore = clamp01(bestScore * 0.72);
-        const existingProgramming = map.get('programming') ?? 0;
-        // 前端项目通常也能间接说明一定的编程基础，所以这里给一个温和的桥接增益。
-        map.set('programming', clamp01(Math.max(existingProgramming, programmingScore)));
-      }
-    }
-  }
-
-  return map;
-};
 
 const scoreProfile = (
   profile: RoleProfile,
@@ -686,8 +664,7 @@ export const buildRobustnessReport = (state: DemoState): RobustnessReport => {
 export const getRoleOptions = (): RoleOption[] => roleCatalog;
 
 export const buildRecommendationResponse = (state: DemoState): RecommendationResponse => {
-  const evidenceMap = buildEvidenceMap(state.text, state.evidence);
-  const signalTrace = buildSignalTrace(state.text);
+  const { evidenceMap, signalTrace } = analyzeInputText(state.text, state.evidence);
   const propagationSnapshot = buildPropagationSnapshot(evidenceMap, state.tuning);
   const scoredRoles = roleProfiles
     .map((profile) => scoreProfile(profile, evidenceMap, state.tuning))
