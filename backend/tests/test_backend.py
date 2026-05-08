@@ -76,6 +76,7 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertLessEqual(len(response["recommendations"]), 3)
         self.assertGreaterEqual(len(response["recommendations"]), 1)
         self.assertIn("input_trace", response)
+        self.assertIn("result_summary", response)
         self.assertIn("merged_evidence", response["input_trace"])
         self.assertIn("parsed_natural_language_evidence", response["input_trace"])
         self.assertIn("learning_path", response["target_role_analysis"])
@@ -104,6 +105,15 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertEqual(response["input_trace"]["resolved_target_role"], "backend_engineer")
         self.assertEqual(response["target_role_analysis"]["resolved_target_role"], "backend_engineer")
         self.assertEqual(response["target_role_analysis"]["matched_target_role"], "后端开发工程师")
+        summary = response["result_summary"]
+        self.assertEqual(summary["recommendation_count"], len(response["recommendations"]))
+        self.assertEqual(summary["near_miss_count"], len(response["near_miss_roles"]))
+        self.assertEqual(summary["bridge_count"], len(response["bridge_recommendations"]))
+        self.assertEqual(summary["resolved_target_role"], "backend_engineer")
+        self.assertEqual(summary["readiness_level"], response["target_role_analysis"]["readiness_level"])
+        self.assertIn("top_recommendation", summary)
+        if response["recommendations"]:
+            self.assertEqual(summary["top_recommendation"]["node_id"], response["recommendations"][0]["node_id"])
         self.assertNotIn("", response["raw_evidence"])
         first_recommendation = response["recommendations"][0]
         self.assertIn("explanation", first_recommendation)

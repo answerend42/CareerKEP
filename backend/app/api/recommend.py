@@ -208,6 +208,30 @@ def _snapshot_roles(graph: GraphData, result, top_k: int = 10) -> list[dict[str,
     return [build_explanation(graph, result, item.node_id) | {"layer": item.layer} for item in role_states[:top_k]]
 
 
+def _build_result_summary(
+    recommendations: list[RecommendationItem],
+    near_miss_roles: list[RecommendationItem],
+    bridge_recommendations: list[RecommendationItem],
+    target_role_analysis: dict[str, Any],
+    graph_snapshot: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """把本次推荐结果整理成给前端首页用的总览信息。"""
+
+    top_recommendation = recommendations[0].to_dict() if recommendations else None
+    top_bridge = bridge_recommendations[0].to_dict() if bridge_recommendations else None
+    return {
+        "recommendation_count": len(recommendations),
+        "near_miss_count": len(near_miss_roles),
+        "bridge_count": len(bridge_recommendations),
+        "graph_snapshot_count": len(graph_snapshot),
+        "has_target_role_analysis": bool(target_role_analysis),
+        "resolved_target_role": target_role_analysis.get("resolved_target_role"),
+        "readiness_level": target_role_analysis.get("readiness_level"),
+        "top_recommendation": top_recommendation,
+        "top_bridge": top_bridge,
+    }
+
+
 def recommend(payload: RecommendationRequest | dict[str, Any]) -> RecommendationResponse:
     """推荐主入口。"""
 
@@ -283,13 +307,23 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
         boost_plan = {item["node_id"]: min(0.2, max(0.05, item["gap"])) for item in gap_items[:3]}
         target_role_analysis["action_simulation"] = simulate_actions(evidence_map, boost_plan)
 
+    graph_snapshot = _snapshot_roles(graph, result, top_k=8)
+    result_summary = _build_result_summary(
+        recommendations=recommendations[: top_k],
+        near_miss_roles=near_miss_roles[: top_k],
+        bridge_recommendations=bridge_recommendations[: top_k],
+        target_role_analysis=target_role_analysis,
+        graph_snapshot=graph_snapshot,
+    )
+
     return RecommendationResponse(
         input_trace=input_trace,
+        result_summary=result_summary,
         recommendations=recommendations[: top_k],
         near_miss_roles=near_miss_roles[: top_k],
         bridge_recommendations=bridge_recommendations[: top_k],
         target_role_analysis=target_role_analysis,
         propagation_snapshot=result.to_snapshot(top_k=12),
-        graph_snapshot=_snapshot_roles(graph, result, top_k=8),
+        graph_snapshot=graph_snapshot,
         raw_evidence=evidence_map,
     )
