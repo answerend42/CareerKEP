@@ -192,8 +192,10 @@ const scoreProfile = (
   }
 
   const directionBoost = evidenceMap.get(profile.direction) ?? 0;
+  // 负向容忍度越高，对 blocker 的惩罚越弱，适合演示“放宽筛选”的效果。
+  const penaltyRelief = 1 - clamp01(tuning.penaltyTolerance * 0.7);
   const tuningBoost = tuning.confidence * 0.08 + tuning.exploration * 0.05;
-  const score = clamp01(supportScore + preferredScore + directionBoost * 0.25 + tuningBoost - blockerPenalty);
+  const score = clamp01(supportScore + preferredScore + directionBoost * 0.25 + tuningBoost - blockerPenalty * penaltyRelief);
   const missing = profile.required
     .filter((item) => !(evidenceMap.get(item) ?? 0))
     .map((item) => nodeCatalog.find((node) => node.id === item)?.label ?? item);
@@ -319,11 +321,12 @@ const buildPropagationSnapshot = (evidenceMap: Map<string, number>, tuning: Demo
     const directionScore = directionLayer.find((item) => item.id === profile.direction)?.score ?? 0;
     const directSupport = profile.required.reduce((sum, item) => sum + (evidenceMap.get(item) ?? 0) * 0.22, 0);
     const penalty = profile.blockers.reduce((sum, item) => sum + (evidenceMap.get(item) ?? 0) * 0.18, 0);
+    const penaltyRelief = 1 - clamp01(tuning.penaltyTolerance * 0.7);
     return {
       id: profile.nodeId,
       label: profile.label,
       layer: 'role',
-      score: clamp01(directionScore * 0.58 + directSupport - penalty + tuning.confidence * 0.05),
+      score: clamp01(directionScore * 0.58 + directSupport - penalty * penaltyRelief + tuning.confidence * 0.05),
       detail: profile.path[profile.path.length - 1] ?? '岗位节点'
     };
   });

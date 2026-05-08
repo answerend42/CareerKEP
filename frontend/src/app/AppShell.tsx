@@ -48,7 +48,8 @@ export function AppShell() {
           text: state.text,
           target_role: state.targetRole,
           top_k: state.topK,
-          evidence: state.evidence
+          evidence: state.evidence,
+          tuning: state.tuning
         })
       });
 
