@@ -544,6 +544,30 @@ pre {
   overflow: auto;
 }
 
+.trace-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.trace-box {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(156, 176, 210, 0.14);
+  background: rgba(6, 11, 23, 0.72);
+}
+
+.trace-box span {
+  display: block;
+  color: var(--accent-strong);
+  margin-bottom: 8px;
+}
+
+.trace-box p {
+  margin: 0;
+  color: var(--muted);
+}
+
 @keyframes reveal {
   from {
     opacity: 0;
@@ -573,6 +597,7 @@ pre {
   .evidence-grid,
   .field-grid,
   .micro-summary,
+  .trace-summary,
   .hero-metrics {
     grid-template-columns: 1fr;
   }

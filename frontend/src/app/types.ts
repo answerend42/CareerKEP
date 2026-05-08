@@ -58,6 +58,11 @@ export interface RecommendationResponse {
     targetRole: string;
     resolvedTargetRole: string;
     structuredEvidence: EvidenceItem[];
+    signalTrace: {
+      clauses: string[];
+      matchedSignals: string[];
+      negatedSignals: string[];
+    };
   };
   recommendations: RecommendationCard[];
   nearMissRoles: RecommendationCard[];

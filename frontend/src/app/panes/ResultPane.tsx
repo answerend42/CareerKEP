@@ -124,6 +124,16 @@ export function ResultPane({ response, activeStep, robustnessReport }: ResultPan
           <h3>输入追踪</h3>
           <span>{response.inputTrace.resolvedTargetRole}</span>
         </div>
+        <div className="trace-summary">
+          <div className="trace-box">
+            <span>命中证据</span>
+            <p>{response.inputTrace.signalTrace.matchedSignals.join('、') || '暂无明确命中'}</p>
+          </div>
+          <div className="trace-box">
+            <span>否定信号</span>
+            <p>{response.inputTrace.signalTrace.negatedSignals.join('、') || '暂无否定信号'}</p>
+          </div>
+        </div>
         <pre>{JSON.stringify(response.inputTrace, null, 2)}</pre>
       </section>
     </div>

@@ -41,6 +41,12 @@ interface NodeDefinition {
   polarity?: 'positive' | 'negative';
 }
 
+interface SignalTrace {
+  clauses: string[];
+  matchedSignals: string[];
+  negatedSignals: string[];
+}
+
 const clamp01 = (value: number): number => Math.max(0, Math.min(1, value));
 
 const nodeCatalog: NodeDefinition[] = [
@@ -100,6 +106,41 @@ const extractClauses = (text: string): string[] =>
     .split(/[\n\r。！？!?；;，,、|/\\]+/)
     .map((part) => part.trim())
     .filter(Boolean);
+
+const buildSignalTrace = (text: string): SignalTrace => {
+  const clauses = extractClauses(text);
+  const matchedSignals = new Set<string>();
+  const negatedSignals = new Set<string>();
+
+  for (const clause of clauses) {
+    const clauseToken = normalizeToken(clause);
+
+    for (const item of nodeCatalog) {
+      for (const alias of item.aliases) {
+        const aliasToken = normalizeToken(alias);
+        if (!aliasToken || !clauseToken.includes(aliasToken)) {
+          continue;
+        }
+
+        const aliasIndex = clauseToken.indexOf(aliasToken);
+        const prefix = clauseToken.slice(Math.max(0, aliasIndex - 8), aliasIndex);
+        const negated = NEGATION_WORDS.some((word) => prefix.includes(word));
+
+        if (negated || item.polarity === 'negative') {
+          negatedSignals.add(item.label);
+        } else {
+          matchedSignals.add(item.label);
+        }
+      }
+    }
+  }
+
+  return {
+    clauses,
+    matchedSignals: [...matchedSignals],
+    negatedSignals: [...negatedSignals]
+  };
+};
 
 const roleOptions: RoleOption[] = nodeCatalog
   .filter((item) => item.layer === 'role')
@@ -646,6 +687,7 @@ export const getRoleOptions = (): RoleOption[] => roleCatalog;
 
 export const buildRecommendationResponse = (state: DemoState): RecommendationResponse => {
   const evidenceMap = buildEvidenceMap(state.text, state.evidence);
+  const signalTrace = buildSignalTrace(state.text);
   const propagationSnapshot = buildPropagationSnapshot(evidenceMap, state.tuning);
   const scoredRoles = roleProfiles
     .map((profile) => scoreProfile(profile, evidenceMap, state.tuning))
@@ -667,7 +709,8 @@ export const buildRecommendationResponse = (state: DemoState): RecommendationRes
       structuredEvidence: state.evidence.map((item) => ({
         ...item,
         score: evidenceMap.get(item.nodeId) ?? item.score
-      }))
+      })),
+      signalTrace
     },
     recommendations,
     nearMissRoles,

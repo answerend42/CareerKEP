@@ -26,6 +26,12 @@ const mixedResponse = buildRecommendationResponse(stressPresets.find((item) => i
 assert(mixedResponse.recommendations.length > 0, '中英混合输入至少应保留一条推荐');
 assert(mixedResponse.propagationSnapshot.layers.length === 5, '传播快照应该保持五层结构');
 
+const conflictResponse = buildRecommendationResponse(stressPresets.find((item) => item.id === 'conflict')!.state);
+assert(
+  conflictResponse.inputTrace.signalTrace.negatedSignals.includes('不擅长 C++'),
+  '冲突输入应该识别出不擅长 C++ 这个否定信号'
+);
+
 const sparseResponse = buildRecommendationResponse(stressPresets.find((item) => item.id === 'sparse')!.state);
 assert(sparseResponse.bridgeRecommendations.length > 0, '稀疏输入应该保留桥接建议');
 
