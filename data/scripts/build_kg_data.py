@@ -5,7 +5,7 @@ import hashlib
 import json
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -111,9 +111,19 @@ def relative_path(path: Path) -> str:
     """日志里优先写相对路径，方便不同机器之间对比。"""
 
     try:
-        return str(path.resolve().relative_to(ROOT))
+        return path.resolve().relative_to(ROOT).as_posix()
     except ValueError:
-        return str(path)
+        return path.resolve().as_posix()
+
+
+def source_file_record(path: Path) -> dict[str, Any]:
+    """记录输入文件的可复现元信息，方便后续核验构建来源。"""
+
+    return {
+        "path": relative_path(path),
+        "size_bytes": path.stat().st_size,
+        "sha256": file_sha256(path),
+    }
 
 
 def ensure_list(value: Any, field_name: str, context: str) -> list[Any]:
@@ -785,7 +795,7 @@ def build_manifest(
 
     node_type_counter = Counter(node["type"] for node in nodes)
     return {
-        "generated_at": datetime.now().isoformat(timespec="seconds"),
+        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "entity_count": len(nodes),
         "evidence_count": evidence_count,
         "relation_instance_count": len(relation_instances),
@@ -805,11 +815,11 @@ def build_manifest(
             "graph_manifest.json",
         ],
         "source_files": {
-            "entities": relative_path(args.entities),
-            "evidence": relative_path(args.evidence),
-            "schema": relative_path(args.schema),
-            "keywords": relative_path(args.keywords),
-            "rules": relative_path(args.rules),
+            "entities": source_file_record(args.entities),
+            "evidence": source_file_record(args.evidence),
+            "schema": source_file_record(args.schema),
+            "keywords": source_file_record(args.keywords),
+            "rules": source_file_record(args.rules),
         },
     }
 
@@ -939,11 +949,11 @@ def main() -> int:
             "isolated_node_count": quality_report["isolated_node_count"],
             "connected_node_count": quality_report["connected_node_count"],
             "source_files": {
-                "entities": relative_path(args.entities),
-                "evidence": relative_path(args.evidence),
-                "schema": relative_path(args.schema),
-                "keywords": relative_path(args.keywords),
-                "rules": relative_path(args.rules),
+                "entities": source_file_record(args.entities),
+                "evidence": source_file_record(args.evidence),
+                "schema": source_file_record(args.schema),
+                "keywords": source_file_record(args.keywords),
+                "rules": source_file_record(args.rules),
             },
             "instance_summary": summarize_instances(relation_instances),
             "validation": {

@@ -27,6 +27,66 @@ def file_sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def resolve_source_record_path(record: dict[str, Any], key: str, errors: list[str], context: str) -> Path | None:
+    """把 manifest 里的输入文件记录还原成实际路径，便于做可复现性校验。"""
+
+    value = record.get(key)
+    if not isinstance(value, str) or not value:
+        errors.append(f"{context} 缺少有效的 {key}")
+        return None
+    return ROOT / value
+
+
+def validate_source_file_records(
+    records: dict[str, Any],
+    context: str,
+    errors: list[str],
+) -> None:
+    """校验输入文件元信息是否完整，并与实际文件内容一致。"""
+
+    assert_condition(isinstance(records, dict), f"{context} 必须是对象", errors)
+    if not isinstance(records, dict):
+        return
+
+    for name, record in records.items():
+        if not isinstance(record, dict):
+            errors.append(f"{context}.{name} 必须是对象")
+            continue
+
+        file_path = resolve_source_record_path(record, "path", errors, f"{context}.{name}")
+        expected_size = record.get("size_bytes")
+        expected_sha256 = record.get("sha256")
+
+        if file_path is None:
+            continue
+        assert_condition(file_path.exists(), f"{context}.{name} 引用的文件不存在: {file_path}", errors)
+        if not file_path.exists():
+            continue
+
+        assert_condition(
+            isinstance(expected_size, int) and expected_size > 0,
+            f"{context}.{name} 的 size_bytes 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(expected_sha256, str) and len(expected_sha256) == 64,
+            f"{context}.{name} 的 sha256 无效",
+            errors,
+        )
+        if isinstance(expected_size, int):
+            assert_condition(
+                file_path.stat().st_size == expected_size,
+                f"{context}.{name} 的 size_bytes 与实际文件不一致",
+                errors,
+            )
+        if isinstance(expected_sha256, str) and len(expected_sha256) == 64:
+            assert_condition(
+                file_sha256(file_path) == expected_sha256,
+                f"{context}.{name} 的 sha256 与实际文件不一致",
+                errors,
+            )
+
+
 def assert_condition(condition: bool, message: str, errors: list[str]) -> None:
     if not condition:
         errors.append(message)
@@ -68,6 +128,14 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     extraction_log = load_json(files["extraction_log"])
     data_catalog = load_json(files["data_catalog"])
     graph_manifest = load_json(files["graph_manifest"])
+
+    validate_source_file_records(graph_manifest.get("source_files", {}), "graph_manifest.source_files", errors)
+    validate_source_file_records(extraction_log.get("source_files", {}), "extraction_log.source_files", errors)
+    assert_condition(
+        graph_manifest.get("source_files") == extraction_log.get("source_files"),
+        "graph_manifest 与 extraction_log 记录的 source_files 不一致",
+        errors,
+    )
 
     assert_condition(isinstance(nodes, list), "nodes.json 必须是列表", errors)
     assert_condition(isinstance(relation_instances, list), "relation_instances.json 必须是列表", errors)

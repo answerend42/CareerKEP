@@ -59,14 +59,14 @@
     "file_name": "extraction_log.json",
     "description": "构建日志",
     "item_count": 17,
-    "size_bytes": 1378,
-    "sha256": "9aa19e53d8bedfe0ebc54a2af7e3fb0939a765328046957766437246c08f6830"
+    "size_bytes": 2052,
+    "sha256": "8da5e76ce733878418e1be33a64a460b838ab3091d2a7a2da42d9cf50c72cc00"
   },
   {
     "file_name": "graph_manifest.json",
     "description": "构建清单",
     "item_count": 20,
-    "size_bytes": 857,
-    "sha256": "62a8643fe85162772eb73d418fcbf623b0d7477b11e6fd3991d8f60e99a24301"
+    "size_bytes": 1532,
+    "sha256": "dd9433176445b81764569718c5e20aa9f0da1bedb78ad7346a4cad2f6740ff1a"
   }
 ]

@@ -38,7 +38,7 @@
 - `output/extraction_log.json`
   - 构建日志与计数信息，便于调试和复核。
 - `output/graph_manifest.json`
-  - 图谱构建清单，记录输入来源和输出文件列表，给 backend 或人工检查使用。
+  - 图谱构建清单，记录输入来源、文件大小和 SHA256，以及输出文件列表，给 backend 或人工检查使用。
 
 ## 使用方式
 
