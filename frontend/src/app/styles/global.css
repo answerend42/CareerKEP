@@ -372,6 +372,11 @@ pre {
   border-radius: 999px;
 }
 
+.chip.stress {
+  border-color: rgba(255, 124, 144, 0.34);
+  background: linear-gradient(135deg, rgba(255, 124, 144, 0.18), rgba(255, 184, 107, 0.12));
+}
+
 .evidence-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -495,6 +500,11 @@ pre {
 .result-block {
   display: grid;
   gap: 12px;
+}
+
+.result-intro {
+  margin: 0;
+  color: var(--muted);
 }
 
 .result-card.strong {

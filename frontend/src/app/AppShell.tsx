@@ -1,5 +1,12 @@
 import { useMemo, useState } from 'react';
-import { buildRecommendationResponse, defaultDemoState, getDemoCopy, getRoleOptions, scenarioPresets } from './demoData';
+import {
+  buildRecommendationResponse,
+  buildRobustnessReport,
+  defaultDemoState,
+  getDemoCopy,
+  getRoleOptions,
+  scenarioPresets
+} from './demoData';
 import { InputPane } from './panes/InputPane';
 import { TunePane } from './panes/TunePane';
 import { GraphPane } from './panes/GraphPane';
@@ -16,6 +23,9 @@ export function AppShell() {
 
   const roleOptions = useMemo(() => getRoleOptions(), []);
   const demoCopy = useMemo(() => getDemoCopy(lastRun), [lastRun]);
+  const robustnessReport = useMemo(() => buildRobustnessReport(state), [state]);
+  const normalPresets = useMemo(() => scenarioPresets.filter((item) => item.kind === 'normal'), []);
+  const stressPresets = useMemo(() => scenarioPresets.filter((item) => item.kind === 'stress'), []);
 
   const updateState = <K extends keyof DemoState>(key: K, value: DemoState[K]) => {
     setState((current) => {
@@ -129,6 +139,8 @@ export function AppShell() {
           <InputPane
             state={state}
             roleOptions={roleOptions}
+            presets={normalPresets}
+            stressPresets={stressPresets}
             onChange={updateState}
             onPreset={applyPreset}
             onRun={runRecommendation}
@@ -150,7 +162,7 @@ export function AppShell() {
         </section>
 
         <section className="panel panel-result">
-          <ResultPane response={lastRun} activeStep={activeStep} />
+          <ResultPane response={lastRun} activeStep={activeStep} robustnessReport={robustnessReport} />
         </section>
       </main>
     </div>
