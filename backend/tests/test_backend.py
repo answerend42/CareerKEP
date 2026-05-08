@@ -112,8 +112,14 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertEqual(summary["resolved_target_role"], "backend_engineer")
         self.assertEqual(summary["readiness_level"], response["target_role_analysis"]["readiness_level"])
         self.assertIn("top_recommendation", summary)
+        self.assertIn("highlights", summary)
+        self.assertLessEqual(len(summary["highlights"]), 3)
         if response["recommendations"]:
             self.assertEqual(summary["top_recommendation"]["node_id"], response["recommendations"][0]["node_id"])
+            self.assertEqual(summary["highlights"][0]["kind"], "recommendation")
+        if response["target_role_analysis"].get("top_missing_requirement"):
+            highlight_kinds = [item["kind"] for item in summary["highlights"]]
+            self.assertIn("gap", highlight_kinds)
         self.assertNotIn("", response["raw_evidence"])
         first_recommendation = response["recommendations"][0]
         self.assertIn("explanation", first_recommendation)
