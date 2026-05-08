@@ -39,8 +39,11 @@ assert(sparseResponse.bridgeRecommendations.length > 0, '稀疏输入应该保�
 const defaultReport = buildRobustnessReport(defaultDemoState);
 assert(defaultReport.cases.length === stressPresets.length, '鲁棒性报告应覆盖全部极端场景');
 assert(defaultReport.averageTopScore >= 0 && defaultReport.averageTopScore <= 1, '平均最高分应该在 0 到 1 之间');
+assert(defaultReport.averageDelta >= -1 && defaultReport.averageDelta <= 1, '平均变化应该在合理范围内');
+assert(defaultReport.improvedCount >= 0 && defaultReport.improvedCount <= defaultReport.cases.length, '改善场景数应该在合理范围内');
 assert(defaultReport.fragileCount >= 0 && defaultReport.fragileCount <= defaultReport.cases.length, '脆弱场景计数应在合理范围内');
 assert(defaultReport.cases.every((item) => item.coverage >= 0 && item.coverage <= 1), '覆盖率必须在 0 到 1 之间');
+assert(defaultReport.cases.every((item) => item.baselineTopScore >= 0 && item.baselineTopScore <= 1), '默认权重分数必须在 0 到 1 之间');
 
 const boostedReport = buildRobustnessReport({
   ...defaultDemoState,

@@ -111,6 +111,8 @@ export interface RobustnessCaseResult {
   description: string;
   topRole: string;
   topScore: number;
+  baselineTopScore: number;
+  scoreDelta: number;
   recommendationCount: number;
   nearMissCount: number;
   coverage: number;
@@ -119,6 +121,8 @@ export interface RobustnessCaseResult {
 
 export interface RobustnessReport {
   averageTopScore: number;
+  averageDelta: number;
+  improvedCount: number;
   fragileCount: number;
   headline: string;
   cases: RobustnessCaseResult[];

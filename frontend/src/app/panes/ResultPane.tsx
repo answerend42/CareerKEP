@@ -7,6 +7,10 @@ interface ResultPaneProps {
 }
 
 const formatPercent = (value: number) => `${Math.round(value * 100)}%`;
+const formatDelta = (value: number) => {
+  const rounded = Math.round(value * 100);
+  return rounded > 0 ? `+${rounded}%` : `${rounded}%`;
+};
 
 export function ResultPane({ response, activeStep, robustnessReport }: ResultPaneProps) {
   return (
@@ -102,6 +106,22 @@ export function ResultPane({ response, activeStep, robustnessReport }: ResultPan
           <span>{formatPercent(robustnessReport.averageTopScore)}</span>
         </div>
         <p className="result-intro">{robustnessReport.headline}</p>
+        <div className="result-summary-row">
+          <div className="result-summary-card">
+            <span>平均变化</span>
+            <strong className={robustnessReport.averageDelta >= 0 ? 'summary-positive' : 'summary-negative'}>
+              {formatDelta(robustnessReport.averageDelta)}
+            </strong>
+          </div>
+          <div className="result-summary-card">
+            <span>改善场景</span>
+            <strong>{robustnessReport.improvedCount} 个</strong>
+          </div>
+          <div className="result-summary-card">
+            <span>脆弱场景</span>
+            <strong>{robustnessReport.fragileCount} 个</strong>
+          </div>
+        </div>
         <div className="result-list compact">
           {robustnessReport.cases.map((item) => (
             <article key={item.id} className="result-card">
@@ -111,9 +131,14 @@ export function ResultPane({ response, activeStep, robustnessReport }: ResultPan
               </div>
               <p>{item.description}</p>
               <small>
-                {item.warning} · 推荐 {item.recommendationCount} 个 · near miss {item.nearMissCount} 个 · 覆盖率{' '}
-                {formatPercent(item.coverage)}
+                {item.warning} · 默认 {formatPercent(item.baselineTopScore)} · 变化 {formatDelta(item.scoreDelta)} · 推荐{' '}
+                {item.recommendationCount} 个 · near miss {item.nearMissCount} 个 · 覆盖率 {formatPercent(item.coverage)}
               </small>
+              <div className="tag-row">
+                <span className={`tag ${item.scoreDelta >= 0 ? 'success' : 'warning'}`}>
+                  {item.scoreDelta >= 0 ? '调参提升' : '调参回落'}
+                </span>
+              </div>
             </article>
           ))}
         </div>

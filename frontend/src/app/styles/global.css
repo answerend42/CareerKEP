@@ -591,6 +591,38 @@ pre {
   color: var(--muted);
 }
 
+.result-summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.result-summary-card {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(156, 176, 210, 0.14);
+  background: rgba(6, 11, 23, 0.72);
+}
+
+.result-summary-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.result-summary-card strong {
+  font-size: 1.25rem;
+}
+
+.summary-positive {
+  color: var(--accent);
+}
+
+.summary-negative {
+  color: var(--warning);
+}
+
 .clause-list {
   display: flex;
   flex-wrap: wrap;
@@ -634,6 +666,7 @@ pre {
   .evidence-grid,
   .field-grid,
   .micro-summary,
+  .result-summary-row,
   .trace-metrics,
   .trace-summary,
   .hero-metrics {

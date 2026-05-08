@@ -624,12 +624,22 @@ export const buildRobustnessReport = (state: DemoState): RobustnessReport => {
         topK: state.topK,
         tuning: state.tuning
       };
+      const baselineState: DemoState = {
+        ...preset.state,
+        topK: state.topK,
+        tuning: defaultDemoState.tuning
+      };
       const response = buildRecommendationResponse(evaluationState);
+      const baselineResponse = buildRecommendationResponse(baselineState);
       const topCard = response.recommendations[0];
+      const baselineTopCard = baselineResponse.recommendations[0];
       const topScore = topCard?.score ?? response.nearMissRoles[0]?.score ?? 0;
+      const baselineTopScore = baselineTopCard?.score ?? baselineResponse.nearMissRoles[0]?.score ?? 0;
+      const scoreDelta = topScore - baselineTopScore;
       const coverage = response.targetRoleAnalysis.coverage;
       const warningParts = [
         topCard ? `主推荐：${topCard.label}` : '没有正式推荐',
+        baselineTopCard ? `默认权重：${baselineTopCard.label}` : '默认权重无正式推荐',
         response.nearMissRoles.length ? `near miss：${response.nearMissRoles.length}` : '无 near miss',
         coverage < 0.5 ? '目标岗位覆盖偏弱' : '目标岗位覆盖尚可'
       ];
@@ -640,6 +650,8 @@ export const buildRobustnessReport = (state: DemoState): RobustnessReport => {
         description: preset.description,
         topRole: topCard?.label ?? response.targetRoleAnalysis.label,
         topScore,
+        baselineTopScore,
+        scoreDelta,
         recommendationCount: response.recommendations.length,
         nearMissCount: response.nearMissRoles.length,
         coverage,
@@ -648,15 +660,19 @@ export const buildRobustnessReport = (state: DemoState): RobustnessReport => {
     });
 
   const averageTopScore = cases.length ? cases.reduce((sum, item) => sum + item.topScore, 0) / cases.length : 0;
+  const averageDelta = cases.length ? cases.reduce((sum, item) => sum + item.scoreDelta, 0) / cases.length : 0;
+  const improvedCount = cases.filter((item) => item.scoreDelta > 0).length;
   const fragileCount = cases.filter((item) => item.topScore < 0.42 || item.recommendationCount === 0).length;
 
   return {
     averageTopScore,
+    averageDelta,
+    improvedCount,
     fragileCount,
     headline:
       fragileCount > 0
-        ? `有 ${fragileCount} 个极端输入场景需要继续加固解析和权重`
-        : '极端输入下整体表现稳定，暂未发现明显脆弱点',
+        ? `有 ${fragileCount} 个极端输入场景需要继续加固解析和权重，当前平均变化 ${Math.round(averageDelta * 100)}%`
+        : `极端输入下整体表现稳定，当前平均变化 ${Math.round(averageDelta * 100)}%`,
     cases
   };
 };
