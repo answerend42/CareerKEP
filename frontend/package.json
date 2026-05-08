@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "robustness:test": "node --experimental-strip-types scripts/robustness-check.ts",
+    "test": "npm run build && npm run robustness:test"
   },
   "dependencies": {
     "react": "^19.1.1",

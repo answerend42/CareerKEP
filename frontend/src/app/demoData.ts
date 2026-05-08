@@ -204,6 +204,13 @@ const buildEvidenceMap = (text: string, evidence: EvidenceItem[]): Map<string, n
       const current = map.get(item.id) ?? 0;
       // 同一节点可能在多段文本里被反复提到，这里只保留最强一次，避免噪声重复放大。
       map.set(item.id, clamp01(Math.max(current, bestScore)));
+
+      if (item.id === 'frontend_project') {
+        const programmingScore = clamp01(bestScore * 0.72);
+        const existingProgramming = map.get('programming') ?? 0;
+        // 前端项目通常也能间接说明一定的编程基础，所以这里给一个温和的桥接增益。
+        map.set('programming', clamp01(Math.max(existingProgramming, programmingScore)));
+      }
     }
   }
 
@@ -593,7 +600,12 @@ export const buildRobustnessReport = (state: DemoState): RobustnessReport => {
   const cases: RobustnessCaseResult[] = scenarioPresets
     .filter((item) => item.kind === 'stress')
     .map((preset) => {
-      const response = buildRecommendationResponse(preset.state);
+      const evaluationState: DemoState = {
+        ...preset.state,
+        topK: state.topK,
+        tuning: state.tuning
+      };
+      const response = buildRecommendationResponse(evaluationState);
       const topCard = response.recommendations[0];
       const topScore = topCard?.score ?? response.nearMissRoles[0]?.score ?? 0;
       const coverage = response.targetRoleAnalysis.coverage;
@@ -640,9 +652,12 @@ export const buildRecommendationResponse = (state: DemoState): RecommendationRes
     .sort((left, right) => right.score - left.score);
   const target = buildTargetAnalysis(state.targetRole, evidenceMap);
   const bridges = buildBridgeRecommendations(evidenceMap);
+  // 正式推荐阈值略微放宽，保证正常画像能进入推荐区间，稀疏输入仍然保持保守。
+  const recommendationThreshold = 0.5;
+  const nearMissThreshold = 0.3;
 
-  const recommendations = scoredRoles.filter((item) => item.score >= 0.58).slice(0, state.topK);
-  const nearMissRoles = scoredRoles.filter((item) => item.score < 0.58 && item.score >= 0.35).slice(0, 3);
+  const recommendations = scoredRoles.filter((item) => item.score >= recommendationThreshold).slice(0, state.topK);
+  const nearMissRoles = scoredRoles.filter((item) => item.score < recommendationThreshold && item.score >= nearMissThreshold).slice(0, 3);
 
   return {
     inputTrace: {
