@@ -1,0 +1,107 @@
+import type { RecommendationResponse } from '../types';
+
+interface ResultPaneProps {
+  response: RecommendationResponse;
+  activeStep: string;
+}
+
+const formatPercent = (value: number) => `${Math.round(value * 100)}%`;
+
+export function ResultPane({ response, activeStep }: ResultPaneProps) {
+  return (
+    <div className="pane-stack">
+      <div className="pane-header">
+        <div>
+          <p className="pane-kicker">阶段 4</p>
+          <h2>结果解释</h2>
+        </div>
+        <span className="status-badge">{activeStep === '结果解释' ? '当前焦点' : '输出摘要'}</span>
+      </div>
+
+      <section className="result-block">
+        <div className="section-head">
+          <h3>正式推荐</h3>
+          <span>{response.recommendations.length} 个</span>
+        </div>
+        <div className="result-list">
+          {response.recommendations.map((item) => (
+            <article key={item.nodeId} className="result-card strong">
+              <div className="node-row">
+                <strong>{item.label}</strong>
+                <span>{formatPercent(item.score)}</span>
+              </div>
+              <p>{item.reason.join('；')}</p>
+              <small>路径：{item.path.join(' · ')}</small>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="result-block">
+        <div className="section-head">
+          <h3>near miss</h3>
+          <span>{response.nearMissRoles.length} 个</span>
+        </div>
+        <div className="result-list compact">
+          {response.nearMissRoles.map((item) => (
+            <article key={item.nodeId} className="result-card">
+              <div className="node-row">
+                <strong>{item.label}</strong>
+                <span>{formatPercent(item.score)}</span>
+              </div>
+              <p>缺少：{item.missing.join('、') || '无'}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="result-grid">
+        <article className="analysis-card">
+          <div className="section-head">
+            <h3>目标岗位分析</h3>
+            <span>{formatPercent(response.targetRoleAnalysis.coverage)}</span>
+          </div>
+          <p>{response.targetRoleAnalysis.label}</p>
+          <div className="tag-row">
+            {response.targetRoleAnalysis.strengths.map((item) => (
+              <span key={item} className="tag success">
+                {item}
+              </span>
+            ))}
+            {response.targetRoleAnalysis.gaps.map((item) => (
+              <span key={item} className="tag warning">
+                {item}
+              </span>
+            ))}
+          </div>
+        </article>
+
+        <article className="analysis-card">
+          <div className="section-head">
+            <h3>桥接建议</h3>
+            <span>{response.bridgeRecommendations.length} 条</span>
+          </div>
+          <div className="bridge-list">
+            {response.bridgeRecommendations.map((item) => (
+              <div key={item.nodeId} className="bridge-row">
+                <div>
+                  <strong>{item.label}</strong>
+                  <p>{item.why}</p>
+                </div>
+                <span>{formatPercent(item.score)}</span>
+              </div>
+            ))}
+          </div>
+        </article>
+      </section>
+
+      <section className="result-block trace-panel">
+        <div className="section-head">
+          <h3>输入追踪</h3>
+          <span>{response.inputTrace.resolvedTargetRole}</span>
+        </div>
+        <pre>{JSON.stringify(response.inputTrace, null, 2)}</pre>
+      </section>
+    </div>
+  );
+}
