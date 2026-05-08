@@ -25,6 +25,8 @@ from backend.app.api.recommend import recommend
 from backend.app.schemas import EvidenceInput, clamp01
 from backend.app.services.graph_loader import GraphValidationError, _build_graph
 from backend.app.services.input_normalizer import normalize_structured_input
+from backend.app.services.inference_engine import infer
+from backend.app.services.role_gap_analyzer import analyze_role_gap
 
 
 class BackendSmokeTest(unittest.TestCase):
@@ -83,6 +85,7 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("readiness_level", response["target_role_analysis"])
         self.assertIn("focus_message", response["target_role_analysis"])
         self.assertIn("summary", response["target_role_analysis"])
+        self.assertIn("priority_groups", response["target_role_analysis"])
         self.assertIn("top_missing_requirement", response["target_role_analysis"])
         self.assertTrue(response["target_role_analysis"]["learning_path"])
         first_step = response["target_role_analysis"]["learning_path"][0]
@@ -92,6 +95,12 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("estimated_effort", first_step)
         self.assertIn("why_now", first_step)
         self.assertIn(response["target_role_analysis"]["readiness_level"], {"ready", "close", "building", "early"})
+        priority_groups = response["target_role_analysis"]["priority_groups"]
+        self.assertIsInstance(priority_groups, dict)
+        self.assertTrue(all(group in {"high", "medium", "low"} for group in priority_groups))
+        for group_items in priority_groups.values():
+            self.assertLessEqual(len(group_items), 3)
+            self.assertTrue(all("priority" in item for item in group_items))
         self.assertEqual(response["input_trace"]["resolved_target_role"], "backend_engineer")
         self.assertEqual(response["target_role_analysis"]["resolved_target_role"], "backend_engineer")
         self.assertEqual(response["target_role_analysis"]["matched_target_role"], "后端开发工程师")
@@ -101,6 +110,26 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("evidence_details", first_recommendation["explanation"])
         self.assertIn("diagnostics", first_recommendation["explanation"])
         self.assertTrue(first_recommendation["explanation"]["path"])
+
+    def test_analyze_role_gap_exposes_priority_groups_for_missing_requirements(self) -> None:
+        nodes = [
+            {"id": "python", "label": "Python", "layer": "evidence", "aggregator": "source"},
+            {"id": "python_basics", "label": "Python 基础", "layer": "ability"},
+            {"id": "backend_engineer", "label": "后端开发工程师", "layer": "role", "aggregator": "hard_gate"},
+        ]
+        edges = [
+            {"source": "python", "target": "python_basics", "relation": "supports", "weight": 0.8},
+            {"source": "python_basics", "target": "backend_engineer", "relation": "requires", "weight": 0.9},
+        ]
+        graph = _build_graph(nodes, edges)
+        result = infer(graph, {"python": 0.2})
+
+        analysis = analyze_role_gap(graph, result, "backend_engineer")
+
+        self.assertIn("priority_groups", analysis)
+        self.assertIn("high", analysis["priority_groups"])
+        self.assertTrue(analysis["priority_groups"]["high"])
+        self.assertEqual(analysis["priority_groups"]["high"][0]["priority"], "high")
 
     def test_recommend_orders_same_score_roles_stably(self) -> None:
         nodes = [

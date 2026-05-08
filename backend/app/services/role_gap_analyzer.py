@@ -46,6 +46,16 @@ def _readiness_level(score: float, coverage_score: float, missing_count: int) ->
     return "early"
 
 
+def _requirement_priority(gap: float, relation: str) -> str:
+    """把单条缺口映射成展示优先级。"""
+
+    if relation == "requires" or gap >= 0.3:
+        return "high"
+    if relation == "supports" or gap >= 0.15:
+        return "medium"
+    return "low"
+
+
 def analyze_role_gap(graph: GraphData, result: InferenceResult, role_id: str) -> dict[str, Any]:
     """找出目标岗位主要缺口。"""
 
@@ -108,6 +118,23 @@ def analyze_role_gap(graph: GraphData, result: InferenceResult, role_id: str) ->
     elif readiness_level == "early":
         focus_message = "当前更适合先打基础，再逐步靠近目标岗位。"
 
+    priority_groups: dict[str, list[dict[str, Any]]] = {"high": [], "medium": [], "low": []}
+    for item in missing_requirements:
+        priority = _requirement_priority(float(item["gap"]), str(item["relation"]))
+        priority_groups[priority].append(
+            {
+                "node_id": item["node_id"],
+                "label": item["label"],
+                "relation": item["relation"],
+                "gap": item["gap"],
+                "expected": item["expected"],
+                "priority": priority,
+            }
+        )
+    for bucket in priority_groups.values():
+        bucket.sort(key=lambda item: (-float(item["gap"]), str(item["label"]).casefold(), str(item["node_id"]).casefold()))
+    priority_groups = {key: value[:3] for key, value in priority_groups.items() if value}
+
     path = build_explanation(graph, result, role_id)["path"]
     return {
         "role_id": role_id,
@@ -121,6 +148,7 @@ def analyze_role_gap(graph: GraphData, result: InferenceResult, role_id: str) ->
         "requirements": ranked_requirements[:5],
         "strengths": strengths,
         "missing_requirements": missing_requirements[:5],
+        "priority_groups": priority_groups,
         "top_missing_requirement": top_missing_requirement,
     }
 
