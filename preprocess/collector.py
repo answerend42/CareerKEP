@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import csv
+from html.parser import HTMLParser
 import json
 import re
 from pathlib import Path
@@ -51,7 +52,54 @@ DOCUMENT_HINT_KEYS = {
     "url",
     "link",
 }
-SUPPORTED_SOURCE_SUFFIXES = {".json", ".jsonl", ".csv", ".tsv", ".txt", ".md"}
+SUPPORTED_SOURCE_SUFFIXES = {".json", ".jsonl", ".csv", ".tsv", ".txt", ".md", ".html", ".htm"}
+
+
+class _HTMLContentExtractor(HTMLParser):
+    """把 HTML 里的可见文本和标题提取出来。
+
+    这里只做轻量级解析，不依赖第三方库：
+    - 忽略 `script` / `style`
+    - 优先读取 `<title>`
+    - 其余可见文本按顺序拼接
+    """
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._in_title = False
+        self._skip_depth = 0
+        self.title_parts: List[str] = []
+        self.text_parts: List[str] = []
+
+    def handle_starttag(self, tag: str, attrs) -> None:  # noqa: ANN001
+        if tag in {"script", "style"}:
+            self._skip_depth += 1
+            return
+        if tag == "title":
+            self._in_title = True
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in {"script", "style"} and self._skip_depth > 0:
+            self._skip_depth -= 1
+            return
+        if tag == "title":
+            self._in_title = False
+
+    def handle_data(self, data: str) -> None:
+        if self._skip_depth > 0:
+            return
+        text = data.strip()
+        if not text:
+            return
+        if self._in_title:
+            self.title_parts.append(text)
+        else:
+            self.text_parts.append(text)
+
+    def extract(self) -> tuple[str, str]:
+        title = " ".join(self.title_parts).strip()
+        text = " ".join(self.text_parts).strip()
+        return title, text
 
 
 def _build_fallback_doc_id(source_path: str, record_index: int | None = None) -> str:
@@ -388,6 +436,36 @@ def _load_text_document(path: Path, source_path: str) -> List[RawDocument]:
     ]
 
 
+def _load_html_document(path: Path, source_path: str) -> List[RawDocument]:
+    """加载 HTML/HTM 文档。
+
+    这个分支主要用于真实爬虫导出的网页快照，先抽出标题和可见正文，
+    再交给后续实体抽取与消歧阶段处理。
+    """
+
+    html_text = path.read_text(encoding="utf-8").strip()
+    if not html_text:
+        return []
+
+    parser = _HTMLContentExtractor()
+    parser.feed(html_text)
+    parser.close()
+    title, text = parser.extract()
+
+    return [
+        RawDocument(
+            doc_id=_build_fallback_doc_id(source_path),
+            source=path.stem,
+            title=title or path.stem,
+            text=text,
+            metadata={
+                "source_path": source_path,
+                "source_format": path.suffix.lower().lstrip("."),
+            },
+        )
+    ]
+
+
 def _ensure_unique_doc_ids(documents: List[RawDocument]) -> None:
     """校验文档 ID 是否重复。
 
@@ -503,6 +581,8 @@ def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
             documents.extend(_load_tabular_documents(path, source_path))
         elif suffix in {".txt", ".md"}:
             documents.extend(_load_text_document(path, source_path))
+        elif suffix in {".html", ".htm"}:
+            documents.extend(_load_html_document(path, source_path))
 
     if not documents:
         raise ValueError(f"在目录 {directory} 中没有找到可用的原始数据文件")
