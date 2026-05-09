@@ -38,6 +38,7 @@
 - `document_entities.json`：按文档聚合的实体摘要，便于快速查看每篇原始文档抽到了哪些实体
 - `entity_documents.json`：按实体展开到文档维度的关联报告，便于分析实体分布和覆盖率
 - `entities.json`：按实体聚合后的统计结果
+- `uncovered_entities.json`：未被任何原始语料覆盖的实体明细，带别名和别名来源
 - `disambiguation_review.json`：低置信度命中复核清单
 - `entity_coverage.json`：实体覆盖率报告
 - `summary.json`：整体运行摘要
@@ -74,6 +75,7 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 - `entity_catalog.json`：用于核对当前实体词典是否完整，包含实体 ID、标签、层级、别名和别名来源。
 - `alias_index.json`：用于检查别名歧义和覆盖盲区，适合人工补充别名和调整消歧规则。
 - `disambiguation_trace.json`：用于复核同一别名的候选实体排序、次优分差和近似平局样本。
+- `uncovered_entities.json`：用于直接查看未覆盖实体及其别名来源，方便补语料和补词典。
 - `document_entities.json`：用于按文档抽查抽取效果，适合人工浏览某篇原始数据抽到了哪些实体。
 - `entity_documents.json`：用于按实体查看覆盖文档，适合分析某个实体在语料中的分布。
 - `disambiguation_review.json`：用于后续补词典和调权，专门收集低置信度命中。

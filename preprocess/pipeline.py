@@ -263,6 +263,32 @@ def _build_entity_coverage_report(entity_summary: List[ResolvedEntity]) -> dict:
     }
 
 
+def _build_uncovered_entity_report(catalog: EntityCatalog, entity_summary: List[ResolvedEntity]) -> List[dict]:
+    """导出未被覆盖的实体明细，方便后续补语料和补别名。"""
+
+    summary_lookup = {item.entity_id: item for item in entity_summary}
+    uncovered_entities: List[dict] = []
+
+    for entity in catalog.iter_entities():
+        summary = summary_lookup[entity.entity_id]
+        if summary.mention_count > 0:
+            continue
+
+        uncovered_entities.append(
+            {
+                "entity_id": entity.entity_id,
+                "label": entity.label,
+                "layer": entity.layer,
+                "aliases": list(entity.aliases),
+                "alias_sources": dict(entity.alias_sources),
+                "mention_count": summary.mention_count,
+                "doc_count": summary.doc_count,
+            }
+        )
+
+    return sorted(uncovered_entities, key=lambda item: (item["layer"], item["entity_id"]))
+
+
 def _build_disambiguation_review(mentions: List[dict], threshold: float) -> dict:
     """构建消歧复核清单。
 
@@ -373,6 +399,7 @@ def run_pipeline(
     covered_entities = sum(1 for item in entity_summary if item.mention_count > 0)
     total_entities = len(entity_summary)
     coverage_report = _build_entity_coverage_report(entity_summary)
+    uncovered_entity_report = _build_uncovered_entity_report(catalog, entity_summary)
     disambiguation_review = _build_disambiguation_review(all_mentions, review_threshold)
     disambiguation_trace = _build_disambiguation_trace(all_mentions)
     alias_index_snapshot, alias_index_stats = _build_alias_index_snapshot(catalog)
@@ -409,6 +436,7 @@ def run_pipeline(
             **coverage_report,
         },
     )
+    _dump_json(resolved_output_dir / "uncovered_entities.json", uncovered_entity_report)
     _dump_json(
         resolved_output_dir / "summary.json",
         {
@@ -432,6 +460,7 @@ def run_pipeline(
             "hit_entities": covered_entities,
             "covered_entities": covered_entities,
             "uncovered_entities": total_entities - covered_entities,
+            "uncovered_entity_details": len(uncovered_entity_report),
             "documents_with_mentions": len(mentions_by_doc),
             "average_mentions_per_document": round(len(all_mentions) / len(documents), 4) if documents else 0.0,
             "review_threshold": review_threshold,
