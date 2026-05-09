@@ -8,7 +8,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Dict, List
 
-from .catalog import EntityCatalog, load_entity_catalog
+from .catalog import EntityCatalog, compact_text, load_entity_catalog
 from .collector import RAW_SOURCE_DIR, collect_source_manifest, load_raw_documents
 from .extractor import extract_mentions
 from .models import RawDocument, ResolvedEntity
@@ -309,7 +309,7 @@ def _build_uncovered_entity_candidate_report(
     }
 
     def _alias_key(alias: str, source: str) -> tuple[int, int, str]:
-        compact_alias = len(alias.replace(" ", ""))
+        compact_alias = len(compact_text(alias))
         return (-source_priority.get(source, 0), compact_alias, alias)
 
     candidates: List[dict] = []
