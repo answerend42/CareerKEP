@@ -8,6 +8,7 @@
   "graph_index_edge_count": 20,
   "career_profile_count": 5,
   "recommendation_index_count": 13,
+  "entity_lookup_section_count": 2,
   "isolated_node_count": 0,
   "connected_node_count": 17,
   "source_files": {

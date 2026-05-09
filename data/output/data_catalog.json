@@ -56,6 +56,13 @@
     "sha256": "f7255622c467262238bd6d897f03abc3da9e387157137daf0bce46797ac2a01d"
   },
   {
+    "file_name": "entity_lookup.json",
+    "description": "实体查询索引",
+    "item_count": 3,
+    "size_bytes": 30034,
+    "sha256": "3f02bd23d944ec297a14cc6f4a6595c54ed5151400f310ecbbf9fd837fd8cc30"
+  },
+  {
     "file_name": "relation_summary.json",
     "description": "关系统计摘要",
     "item_count": 20,
@@ -66,14 +73,14 @@
     "file_name": "extraction_log.json",
     "description": "构建日志",
     "item_count": 17,
-    "size_bytes": 2447,
-    "sha256": "e8ea1c8b55f329cc89564a38ddccc0c8090b602a927cdb4598b9168e69085c38"
+    "size_bytes": 2484,
+    "sha256": "2a029b48e0e9fa8b57f0871a6616a247e5c697de6a22ed21510271842102949d"
   },
   {
     "file_name": "graph_manifest.json",
     "description": "构建清单",
-    "item_count": 12,
-    "size_bytes": 1600,
-    "sha256": "fcdf16b0a192e93973c2585dffe2362d8058440cd161c697df58438b9e00b9f4"
+    "item_count": 13,
+    "size_bytes": 1731,
+    "sha256": "a645dda5cf8ab0a98bfdf6ef6edd0d4ffb5c294b6c651f98c0fa7b347a8e8424"
   }
 ]

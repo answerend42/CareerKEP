@@ -911,11 +911,40 @@ def build_recommendation_index(
     return recommendation_index
 
 
+def build_entity_lookup(
+    career_profiles: list[dict[str, Any]],
+    recommendation_index: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """把列表型产物整理成按 ID 可直接查询的索引，减少后端二次扫描。"""
+
+    occupation_profiles_by_id: dict[str, dict[str, Any]] = {}
+    for profile in career_profiles:
+        occupation_id = str(profile["occupation_id"])
+        occupation_profiles_by_id[occupation_id] = profile
+
+    recommendation_index_by_target_id: dict[str, dict[str, Any]] = {}
+    for item in recommendation_index:
+        target_id = str(item["target_id"])
+        recommendation_index_by_target_id[target_id] = item
+
+    return {
+        "occupation_profiles_by_id": occupation_profiles_by_id,
+        "recommendation_index_by_target_id": recommendation_index_by_target_id,
+        "summary": {
+            "occupation_profile_count": len(occupation_profiles_by_id),
+            "recommendation_target_count": len(recommendation_index_by_target_id),
+        },
+    }
+
+
 def build_manifest(
     nodes: list[dict[str, Any]],
     relation_instances: list[RelationInstance],
     relation_candidates: list[RelationCandidateTrace],
     edges: list[Edge],
+    career_profiles: list[dict[str, Any]],
+    recommendation_index: list[dict[str, Any]],
+    entity_lookup: dict[str, Any],
     evidence_count: int,
     args: argparse.Namespace,
 ) -> dict[str, Any]:
@@ -929,6 +958,9 @@ def build_manifest(
         "relation_instance_count": len(relation_instances),
         "relation_candidate_count": len(relation_candidates),
         "edge_count": len(edges),
+        "career_profile_count": len(career_profiles),
+        "recommendation_index_count": len(recommendation_index),
+        "entity_lookup_section_count": len(entity_lookup) - 1,
         "node_type_count": dict(sorted(node_type_counter.items())),
         "output_files": [
             "nodes.json",
@@ -939,6 +971,7 @@ def build_manifest(
             "graph_quality.json",
             "career_profiles.json",
             "recommendation_index.json",
+            "entity_lookup.json",
             "relation_summary.json",
             "extraction_log.json",
             "data_catalog.json",
@@ -961,6 +994,7 @@ def build_data_catalog(
     quality_report: dict[str, Any],
     career_profiles: list[dict[str, Any]],
     recommendation_index: list[dict[str, Any]],
+    entity_lookup: dict[str, Any],
 ) -> list[dict[str, Any]]:
     """生成所有输出文件的目录和校验信息。"""
 
@@ -973,6 +1007,7 @@ def build_data_catalog(
         ("graph_quality.json", "图谱质量报告"),
         ("career_profiles.json", "职业画像"),
         ("recommendation_index.json", "反向推荐索引"),
+        ("entity_lookup.json", "实体查询索引"),
         ("relation_summary.json", "关系统计摘要"),
         ("extraction_log.json", "构建日志"),
         ("graph_manifest.json", "构建清单"),
@@ -984,6 +1019,7 @@ def build_data_catalog(
         "graph_quality.json": quality_report,
         "career_profiles.json": career_profiles,
         "recommendation_index.json": recommendation_index,
+        "entity_lookup.json": entity_lookup,
     }
 
     catalog: list[dict[str, Any]] = []
@@ -1058,6 +1094,7 @@ def main() -> int:
     quality_report = build_quality_report(nodes, edges, graph_index)
     career_profiles = build_career_profiles(entities, edges)
     recommendation_index = build_recommendation_index(entities, edges)
+    entity_lookup = build_entity_lookup(career_profiles, recommendation_index)
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1070,6 +1107,7 @@ def main() -> int:
     write_json(output_dir / "graph_quality.json", quality_report)
     write_json(output_dir / "career_profiles.json", career_profiles)
     write_json(output_dir / "recommendation_index.json", recommendation_index)
+    write_json(output_dir / "entity_lookup.json", entity_lookup)
     write_json(output_dir / "relation_summary.json", summarize_edges(edges))
     write_json(
         output_dir / "extraction_log.json",
@@ -1083,6 +1121,7 @@ def main() -> int:
             "graph_index_edge_count": graph_index["edge_count"],
             "career_profile_count": len(career_profiles),
             "recommendation_index_count": len(recommendation_index),
+            "entity_lookup_section_count": len(entity_lookup) - 1,
             "isolated_node_count": quality_report["isolated_node_count"],
             "connected_node_count": quality_report["connected_node_count"],
             "source_files": {
@@ -1110,6 +1149,9 @@ def main() -> int:
         relation_instances,
         relation_candidates,
         edges,
+        career_profiles,
+        recommendation_index,
+        entity_lookup,
         len(evidence_items),
         args,
     )
@@ -1121,6 +1163,7 @@ def main() -> int:
         quality_report,
         career_profiles,
         recommendation_index,
+        entity_lookup,
     )
     write_json(output_dir / "data_catalog.json", data_catalog)
 

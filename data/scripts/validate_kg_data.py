@@ -190,6 +190,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "graph_quality": output_dir / "graph_quality.json",
         "career_profiles": output_dir / "career_profiles.json",
         "recommendation_index": output_dir / "recommendation_index.json",
+        "entity_lookup": output_dir / "entity_lookup.json",
         "relation_summary": output_dir / "relation_summary.json",
         "extraction_log": output_dir / "extraction_log.json",
         "data_catalog": output_dir / "data_catalog.json",
@@ -211,6 +212,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     graph_quality = load_json(files["graph_quality"])
     career_profiles = load_json(files["career_profiles"])
     recommendation_index = load_json(files["recommendation_index"])
+    entity_lookup = load_json(files["entity_lookup"])
     relation_summary = load_json(files["relation_summary"])
     extraction_log = load_json(files["extraction_log"])
     data_catalog = load_json(files["data_catalog"])
@@ -232,6 +234,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(isinstance(graph_quality, dict), "graph_quality.json 必须是对象", errors)
     assert_condition(isinstance(career_profiles, list), "career_profiles.json 必须是列表", errors)
     assert_condition(isinstance(recommendation_index, list), "recommendation_index.json 必须是列表", errors)
+    assert_condition(isinstance(entity_lookup, dict), "entity_lookup.json 必须是对象", errors)
     assert_condition(isinstance(relation_summary, dict), "relation_summary.json 必须是对象", errors)
     assert_condition(isinstance(extraction_log, dict), "extraction_log.json 必须是对象", errors)
     assert_condition(isinstance(data_catalog, list), "data_catalog.json 必须是列表", errors)
@@ -432,6 +435,52 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
             errors,
         )
 
+    occupation_profiles_by_id = entity_lookup.get("occupation_profiles_by_id", {})
+    recommendation_index_by_target_id = entity_lookup.get("recommendation_index_by_target_id", {})
+    assert_condition(
+        isinstance(occupation_profiles_by_id, dict),
+        "entity_lookup.occupation_profiles_by_id 必须是对象",
+        errors,
+    )
+    assert_condition(
+        isinstance(recommendation_index_by_target_id, dict),
+        "entity_lookup.recommendation_index_by_target_id 必须是对象",
+        errors,
+    )
+    assert_condition(
+        set(occupation_profiles_by_id) == {item["occupation_id"] for item in career_profiles},
+        "entity_lookup 的职业画像索引与 career_profiles 不一致",
+        errors,
+    )
+    assert_condition(
+        set(recommendation_index_by_target_id) == {item["target_id"] for item in recommendation_index},
+        "entity_lookup 的反向推荐索引与 recommendation_index 不一致",
+        errors,
+    )
+    entity_lookup_summary = entity_lookup.get("summary", {})
+    assert_condition(
+        entity_lookup_summary.get("occupation_profile_count") == len(occupation_profiles_by_id),
+        "entity_lookup.summary 的职业画像计数不一致",
+        errors,
+    )
+    assert_condition(
+        entity_lookup_summary.get("recommendation_target_count") == len(recommendation_index_by_target_id),
+        "entity_lookup.summary 的反向推荐计数不一致",
+        errors,
+    )
+    for occupation_id, profile in occupation_profiles_by_id.items():
+        assert_condition(
+            profile.get("occupation_id") == occupation_id,
+            f"entity_lookup 中的职业画像键和值不一致: {occupation_id}",
+            errors,
+        )
+    for target_id, item in recommendation_index_by_target_id.items():
+        assert_condition(
+            item.get("target_id") == target_id,
+            f"entity_lookup 中的反向索引键和值不一致: {target_id}",
+            errors,
+        )
+
     assert_condition(
         extraction_log.get("entity_count") == len(nodes),
         "extraction_log 的 entity_count 与 nodes 数量不一致",
@@ -458,6 +507,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         errors,
     )
     assert_condition(
+        extraction_log.get("entity_lookup_section_count") == 2,
+        "extraction_log 的 entity_lookup_section_count 不正确",
+        errors,
+    )
+    assert_condition(
         graph_manifest.get("entity_count") == len(nodes),
         "graph_manifest 的 entity_count 与 nodes 数量不一致",
         errors,
@@ -470,6 +524,21 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(
         graph_manifest.get("relation_candidate_count") == len(relation_candidates),
         "graph_manifest 的 relation_candidate_count 与 relation_candidates 数量不一致",
+        errors,
+    )
+    assert_condition(
+        graph_manifest.get("career_profile_count") == len(career_profiles),
+        "graph_manifest 的 career_profile_count 与 career_profiles 数量不一致",
+        errors,
+    )
+    assert_condition(
+        graph_manifest.get("recommendation_index_count") == len(recommendation_index),
+        "graph_manifest 的 recommendation_index_count 与 recommendation_index 数量不一致",
+        errors,
+    )
+    assert_condition(
+        graph_manifest.get("entity_lookup_section_count") == 2,
+        "graph_manifest 的 entity_lookup_section_count 不正确",
         errors,
     )
 
