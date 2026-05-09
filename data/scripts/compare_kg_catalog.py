@@ -7,6 +7,36 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
+DATA_CATALOG_FILE = "data_catalog.json"
+GRAPH_MANIFEST_FILE = "graph_manifest.json"
+RELATION_MATRIX_FILE = "relation_matrix.json"
+VOLATILE_FILES = {"graph_manifest.json", "extraction_log.json"}
+
+GRAPH_MANIFEST_FIELDS = (
+    "entity_count",
+    "evidence_count",
+    "relation_instance_count",
+    "relation_candidate_count",
+    "edge_count",
+    "relation_matrix_count",
+    "career_profile_count",
+    "recommendation_index_count",
+    "entity_lookup_section_count",
+    "node_type_count",
+    "output_files",
+    "source_files",
+)
+
+RELATION_MATRIX_FIELDS = (
+    "edge_count",
+    "pair_count",
+    "source_type_count",
+    "target_type_count",
+    "relation_type_count",
+    "source_types",
+    "target_types",
+    "relation_types",
+)
 
 
 def load_json(path: Path) -> Any:
@@ -27,25 +57,71 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def resolve_catalog_path(output_dir: Path) -> Path:
-    """从输出目录中定位目录清单文件。"""
+def resolve_artifact_path(output_dir: Path, file_name: str) -> Path:
+    artifact_path = output_dir / file_name
+    if not artifact_path.exists():
+        raise FileNotFoundError(f"目录中缺少 {file_name}: {output_dir}")
+    return artifact_path
 
-    catalog_path = output_dir / "data_catalog.json"
-    if not catalog_path.exists():
-        raise FileNotFoundError(f"目录中缺少 data_catalog.json: {output_dir}")
-    return catalog_path
+
+def resolve_catalog_path(output_dir: Path) -> Path:
+    return resolve_artifact_path(output_dir, DATA_CATALOG_FILE)
+
+
+def resolve_manifest_path(output_dir: Path) -> Path:
+    return resolve_artifact_path(output_dir, GRAPH_MANIFEST_FILE)
+
+
+def resolve_relation_matrix_path(output_dir: Path) -> Path:
+    return resolve_artifact_path(output_dir, RELATION_MATRIX_FILE)
 
 
 def normalize_catalog(catalog: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
-    """把目录清单按文件名索引，方便做差异比对。"""
+    """按文件名索引目录项，方便做稳定对比。"""
 
     indexed: dict[str, dict[str, Any]] = {}
     for item in catalog:
         file_name = item.get("file_name")
-        if not file_name:
-            continue
-        indexed[str(file_name)] = item
+        if file_name:
+            indexed[str(file_name)] = item
     return indexed
+
+
+def compare_value_dict(left: dict[str, Any], right: dict[str, Any], fields: tuple[str, ...]) -> dict[str, Any]:
+    """比较对象的指定字段，返回差异映射。"""
+
+    diffs: dict[str, Any] = {}
+    for field in fields:
+        left_value = left.get(field)
+        right_value = right.get(field)
+        if left_value != right_value:
+            diffs[field] = {"left": left_value, "right": right_value}
+    return diffs
+
+
+def normalize_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
+    """去掉时间戳后再做比较，避免同一批数据仅因生成时间不同而产生噪声。"""
+
+    normalized = dict(manifest)
+    normalized.pop("generated_at", None)
+    return normalized
+
+
+def split_catalog_diffs(changed: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+    stable_changed: list[dict[str, Any]] = []
+    volatile_changed: list[dict[str, Any]] = []
+
+    for item in changed:
+        file_name = str(item.get("file_name", ""))
+        if file_name in VOLATILE_FILES:
+            volatile_changed.append(item)
+        else:
+            stable_changed.append(item)
+
+    return {
+        "stable_changed": stable_changed,
+        "volatile_changed": volatile_changed,
+    }
 
 
 def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
@@ -70,28 +146,65 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
     for file_name in common:
         left_item = left_map[file_name]
         right_item = right_map[file_name]
-        diffs: dict[str, Any] = {}
-        for field in ("item_count", "size_bytes", "sha256", "description"):
-            if left_item.get(field) != right_item.get(field):
-                diffs[field] = {
-                    "left": left_item.get(field),
-                    "right": right_item.get(field),
-                }
+        diffs = compare_value_dict(left_item, right_item, ("item_count", "size_bytes", "sha256", "description"))
         if diffs:
             changed.append({"file_name": file_name, "diffs": diffs})
+
+    diff_groups = split_catalog_diffs(changed)
+
+    left_manifest = load_json(resolve_manifest_path(left_dir))
+    right_manifest = load_json(resolve_manifest_path(right_dir))
+    if not isinstance(left_manifest, dict):
+        raise ValueError("左侧目录中的 graph_manifest.json 必须是对象")
+    if not isinstance(right_manifest, dict):
+        raise ValueError("右侧目录中的 graph_manifest.json 必须是对象")
+
+    left_matrix = load_json(resolve_relation_matrix_path(left_dir))
+    right_matrix = load_json(resolve_relation_matrix_path(right_dir))
+    if not isinstance(left_matrix, dict):
+        raise ValueError("左侧目录中的 relation_matrix.json 必须是对象")
+    if not isinstance(right_matrix, dict):
+        raise ValueError("右侧目录中的 relation_matrix.json 必须是对象")
+
+    manifest_diffs = compare_value_dict(
+        normalize_manifest(left_manifest),
+        normalize_manifest(right_manifest),
+        GRAPH_MANIFEST_FIELDS,
+    )
+    matrix_diffs = compare_value_dict(left_matrix, right_matrix, RELATION_MATRIX_FIELDS)
 
     return {
         "left_dir": str(left_dir),
         "right_dir": str(right_dir),
-        "left_catalog": str(resolve_catalog_path(left_dir)),
-        "right_catalog": str(resolve_catalog_path(right_dir)),
-        "added": added,
-        "removed": removed,
-        "changed": changed,
+        "artifacts": {
+            "data_catalog": {
+                "left_path": str(resolve_catalog_path(left_dir)),
+                "right_path": str(resolve_catalog_path(right_dir)),
+                "added": added,
+                "removed": removed,
+                "changed": changed,
+                "stable_changed": diff_groups["stable_changed"],
+                "volatile_changed": diff_groups["volatile_changed"],
+            },
+            "graph_manifest": {
+                "left_path": str(resolve_manifest_path(left_dir)),
+                "right_path": str(resolve_manifest_path(right_dir)),
+                "diffs": manifest_diffs,
+            },
+            "relation_matrix": {
+                "left_path": str(resolve_relation_matrix_path(left_dir)),
+                "right_path": str(resolve_relation_matrix_path(right_dir)),
+                "diffs": matrix_diffs,
+            },
+        },
         "summary": {
             "added_count": len(added),
             "removed_count": len(removed),
             "changed_count": len(changed),
+            "stable_changed_count": len(diff_groups["stable_changed"]),
+            "volatile_changed_count": len(diff_groups["volatile_changed"]),
+            "graph_manifest_changed_count": len(manifest_diffs),
+            "relation_matrix_changed_count": len(matrix_diffs),
             "same_count": len(common) - len(changed),
         },
     }
@@ -110,10 +223,11 @@ def main() -> int:
     summary = report["summary"]
     print(
         "目录对比完成："
-        f"新增 {summary['added_count']} 个、"
-        f"删除 {summary['removed_count']} 个、"
-        f"变更 {summary['changed_count']} 个、"
-        f"未变更 {summary['same_count']} 个"
+        f"新增 {summary['added_count']} 项，"
+        f"删除 {summary['removed_count']} 项，"
+        f"稳定变化 {summary['stable_changed_count']} 项，"
+        f"波动变化 {summary['volatile_changed_count']} 项，"
+        f"未变化 {summary['same_count']} 项。"
     )
     return 0
 
