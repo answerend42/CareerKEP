@@ -199,6 +199,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "career_profiles": output_dir / "career_profiles.json",
         "recommendation_index": output_dir / "recommendation_index.json",
         "entity_lookup": output_dir / "entity_lookup.json",
+        "node_lookup": output_dir / "node_lookup.json",
         "relation_summary": output_dir / "relation_summary.json",
         "extraction_log": output_dir / "extraction_log.json",
         "data_catalog": output_dir / "data_catalog.json",
@@ -222,6 +223,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     career_profiles = load_json(files["career_profiles"])
     recommendation_index = load_json(files["recommendation_index"])
     entity_lookup = load_json(files["entity_lookup"])
+    node_lookup = load_json(files["node_lookup"])
     relation_summary = load_json(files["relation_summary"])
     extraction_log = load_json(files["extraction_log"])
     data_catalog = load_json(files["data_catalog"])
@@ -245,6 +247,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(isinstance(career_profiles, list), "career_profiles.json 必须是列表", errors)
     assert_condition(isinstance(recommendation_index, list), "recommendation_index.json 必须是列表", errors)
     assert_condition(isinstance(entity_lookup, dict), "entity_lookup.json 必须是对象", errors)
+    assert_condition(isinstance(node_lookup, dict), "node_lookup.json 必须是对象", errors)
     assert_condition(isinstance(relation_summary, dict), "relation_summary.json 必须是对象", errors)
     assert_condition(isinstance(extraction_log, dict), "extraction_log.json 必须是对象", errors)
     assert_condition(isinstance(data_catalog, list), "data_catalog.json 必须是列表", errors)
@@ -452,6 +455,61 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "relation_catalog 的 observed_relation_type_count 不正确",
         errors,
     )
+    coverage_summary = relation_catalog.get("coverage_summary", {})
+    assert_condition(
+        isinstance(coverage_summary, dict),
+        "relation_catalog.coverage_summary 必须是对象",
+        errors,
+    )
+    if isinstance(coverage_summary, dict):
+        assert_condition(
+            coverage_summary.get("relation_type_count") == relation_catalog.get("relation_type_count"),
+            "relation_catalog.coverage_summary.relation_type_count 不一致",
+            errors,
+        )
+        assert_condition(
+            coverage_summary.get("observed_relation_type_count") == observed_relation_count,
+            "relation_catalog.coverage_summary.observed_relation_type_count 不一致",
+            errors,
+        )
+        assert_condition(
+            coverage_summary.get("unobserved_relation_type_count") == len(relations_in_catalog) - observed_relation_count,
+            "relation_catalog.coverage_summary.unobserved_relation_type_count 不一致",
+            errors,
+        )
+        if isinstance(coverage_summary.get("coverage_rate"), (int, float)) and relations_in_catalog:
+            expected_rate = round(observed_relation_count / len(relations_in_catalog), 4)
+            assert_condition(
+                float(coverage_summary["coverage_rate"]) == expected_rate,
+                "relation_catalog.coverage_summary.coverage_rate 不一致",
+                errors,
+            )
+
+    observed_relation_types = relation_catalog.get("observed_relation_types", [])
+    unobserved_relation_types = relation_catalog.get("unobserved_relation_types", [])
+    assert_condition(
+        isinstance(observed_relation_types, list),
+        "relation_catalog.observed_relation_types 必须是列表",
+        errors,
+    )
+    assert_condition(
+        isinstance(unobserved_relation_types, list),
+        "relation_catalog.unobserved_relation_types 必须是列表",
+        errors,
+    )
+    if isinstance(observed_relation_types, list) and isinstance(unobserved_relation_types, list):
+        expected_observed = sorted(item["relation_type"] for item in relations_in_catalog if item.get("is_observed"))
+        expected_unobserved = sorted(item["relation_type"] for item in relations_in_catalog if not item.get("is_observed"))
+        assert_condition(
+            sorted(observed_relation_types) == expected_observed,
+            "relation_catalog.observed_relation_types 不一致",
+            errors,
+        )
+        assert_condition(
+            sorted(unobserved_relation_types) == expected_unobserved,
+            "relation_catalog.unobserved_relation_types 不一致",
+            errors,
+        )
     for index, relation_item in enumerate(relations_in_catalog, start=1):
         assert_condition(
             isinstance(relation_item, dict),
@@ -464,6 +522,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
             "target_types",
             "base_weight",
             "description",
+            "is_observed",
             "keyword_groups",
             "keyword_group_count",
             "keyword_count",
@@ -487,6 +546,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         assert_condition(
             isinstance(relation_item.get("target_types"), list) and relation_item["target_types"],
             f"relation_catalog.relations[{index}] 的 target_types 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(relation_item.get("is_observed"), bool),
+            f"relation_catalog.relations[{index}] 的 is_observed 无效",
             errors,
         )
         assert_condition(
@@ -590,6 +654,81 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "entity_lookup 的反向推荐索引与 recommendation_index 不一致",
         errors,
     )
+
+    node_lookup_by_id = node_lookup.get("by_id", {})
+    node_lookup_by_name = node_lookup.get("by_name", {})
+    node_lookup_by_alias = node_lookup.get("by_alias", {})
+    node_lookup_by_type = node_lookup.get("by_type", {})
+    node_lookup_summary = node_lookup.get("summary", {})
+    assert_condition(isinstance(node_lookup_by_id, dict), "node_lookup.by_id 必须是对象", errors)
+    assert_condition(isinstance(node_lookup_by_name, dict), "node_lookup.by_name 必须是对象", errors)
+    assert_condition(isinstance(node_lookup_by_alias, dict), "node_lookup.by_alias 必须是对象", errors)
+    assert_condition(isinstance(node_lookup_by_type, dict), "node_lookup.by_type 必须是对象", errors)
+    assert_condition(isinstance(node_lookup_summary, dict), "node_lookup.summary 必须是对象", errors)
+    if isinstance(node_lookup_by_id, dict):
+        assert_condition(
+            set(node_lookup_by_id) == {node["id"] for node in nodes},
+            "node_lookup.by_id 与 nodes.json 不一致",
+            errors,
+        )
+        for node_id, node in node_lookup_by_id.items():
+            assert_condition(
+                isinstance(node, dict) and node.get("id") == node_id,
+                f"node_lookup.by_id[{node_id}] 不合法",
+                errors,
+            )
+    if isinstance(node_lookup_by_type, dict):
+        for node_type, node_ids in node_lookup_by_type.items():
+            assert_condition(
+                isinstance(node_ids, list),
+                f"node_lookup.by_type[{node_type}] 必须是列表",
+                errors,
+            )
+            if isinstance(node_ids, list):
+                expected_ids = sorted(node["id"] for node in nodes if node["type"] == node_type)
+                assert_condition(
+                    sorted(node_ids) == expected_ids,
+                    f"node_lookup.by_type[{node_type}] 与 nodes.json 不一致",
+                    errors,
+                )
+    if isinstance(node_lookup_by_name, dict):
+        for node in nodes:
+            name_ids = node_lookup_by_name.get(node["name"], [])
+            assert_condition(
+                isinstance(name_ids, list) and node["id"] in name_ids,
+                f"node_lookup.by_name 缺少节点: {node['name']}",
+                errors,
+            )
+    if isinstance(node_lookup_by_alias, dict):
+        for node in nodes:
+            for alias in node.get("aliases", []):
+                alias_ids = node_lookup_by_alias.get(alias, [])
+                assert_condition(
+                    isinstance(alias_ids, list) and node["id"] in alias_ids,
+                    f"node_lookup.by_alias 缺少别名: {alias}",
+                    errors,
+                )
+    if isinstance(node_lookup_summary, dict):
+        assert_condition(
+            node_lookup_summary.get("node_count") == len(nodes),
+            "node_lookup.summary.node_count 不一致",
+            errors,
+        )
+        assert_condition(
+            node_lookup_summary.get("type_count") == len(node_lookup_by_type),
+            "node_lookup.summary.type_count 不一致",
+            errors,
+        )
+        assert_condition(
+            node_lookup_summary.get("name_count") == len(node_lookup_by_name),
+            "node_lookup.summary.name_count 不一致",
+            errors,
+        )
+        assert_condition(
+            node_lookup_summary.get("alias_count") == len(node_lookup_by_alias),
+            "node_lookup.summary.alias_count 不一致",
+            errors,
+        )
     entity_lookup_summary = entity_lookup.get("summary", {})
     assert_condition(
         entity_lookup_summary.get("occupation_profile_count") == len(occupation_profiles_by_id),
