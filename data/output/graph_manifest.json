@@ -1,8 +1,9 @@
 {
-  "generated_at": "2026-05-08T16:17:34Z",
+  "generated_at": "2026-05-09T14:26:01Z",
   "entity_count": 17,
   "evidence_count": 6,
   "relation_instance_count": 20,
+  "relation_candidate_count": 20,
   "edge_count": 20,
   "node_type_count": {
     "education": 1,
@@ -14,6 +15,7 @@
   "output_files": [
     "nodes.json",
     "relation_instances.json",
+    "relation_candidates.json",
     "edges.json",
     "graph_index.json",
     "graph_quality.json",

@@ -1,0 +1,920 @@
+[
+  {
+    "evidence_id": "evidence_001",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "后端开发工程师需要掌握 Java、MySQL 和 Linux，熟悉 Git 协作流程。",
+    "pair_source_id": "occ_backend_engineer",
+    "pair_target_id": "skill_mysql",
+    "pair_source_name": "后端开发工程师",
+    "pair_target_name": "MySQL",
+    "pair_source_type": "occupation",
+    "pair_target_type": "tool",
+    "source_id": "occ_backend_engineer",
+    "target_id": "skill_mysql",
+    "source_name": "后端开发工程师",
+    "target_name": "MySQL",
+    "source_type": "occupation",
+    "target_type": "tool",
+    "relation_type": "uses_tool",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握",
+      "熟悉"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "uses_tool",
+        "source_id": "occ_backend_engineer",
+        "target_id": "skill_mysql",
+        "source_name": "后端开发工程师",
+        "target_name": "MySQL",
+        "source_type": "occupation",
+        "target_type": "tool",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_001",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "后端开发工程师需要掌握 Java、MySQL 和 Linux，熟悉 Git 协作流程。",
+    "pair_source_id": "occ_backend_engineer",
+    "pair_target_id": "skill_linux",
+    "pair_source_name": "后端开发工程师",
+    "pair_target_name": "Linux",
+    "pair_source_type": "occupation",
+    "pair_target_type": "tool",
+    "source_id": "occ_backend_engineer",
+    "target_id": "skill_linux",
+    "source_name": "后端开发工程师",
+    "target_name": "Linux",
+    "source_type": "occupation",
+    "target_type": "tool",
+    "relation_type": "uses_tool",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握",
+      "熟悉"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "uses_tool",
+        "source_id": "occ_backend_engineer",
+        "target_id": "skill_linux",
+        "source_name": "后端开发工程师",
+        "target_name": "Linux",
+        "source_type": "occupation",
+        "target_type": "tool",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_001",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "后端开发工程师需要掌握 Java、MySQL 和 Linux，熟悉 Git 协作流程。",
+    "pair_source_id": "occ_backend_engineer",
+    "pair_target_id": "skill_java",
+    "pair_source_name": "后端开发工程师",
+    "pair_target_name": "Java",
+    "pair_source_type": "occupation",
+    "pair_target_type": "skill",
+    "source_id": "occ_backend_engineer",
+    "target_id": "skill_java",
+    "source_name": "后端开发工程师",
+    "target_name": "Java",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "requires_skill",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握",
+      "熟悉"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "requires_skill",
+        "source_id": "occ_backend_engineer",
+        "target_id": "skill_java",
+        "source_name": "后端开发工程师",
+        "target_name": "Java",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_001",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "后端开发工程师需要掌握 Java、MySQL 和 Linux，熟悉 Git 协作流程。",
+    "pair_source_id": "occ_backend_engineer",
+    "pair_target_id": "skill_sql",
+    "pair_source_name": "后端开发工程师",
+    "pair_target_name": "SQL",
+    "pair_source_type": "occupation",
+    "pair_target_type": "skill",
+    "source_id": "occ_backend_engineer",
+    "target_id": "skill_sql",
+    "source_name": "后端开发工程师",
+    "target_name": "SQL",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "requires_skill",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握",
+      "熟悉"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "requires_skill",
+        "source_id": "occ_backend_engineer",
+        "target_id": "skill_sql",
+        "source_name": "后端开发工程师",
+        "target_name": "SQL",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_001",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "后端开发工程师需要掌握 Java、MySQL 和 Linux，熟悉 Git 协作流程。",
+    "pair_source_id": "occ_backend_engineer",
+    "pair_target_id": "skill_git",
+    "pair_source_name": "后端开发工程师",
+    "pair_target_name": "Git",
+    "pair_source_type": "occupation",
+    "pair_target_type": "tool",
+    "source_id": "occ_backend_engineer",
+    "target_id": "skill_git",
+    "source_name": "后端开发工程师",
+    "target_name": "Git",
+    "source_type": "occupation",
+    "target_type": "tool",
+    "relation_type": "uses_tool",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握",
+      "熟悉"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "uses_tool",
+        "source_id": "occ_backend_engineer",
+        "target_id": "skill_git",
+        "source_name": "后端开发工程师",
+        "target_name": "Git",
+        "source_type": "occupation",
+        "target_type": "tool",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_002",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "Python开发工程师通常需要掌握 Python、SQL 和 Pandas，熟悉数据处理思路。",
+    "pair_source_id": "occ_python_engineer",
+    "pair_target_id": "skill_python",
+    "pair_source_name": "Python开发工程师",
+    "pair_target_name": "Python",
+    "pair_source_type": "occupation",
+    "pair_target_type": "skill",
+    "source_id": "occ_python_engineer",
+    "target_id": "skill_python",
+    "source_name": "Python开发工程师",
+    "target_name": "Python",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "requires_skill",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握",
+      "熟悉"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "requires_skill",
+        "source_id": "occ_python_engineer",
+        "target_id": "skill_python",
+        "source_name": "Python开发工程师",
+        "target_name": "Python",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_002",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "Python开发工程师通常需要掌握 Python、SQL 和 Pandas，熟悉数据处理思路。",
+    "pair_source_id": "occ_python_engineer",
+    "pair_target_id": "skill_pandas",
+    "pair_source_name": "Python开发工程师",
+    "pair_target_name": "Pandas",
+    "pair_source_type": "occupation",
+    "pair_target_type": "skill",
+    "source_id": "occ_python_engineer",
+    "target_id": "skill_pandas",
+    "source_name": "Python开发工程师",
+    "target_name": "Pandas",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "requires_skill",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握",
+      "熟悉"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "requires_skill",
+        "source_id": "occ_python_engineer",
+        "target_id": "skill_pandas",
+        "source_name": "Python开发工程师",
+        "target_name": "Pandas",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_002",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "Python开发工程师通常需要掌握 Python、SQL 和 Pandas，熟悉数据处理思路。",
+    "pair_source_id": "occ_python_engineer",
+    "pair_target_id": "skill_sql",
+    "pair_source_name": "Python开发工程师",
+    "pair_target_name": "SQL",
+    "pair_source_type": "occupation",
+    "pair_target_type": "skill",
+    "source_id": "occ_python_engineer",
+    "target_id": "skill_sql",
+    "source_name": "Python开发工程师",
+    "target_name": "SQL",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "requires_skill",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握",
+      "熟悉"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "requires_skill",
+        "source_id": "occ_python_engineer",
+        "target_id": "skill_sql",
+        "source_name": "Python开发工程师",
+        "target_name": "SQL",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_003",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "数据分析师需要掌握 SQL、Python 和 Pandas，优先熟悉 Excel，具备逻辑思维能力。",
+    "pair_source_id": "skill_python",
+    "pair_target_id": "occ_data_analyst",
+    "pair_source_name": "Python",
+    "pair_target_name": "数据分析师",
+    "pair_source_type": "skill",
+    "pair_target_type": "occupation",
+    "source_id": "occ_data_analyst",
+    "target_id": "skill_python",
+    "source_name": "数据分析师",
+    "target_name": "Python",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "preferred_skill",
+    "selected_direction": "reverse",
+    "matched_keywords": [
+      "优先"
+    ],
+    "forward_candidates": [],
+    "reverse_candidates": [
+      {
+        "direction": "reverse",
+        "relation_type": "preferred_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_python",
+        "source_name": "数据分析师",
+        "target_name": "Python",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "优先"
+        ],
+        "keyword_count": 1
+      },
+      {
+        "direction": "reverse",
+        "relation_type": "requires_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_python",
+        "source_name": "数据分析师",
+        "target_name": "Python",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉",
+          "具备"
+        ],
+        "keyword_count": 4
+      }
+    ]
+  },
+  {
+    "evidence_id": "evidence_003",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "数据分析师需要掌握 SQL、Python 和 Pandas，优先熟悉 Excel，具备逻辑思维能力。",
+    "pair_source_id": "skill_pandas",
+    "pair_target_id": "occ_data_analyst",
+    "pair_source_name": "Pandas",
+    "pair_target_name": "数据分析师",
+    "pair_source_type": "skill",
+    "pair_target_type": "occupation",
+    "source_id": "occ_data_analyst",
+    "target_id": "skill_pandas",
+    "source_name": "数据分析师",
+    "target_name": "Pandas",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "preferred_skill",
+    "selected_direction": "reverse",
+    "matched_keywords": [
+      "优先"
+    ],
+    "forward_candidates": [],
+    "reverse_candidates": [
+      {
+        "direction": "reverse",
+        "relation_type": "preferred_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_pandas",
+        "source_name": "数据分析师",
+        "target_name": "Pandas",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "优先"
+        ],
+        "keyword_count": 1
+      },
+      {
+        "direction": "reverse",
+        "relation_type": "requires_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_pandas",
+        "source_name": "数据分析师",
+        "target_name": "Pandas",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉",
+          "具备"
+        ],
+        "keyword_count": 4
+      }
+    ]
+  },
+  {
+    "evidence_id": "evidence_003",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "数据分析师需要掌握 SQL、Python 和 Pandas，优先熟悉 Excel，具备逻辑思维能力。",
+    "pair_source_id": "occ_data_analyst",
+    "pair_target_id": "skill_excel",
+    "pair_source_name": "数据分析师",
+    "pair_target_name": "Excel",
+    "pair_source_type": "occupation",
+    "pair_target_type": "skill",
+    "source_id": "occ_data_analyst",
+    "target_id": "skill_excel",
+    "source_name": "数据分析师",
+    "target_name": "Excel",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "preferred_skill",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "优先"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "preferred_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_excel",
+        "source_name": "数据分析师",
+        "target_name": "Excel",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "优先"
+        ],
+        "keyword_count": 1
+      },
+      {
+        "direction": "forward",
+        "relation_type": "requires_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_excel",
+        "source_name": "数据分析师",
+        "target_name": "Excel",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉",
+          "具备"
+        ],
+        "keyword_count": 4
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_003",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "数据分析师需要掌握 SQL、Python 和 Pandas，优先熟悉 Excel，具备逻辑思维能力。",
+    "pair_source_id": "occ_data_analyst",
+    "pair_target_id": "trait_logic",
+    "pair_source_name": "数据分析师",
+    "pair_target_name": "逻辑思维",
+    "pair_source_type": "occupation",
+    "pair_target_type": "trait",
+    "source_id": "occ_data_analyst",
+    "target_id": "trait_logic",
+    "source_name": "数据分析师",
+    "target_name": "逻辑思维",
+    "source_type": "occupation",
+    "target_type": "trait",
+    "relation_type": "needs_trait",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "能力",
+      "思维"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "needs_trait",
+        "source_id": "occ_data_analyst",
+        "target_id": "trait_logic",
+        "source_name": "数据分析师",
+        "target_name": "逻辑思维",
+        "source_type": "occupation",
+        "target_type": "trait",
+        "matched_keywords": [
+          "能力",
+          "思维"
+        ],
+        "keyword_count": 2
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_003",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "数据分析师需要掌握 SQL、Python 和 Pandas，优先熟悉 Excel，具备逻辑思维能力。",
+    "pair_source_id": "occ_data_analyst",
+    "pair_target_id": "skill_sql",
+    "pair_source_name": "数据分析师",
+    "pair_target_name": "SQL",
+    "pair_source_type": "occupation",
+    "pair_target_type": "skill",
+    "source_id": "occ_data_analyst",
+    "target_id": "skill_sql",
+    "source_name": "数据分析师",
+    "target_name": "SQL",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "preferred_skill",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "优先"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "preferred_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_sql",
+        "source_name": "数据分析师",
+        "target_name": "SQL",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "优先"
+        ],
+        "keyword_count": 1
+      },
+      {
+        "direction": "forward",
+        "relation_type": "requires_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_sql",
+        "source_name": "数据分析师",
+        "target_name": "SQL",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "熟悉",
+          "具备"
+        ],
+        "keyword_count": 4
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_004",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "算法工程师通常需要掌握 Python、NumPy，并对机器学习有基础了解，硕士学历更常见。",
+    "pair_source_id": "skill_python",
+    "pair_target_id": "occ_algo_engineer",
+    "pair_source_name": "Python",
+    "pair_target_name": "算法工程师",
+    "pair_source_type": "skill",
+    "pair_target_type": "occupation",
+    "source_id": "occ_algo_engineer",
+    "target_id": "skill_python",
+    "source_name": "算法工程师",
+    "target_name": "Python",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "requires_skill",
+    "selected_direction": "reverse",
+    "matched_keywords": [
+      "需要",
+      "掌握"
+    ],
+    "forward_candidates": [],
+    "reverse_candidates": [
+      {
+        "direction": "reverse",
+        "relation_type": "requires_skill",
+        "source_id": "occ_algo_engineer",
+        "target_id": "skill_python",
+        "source_name": "算法工程师",
+        "target_name": "Python",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握"
+        ],
+        "keyword_count": 2
+      }
+    ]
+  },
+  {
+    "evidence_id": "evidence_004",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "算法工程师通常需要掌握 Python、NumPy，并对机器学习有基础了解，硕士学历更常见。",
+    "pair_source_id": "occ_algo_engineer",
+    "pair_target_id": "skill_numpy",
+    "pair_source_name": "算法工程师",
+    "pair_target_name": "NumPy",
+    "pair_source_type": "occupation",
+    "pair_target_type": "skill",
+    "source_id": "occ_algo_engineer",
+    "target_id": "skill_numpy",
+    "source_name": "算法工程师",
+    "target_name": "NumPy",
+    "source_type": "occupation",
+    "target_type": "skill",
+    "relation_type": "requires_skill",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "requires_skill",
+        "source_id": "occ_algo_engineer",
+        "target_id": "skill_numpy",
+        "source_name": "算法工程师",
+        "target_name": "NumPy",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "需要",
+          "掌握"
+        ],
+        "keyword_count": 2
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_005",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "测试工程师需要掌握 Linux、Git，具备沟通能力和细致的排查意识，本科及以上学历较常见。",
+    "pair_source_id": "occ_test_engineer",
+    "pair_target_id": "skill_linux",
+    "pair_source_name": "测试工程师",
+    "pair_target_name": "Linux",
+    "pair_source_type": "occupation",
+    "pair_target_type": "tool",
+    "source_id": "occ_test_engineer",
+    "target_id": "skill_linux",
+    "source_name": "测试工程师",
+    "target_name": "Linux",
+    "source_type": "occupation",
+    "target_type": "tool",
+    "relation_type": "uses_tool",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握",
+      "具备"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "uses_tool",
+        "source_id": "occ_test_engineer",
+        "target_id": "skill_linux",
+        "source_name": "测试工程师",
+        "target_name": "Linux",
+        "source_type": "occupation",
+        "target_type": "tool",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "具备"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_005",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "测试工程师需要掌握 Linux、Git，具备沟通能力和细致的排查意识，本科及以上学历较常见。",
+    "pair_source_id": "occ_test_engineer",
+    "pair_target_id": "trait_communication",
+    "pair_source_name": "测试工程师",
+    "pair_target_name": "沟通能力",
+    "pair_source_type": "occupation",
+    "pair_target_type": "trait",
+    "source_id": "occ_test_engineer",
+    "target_id": "trait_communication",
+    "source_name": "测试工程师",
+    "target_name": "沟通能力",
+    "source_type": "occupation",
+    "target_type": "trait",
+    "relation_type": "needs_trait",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "能力",
+      "沟通",
+      "细致"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "needs_trait",
+        "source_id": "occ_test_engineer",
+        "target_id": "trait_communication",
+        "source_name": "测试工程师",
+        "target_name": "沟通能力",
+        "source_type": "occupation",
+        "target_type": "trait",
+        "matched_keywords": [
+          "能力",
+          "沟通",
+          "细致"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_005",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "测试工程师需要掌握 Linux、Git，具备沟通能力和细致的排查意识，本科及以上学历较常见。",
+    "pair_source_id": "occ_test_engineer",
+    "pair_target_id": "skill_git",
+    "pair_source_name": "测试工程师",
+    "pair_target_name": "Git",
+    "pair_source_type": "occupation",
+    "pair_target_type": "tool",
+    "source_id": "occ_test_engineer",
+    "target_id": "skill_git",
+    "source_name": "测试工程师",
+    "target_name": "Git",
+    "source_type": "occupation",
+    "target_type": "tool",
+    "relation_type": "uses_tool",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "需要",
+      "掌握",
+      "具备"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "uses_tool",
+        "source_id": "occ_test_engineer",
+        "target_id": "skill_git",
+        "source_name": "测试工程师",
+        "target_name": "Git",
+        "source_type": "occupation",
+        "target_type": "tool",
+        "matched_keywords": [
+          "需要",
+          "掌握",
+          "具备"
+        ],
+        "keyword_count": 3
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_005",
+    "evidence_source": "job_descriptions",
+    "evidence_text": "测试工程师需要掌握 Linux、Git，具备沟通能力和细致的排查意识，本科及以上学历较常见。",
+    "pair_source_id": "occ_test_engineer",
+    "pair_target_id": "edu_bachelor",
+    "pair_source_name": "测试工程师",
+    "pair_target_name": "本科",
+    "pair_source_type": "occupation",
+    "pair_target_type": "education",
+    "source_id": "occ_test_engineer",
+    "target_id": "edu_bachelor",
+    "source_name": "测试工程师",
+    "target_name": "本科",
+    "source_type": "occupation",
+    "target_type": "education",
+    "relation_type": "requires_education",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "学历",
+      "本科"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "requires_education",
+        "source_id": "occ_test_engineer",
+        "target_id": "edu_bachelor",
+        "source_name": "测试工程师",
+        "target_name": "本科",
+        "source_type": "occupation",
+        "target_type": "education",
+        "matched_keywords": [
+          "学历",
+          "本科"
+        ],
+        "keyword_count": 2
+      }
+    ],
+    "reverse_candidates": []
+  },
+  {
+    "evidence_id": "evidence_006",
+    "evidence_source": "career_similarity",
+    "evidence_text": "后端开发工程师与 Python开发工程师在服务端开发方向上有较强相关性。",
+    "pair_source_id": "occ_python_engineer",
+    "pair_target_id": "occ_backend_engineer",
+    "pair_source_name": "Python开发工程师",
+    "pair_target_name": "后端开发工程师",
+    "pair_source_type": "occupation",
+    "pair_target_type": "occupation",
+    "source_id": "occ_python_engineer",
+    "target_id": "occ_backend_engineer",
+    "source_name": "Python开发工程师",
+    "target_name": "后端开发工程师",
+    "source_type": "occupation",
+    "target_type": "occupation",
+    "relation_type": "related_role",
+    "selected_direction": "forward",
+    "matched_keywords": [
+      "相关",
+      "方向"
+    ],
+    "forward_candidates": [
+      {
+        "direction": "forward",
+        "relation_type": "related_role",
+        "source_id": "occ_python_engineer",
+        "target_id": "occ_backend_engineer",
+        "source_name": "Python开发工程师",
+        "target_name": "后端开发工程师",
+        "source_type": "occupation",
+        "target_type": "occupation",
+        "matched_keywords": [
+          "相关",
+          "方向"
+        ],
+        "keyword_count": 2
+      }
+    ],
+    "reverse_candidates": [
+      {
+        "direction": "reverse",
+        "relation_type": "related_role",
+        "source_id": "occ_backend_engineer",
+        "target_id": "occ_python_engineer",
+        "source_name": "后端开发工程师",
+        "target_name": "Python开发工程师",
+        "source_type": "occupation",
+        "target_type": "occupation",
+        "matched_keywords": [
+          "相关",
+          "方向"
+        ],
+        "keyword_count": 2
+      }
+    ]
+  }
+]

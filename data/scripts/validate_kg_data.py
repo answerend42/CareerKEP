@@ -99,6 +99,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     files = {
         "nodes": output_dir / "nodes.json",
         "relation_instances": output_dir / "relation_instances.json",
+        "relation_candidates": output_dir / "relation_candidates.json",
         "edges": output_dir / "edges.json",
         "graph_index": output_dir / "graph_index.json",
         "graph_quality": output_dir / "graph_quality.json",
@@ -119,6 +120,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
 
     nodes = load_json(files["nodes"])
     relation_instances = load_json(files["relation_instances"])
+    relation_candidates = load_json(files["relation_candidates"])
     edges = load_json(files["edges"])
     graph_index = load_json(files["graph_index"])
     graph_quality = load_json(files["graph_quality"])
@@ -139,6 +141,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
 
     assert_condition(isinstance(nodes, list), "nodes.json 必须是列表", errors)
     assert_condition(isinstance(relation_instances, list), "relation_instances.json 必须是列表", errors)
+    assert_condition(isinstance(relation_candidates, list), "relation_candidates.json 必须是列表", errors)
     assert_condition(isinstance(edges, list), "edges.json 必须是列表", errors)
     assert_condition(isinstance(graph_index, dict), "graph_index.json 必须是对象", errors)
     assert_condition(isinstance(graph_quality, dict), "graph_quality.json 必须是对象", errors)
@@ -185,6 +188,38 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         assert_condition(len(outgoing) == computed_outgoing[node_id], f"节点 {node_id} 的 outgoing 数量不一致", errors)
 
     relation_counter = Counter(edge["relation_type"] for edge in edges)
+    assert_condition(
+        len(relation_candidates) == len(relation_instances),
+        "relation_candidates 与 relation_instances 数量不一致",
+        errors,
+    )
+    for index, (instance, candidate) in enumerate(zip(relation_instances, relation_candidates), start=1):
+        assert_condition(
+            instance.get("evidence_id") == candidate.get("evidence_id"),
+            f"第 {index} 条 relation_candidates 的 evidence_id 与 relation_instances 不一致",
+            errors,
+        )
+        assert_condition(
+            instance.get("source_id") == candidate.get("source_id"),
+            f"第 {index} 条 relation_candidates 的 source_id 与 relation_instances 不一致",
+            errors,
+        )
+        assert_condition(
+            instance.get("target_id") == candidate.get("target_id"),
+            f"第 {index} 条 relation_candidates 的 target_id 与 relation_instances 不一致",
+            errors,
+        )
+        assert_condition(
+            instance.get("relation_type") == candidate.get("relation_type"),
+            f"第 {index} 条 relation_candidates 的 relation_type 与 relation_instances 不一致",
+            errors,
+        )
+        assert_condition(
+            instance.get("matched_keywords") == candidate.get("matched_keywords"),
+            f"第 {index} 条 relation_candidates 的 matched_keywords 与 relation_instances 不一致",
+            errors,
+        )
+
     assert_condition(
         relation_summary.get("edge_count") == len(edges),
         "relation_summary 的 edge_count 与 edges 数量不一致",
@@ -258,6 +293,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         errors,
     )
     assert_condition(
+        extraction_log.get("relation_candidate_count") == len(relation_candidates),
+        "extraction_log 的 relation_candidate_count 与 relation_candidates 数量不一致",
+        errors,
+    )
+    assert_condition(
         extraction_log.get("career_profile_count") == len(career_profiles),
         "extraction_log 的 career_profile_count 与 career_profiles 数量不一致",
         errors,
@@ -275,6 +315,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(
         graph_manifest.get("edge_count") == len(edges),
         "graph_manifest 的 edge_count 与 edges 数量不一致",
+        errors,
+    )
+    assert_condition(
+        graph_manifest.get("relation_candidate_count") == len(relation_candidates),
+        "graph_manifest 的 relation_candidate_count 与 relation_candidates 数量不一致",
         errors,
     )
 

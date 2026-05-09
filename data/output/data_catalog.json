@@ -14,6 +14,13 @@
     "sha256": "7e0596bcbf9654b14fa36da7fe84e647a616ed9e5933659674ee4c2560c6ba98"
   },
   {
+    "file_name": "relation_candidates.json",
+    "description": "关系候选轨迹",
+    "item_count": 20,
+    "size_bytes": 28951,
+    "sha256": "5ae122699dab9faad99f6d4bb89be6abe9e421058080dad5891b881a7b778495"
+  },
+  {
     "file_name": "edges.json",
     "description": "图谱边",
     "item_count": 20,
@@ -59,14 +66,14 @@
     "file_name": "extraction_log.json",
     "description": "构建日志",
     "item_count": 17,
-    "size_bytes": 2052,
-    "sha256": "8da5e76ce733878418e1be33a64a460b838ab3091d2a7a2da42d9cf50c72cc00"
+    "size_bytes": 2503,
+    "sha256": "91f2b04ee480b0befe5e5d865d8b9a388b847fc4a856f9c71d407b5978cd2958"
   },
   {
     "file_name": "graph_manifest.json",
     "description": "构建清单",
-    "item_count": 11,
-    "size_bytes": 1532,
-    "sha256": "f2e7d042bb7ab24ac6c5554714ad79bab016aa0e3003668ccae96c9ded9d313b"
+    "item_count": 12,
+    "size_bytes": 1600,
+    "sha256": "6746ec4658a081bb267283ebd2345c6ea490c0c624c309041930cebef751ada6"
   }
 ]

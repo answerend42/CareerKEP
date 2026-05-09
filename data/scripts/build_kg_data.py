@@ -55,6 +55,32 @@ class RelationInstance:
     matched_keywords: list[str]
 
 
+@dataclass(frozen=True)
+class RelationCandidateTrace:
+    """关系候选轨迹，记录一次实体对抽取中所有命中的候选关系。"""
+
+    evidence_id: str
+    evidence_source: str
+    evidence_text: str
+    pair_source_id: str
+    pair_target_id: str
+    pair_source_name: str
+    pair_target_name: str
+    pair_source_type: str
+    pair_target_type: str
+    source_id: str
+    target_id: str
+    source_name: str
+    target_name: str
+    source_type: str
+    target_type: str
+    relation_type: str
+    selected_direction: str
+    matched_keywords: list[str]
+    forward_candidates: list[dict[str, Any]]
+    reverse_candidates: list[dict[str, Any]]
+
+
 @dataclass
 class Edge:
     """聚合后的图谱边。"""
@@ -309,17 +335,60 @@ def choose_relation(
     target: Entity,
     text: str,
     relation_keyword_map: dict[tuple[str, str], list[tuple[str, list[str]]]],
-) -> tuple[str | None, list[str]]:
+) -> tuple[str | None, list[str], dict[str, Any] | None, list[dict[str, Any]], list[dict[str, Any]]]:
     """根据实体类型组合和关键词判断关系类型。"""
 
-    def hit(keywords: list[str]) -> list[str]:
-        return [word for word in keywords if word in text]
+    def build_candidates(
+        current_source: Entity,
+        current_target: Entity,
+        direction: str,
+    ) -> list[dict[str, Any]]:
+        candidates: list[dict[str, Any]] = []
+        for relation_type, keywords in relation_keyword_map.get(
+            (current_source.type, current_target.type), []
+        ):
+            matched = [word for word in keywords if word in text]
+            if not matched:
+                continue
+            candidates.append(
+                {
+                    "direction": direction,
+                    "relation_type": relation_type,
+                    "source_id": current_source.id,
+                    "target_id": current_target.id,
+                    "source_name": current_source.name,
+                    "target_name": current_target.name,
+                    "source_type": current_source.type,
+                    "target_type": current_target.type,
+                    "matched_keywords": matched,
+                    "keyword_count": len(matched),
+                }
+            )
+        return candidates
 
-    for relation_type, keywords in relation_keyword_map.get((source.type, target.type), []):
-        matched = hit(keywords)
-        if matched:
-            return relation_type, matched
-    return None, []
+    forward_candidates = build_candidates(source, target, "forward")
+    reverse_candidates = build_candidates(target, source, "reverse")
+    if forward_candidates:
+        selected = forward_candidates[0]
+        return (
+            str(selected["relation_type"]),
+            [str(keyword) for keyword in selected["matched_keywords"]],
+            selected,
+            forward_candidates,
+            reverse_candidates,
+        )
+
+    if reverse_candidates:
+        selected = reverse_candidates[0]
+        return (
+            str(selected["relation_type"]),
+            [str(keyword) for keyword in selected["matched_keywords"]],
+            selected,
+            forward_candidates,
+            reverse_candidates,
+        )
+
+    return None, [], None, [], []
 
 
 def extract_relation_instances(
@@ -327,10 +396,11 @@ def extract_relation_instances(
     evidence_items: list[dict[str, Any]],
     relation_map: dict[str, dict[str, Any]],
     relation_keyword_map: dict[tuple[str, str], list[tuple[str, list[str]]]],
-) -> list[RelationInstance]:
-    """从原始证据中抽取句子级关系实例。"""
+) -> tuple[list[RelationInstance], list[RelationCandidateTrace]]:
+    """从原始证据中抽取句子级关系实例，同时保留候选轨迹。"""
 
     instances: list[RelationInstance] = []
+    relation_candidates: list[RelationCandidateTrace] = []
 
     for evidence in evidence_items:
         text = str(evidence["text"])
@@ -347,20 +417,13 @@ def extract_relation_instances(
                     continue
 
                 target = entities[target_id]
-                relation_type, matched_keywords = choose_relation(
+                relation_type, matched_keywords, selected_candidate, forward_candidates, reverse_candidates = choose_relation(
                     source, target, text, relation_keyword_map
                 )
-                source_entity = source
-                target_entity = target
-
-                if relation_type is None:
-                    relation_type, matched_keywords = choose_relation(
-                        target, source, text, relation_keyword_map
-                    )
-                    if relation_type is None:
-                        continue
-                    source_entity = target
-                    target_entity = source
+                if relation_type is None or selected_candidate is None:
+                    continue
+                source_entity = entities[str(selected_candidate["source_id"])]
+                target_entity = entities[str(selected_candidate["target_id"])]
 
                 relation_config = relation_map.get(relation_type)
                 if relation_config is None:
@@ -386,7 +449,32 @@ def extract_relation_instances(
                     )
                 )
 
-    return instances
+                relation_candidates.append(
+                    RelationCandidateTrace(
+                        evidence_id=evidence_id,
+                        evidence_source=evidence_source,
+                        evidence_text=text,
+                        pair_source_id=source.id,
+                        pair_target_id=target.id,
+                        pair_source_name=source.name,
+                        pair_target_name=target.name,
+                        pair_source_type=source.type,
+                        pair_target_type=target.type,
+                        source_id=source_entity.id,
+                        target_id=target_entity.id,
+                        source_name=source_entity.name,
+                        target_name=target_entity.name,
+                        source_type=source_entity.type,
+                        target_type=target_entity.type,
+                        relation_type=relation_type,
+                        selected_direction=str(selected_candidate["direction"]),
+                        matched_keywords=matched_keywords,
+                        forward_candidates=forward_candidates,
+                        reverse_candidates=reverse_candidates,
+                    )
+                )
+
+    return instances, relation_candidates
 
 
 def build_edges(
@@ -486,6 +574,16 @@ def summarize_instances(instances: list[RelationInstance]) -> dict[str, Any]:
         "relation_instance_count": len(instances),
         "relation_instance_count_by_type": dict(sorted(relation_counter.items())),
         "relation_instance_count_by_pair": dict(sorted(type_counter.items())),
+    }
+
+
+def summarize_relation_candidates(candidates: list[RelationCandidateTrace]) -> dict[str, Any]:
+    relation_counter = Counter(item.relation_type for item in candidates)
+    direction_counter = Counter(item.selected_direction for item in candidates)
+    return {
+        "relation_candidate_count": len(candidates),
+        "relation_candidate_count_by_type": dict(sorted(relation_counter.items())),
+        "relation_candidate_count_by_direction": dict(sorted(direction_counter.items())),
     }
 
 
@@ -787,6 +885,7 @@ def build_recommendation_index(
 def build_manifest(
     nodes: list[dict[str, Any]],
     relation_instances: list[RelationInstance],
+    relation_candidates: list[RelationCandidateTrace],
     edges: list[Edge],
     evidence_count: int,
     args: argparse.Namespace,
@@ -799,11 +898,13 @@ def build_manifest(
         "entity_count": len(nodes),
         "evidence_count": evidence_count,
         "relation_instance_count": len(relation_instances),
+        "relation_candidate_count": len(relation_candidates),
         "edge_count": len(edges),
         "node_type_count": dict(sorted(node_type_counter.items())),
         "output_files": [
             "nodes.json",
             "relation_instances.json",
+            "relation_candidates.json",
             "edges.json",
             "graph_index.json",
             "graph_quality.json",
@@ -837,6 +938,7 @@ def build_data_catalog(
     file_items = [
         ("nodes.json", "节点数据"),
         ("relation_instances.json", "证据级关系实例"),
+        ("relation_candidates.json", "关系候选轨迹"),
         ("edges.json", "图谱边"),
         ("graph_index.json", "图索引"),
         ("graph_quality.json", "图谱质量报告"),
@@ -918,7 +1020,7 @@ def main() -> int:
         args.schema, args.keywords, args.rules
     )
 
-    relation_instances = extract_relation_instances(
+    relation_instances, relation_candidates = extract_relation_instances(
         entities, evidence_items, relation_map, relation_keyword_map
     )
     edges = build_edges(entities, relation_instances, relation_map, weight_rules)
@@ -933,6 +1035,7 @@ def main() -> int:
 
     write_json(output_dir / "nodes.json", nodes)
     write_json(output_dir / "relation_instances.json", [asdict(item) for item in relation_instances])
+    write_json(output_dir / "relation_candidates.json", [asdict(item) for item in relation_candidates])
     write_json(output_dir / "edges.json", [asdict(edge) for edge in edges])
     write_json(output_dir / "graph_index.json", graph_index)
     write_json(output_dir / "graph_quality.json", quality_report)
@@ -945,6 +1048,7 @@ def main() -> int:
             "entity_count": len(nodes),
             "evidence_count": len(evidence_items),
             "relation_instance_count": len(relation_instances),
+            "relation_candidate_count": len(relation_candidates),
             "matched_edge_count": len(edges),
             "graph_index_node_count": graph_index["node_count"],
             "graph_index_edge_count": graph_index["edge_count"],
@@ -960,6 +1064,7 @@ def main() -> int:
                 "rules": source_file_record(args.rules),
             },
             "instance_summary": summarize_instances(relation_instances),
+            "candidate_summary": summarize_relation_candidates(relation_candidates),
             "validation": {
                 "allowed_entity_types": sorted(ALLOWED_ENTITY_TYPES),
                 "relation_type_count": len(relation_map),
@@ -967,10 +1072,18 @@ def main() -> int:
                 "has_isolated_node": quality_report["quality_flags"]["has_isolated_node"],
                 "career_profile_count": len(career_profiles),
                 "recommendation_index_count": len(recommendation_index),
+                "relation_candidate_count": len(relation_candidates),
             },
         },
     )
-    graph_manifest = build_manifest(nodes, relation_instances, edges, len(evidence_items), args)
+    graph_manifest = build_manifest(
+        nodes,
+        relation_instances,
+        relation_candidates,
+        edges,
+        len(evidence_items),
+        args,
+    )
     write_json(output_dir / "graph_manifest.json", graph_manifest)
     data_catalog = build_data_catalog(
         output_dir,
