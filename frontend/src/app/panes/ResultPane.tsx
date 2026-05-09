@@ -1,4 +1,4 @@
-import type { RecommendationResponse, RobustnessReport, RunStatus, StageNode } from '../types';
+import type { RecommendationResponse, RobustnessReport, RunStatus, StageEdge, StageNode } from '../types';
 
 interface ResultPaneProps {
   response: RecommendationResponse;
@@ -19,6 +19,57 @@ const formatDelta = (value: number) => {
 const flattenNodes = (response: RecommendationResponse): StageNode[] =>
   response.propagationSnapshot.layers.flatMap((layer) => layer.nodes);
 
+const buildOutgoingMap = (edges: StageEdge[]): Map<string, StageEdge[]> => {
+  const map = new Map<string, StageEdge[]>();
+
+  for (const edge of edges) {
+    const bucket = map.get(edge.source) ?? [];
+    bucket.push(edge);
+    map.set(edge.source, bucket);
+  }
+
+  return map;
+};
+
+const collectReachableNodes = (
+  startNodeId: string | null,
+  nodes: StageNode[],
+  edges: StageEdge[]
+): StageNode[] => {
+  if (!startNodeId) {
+    return [];
+  }
+
+  const nodeMap = new Map(nodes.map((node) => [node.id, node]));
+  const outgoingMap = buildOutgoingMap(edges);
+  const visited = new Set<string>([startNodeId]);
+  const queue = [startNodeId];
+  const reachable: StageNode[] = [];
+
+  while (queue.length > 0) {
+    const current = queue.shift();
+    if (!current) {
+      continue;
+    }
+
+    for (const edge of outgoingMap.get(current) ?? []) {
+      if (visited.has(edge.target)) {
+        continue;
+      }
+
+      visited.add(edge.target);
+      queue.push(edge.target);
+
+      const node = nodeMap.get(edge.target);
+      if (node) {
+        reachable.push(node);
+      }
+    }
+  }
+
+  return reachable;
+};
+
 export function ResultPane({
   response,
   activeStep,
@@ -28,13 +79,16 @@ export function ResultPane({
   onExportSnapshot,
   onCopySnapshot
 }: ResultPaneProps) {
-  const selectedNode = flattenNodes(response).find((node) => node.id === selectedNodeId) ?? null;
+  const allNodes = flattenNodes(response);
+  const selectedNode = allNodes.find((node) => node.id === selectedNodeId) ?? null;
   const incomingEdges = selectedNodeId
     ? response.propagationSnapshot.edges.filter((edge) => edge.target === selectedNodeId)
     : [];
   const outgoingEdges = selectedNodeId
     ? response.propagationSnapshot.edges.filter((edge) => edge.source === selectedNodeId)
     : [];
+  const reachableNodes = collectReachableNodes(selectedNodeId, allNodes, response.propagationSnapshot.edges);
+  const reachableRoles = reachableNodes.filter((node) => node.layer === 'role');
 
   const selectedLayerLabel =
     response.propagationSnapshot.layers.find((layer) => layer.nodes.some((node) => node.id === selectedNodeId))?.label ?? '未选择';
@@ -130,22 +184,51 @@ export function ResultPane({
         )}
       </section>
 
+      <section className="analysis-card reachable-card">
+        <div className="section-head">
+          <h3>从当前节点可达的岗位</h3>
+          <span>{reachableRoles.length} 个</span>
+        </div>
+        {selectedNode ? (
+          reachableRoles.length ? (
+            <div className="reachable-list">
+              {reachableRoles.map((node) => (
+                <article key={node.id} className="reachable-item">
+                  <div className="node-row">
+                    <strong>{node.label}</strong>
+                    <span>{formatPercent(node.score)}</span>
+                  </div>
+                  <p>{node.detail}</p>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <p className="result-intro">当前节点还没有直接连到岗位层级，可以继续点更下游的方向节点。</p>
+          )
+        ) : (
+          <p className="result-intro">先在图谱里选一个节点，这里会显示它能影响到的岗位节点。</p>
+        )}
+      </section>
+
       <section className="result-block">
         <div className="section-head">
           <h3>正式推荐</h3>
           <span>{response.recommendations.length} 个</span>
         </div>
         <div className="result-list">
-          {response.recommendations.map((item) => (
-            <article key={item.nodeId} className="result-card strong">
-              <div className="node-row">
-                <strong>{item.label}</strong>
-                <span>{formatPercent(item.score)}</span>
-              </div>
-              <p>{item.reason.join('、')}</p>
-              <small>路径：{item.path.join(' -> ')}</small>
-            </article>
-          ))}
+          {response.recommendations.map((item) => {
+            const isSelectedRole = item.nodeId === selectedNodeId;
+            return (
+              <article key={item.nodeId} className={`result-card strong ${isSelectedRole ? 'active' : ''}`}>
+                <div className="node-row">
+                  <strong>{item.label}</strong>
+                  <span>{formatPercent(item.score)}</span>
+                </div>
+                <p>{item.reason.join('、')}</p>
+                <small>路径：{item.path.join(' -> ')}</small>
+              </article>
+            );
+          })}
         </div>
       </section>
 
