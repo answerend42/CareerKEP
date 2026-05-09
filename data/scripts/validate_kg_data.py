@@ -915,6 +915,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         errors,
     )
     assert_condition(
+        extraction_log.get("relation_matrix_count") == relation_matrix.get("pair_count"),
+        "extraction_log 的 relation_matrix_count 与 relation_matrix 不一致",
+        errors,
+    )
+    assert_condition(
         extraction_log.get("career_profile_count") == len(career_profiles),
         "extraction_log 的 career_profile_count 与 career_profiles 数量不一致",
         errors,
@@ -942,6 +947,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(
         graph_manifest.get("relation_candidate_count") == len(relation_candidates),
         "graph_manifest 的 relation_candidate_count 与 relation_candidates 数量不一致",
+        errors,
+    )
+    assert_condition(
+        graph_manifest.get("relation_matrix_count") == relation_matrix.get("pair_count"),
+        "graph_manifest 的 relation_matrix_count 与 relation_matrix 不一致",
         errors,
     )
     assert_condition(
