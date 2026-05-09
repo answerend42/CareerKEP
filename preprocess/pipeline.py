@@ -289,6 +289,74 @@ def _build_uncovered_entity_report(catalog: EntityCatalog, entity_summary: List[
     return sorted(uncovered_entities, key=lambda item: (item["layer"], item["entity_id"]))
 
 
+def _build_uncovered_entity_candidate_report(
+    catalog: EntityCatalog,
+    entity_summary: List[ResolvedEntity],
+) -> List[dict]:
+    """导出未覆盖实体的别名候选优先级，方便补词典和补语料。
+
+    这里不是简单重复 `uncovered_entities.json`，而是把每个未覆盖实体的别名
+    按“更像人工会先补的词”重新排序，并给出一个粗略优先级分值。
+    """
+
+    summary_lookup = {item.entity_id: item for item in entity_summary}
+    source_priority = {
+        "explicit": 5,
+        "label": 4,
+        "id": 3,
+        "id_words": 2,
+        "generated": 1,
+    }
+
+    def _alias_key(alias: str, source: str) -> tuple[int, int, str]:
+        compact_alias = len(alias.replace(" ", ""))
+        return (-source_priority.get(source, 0), compact_alias, alias)
+
+    candidates: List[dict] = []
+    for entity in catalog.iter_entities():
+        summary = summary_lookup[entity.entity_id]
+        if summary.mention_count > 0:
+            continue
+
+        alias_items = [
+            {
+                "alias": alias,
+                "source": source,
+            }
+            for alias, source in sorted(entity.alias_sources.items(), key=lambda item: _alias_key(item[0], item[1]))
+        ]
+        explicit_alias_count = sum(1 for item in alias_items if item["source"] == "explicit")
+        generated_alias_count = sum(1 for item in alias_items if item["source"] == "generated")
+
+        candidates.append(
+            {
+                "entity_id": entity.entity_id,
+                "label": entity.label,
+                "layer": entity.layer,
+                "alias_count": len(alias_items),
+                "explicit_alias_count": explicit_alias_count,
+                "generated_alias_count": generated_alias_count,
+                "coverage_priority": round(
+                    explicit_alias_count * 3.0
+                    + (len(alias_items) - generated_alias_count) * 0.5
+                    + max(0, 8 - len(entity.label)) * 0.1,
+                    3,
+                ),
+                "recommended_aliases": alias_items[:8],
+            }
+        )
+
+    return sorted(
+        candidates,
+        key=lambda item: (
+            -item["coverage_priority"],
+            -item["alias_count"],
+            item["layer"],
+            item["entity_id"],
+        ),
+    )
+
+
 def _build_disambiguation_review(mentions: List[dict], threshold: float) -> dict:
     """构建消歧复核清单。
 
@@ -400,6 +468,7 @@ def run_pipeline(
     total_entities = len(entity_summary)
     coverage_report = _build_entity_coverage_report(entity_summary)
     uncovered_entity_report = _build_uncovered_entity_report(catalog, entity_summary)
+    uncovered_entity_candidate_report = _build_uncovered_entity_candidate_report(catalog, entity_summary)
     disambiguation_review = _build_disambiguation_review(all_mentions, review_threshold)
     disambiguation_trace = _build_disambiguation_trace(all_mentions)
     alias_index_snapshot, alias_index_stats = _build_alias_index_snapshot(catalog)
@@ -437,6 +506,7 @@ def run_pipeline(
         },
     )
     _dump_json(resolved_output_dir / "uncovered_entities.json", uncovered_entity_report)
+    _dump_json(resolved_output_dir / "uncovered_entity_candidates.json", uncovered_entity_candidate_report)
     _dump_json(
         resolved_output_dir / "summary.json",
         {
@@ -461,6 +531,7 @@ def run_pipeline(
             "covered_entities": covered_entities,
             "uncovered_entities": total_entities - covered_entities,
             "uncovered_entity_details": len(uncovered_entity_report),
+            "uncovered_entity_candidates": len(uncovered_entity_candidate_report),
             "documents_with_mentions": len(mentions_by_doc),
             "average_mentions_per_document": round(len(all_mentions) / len(documents), 4) if documents else 0.0,
             "review_threshold": review_threshold,
@@ -477,6 +548,7 @@ def run_pipeline(
         "uncertain_mentions": disambiguation_review["uncertain_count"],
         "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
         "near_tie_mentions": disambiguation_trace["near_tie_count"],
+        "uncovered_entity_candidates": len(uncovered_entity_candidate_report),
         "review_threshold": review_threshold,
         "scanned_source_files": source_manifest["scanned_files"],
         "loaded_source_files": source_manifest["loaded_files"],
