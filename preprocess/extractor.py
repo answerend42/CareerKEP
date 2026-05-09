@@ -123,7 +123,9 @@ def _find_compact_occurrences(surface: str, document_text: str) -> List[Tuple[in
     """
 
     compact_surface = compact_text(surface)
-    if not compact_surface:
+    # 过短的压缩别名很容易退化成单字符噪声，比如 `C++` 会被压成 `c`。
+    # 这类片段不适合做模糊匹配，否则会把正文里普通的 `C` 误判成职业画像。
+    if len(compact_surface) < 2:
         return []
 
     compact_document, positions = _build_compact_text_index(document_text)

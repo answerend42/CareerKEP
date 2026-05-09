@@ -208,6 +208,36 @@ class ExtractorTests(unittest.TestCase):
         self.assertFalse(any(mention.entity_id == "data_engineer" for mention in mentions))
         self.assertFalse(any(mention.entity_id == "data_engineering" and mention.surface == "数据" for mention in mentions))
 
+    def test_short_compact_aliases_do_not_overmatch_plain_single_letters(self) -> None:
+        """压缩后过短的别名不应把普通单字母误判成弱信号实体。"""
+
+        document = RawDocument(
+            doc_id="short_compact_alias_noise",
+            source="test",
+            title="单字母降噪示例",
+            text="我会 C 语言，也接触过一些基础编程。",
+            metadata={},
+        )
+
+        mentions = extract_mentions(document, self.catalog)
+
+        self.assertFalse(any(mention.entity_id == "weak_cpp" for mention in mentions))
+
+    def test_cpp_alias_still_matches_true_cpp_mentions(self) -> None:
+        """真正的 C++ 画像仍然应该正常命中。"""
+
+        document = RawDocument(
+            doc_id="cpp_alias",
+            source="test",
+            title="C++ 方向画像",
+            text="我不擅长 C++，但愿意先从后端工程能力补起。",
+            metadata={},
+        )
+
+        mentions = extract_mentions(document, self.catalog)
+
+        self.assertTrue(any(mention.entity_id == "weak_cpp" for mention in mentions))
+
     def test_tied_candidates_fall_back_to_entity_id(self) -> None:
         """当多个候选实体得分完全一致时，消歧结果应保持确定性。"""
 
