@@ -63,12 +63,20 @@ RELATION_STABLE_FIELDS = (
     "source_types",
     "target_types",
     "base_weight",
+    "description",
     "is_observed",
     "keyword_group_count",
     "keyword_count",
     "matched_edge_count",
     "coverage_rate",
     "weight_range",
+)
+
+RELATION_GROUP_FIELDS = (
+    "source_type",
+    "target_type",
+    "keywords",
+    "keyword_count",
 )
 
 
@@ -170,6 +178,62 @@ def normalize_relation_catalog(catalog: dict[str, Any]) -> dict[str, Any]:
     return normalized
 
 
+def normalize_relation_groups(groups: list[dict[str, Any]] | Any) -> list[dict[str, Any]]:
+    """把关键词分组规整成稳定的可比较结构。"""
+
+    if not isinstance(groups, list):
+        return []
+
+    normalized_groups: list[dict[str, Any]] = []
+    for group in groups:
+        if not isinstance(group, dict):
+            continue
+        normalized_group = {field: group.get(field) for field in RELATION_GROUP_FIELDS}
+        normalized_group["keywords"] = sorted(group.get("keywords", []))
+        normalized_groups.append(normalized_group)
+
+    return sorted(
+        normalized_groups,
+        key=lambda item: (
+            str(item.get("source_type", "")),
+            str(item.get("target_type", "")),
+            tuple(item.get("keywords", [])),
+        ),
+    )
+
+
+def normalize_relation_details(catalog: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    """把关系目录中的每条 relation 规整成可按 relation_type 对比的映射。"""
+
+    relations = catalog.get("relations", [])
+    if not isinstance(relations, list):
+        return {}
+
+    normalized: dict[str, dict[str, Any]] = {}
+    for relation_item in relations:
+        if not isinstance(relation_item, dict):
+            continue
+        relation_type = relation_item.get("relation_type")
+        if not relation_type:
+            continue
+        normalized[str(relation_type)] = {
+            "relation_type": relation_item.get("relation_type"),
+            "source_types": relation_item.get("source_types"),
+            "target_types": relation_item.get("target_types"),
+            "base_weight": relation_item.get("base_weight"),
+            "description": relation_item.get("description"),
+            "is_observed": relation_item.get("is_observed"),
+            "keyword_groups": normalize_relation_groups(relation_item.get("keyword_groups")),
+            "keyword_group_count": relation_item.get("keyword_group_count"),
+            "keyword_count": relation_item.get("keyword_count"),
+            "matched_edge_count": relation_item.get("matched_edge_count"),
+            "coverage_rate": relation_item.get("coverage_rate"),
+            "weight_range": relation_item.get("weight_range"),
+        }
+
+    return dict(sorted(normalized.items()))
+
+
 def normalize_relation_summary(summary: dict[str, Any]) -> dict[str, Any]:
     """把关系统计摘要规整成稳定结构。"""
 
@@ -264,6 +328,27 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
         normalize_relation_catalog(right_relation_catalog),
         RELATION_CATALOG_FIELDS,
     )
+    left_relation_details = normalize_relation_details(left_relation_catalog)
+    right_relation_details = normalize_relation_details(right_relation_catalog)
+    relation_detail_diffs: list[dict[str, Any]] = []
+    relation_detail_keys = sorted(set(left_relation_details) | set(right_relation_details))
+    for relation_type in relation_detail_keys:
+        left_detail = left_relation_details.get(relation_type)
+        right_detail = right_relation_details.get(relation_type)
+        if left_detail is None or right_detail is None:
+            relation_detail_diffs.append(
+                {
+                    "relation_type": relation_type,
+                    "left": left_detail,
+                    "right": right_detail,
+                }
+            )
+            continue
+
+        diffs = compare_value_dict(left_detail, right_detail, RELATION_STABLE_FIELDS)
+        if diffs:
+            relation_detail_diffs.append({"relation_type": relation_type, "diffs": diffs})
+
     summary_diffs = compare_value_dict(
         normalize_relation_summary(left_relation_summary),
         normalize_relation_summary(right_relation_summary),
@@ -292,6 +377,7 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
                 "left_path": str(resolve_artifact_path(left_dir, RELATION_CATALOG_FILE)),
                 "right_path": str(resolve_artifact_path(right_dir, RELATION_CATALOG_FILE)),
                 "diffs": catalog_diffs,
+                "relation_diffs": relation_detail_diffs,
             },
             "relation_summary": {
                 "left_path": str(resolve_artifact_path(left_dir, RELATION_SUMMARY_FILE)),
@@ -312,6 +398,7 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
             "volatile_changed_count": len(diff_groups["volatile_changed"]),
             "graph_manifest_changed_count": len(manifest_diffs),
             "relation_catalog_changed_count": len(catalog_diffs),
+            "relation_detail_changed_count": len(relation_detail_diffs),
             "relation_summary_changed_count": len(summary_diffs),
             "relation_matrix_changed_count": len(matrix_diffs),
             "same_count": len(common) - len(changed),

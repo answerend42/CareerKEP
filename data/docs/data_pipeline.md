@@ -68,4 +68,4 @@ python scripts/validate_kg_data.py
 ```powershell
 python scripts/compare_kg_catalog.py --left-dir output --right-dir output
 ```
-这个命令会同时对比 `data_catalog.json`、`graph_manifest.json`、`relation_catalog.json`、`relation_summary.json` 和 `relation_matrix.json`，更容易区分文件内容变化和构建摘要变化。
+这个命令会同时对比 `data_catalog.json`、`graph_manifest.json`、`relation_catalog.json`、`relation_summary.json` 和 `relation_matrix.json`，还能进一步定位到具体 `relation_type` 的变化，方便排查关系规则和权重规则的回归。
