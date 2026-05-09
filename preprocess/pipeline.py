@@ -53,6 +53,70 @@ def _build_entity_catalog_snapshot(catalog: EntityCatalog) -> List[dict]:
     return sorted(entities, key=lambda item: (item["layer"], item["entity_id"]))
 
 
+def _build_alias_index_snapshot(catalog: EntityCatalog) -> tuple[List[dict], dict]:
+    """导出反向别名索引，便于检查别名冲突和覆盖盲区。
+
+    这个视图直接把“一个别名会命中哪些实体”展开出来，适合人工排查：
+    - 哪些别名是单义词
+    - 哪些别名会撞多个实体
+    - 每个候选实体是通过什么来源进入索引的
+    """
+
+    alias_entries: List[dict] = []
+    total_candidates = 0
+    ambiguous_alias_count = 0
+
+    for compact_alias, items in sorted(catalog.alias_index.items(), key=lambda item: (len(item[1]), item[0])):
+        candidates: List[dict] = []
+        seen_candidates = set()
+        for entity_id, surface, source in items:
+            candidate_key = (entity_id, surface, source)
+            if candidate_key in seen_candidates:
+                continue
+            seen_candidates.add(candidate_key)
+            entity = catalog.entities[entity_id]
+            candidates.append(
+                {
+                    "entity_id": entity.entity_id,
+                    "label": entity.label,
+                    "layer": entity.layer,
+                    "surface": surface,
+                    "source": source,
+                }
+            )
+
+        candidate_entity_ids = {item["entity_id"] for item in candidates}
+        if len(candidate_entity_ids) > 1:
+            ambiguous_alias_count += 1
+        total_candidates += len(candidates)
+
+        alias_entries.append(
+            {
+                "compact_alias": compact_alias,
+                "candidate_count": len(candidates),
+                "entity_count": len(candidate_entity_ids),
+                "is_ambiguous": len(candidate_entity_ids) > 1,
+                "candidates": candidates,
+            }
+        )
+
+    alias_entries.sort(
+        key=lambda item: (
+            -item["candidate_count"],
+            -item["entity_count"],
+            item["compact_alias"],
+        )
+    )
+
+    stats = {
+        "alias_entries": len(alias_entries),
+        "candidate_links": total_candidates,
+        "ambiguous_aliases": ambiguous_alias_count,
+        "single_entity_aliases": len(alias_entries) - ambiguous_alias_count,
+    }
+    return alias_entries, stats
+
+
 def _build_document_entity_summary(
     documents: List[RawDocument],
     mentions_by_doc: Dict[str, List[dict]],
@@ -271,6 +335,7 @@ def run_pipeline(
     total_entities = len(entity_summary)
     coverage_report = _build_entity_coverage_report(entity_summary)
     disambiguation_review = _build_disambiguation_review(all_mentions, review_threshold)
+    alias_index_snapshot, alias_index_stats = _build_alias_index_snapshot(catalog)
     format_stats = {
         "loaded_by_format": source_manifest.get("loaded_by_format", {}),
         "skipped_by_format": source_manifest.get("skipped_by_format", {}),
@@ -283,6 +348,7 @@ def run_pipeline(
     _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
     _dump_json(resolved_output_dir / "mentions.json", all_mentions)
     _dump_json(resolved_output_dir / "entity_catalog.json", _build_entity_catalog_snapshot(catalog))
+    _dump_json(resolved_output_dir / "alias_index.json", alias_index_snapshot)
     _dump_json(
         resolved_output_dir / "document_entities.json",
         _build_document_entity_summary(documents, mentions_by_doc),
@@ -317,6 +383,9 @@ def run_pipeline(
             "mentions": len(all_mentions),
             "entities": total_entities,
             "catalog_entities": len(catalog.entities),
+            "alias_entries": alias_index_stats["alias_entries"],
+            "ambiguous_aliases": alias_index_stats["ambiguous_aliases"],
+            "single_entity_aliases": alias_index_stats["single_entity_aliases"],
             "hit_entities": covered_entities,
             "covered_entities": covered_entities,
             "uncovered_entities": total_entities - covered_entities,

@@ -33,6 +33,7 @@
 - `source_manifest.json`：原始数据扫描清单，包含已加载和被跳过的文件
 - `mentions.json`：每一条实体命中记录
 - `entity_catalog.json`：完整实体目录快照，保留实体标签、层级、别名和别名来源
+- `alias_index.json`：反向别名索引，展开每个别名会命中的候选实体，便于排查冲突和补词典
 - `document_entities.json`：按文档聚合的实体摘要，便于快速查看每篇原始文档抽到了哪些实体
 - `entity_documents.json`：按实体展开到文档维度的关联报告，便于分析实体分布和覆盖率
 - `entities.json`：按实体聚合后的统计结果
@@ -67,9 +68,10 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 
 ## 输出字段说明
 
-- `summary.json`：用于快速确认这次预处理是否成功，包含文档数、命中数、覆盖数、错误文件数和输出目录。
+- `summary.json`：用于快速确认这次预处理是否成功，包含文档数、命中数、覆盖数、别名索引统计、错误文件数和输出目录。
 - `source_manifest.json`：用于排查原始数据扫描情况，记录每个文件的状态、格式、错误行与跳过原因。
 - `entity_catalog.json`：用于核对当前实体词典是否完整，包含实体 ID、标签、层级、别名和别名来源。
+- `alias_index.json`：用于检查别名歧义和覆盖盲区，适合人工补充别名和调整消歧规则。
 - `document_entities.json`：用于按文档抽查抽取效果，适合人工浏览某篇原始数据抽到了哪些实体。
 - `entity_documents.json`：用于按实体查看覆盖文档，适合分析某个实体在语料中的分布。
 - `disambiguation_review.json`：用于后续补词典和调权，专门收集低置信度命中。
