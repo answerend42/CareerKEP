@@ -304,6 +304,45 @@ def _build_disambiguation_review(mentions: List[dict], threshold: float) -> dict
     }
 
 
+def _build_disambiguation_trace(mentions: List[dict]) -> dict:
+    """构建消歧轨迹清单。
+
+    只保留发生歧义的命中，便于人工复核：
+    - 同一个别名会撞到哪些实体
+    - 最终实体与次优实体的分差是多少
+    - 候选排序是否符合直觉
+    """
+
+    ambiguous_mentions = [
+        mention
+        for mention in mentions
+        if int(mention.get("candidate_count", 0)) > 1
+    ]
+    ambiguous_mentions.sort(
+        key=lambda item: (
+            float(item.get("score_gap", 1.0) if item.get("score_gap") is not None else 1.0),
+            -int(item.get("candidate_count", 0)),
+            item.get("doc_id", ""),
+            int(item.get("span_start", 0)),
+            int(item.get("span_end", 0)),
+        )
+    )
+
+    near_tie_mentions = [
+        mention
+        for mention in ambiguous_mentions
+        if mention.get("score_gap") is not None and float(mention["score_gap"]) <= 0.05
+    ]
+
+    return {
+        "ambiguous_count": len(ambiguous_mentions),
+        "near_tie_count": len(near_tie_mentions),
+        "unique_document_count": len({item["doc_id"] for item in ambiguous_mentions}),
+        "unique_entity_count": len({item["entity_id"] for item in ambiguous_mentions}),
+        "top_ambiguous_mentions": ambiguous_mentions[:50],
+    }
+
+
 def _dump_json(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -335,6 +374,7 @@ def run_pipeline(
     total_entities = len(entity_summary)
     coverage_report = _build_entity_coverage_report(entity_summary)
     disambiguation_review = _build_disambiguation_review(all_mentions, review_threshold)
+    disambiguation_trace = _build_disambiguation_trace(all_mentions)
     alias_index_snapshot, alias_index_stats = _build_alias_index_snapshot(catalog)
     format_stats = {
         "loaded_by_format": source_manifest.get("loaded_by_format", {}),
@@ -359,6 +399,7 @@ def run_pipeline(
     )
     _dump_json(resolved_output_dir / "entities.json", [item.to_dict() for item in entity_summary])
     _dump_json(resolved_output_dir / "disambiguation_review.json", disambiguation_review)
+    _dump_json(resolved_output_dir / "disambiguation_trace.json", disambiguation_trace)
     _dump_json(
         resolved_output_dir / "entity_coverage.json",
         {
@@ -386,6 +427,8 @@ def run_pipeline(
             "alias_entries": alias_index_stats["alias_entries"],
             "ambiguous_aliases": alias_index_stats["ambiguous_aliases"],
             "single_entity_aliases": alias_index_stats["single_entity_aliases"],
+            "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
+            "near_tie_mentions": disambiguation_trace["near_tie_count"],
             "hit_entities": covered_entities,
             "covered_entities": covered_entities,
             "uncovered_entities": total_entities - covered_entities,
@@ -403,6 +446,8 @@ def run_pipeline(
         "mentions": len(all_mentions),
         "entities": len(entity_summary),
         "uncertain_mentions": disambiguation_review["uncertain_count"],
+        "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
+        "near_tie_mentions": disambiguation_trace["near_tie_count"],
         "review_threshold": review_threshold,
         "scanned_source_files": source_manifest["scanned_files"],
         "loaded_source_files": source_manifest["loaded_files"],

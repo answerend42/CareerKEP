@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import Any, List, Tuple
 
 from .catalog import EntityCatalog, compact_text
-from .disambiguator import resolve_entity
+from .disambiguator import rank_entity_candidates
 from .models import EntityMention, RawDocument
 
 
@@ -250,11 +250,23 @@ def extract_mentions(document: RawDocument, catalog: EntityCatalog) -> List[Enti
             entity = catalog.entities[entity_id]
             candidate_entities.append((entity, source))
 
-        resolved = resolve_entity(
+        scored_candidates = rank_entity_candidates(
             candidate_entities,
             document=document,
             matched_alias=hit.alias,
         )
+        resolved = scored_candidates[0]
+        runner_up = scored_candidates[1] if len(scored_candidates) > 1 else None
+        top_candidates = [
+            {
+                "entity_id": item.entity.entity_id,
+                "entity_label": item.entity.label,
+                "layer": item.entity.layer,
+                "score": round(item.score, 4),
+                "reason": item.reason,
+            }
+            for item in scored_candidates[:3]
+        ]
 
         mentions.append(
             EntityMention(
@@ -269,6 +281,11 @@ def extract_mentions(document: RawDocument, catalog: EntityCatalog) -> List[Enti
                 matched_by=hit.matched_by,
                 reason=resolved.reason,
                 context=_slice_context(search_corpus, hit.start, hit.end),
+                candidate_count=len(scored_candidates),
+                score_gap=(
+                    round(resolved.score - runner_up.score, 4) if runner_up is not None else None
+                ),
+                top_candidates=top_candidates,
             )
         )
 

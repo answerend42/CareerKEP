@@ -145,18 +145,18 @@ def _score_entity(
     )
 
 
-def resolve_entity(
+def rank_entity_candidates(
     candidates: List[Tuple[EntityDefinition, str]],
     document: RawDocument,
     matched_alias: str,
-) -> CandidateScore:
-    """在多个候选实体之间做消歧。"""
+) -> List[CandidateScore]:
+    """对候选实体进行排序，并保留完整打分结果。
+
+    这个结果用于后续输出消歧轨迹，方便人工复核为什么会选择当前实体。
+    """
 
     scored = [_score_entity(entity, document, matched_alias, source) for entity, source in candidates]
-
-    # 当多个候选实体的上下文评分完全相同时，按实体 ID 做确定性兜底，
-    # 避免结果依赖候选输入顺序，保证同一份原始数据多次运行时输出稳定。
-    return min(
+    return sorted(
         scored,
         key=lambda item: (
             -item.score,
@@ -166,3 +166,14 @@ def resolve_entity(
             item.entity.entity_id,
         ),
     )
+
+
+def resolve_entity(
+    candidates: List[Tuple[EntityDefinition, str]],
+    document: RawDocument,
+    matched_alias: str,
+) -> CandidateScore:
+    """在多个候选实体之间做消歧。"""
+
+    scored = rank_entity_candidates(candidates, document, matched_alias)
+    return scored[0]
