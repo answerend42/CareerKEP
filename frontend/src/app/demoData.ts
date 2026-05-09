@@ -8,6 +8,7 @@ import type {
   DiagnosticSnapshot,
   RobustnessCaseResult,
   RobustnessReport,
+  SnapshotExportResult,
   StageEdge,
   StageNode,
   ScenarioPreset,
@@ -725,6 +726,11 @@ export const buildDiagnosticFilename = (snapshot: DiagnosticSnapshot): string =>
   const timestamp = snapshot.generatedAt.replace(/[:.]/g, '-');
   return `career-kg-${step}-${target}-${topRole}-${timestamp}.json`;
 };
+
+export const buildDiagnosticExport = (snapshot: DiagnosticSnapshot): SnapshotExportResult => ({
+  filename: buildDiagnosticFilename(snapshot),
+  content: JSON.stringify(snapshot, null, 2)
+});
 
 export const getRoleOptions = (): RoleOption[] => roleCatalog;
 

@@ -312,6 +312,7 @@ pre {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .pane-header h2 {

@@ -140,3 +140,8 @@ export interface DiagnosticSnapshot {
   recommendation: RecommendationResponse;
   robustness: RobustnessReport;
 }
+
+export interface SnapshotExportResult {
+  filename: string;
+  content: string;
+}

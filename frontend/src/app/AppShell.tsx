@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
+  buildDiagnosticExport,
   buildDiagnosticSnapshot,
-  buildDiagnosticFilename,
   buildRecommendationResponse,
   buildRobustnessReport,
   defaultDemoState,
@@ -87,15 +87,34 @@ export function AppShell() {
 
   const exportDiagnosticSnapshot = () => {
     const snapshot = buildDiagnosticSnapshot(activeStep, state, lastRun, robustnessReport);
-    const content = JSON.stringify(snapshot, null, 2);
-    const blob = new Blob([content], { type: 'application/json;charset=utf-8' });
+    const exportResult = buildDiagnosticExport(snapshot);
+    const blob = new Blob([exportResult.content], { type: 'application/json;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
 
     link.href = url;
-    link.download = buildDiagnosticFilename(snapshot);
+    link.download = exportResult.filename;
     link.click();
     URL.revokeObjectURL(url);
+  };
+
+  const copyDiagnosticSnapshot = async () => {
+    const snapshot = buildDiagnosticSnapshot(activeStep, state, lastRun, robustnessReport);
+    const exportResult = buildDiagnosticExport(snapshot);
+
+    try {
+      await navigator.clipboard.writeText(exportResult.content);
+    } catch {
+      const textarea = document.createElement('textarea');
+      textarea.value = exportResult.content;
+      textarea.setAttribute('readonly', 'true');
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
   };
 
   return (
@@ -182,6 +201,7 @@ export function AppShell() {
             activeStep={activeStep}
             robustnessReport={robustnessReport}
             onExportSnapshot={exportDiagnosticSnapshot}
+            onCopySnapshot={copyDiagnosticSnapshot}
           />
         </section>
       </main>

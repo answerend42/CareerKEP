@@ -5,6 +5,7 @@ interface ResultPaneProps {
   activeStep: string;
   robustnessReport: RobustnessReport;
   onExportSnapshot: () => void;
+  onCopySnapshot: () => void;
 }
 
 const formatPercent = (value: number) => `${Math.round(value * 100)}%`;
@@ -13,7 +14,13 @@ const formatDelta = (value: number) => {
   return rounded > 0 ? `+${rounded}%` : `${rounded}%`;
 };
 
-export function ResultPane({ response, activeStep, robustnessReport, onExportSnapshot }: ResultPaneProps) {
+export function ResultPane({
+  response,
+  activeStep,
+  robustnessReport,
+  onExportSnapshot,
+  onCopySnapshot
+}: ResultPaneProps) {
   return (
     <div className="pane-stack">
       <div className="pane-header">
@@ -108,6 +115,9 @@ export function ResultPane({ response, activeStep, robustnessReport, onExportSna
             <span>{formatPercent(robustnessReport.averageTopScore)}</span>
             <button className="chip" type="button" onClick={onExportSnapshot}>
               导出快照
+            </button>
+            <button className="chip" type="button" onClick={onCopySnapshot}>
+              复制快照
             </button>
           </div>
         </div>
