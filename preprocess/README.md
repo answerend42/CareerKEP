@@ -30,6 +30,7 @@
 - `documents.json`：标准化后的原始文档快照
 - `source_manifest.json`：原始数据扫描清单，包含已加载和被跳过的文件
 - `mentions.json`：每一条实体命中记录
+- `entity_catalog.json`：完整实体目录快照，保留实体标签、层级、别名和别名来源
 - `entities.json`：按实体聚合后的统计结果
 - `disambiguation_review.json`：低置信度命中复核清单
 - `entity_coverage.json`：实体覆盖率报告

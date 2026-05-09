@@ -42,6 +42,17 @@ def _build_entity_summary(catalog: EntityCatalog, mentions_by_doc: Dict[str, Lis
     return sorted(summary.values(), key=lambda item: (item.layer, item.entity_id))
 
 
+def _build_entity_catalog_snapshot(catalog: EntityCatalog) -> List[dict]:
+    """导出完整实体目录快照。
+
+    这里直接保留实体定义原貌，方便后续调试别名覆盖、人工补词典，
+    也方便把预处理输出直接喂给别的离线任务。
+    """
+
+    entities = [entity.to_dict() for entity in catalog.iter_entities()]
+    return sorted(entities, key=lambda item: (item["layer"], item["entity_id"]))
+
+
 def _build_entity_coverage_report(entity_summary: List[ResolvedEntity]) -> dict:
     """构建实体覆盖报告，方便人工快速检查哪些实体还没被语料覆盖。"""
 
@@ -159,6 +170,7 @@ def run_pipeline(
     _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
     _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
     _dump_json(resolved_output_dir / "mentions.json", all_mentions)
+    _dump_json(resolved_output_dir / "entity_catalog.json", _build_entity_catalog_snapshot(catalog))
     _dump_json(resolved_output_dir / "entities.json", [item.to_dict() for item in entity_summary])
     _dump_json(resolved_output_dir / "disambiguation_review.json", disambiguation_review)
     _dump_json(

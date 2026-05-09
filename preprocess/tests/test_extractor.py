@@ -45,6 +45,7 @@ class ExtractorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp_dir:
             output_dir = Path(tmp_dir) / "output"
             result = run_pipeline(output_dir=output_dir)
+            catalog_payload = json.loads((output_dir / "entity_catalog.json").read_text(encoding="utf-8"))
             entities_payload = json.loads((output_dir / "entities.json").read_text(encoding="utf-8"))
             coverage_payload = json.loads((output_dir / "entity_coverage.json").read_text(encoding="utf-8"))
             review_payload = json.loads((output_dir / "disambiguation_review.json").read_text(encoding="utf-8"))
@@ -55,9 +56,11 @@ class ExtractorTests(unittest.TestCase):
         self.assertGreaterEqual(result["entities"], 1)
         self.assertGreaterEqual(result["uncertain_mentions"], 0)
         self.assertIn("output_dir", result)
+        self.assertEqual(len(catalog_payload), len(self.catalog.entities))
         self.assertEqual(len(entities_payload), len(self.catalog.entities))
         self.assertEqual(coverage_payload["catalog_entities"], len(self.catalog.entities))
         self.assertEqual(coverage_payload["uncovered_entities"], 0)
+        self.assertTrue(all("alias_sources" in entity for entity in catalog_payload))
         self.assertEqual(review_payload["threshold"], 0.98)
         self.assertEqual(review_payload["uncertain_count"], 3)
         self.assertEqual(summary_payload["catalog_entities"], len(self.catalog.entities))
