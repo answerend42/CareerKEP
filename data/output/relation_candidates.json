@@ -37,7 +37,9 @@
           "掌握",
           "熟悉"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 0.85,
+        "selection_score": 3.85
       }
     ],
     "reverse_candidates": []
@@ -80,7 +82,9 @@
           "掌握",
           "熟悉"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 0.85,
+        "selection_score": 3.85
       }
     ],
     "reverse_candidates": []
@@ -123,7 +127,9 @@
           "掌握",
           "熟悉"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 1.0,
+        "selection_score": 4.0
       }
     ],
     "reverse_candidates": []
@@ -166,7 +172,9 @@
           "掌握",
           "熟悉"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 1.0,
+        "selection_score": 4.0
       }
     ],
     "reverse_candidates": []
@@ -209,7 +217,9 @@
           "掌握",
           "熟悉"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 0.85,
+        "selection_score": 3.85
       }
     ],
     "reverse_candidates": []
@@ -252,7 +262,9 @@
           "掌握",
           "熟悉"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 1.0,
+        "selection_score": 4.0
       }
     ],
     "reverse_candidates": []
@@ -295,7 +307,9 @@
           "掌握",
           "熟悉"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 1.0,
+        "selection_score": 4.0
       }
     ],
     "reverse_candidates": []
@@ -338,7 +352,9 @@
           "掌握",
           "熟悉"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 1.0,
+        "selection_score": 4.0
       }
     ],
     "reverse_candidates": []
@@ -359,10 +375,13 @@
     "target_name": "Python",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "preferred_skill",
+    "relation_type": "requires_skill",
     "selected_direction": "reverse",
     "matched_keywords": [
-      "优先"
+      "需要",
+      "掌握",
+      "熟悉",
+      "具备"
     ],
     "forward_candidates": [],
     "reverse_candidates": [
@@ -378,7 +397,9 @@
         "matched_keywords": [
           "优先"
         ],
-        "keyword_count": 1
+        "keyword_count": 1,
+        "base_weight": 0.7,
+        "selection_score": 1.7
       },
       {
         "direction": "reverse",
@@ -395,7 +416,9 @@
           "熟悉",
           "具备"
         ],
-        "keyword_count": 4
+        "keyword_count": 4,
+        "base_weight": 1.0,
+        "selection_score": 5.0
       }
     ]
   },
@@ -415,10 +438,13 @@
     "target_name": "Pandas",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "preferred_skill",
+    "relation_type": "requires_skill",
     "selected_direction": "reverse",
     "matched_keywords": [
-      "优先"
+      "需要",
+      "掌握",
+      "熟悉",
+      "具备"
     ],
     "forward_candidates": [],
     "reverse_candidates": [
@@ -434,7 +460,9 @@
         "matched_keywords": [
           "优先"
         ],
-        "keyword_count": 1
+        "keyword_count": 1,
+        "base_weight": 0.7,
+        "selection_score": 1.7
       },
       {
         "direction": "reverse",
@@ -451,7 +479,9 @@
           "熟悉",
           "具备"
         ],
-        "keyword_count": 4
+        "keyword_count": 4,
+        "base_weight": 1.0,
+        "selection_score": 5.0
       }
     ]
   },
@@ -471,10 +501,13 @@
     "target_name": "Excel",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "preferred_skill",
+    "relation_type": "requires_skill",
     "selected_direction": "forward",
     "matched_keywords": [
-      "优先"
+      "需要",
+      "掌握",
+      "熟悉",
+      "具备"
     ],
     "forward_candidates": [
       {
@@ -489,7 +522,9 @@
         "matched_keywords": [
           "优先"
         ],
-        "keyword_count": 1
+        "keyword_count": 1,
+        "base_weight": 0.7,
+        "selection_score": 1.7
       },
       {
         "direction": "forward",
@@ -506,7 +541,9 @@
           "熟悉",
           "具备"
         ],
-        "keyword_count": 4
+        "keyword_count": 4,
+        "base_weight": 1.0,
+        "selection_score": 5.0
       }
     ],
     "reverse_candidates": []
@@ -547,7 +584,9 @@
           "能力",
           "思维"
         ],
-        "keyword_count": 2
+        "keyword_count": 2,
+        "base_weight": 0.55,
+        "selection_score": 2.55
       }
     ],
     "reverse_candidates": []
@@ -568,10 +607,13 @@
     "target_name": "SQL",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "preferred_skill",
+    "relation_type": "requires_skill",
     "selected_direction": "forward",
     "matched_keywords": [
-      "优先"
+      "需要",
+      "掌握",
+      "熟悉",
+      "具备"
     ],
     "forward_candidates": [
       {
@@ -586,7 +628,9 @@
         "matched_keywords": [
           "优先"
         ],
-        "keyword_count": 1
+        "keyword_count": 1,
+        "base_weight": 0.7,
+        "selection_score": 1.7
       },
       {
         "direction": "forward",
@@ -603,7 +647,9 @@
           "熟悉",
           "具备"
         ],
-        "keyword_count": 4
+        "keyword_count": 4,
+        "base_weight": 1.0,
+        "selection_score": 5.0
       }
     ],
     "reverse_candidates": []
@@ -645,7 +691,9 @@
           "需要",
           "掌握"
         ],
-        "keyword_count": 2
+        "keyword_count": 2,
+        "base_weight": 1.0,
+        "selection_score": 3.0
       }
     ]
   },
@@ -685,7 +733,9 @@
           "需要",
           "掌握"
         ],
-        "keyword_count": 2
+        "keyword_count": 2,
+        "base_weight": 1.0,
+        "selection_score": 3.0
       }
     ],
     "reverse_candidates": []
@@ -728,7 +778,9 @@
           "掌握",
           "具备"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 0.85,
+        "selection_score": 3.85
       }
     ],
     "reverse_candidates": []
@@ -771,7 +823,9 @@
           "沟通",
           "细致"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 0.55,
+        "selection_score": 3.55
       }
     ],
     "reverse_candidates": []
@@ -814,7 +868,9 @@
           "掌握",
           "具备"
         ],
-        "keyword_count": 3
+        "keyword_count": 3,
+        "base_weight": 0.85,
+        "selection_score": 3.85
       }
     ],
     "reverse_candidates": []
@@ -855,7 +911,9 @@
           "学历",
           "本科"
         ],
-        "keyword_count": 2
+        "keyword_count": 2,
+        "base_weight": 0.65,
+        "selection_score": 2.65
       }
     ],
     "reverse_candidates": []
@@ -896,7 +954,9 @@
           "相关",
           "方向"
         ],
-        "keyword_count": 2
+        "keyword_count": 2,
+        "base_weight": 0.5,
+        "selection_score": 2.5
       }
     ],
     "reverse_candidates": [
@@ -913,7 +973,9 @@
           "相关",
           "方向"
         ],
-        "keyword_count": 2
+        "keyword_count": 2,
+        "base_weight": 0.5,
+        "selection_score": 2.5
       }
     ]
   }

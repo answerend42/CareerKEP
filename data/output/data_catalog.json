@@ -10,29 +10,29 @@
     "file_name": "relation_instances.json",
     "description": "证据级关系实例",
     "item_count": 20,
-    "size_bytes": 10763,
-    "sha256": "7e0596bcbf9654b14fa36da7fe84e647a616ed9e5933659674ee4c2560c6ba98"
+    "size_bytes": 10963,
+    "sha256": "dbfcc3bcfc144cffbc349ac199ae7fb09a7d5b1740ce0234de1c72fdf33b3f99"
   },
   {
     "file_name": "relation_candidates.json",
     "description": "关系候选轨迹",
     "item_count": 20,
-    "size_bytes": 28951,
-    "sha256": "5ae122699dab9faad99f6d4bb89be6abe9e421058080dad5891b881a7b778495"
+    "size_bytes": 30717,
+    "sha256": "2713825991dcf17df535a60ad6e0271c5d08a15aa739d86b121c6438b36a7f58"
   },
   {
     "file_name": "edges.json",
     "description": "图谱边",
     "item_count": 20,
-    "size_bytes": 8644,
-    "sha256": "18862d34c77701ff2d83e78ca940ba6667b25898ac28aeff2dd765e5cf467481"
+    "size_bytes": 8833,
+    "sha256": "fe921e92c92ea752ca867657bc906e738ecc913a06d5bf855a8a5cb43021ff3d"
   },
   {
     "file_name": "graph_index.json",
     "description": "图索引",
     "item_count": 20,
-    "size_bytes": 14728,
-    "sha256": "0f6a9cff203c5a64c9214e02290fbd3ba31a3236fb79d092e1f250c69c0f98a2"
+    "size_bytes": 14650,
+    "sha256": "7d42ad3d08aeea743c512d083ccd2e8bc39be3feaf03a562f66ad7435da07967"
   },
   {
     "file_name": "graph_quality.json",
@@ -45,35 +45,35 @@
     "file_name": "career_profiles.json",
     "description": "职业画像",
     "item_count": 5,
-    "size_bytes": 16098,
-    "sha256": "8790a30f57b8c91eac00496e47109959748e69a4ec214d02bb2167a8cc439a30"
+    "size_bytes": 16594,
+    "sha256": "d19beea64fc2b018163927f91e613022c2f90ad5c297d743388ec7e257a6815b"
   },
   {
     "file_name": "recommendation_index.json",
     "description": "反向推荐索引",
     "item_count": 13,
-    "size_bytes": 10529,
-    "sha256": "5f4c89fe6b616466a6bd12f8f6cfca17cda1605280d38c8bb596fbff58016382"
+    "size_bytes": 10755,
+    "sha256": "f7255622c467262238bd6d897f03abc3da9e387157137daf0bce46797ac2a01d"
   },
   {
     "file_name": "relation_summary.json",
     "description": "关系统计摘要",
     "item_count": 20,
-    "size_bytes": 451,
-    "sha256": "59f60d2c0bb8116d120e1c50106066afef254b60cbb959efd4049abb3a175797"
+    "size_bytes": 425,
+    "sha256": "3155c83cdf39d400624365b7762812cdaf1b9eca9293a73f3f05ff16915334ee"
   },
   {
     "file_name": "extraction_log.json",
     "description": "构建日志",
     "item_count": 17,
-    "size_bytes": 2503,
-    "sha256": "91f2b04ee480b0befe5e5d865d8b9a388b847fc4a856f9c71d407b5978cd2958"
+    "size_bytes": 2447,
+    "sha256": "e8ea1c8b55f329cc89564a38ddccc0c8090b602a927cdb4598b9168e69085c38"
   },
   {
     "file_name": "graph_manifest.json",
     "description": "构建清单",
     "item_count": 12,
     "size_bytes": 1600,
-    "sha256": "6746ec4658a081bb267283ebd2345c6ea490c0c624c309041930cebef751ada6"
+    "sha256": "4b1bfd76058772b374dd00c0d808c5b70da6edc78f92a2a88baa8620e82843da"
   }
 ]

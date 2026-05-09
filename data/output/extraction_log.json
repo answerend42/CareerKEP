@@ -41,10 +41,9 @@
     "relation_instance_count": 20,
     "relation_instance_count_by_type": {
       "needs_trait": 2,
-      "preferred_skill": 4,
       "related_role": 1,
       "requires_education": 1,
-      "requires_skill": 7,
+      "requires_skill": 11,
       "uses_tool": 5
     },
     "relation_instance_count_by_pair": {
@@ -59,10 +58,9 @@
     "relation_candidate_count": 20,
     "relation_candidate_count_by_type": {
       "needs_trait": 2,
-      "preferred_skill": 4,
       "related_role": 1,
       "requires_education": 1,
-      "requires_skill": 7,
+      "requires_skill": 11,
       "uses_tool": 5
     },
     "relation_candidate_count_by_direction": {

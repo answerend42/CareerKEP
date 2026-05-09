@@ -293,63 +293,75 @@
     "occupation_type": "occupation",
     "confidence": 0.96,
     "source": "preprocess",
-    "recommendation_score": 4.4975,
+    "recommendation_score": 5.57,
     "counts": {
-      "required_skills": 0,
-      "preferred_skills": 4,
+      "required_skills": 4,
+      "preferred_skills": 0,
       "tools": 0,
       "education": 0,
       "traits": 1,
       "related_roles": 0
     },
     "items": {
-      "required_skills": [],
-      "preferred_skills": [
-        {
-          "target_id": "skill_python",
-          "target_name": "Python",
-          "target_type": "skill",
-          "relation_type": "preferred_skill",
-          "weight": 0.9375,
-          "evidence_count": 1,
-          "matched_keywords": [
-            "优先"
-          ]
-        },
-        {
-          "target_id": "skill_sql",
-          "target_name": "SQL",
-          "target_type": "skill",
-          "relation_type": "preferred_skill",
-          "weight": 0.935,
-          "evidence_count": 1,
-          "matched_keywords": [
-            "优先"
-          ]
-        },
+      "required_skills": [
         {
           "target_id": "skill_excel",
           "target_name": "Excel",
           "target_type": "skill",
-          "relation_type": "preferred_skill",
-          "weight": 0.9275,
+          "relation_type": "requires_skill",
+          "weight": 1.2,
           "evidence_count": 1,
           "matched_keywords": [
-            "优先"
+            "具备",
+            "掌握",
+            "熟悉",
+            "需要"
           ]
         },
         {
           "target_id": "skill_pandas",
           "target_name": "Pandas",
           "target_type": "skill",
-          "relation_type": "preferred_skill",
-          "weight": 0.9275,
+          "relation_type": "requires_skill",
+          "weight": 1.2,
           "evidence_count": 1,
           "matched_keywords": [
-            "优先"
+            "具备",
+            "掌握",
+            "熟悉",
+            "需要"
+          ]
+        },
+        {
+          "target_id": "skill_python",
+          "target_name": "Python",
+          "target_type": "skill",
+          "relation_type": "requires_skill",
+          "weight": 1.2,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "具备",
+            "掌握",
+            "熟悉",
+            "需要"
+          ]
+        },
+        {
+          "target_id": "skill_sql",
+          "target_name": "SQL",
+          "target_type": "skill",
+          "relation_type": "requires_skill",
+          "weight": 1.2,
+          "evidence_count": 1,
+          "matched_keywords": [
+            "具备",
+            "掌握",
+            "熟悉",
+            "需要"
           ]
         }
       ],
+      "preferred_skills": [],
       "tools": [],
       "education": [],
       "traits": [
@@ -370,47 +382,59 @@
     },
     "flat_items": [
       {
-        "target_id": "skill_python",
-        "target_name": "Python",
-        "target_type": "skill",
-        "relation_type": "preferred_skill",
-        "weight": 0.9375,
-        "evidence_count": 1,
-        "matched_keywords": [
-          "优先"
-        ]
-      },
-      {
-        "target_id": "skill_sql",
-        "target_name": "SQL",
-        "target_type": "skill",
-        "relation_type": "preferred_skill",
-        "weight": 0.935,
-        "evidence_count": 1,
-        "matched_keywords": [
-          "优先"
-        ]
-      },
-      {
         "target_id": "skill_excel",
         "target_name": "Excel",
         "target_type": "skill",
-        "relation_type": "preferred_skill",
-        "weight": 0.9275,
+        "relation_type": "requires_skill",
+        "weight": 1.2,
         "evidence_count": 1,
         "matched_keywords": [
-          "优先"
+          "具备",
+          "掌握",
+          "熟悉",
+          "需要"
         ]
       },
       {
         "target_id": "skill_pandas",
         "target_name": "Pandas",
         "target_type": "skill",
-        "relation_type": "preferred_skill",
-        "weight": 0.9275,
+        "relation_type": "requires_skill",
+        "weight": 1.2,
         "evidence_count": 1,
         "matched_keywords": [
-          "优先"
+          "具备",
+          "掌握",
+          "熟悉",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "skill_python",
+        "target_name": "Python",
+        "target_type": "skill",
+        "relation_type": "requires_skill",
+        "weight": 1.2,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "具备",
+          "掌握",
+          "熟悉",
+          "需要"
+        ]
+      },
+      {
+        "target_id": "skill_sql",
+        "target_name": "SQL",
+        "target_type": "skill",
+        "relation_type": "requires_skill",
+        "weight": 1.2,
+        "evidence_count": 1,
+        "matched_keywords": [
+          "具备",
+          "掌握",
+          "熟悉",
+          "需要"
         ]
       },
       {

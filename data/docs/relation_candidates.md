@@ -28,4 +28,4 @@
 - 当 `relation_instances.json` 和 `relation_candidates.json` 不一致时，优先检查候选轨迹里的 `forward_candidates` 和 `reverse_candidates`。
 - 当某个职业的推荐结果不稳定时，先看 `relation_candidates.json`，再看 `edges.json` 和 `graph_quality.json`。
 - 后续若要扩展更多关系类型，建议优先在这里补充候选轨迹的字段，而不是直接改最终边表。
-
+- 当前候选选择策略会优先比较 `keyword_count`，再比较 `base_weight`，最后才看方向稳定性；这样可以避免同一证据同时命中多类关键词时，按配置顺序误选关系类型。

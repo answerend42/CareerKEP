@@ -335,6 +335,7 @@ def choose_relation(
     target: Entity,
     text: str,
     relation_keyword_map: dict[tuple[str, str], list[tuple[str, list[str]]]],
+    relation_map: dict[str, dict[str, Any]],
 ) -> tuple[str | None, list[str], dict[str, Any] | None, list[dict[str, Any]], list[dict[str, Any]]]:
     """根据实体类型组合和关键词判断关系类型。"""
 
@@ -342,7 +343,7 @@ def choose_relation(
         current_source: Entity,
         current_target: Entity,
         direction: str,
-    ) -> list[dict[str, Any]]:
+        ) -> list[dict[str, Any]]:
         candidates: list[dict[str, Any]] = []
         for relation_type, keywords in relation_keyword_map.get(
             (current_source.type, current_target.type), []
@@ -350,6 +351,7 @@ def choose_relation(
             matched = [word for word in keywords if word in text]
             if not matched:
                 continue
+            base_weight = float(relation_map[relation_type]["base_weight"])
             candidates.append(
                 {
                     "direction": direction,
@@ -362,24 +364,28 @@ def choose_relation(
                     "target_type": current_target.type,
                     "matched_keywords": matched,
                     "keyword_count": len(matched),
+                    "base_weight": base_weight,
+                    # 词命中数量优先，其次是 schema 基础权重，最后才看方向稳定性。
+                    "selection_score": round(len(matched) + base_weight, 4),
                 }
             )
         return candidates
 
     forward_candidates = build_candidates(source, target, "forward")
     reverse_candidates = build_candidates(target, source, "reverse")
-    if forward_candidates:
-        selected = forward_candidates[0]
-        return (
-            str(selected["relation_type"]),
-            [str(keyword) for keyword in selected["matched_keywords"]],
-            selected,
-            forward_candidates,
-            reverse_candidates,
+    all_candidates = [*forward_candidates, *reverse_candidates]
+    if all_candidates:
+        selected = max(
+            all_candidates,
+            key=lambda item: (
+                item["keyword_count"],
+                item["base_weight"],
+                1 if item["direction"] == "forward" else 0,
+                item["relation_type"],
+                item["source_id"],
+                item["target_id"],
+            ),
         )
-
-    if reverse_candidates:
-        selected = reverse_candidates[0]
         return (
             str(selected["relation_type"]),
             [str(keyword) for keyword in selected["matched_keywords"]],
@@ -418,7 +424,7 @@ def extract_relation_instances(
 
                 target = entities[target_id]
                 relation_type, matched_keywords, selected_candidate, forward_candidates, reverse_candidates = choose_relation(
-                    source, target, text, relation_keyword_map
+                    source, target, text, relation_keyword_map, relation_map
                 )
                 if relation_type is None or selected_candidate is None:
                     continue

@@ -145,9 +145,12 @@
     "target_name": "Python",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "preferred_skill",
+    "relation_type": "requires_skill",
     "matched_keywords": [
-      "优先"
+      "需要",
+      "掌握",
+      "熟悉",
+      "具备"
     ]
   },
   {
@@ -160,9 +163,12 @@
     "target_name": "Pandas",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "preferred_skill",
+    "relation_type": "requires_skill",
     "matched_keywords": [
-      "优先"
+      "需要",
+      "掌握",
+      "熟悉",
+      "具备"
     ]
   },
   {
@@ -175,9 +181,12 @@
     "target_name": "Excel",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "preferred_skill",
+    "relation_type": "requires_skill",
     "matched_keywords": [
-      "优先"
+      "需要",
+      "掌握",
+      "熟悉",
+      "具备"
     ]
   },
   {
@@ -206,9 +215,12 @@
     "target_name": "SQL",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "preferred_skill",
+    "relation_type": "requires_skill",
     "matched_keywords": [
-      "优先"
+      "需要",
+      "掌握",
+      "熟悉",
+      "具备"
     ]
   },
   {
