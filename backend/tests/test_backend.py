@@ -438,6 +438,8 @@ class BackendSmokeTest(unittest.TestCase):
             self.assertIn("backend_engineer", backend_role["search_terms"])
             self.assertIn("后端开发工程师", backend_role["search_terms"])
             self.assertIn("后端", backend_role["search_terms"])
+            self.assertIn("会python", backend_role["search_terms"])
+            self.assertIn("数据库", backend_role["search_terms"])
             conn.close()
 
             conn = HTTPConnection("127.0.0.1", port, timeout=5)
