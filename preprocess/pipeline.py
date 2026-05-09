@@ -53,6 +53,54 @@ def _build_entity_catalog_snapshot(catalog: EntityCatalog) -> List[dict]:
     return sorted(entities, key=lambda item: (item["layer"], item["entity_id"]))
 
 
+def _build_document_entity_summary(
+    documents: List[RawDocument],
+    mentions_by_doc: Dict[str, List[dict]],
+) -> List[dict]:
+    """按文档汇总实体命中。
+
+    这个视图比原始 mentions 更适合人工抽查：
+    - 可以快速看到每篇文档抽到了哪些实体
+    - 可以直接定位一篇文档里的高频实体
+    - 也方便后续把实体统计喂给别的离线任务
+    """
+
+    entity_lookup: Dict[str, dict] = {}
+    for doc in documents:
+        mentions = mentions_by_doc.get(doc.doc_id, [])
+        entity_stats: Dict[str, dict] = {}
+
+        for mention in mentions:
+            entity_id = mention["entity_id"]
+            stats = entity_stats.setdefault(
+                entity_id,
+                {
+                    "entity_id": entity_id,
+                    "entity_label": mention["entity_label"],
+                    "layer": mention["layer"],
+                    "mention_count": 0,
+                    "sample_surfaces": [],
+                },
+            )
+            stats["mention_count"] += 1
+            if mention["surface"] not in stats["sample_surfaces"]:
+                stats["sample_surfaces"].append(mention["surface"])
+
+        entity_lookup[doc.doc_id] = {
+            "doc_id": doc.doc_id,
+            "source": doc.source,
+            "title": doc.title,
+            "mention_count": len(mentions),
+            "entity_count": len(entity_stats),
+            "entities": sorted(
+                entity_stats.values(),
+                key=lambda item: (-item["mention_count"], item["layer"], item["entity_id"]),
+            ),
+        }
+
+    return [entity_lookup[doc.doc_id] for doc in documents]
+
+
 def _build_entity_coverage_report(entity_summary: List[ResolvedEntity]) -> dict:
     """构建实体覆盖报告，方便人工快速检查哪些实体还没被语料覆盖。"""
 
@@ -171,6 +219,10 @@ def run_pipeline(
     _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
     _dump_json(resolved_output_dir / "mentions.json", all_mentions)
     _dump_json(resolved_output_dir / "entity_catalog.json", _build_entity_catalog_snapshot(catalog))
+    _dump_json(
+        resolved_output_dir / "document_entities.json",
+        _build_document_entity_summary(documents, mentions_by_doc),
+    )
     _dump_json(resolved_output_dir / "entities.json", [item.to_dict() for item in entity_summary])
     _dump_json(resolved_output_dir / "disambiguation_review.json", disambiguation_review)
     _dump_json(
