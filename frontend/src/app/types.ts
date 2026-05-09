@@ -132,3 +132,11 @@ export interface RobustnessReport {
   headline: string;
   cases: RobustnessCaseResult[];
 }
+
+export interface DiagnosticSnapshot {
+  generatedAt: string;
+  activeStep: string;
+  currentState: DemoState;
+  recommendation: RecommendationResponse;
+  robustness: RobustnessReport;
+}

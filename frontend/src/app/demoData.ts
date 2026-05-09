@@ -5,6 +5,7 @@ import type {
   RecommendationCard,
   RecommendationResponse,
   RoleOption,
+  DiagnosticSnapshot,
   RobustnessCaseResult,
   RobustnessReport,
   StageEdge,
@@ -694,6 +695,19 @@ export const buildRobustnessReport = (state: DemoState): RobustnessReport => {
     cases
   };
 };
+
+export const buildDiagnosticSnapshot = (
+  activeStep: string,
+  currentState: DemoState,
+  recommendation: RecommendationResponse,
+  robustness: RobustnessReport
+): DiagnosticSnapshot => ({
+  generatedAt: new Date().toISOString(),
+  activeStep,
+  currentState,
+  recommendation,
+  robustness
+});
 
 export const getRoleOptions = (): RoleOption[] => roleCatalog;
 

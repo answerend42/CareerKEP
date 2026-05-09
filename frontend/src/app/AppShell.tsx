@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import {
+  buildDiagnosticSnapshot,
   buildRecommendationResponse,
   buildRobustnessReport,
   defaultDemoState,
@@ -83,6 +84,19 @@ export function AppShell() {
     setLastRun(buildRecommendationResponse(nextState));
   };
 
+  const exportDiagnosticSnapshot = () => {
+    const snapshot = buildDiagnosticSnapshot(activeStep, state, lastRun, robustnessReport);
+    const content = JSON.stringify(snapshot, null, 2);
+    const blob = new Blob([content], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = `career-kg-diagnostic-${snapshot.generatedAt.replace(/[:.]/g, '-')}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="page-shell">
       <div className="ambient ambient-left" />
@@ -162,7 +176,12 @@ export function AppShell() {
         </section>
 
         <section className="panel panel-result">
-          <ResultPane response={lastRun} activeStep={activeStep} robustnessReport={robustnessReport} />
+          <ResultPane
+            response={lastRun}
+            activeStep={activeStep}
+            robustnessReport={robustnessReport}
+            onExportSnapshot={exportDiagnosticSnapshot}
+          />
         </section>
       </main>
     </div>

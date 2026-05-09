@@ -308,6 +308,12 @@ pre {
   gap: 14px;
 }
 
+.section-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .pane-header h2 {
   font-size: 1.5rem;
 }
@@ -715,5 +721,10 @@ pre {
   .node-row {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .section-actions {
+    width: 100%;
+    justify-content: space-between;
   }
 }

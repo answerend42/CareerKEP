@@ -1,4 +1,10 @@
-import { buildRecommendationResponse, buildRobustnessReport, defaultDemoState, scenarioPresets } from '../src/app/demoData.ts';
+import {
+  buildDiagnosticSnapshot,
+  buildRecommendationResponse,
+  buildRobustnessReport,
+  defaultDemoState,
+  scenarioPresets
+} from '../src/app/demoData.ts';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) {
@@ -62,6 +68,12 @@ assert(
   boostedReport.averageTopScore >= defaultReport.averageTopScore || almostEqual(boostedReport.averageTopScore, defaultReport.averageTopScore),
   '提高信心和探索后，平均最高分不应下降'
 );
+
+const diagnosticSnapshot = buildDiagnosticSnapshot('结果解释', defaultDemoState, backendResponse, defaultReport);
+assert(diagnosticSnapshot.generatedAt.length > 0, '诊断快照应该有生成时间');
+assert(diagnosticSnapshot.activeStep === '结果解释', '诊断快照应该记录当前阶段');
+assert(diagnosticSnapshot.recommendation.recommendations.length > 0, '诊断快照应该包含推荐结果');
+assert(diagnosticSnapshot.robustness.tuningAdvice.length > 0, '诊断快照应该包含鲁棒性建议');
 
 console.log(
   [

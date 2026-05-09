@@ -4,6 +4,7 @@ interface ResultPaneProps {
   response: RecommendationResponse;
   activeStep: string;
   robustnessReport: RobustnessReport;
+  onExportSnapshot: () => void;
 }
 
 const formatPercent = (value: number) => `${Math.round(value * 100)}%`;
@@ -12,7 +13,7 @@ const formatDelta = (value: number) => {
   return rounded > 0 ? `+${rounded}%` : `${rounded}%`;
 };
 
-export function ResultPane({ response, activeStep, robustnessReport }: ResultPaneProps) {
+export function ResultPane({ response, activeStep, robustnessReport, onExportSnapshot }: ResultPaneProps) {
   return (
     <div className="pane-stack">
       <div className="pane-header">
@@ -103,7 +104,12 @@ export function ResultPane({ response, activeStep, robustnessReport }: ResultPan
       <section className="result-block">
         <div className="section-head">
           <h3>鲁棒性测试</h3>
-          <span>{formatPercent(robustnessReport.averageTopScore)}</span>
+          <div className="section-actions">
+            <span>{formatPercent(robustnessReport.averageTopScore)}</span>
+            <button className="chip" type="button" onClick={onExportSnapshot}>
+              导出快照
+            </button>
+          </div>
         </div>
         <p className="result-intro">{robustnessReport.headline}</p>
         <div className="analysis-card advice-card">
