@@ -78,6 +78,7 @@ class RelationCandidateTrace:
     selected_direction: str
     selected_candidate_rank: int
     selected_candidate: dict[str, Any]
+    selection_factors: dict[str, Any]
     selection_reason: str
     matched_keywords: list[str]
     forward_candidates: list[dict[str, Any]]
@@ -554,6 +555,16 @@ def extract_relation_instances(
                     f"base_weight={selected_candidate['base_weight']}; "
                     f"direction={selected_candidate['direction']}"
                 )
+                selection_factors = {
+                    "target_proximity_score": selected_candidate["target_proximity_score"],
+                    "keyword_count": selected_candidate["keyword_count"],
+                    "base_weight": selected_candidate["base_weight"],
+                    "direction": selected_candidate["direction"],
+                    "selected_candidate_rank": selected_candidate["candidate_rank"],
+                    "matched_keyword_count": len(matched_keywords),
+                    "forward_candidate_count": len(forward_candidates),
+                    "reverse_candidate_count": len(reverse_candidates),
+                }
                 relation_candidates.append(
                     RelationCandidateTrace(
                         evidence_id=evidence_id,
@@ -575,6 +586,7 @@ def extract_relation_instances(
                         selected_direction=str(selected_candidate["direction"]),
                         selected_candidate_rank=int(selected_candidate["candidate_rank"]),
                         selected_candidate=dict(selected_candidate),
+                        selection_factors=selection_factors,
                         selection_reason=selection_reason,
                         matched_keywords=matched_keywords,
                         forward_candidates=forward_candidates,

@@ -328,6 +328,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
             errors,
         )
         assert_condition(
+            isinstance(candidate.get("selection_factors"), dict),
+            f"第 {index} 条 relation_candidates 缺少 selection_factors",
+            errors,
+        )
+        assert_condition(
             isinstance(candidate.get("selection_reason"), str) and candidate["selection_reason"],
             f"第 {index} 条 relation_candidates 的 selection_reason 无效",
             errors,
@@ -350,6 +355,33 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
                 f"第 {index} 条 relation_candidates 的 selected_candidate 方向不一致",
                 errors,
             )
+            selection_factors = candidate.get("selection_factors", {})
+            assert_condition(
+                isinstance(selection_factors, dict),
+                f"第 {index} 条 relation_candidates 的 selection_factors 无效",
+                errors,
+            )
+            if isinstance(selection_factors, dict):
+                assert_condition(
+                    selection_factors.get("selected_candidate_rank") == candidate.get("selected_candidate_rank"),
+                    f"第 {index} 条 relation_candidates 的 selection_factors.selected_candidate_rank 不一致",
+                    errors,
+                )
+                assert_condition(
+                    selection_factors.get("direction") == candidate.get("selected_direction"),
+                    f"第 {index} 条 relation_candidates 的 selection_factors.direction 不一致",
+                    errors,
+                )
+                assert_condition(
+                    selection_factors.get("keyword_count") == candidate.get("selected_candidate", {}).get("keyword_count"),
+                    f"第 {index} 条 relation_candidates 的 selection_factors.keyword_count 不一致",
+                    errors,
+                )
+                assert_condition(
+                    selection_factors.get("base_weight") == candidate.get("selected_candidate", {}).get("base_weight"),
+                    f"第 {index} 条 relation_candidates 的 selection_factors.base_weight 不一致",
+                    errors,
+                )
 
     for index, candidate in enumerate(relation_candidates, start=1):
         validate_candidate_list(

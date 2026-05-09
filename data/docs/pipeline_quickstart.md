@@ -27,7 +27,7 @@ python scripts/validate_kg_data.py --output-dir output
 - `output/relation_instances.json`
   - 句子级关系实例，保留原始证据和命中的关键词。
 - `output/relation_candidates.json`
-  - 候选轨迹，记录最终关系为什么被选中，并保留目标邻近度分数。
+  - 候选轨迹，记录最终关系为什么被选中，并保留目标邻近度分数和结构化选择因子。
 - `output/edges.json`
   - 聚合后的图谱边，包含权重和证据数。
 - `output/relation_catalog.json`

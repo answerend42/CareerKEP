@@ -17,8 +17,8 @@
     "file_name": "relation_candidates.json",
     "description": "关系候选轨迹",
     "item_count": 20,
-    "size_bytes": 68264,
-    "sha256": "26dda8adebf64f030bbb5cec85608f473bcf6ed5d4d66572f0801fb8cfd430ea"
+    "size_bytes": 74368,
+    "sha256": "93fea7210d29a836b890ce7964ee57b129ba2f87f2807963c9b513061dd28668"
   },
   {
     "file_name": "edges.json",
@@ -88,6 +88,6 @@
     "description": "构建清单",
     "item_count": 14,
     "size_bytes": 1761,
-    "sha256": "c0b881632219a552c5f19dc04ae20e4bc140327a540547b5c80964095b12d420"
+    "sha256": "549d3f6ec333076c3c49dc35b73ba98f0741ca0ed564e287497139ee3b6c1eb1"
   }
 ]

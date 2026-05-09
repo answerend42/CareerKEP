@@ -23,6 +23,7 @@
    - `output/nodes.json`
    - `output/relation_instances.json`
    - `output/relation_candidates.json`
+     - 候选轨迹，记录选中的关系、目标邻近度分数和结构化选择因子，便于追踪抽取决策。
    - `output/edges.json`
    - `output/relation_catalog.json`
      - 关系目录，把关系类型定义、关键词分组和当前证据覆盖情况放在一起，便于调参和排查漏抽。
