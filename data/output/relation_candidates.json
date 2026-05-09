@@ -17,6 +17,27 @@
     "target_type": "tool",
     "relation_type": "uses_tool",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "uses_tool",
+      "source_id": "occ_backend_engineer",
+      "target_id": "skill_mysql",
+      "source_name": "后端开发工程师",
+      "target_name": "MySQL",
+      "source_type": "occupation",
+      "target_type": "tool",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉"
+      ],
+      "keyword_count": 3,
+      "base_weight": 0.85,
+      "selection_score": 3.85,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=0.85; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -39,7 +60,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.85,
-        "selection_score": 3.85
+        "selection_score": 3.85,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -62,6 +84,27 @@
     "target_type": "tool",
     "relation_type": "uses_tool",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "uses_tool",
+      "source_id": "occ_backend_engineer",
+      "target_id": "skill_linux",
+      "source_name": "后端开发工程师",
+      "target_name": "Linux",
+      "source_type": "occupation",
+      "target_type": "tool",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉"
+      ],
+      "keyword_count": 3,
+      "base_weight": 0.85,
+      "selection_score": 3.85,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=0.85; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -84,7 +127,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.85,
-        "selection_score": 3.85
+        "selection_score": 3.85,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -107,6 +151,27 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "requires_skill",
+      "source_id": "occ_backend_engineer",
+      "target_id": "skill_java",
+      "source_name": "后端开发工程师",
+      "target_name": "Java",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉"
+      ],
+      "keyword_count": 3,
+      "base_weight": 1.0,
+      "selection_score": 4.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -129,7 +194,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 1.0,
-        "selection_score": 4.0
+        "selection_score": 4.0,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -152,6 +218,27 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "requires_skill",
+      "source_id": "occ_backend_engineer",
+      "target_id": "skill_sql",
+      "source_name": "后端开发工程师",
+      "target_name": "SQL",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉"
+      ],
+      "keyword_count": 3,
+      "base_weight": 1.0,
+      "selection_score": 4.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -174,7 +261,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 1.0,
-        "selection_score": 4.0
+        "selection_score": 4.0,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -197,6 +285,27 @@
     "target_type": "tool",
     "relation_type": "uses_tool",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "uses_tool",
+      "source_id": "occ_backend_engineer",
+      "target_id": "skill_git",
+      "source_name": "后端开发工程师",
+      "target_name": "Git",
+      "source_type": "occupation",
+      "target_type": "tool",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉"
+      ],
+      "keyword_count": 3,
+      "base_weight": 0.85,
+      "selection_score": 3.85,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=0.85; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -219,7 +328,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.85,
-        "selection_score": 3.85
+        "selection_score": 3.85,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -242,6 +352,27 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "requires_skill",
+      "source_id": "occ_python_engineer",
+      "target_id": "skill_python",
+      "source_name": "Python开发工程师",
+      "target_name": "Python",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉"
+      ],
+      "keyword_count": 3,
+      "base_weight": 1.0,
+      "selection_score": 4.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -264,7 +395,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 1.0,
-        "selection_score": 4.0
+        "selection_score": 4.0,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -287,6 +419,27 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "requires_skill",
+      "source_id": "occ_python_engineer",
+      "target_id": "skill_pandas",
+      "source_name": "Python开发工程师",
+      "target_name": "Pandas",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉"
+      ],
+      "keyword_count": 3,
+      "base_weight": 1.0,
+      "selection_score": 4.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -309,7 +462,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 1.0,
-        "selection_score": 4.0
+        "selection_score": 4.0,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -332,6 +486,27 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "requires_skill",
+      "source_id": "occ_python_engineer",
+      "target_id": "skill_sql",
+      "source_name": "Python开发工程师",
+      "target_name": "SQL",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉"
+      ],
+      "keyword_count": 3,
+      "base_weight": 1.0,
+      "selection_score": 4.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -354,7 +529,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 1.0,
-        "selection_score": 4.0
+        "selection_score": 4.0,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -377,6 +553,28 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "reverse",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "reverse",
+      "relation_type": "requires_skill",
+      "source_id": "occ_data_analyst",
+      "target_id": "skill_python",
+      "source_name": "数据分析师",
+      "target_name": "Python",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉",
+        "具备"
+      ],
+      "keyword_count": 4,
+      "base_weight": 1.0,
+      "selection_score": 5.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=4; base_weight=1.0; direction=reverse",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -385,22 +583,6 @@
     ],
     "forward_candidates": [],
     "reverse_candidates": [
-      {
-        "direction": "reverse",
-        "relation_type": "preferred_skill",
-        "source_id": "occ_data_analyst",
-        "target_id": "skill_python",
-        "source_name": "数据分析师",
-        "target_name": "Python",
-        "source_type": "occupation",
-        "target_type": "skill",
-        "matched_keywords": [
-          "优先"
-        ],
-        "keyword_count": 1,
-        "base_weight": 0.7,
-        "selection_score": 1.7
-      },
       {
         "direction": "reverse",
         "relation_type": "requires_skill",
@@ -418,7 +600,25 @@
         ],
         "keyword_count": 4,
         "base_weight": 1.0,
-        "selection_score": 5.0
+        "selection_score": 5.0,
+        "candidate_rank": 1
+      },
+      {
+        "direction": "reverse",
+        "relation_type": "preferred_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_python",
+        "source_name": "数据分析师",
+        "target_name": "Python",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "优先"
+        ],
+        "keyword_count": 1,
+        "base_weight": 0.7,
+        "selection_score": 1.7,
+        "candidate_rank": 2
       }
     ]
   },
@@ -440,6 +640,28 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "reverse",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "reverse",
+      "relation_type": "requires_skill",
+      "source_id": "occ_data_analyst",
+      "target_id": "skill_pandas",
+      "source_name": "数据分析师",
+      "target_name": "Pandas",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉",
+        "具备"
+      ],
+      "keyword_count": 4,
+      "base_weight": 1.0,
+      "selection_score": 5.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=4; base_weight=1.0; direction=reverse",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -448,22 +670,6 @@
     ],
     "forward_candidates": [],
     "reverse_candidates": [
-      {
-        "direction": "reverse",
-        "relation_type": "preferred_skill",
-        "source_id": "occ_data_analyst",
-        "target_id": "skill_pandas",
-        "source_name": "数据分析师",
-        "target_name": "Pandas",
-        "source_type": "occupation",
-        "target_type": "skill",
-        "matched_keywords": [
-          "优先"
-        ],
-        "keyword_count": 1,
-        "base_weight": 0.7,
-        "selection_score": 1.7
-      },
       {
         "direction": "reverse",
         "relation_type": "requires_skill",
@@ -481,7 +687,25 @@
         ],
         "keyword_count": 4,
         "base_weight": 1.0,
-        "selection_score": 5.0
+        "selection_score": 5.0,
+        "candidate_rank": 1
+      },
+      {
+        "direction": "reverse",
+        "relation_type": "preferred_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_pandas",
+        "source_name": "数据分析师",
+        "target_name": "Pandas",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "优先"
+        ],
+        "keyword_count": 1,
+        "base_weight": 0.7,
+        "selection_score": 1.7,
+        "candidate_rank": 2
       }
     ]
   },
@@ -503,6 +727,28 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "requires_skill",
+      "source_id": "occ_data_analyst",
+      "target_id": "skill_excel",
+      "source_name": "数据分析师",
+      "target_name": "Excel",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉",
+        "具备"
+      ],
+      "keyword_count": 4,
+      "base_weight": 1.0,
+      "selection_score": 5.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=4; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -510,22 +756,6 @@
       "具备"
     ],
     "forward_candidates": [
-      {
-        "direction": "forward",
-        "relation_type": "preferred_skill",
-        "source_id": "occ_data_analyst",
-        "target_id": "skill_excel",
-        "source_name": "数据分析师",
-        "target_name": "Excel",
-        "source_type": "occupation",
-        "target_type": "skill",
-        "matched_keywords": [
-          "优先"
-        ],
-        "keyword_count": 1,
-        "base_weight": 0.7,
-        "selection_score": 1.7
-      },
       {
         "direction": "forward",
         "relation_type": "requires_skill",
@@ -543,7 +773,25 @@
         ],
         "keyword_count": 4,
         "base_weight": 1.0,
-        "selection_score": 5.0
+        "selection_score": 5.0,
+        "candidate_rank": 1
+      },
+      {
+        "direction": "forward",
+        "relation_type": "preferred_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_excel",
+        "source_name": "数据分析师",
+        "target_name": "Excel",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "优先"
+        ],
+        "keyword_count": 1,
+        "base_weight": 0.7,
+        "selection_score": 1.7,
+        "candidate_rank": 2
       }
     ],
     "reverse_candidates": []
@@ -566,6 +814,26 @@
     "target_type": "trait",
     "relation_type": "needs_trait",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "needs_trait",
+      "source_id": "occ_data_analyst",
+      "target_id": "trait_logic",
+      "source_name": "数据分析师",
+      "target_name": "逻辑思维",
+      "source_type": "occupation",
+      "target_type": "trait",
+      "matched_keywords": [
+        "能力",
+        "思维"
+      ],
+      "keyword_count": 2,
+      "base_weight": 0.55,
+      "selection_score": 2.55,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=2; base_weight=0.55; direction=forward",
     "matched_keywords": [
       "能力",
       "思维"
@@ -586,7 +854,8 @@
         ],
         "keyword_count": 2,
         "base_weight": 0.55,
-        "selection_score": 2.55
+        "selection_score": 2.55,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -609,6 +878,28 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "requires_skill",
+      "source_id": "occ_data_analyst",
+      "target_id": "skill_sql",
+      "source_name": "数据分析师",
+      "target_name": "SQL",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "熟悉",
+        "具备"
+      ],
+      "keyword_count": 4,
+      "base_weight": 1.0,
+      "selection_score": 5.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=4; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -616,22 +907,6 @@
       "具备"
     ],
     "forward_candidates": [
-      {
-        "direction": "forward",
-        "relation_type": "preferred_skill",
-        "source_id": "occ_data_analyst",
-        "target_id": "skill_sql",
-        "source_name": "数据分析师",
-        "target_name": "SQL",
-        "source_type": "occupation",
-        "target_type": "skill",
-        "matched_keywords": [
-          "优先"
-        ],
-        "keyword_count": 1,
-        "base_weight": 0.7,
-        "selection_score": 1.7
-      },
       {
         "direction": "forward",
         "relation_type": "requires_skill",
@@ -649,7 +924,25 @@
         ],
         "keyword_count": 4,
         "base_weight": 1.0,
-        "selection_score": 5.0
+        "selection_score": 5.0,
+        "candidate_rank": 1
+      },
+      {
+        "direction": "forward",
+        "relation_type": "preferred_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_sql",
+        "source_name": "数据分析师",
+        "target_name": "SQL",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "优先"
+        ],
+        "keyword_count": 1,
+        "base_weight": 0.7,
+        "selection_score": 1.7,
+        "candidate_rank": 2
       }
     ],
     "reverse_candidates": []
@@ -672,6 +965,26 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "reverse",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "reverse",
+      "relation_type": "requires_skill",
+      "source_id": "occ_algo_engineer",
+      "target_id": "skill_python",
+      "source_name": "算法工程师",
+      "target_name": "Python",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握"
+      ],
+      "keyword_count": 2,
+      "base_weight": 1.0,
+      "selection_score": 3.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=2; base_weight=1.0; direction=reverse",
     "matched_keywords": [
       "需要",
       "掌握"
@@ -693,7 +1006,8 @@
         ],
         "keyword_count": 2,
         "base_weight": 1.0,
-        "selection_score": 3.0
+        "selection_score": 3.0,
+        "candidate_rank": 1
       }
     ]
   },
@@ -715,6 +1029,26 @@
     "target_type": "skill",
     "relation_type": "requires_skill",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "requires_skill",
+      "source_id": "occ_algo_engineer",
+      "target_id": "skill_numpy",
+      "source_name": "算法工程师",
+      "target_name": "NumPy",
+      "source_type": "occupation",
+      "target_type": "skill",
+      "matched_keywords": [
+        "需要",
+        "掌握"
+      ],
+      "keyword_count": 2,
+      "base_weight": 1.0,
+      "selection_score": 3.0,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=2; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握"
@@ -735,7 +1069,8 @@
         ],
         "keyword_count": 2,
         "base_weight": 1.0,
-        "selection_score": 3.0
+        "selection_score": 3.0,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -758,6 +1093,27 @@
     "target_type": "tool",
     "relation_type": "uses_tool",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "uses_tool",
+      "source_id": "occ_test_engineer",
+      "target_id": "skill_linux",
+      "source_name": "测试工程师",
+      "target_name": "Linux",
+      "source_type": "occupation",
+      "target_type": "tool",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "具备"
+      ],
+      "keyword_count": 3,
+      "base_weight": 0.85,
+      "selection_score": 3.85,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=0.85; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -780,7 +1136,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.85,
-        "selection_score": 3.85
+        "selection_score": 3.85,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -803,6 +1160,27 @@
     "target_type": "trait",
     "relation_type": "needs_trait",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "needs_trait",
+      "source_id": "occ_test_engineer",
+      "target_id": "trait_communication",
+      "source_name": "测试工程师",
+      "target_name": "沟通能力",
+      "source_type": "occupation",
+      "target_type": "trait",
+      "matched_keywords": [
+        "能力",
+        "沟通",
+        "细致"
+      ],
+      "keyword_count": 3,
+      "base_weight": 0.55,
+      "selection_score": 3.55,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=0.55; direction=forward",
     "matched_keywords": [
       "能力",
       "沟通",
@@ -825,7 +1203,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.55,
-        "selection_score": 3.55
+        "selection_score": 3.55,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -848,6 +1227,27 @@
     "target_type": "tool",
     "relation_type": "uses_tool",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "uses_tool",
+      "source_id": "occ_test_engineer",
+      "target_id": "skill_git",
+      "source_name": "测试工程师",
+      "target_name": "Git",
+      "source_type": "occupation",
+      "target_type": "tool",
+      "matched_keywords": [
+        "需要",
+        "掌握",
+        "具备"
+      ],
+      "keyword_count": 3,
+      "base_weight": 0.85,
+      "selection_score": 3.85,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=3; base_weight=0.85; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -870,7 +1270,8 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.85,
-        "selection_score": 3.85
+        "selection_score": 3.85,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -893,6 +1294,26 @@
     "target_type": "education",
     "relation_type": "requires_education",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "requires_education",
+      "source_id": "occ_test_engineer",
+      "target_id": "edu_bachelor",
+      "source_name": "测试工程师",
+      "target_name": "本科",
+      "source_type": "occupation",
+      "target_type": "education",
+      "matched_keywords": [
+        "学历",
+        "本科"
+      ],
+      "keyword_count": 2,
+      "base_weight": 0.65,
+      "selection_score": 2.65,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=2; base_weight=0.65; direction=forward",
     "matched_keywords": [
       "学历",
       "本科"
@@ -913,7 +1334,8 @@
         ],
         "keyword_count": 2,
         "base_weight": 0.65,
-        "selection_score": 2.65
+        "selection_score": 2.65,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": []
@@ -936,6 +1358,26 @@
     "target_type": "occupation",
     "relation_type": "related_role",
     "selected_direction": "forward",
+    "selected_candidate_rank": 1,
+    "selected_candidate": {
+      "direction": "forward",
+      "relation_type": "related_role",
+      "source_id": "occ_python_engineer",
+      "target_id": "occ_backend_engineer",
+      "source_name": "Python开发工程师",
+      "target_name": "后端开发工程师",
+      "source_type": "occupation",
+      "target_type": "occupation",
+      "matched_keywords": [
+        "相关",
+        "方向"
+      ],
+      "keyword_count": 2,
+      "base_weight": 0.5,
+      "selection_score": 2.5,
+      "candidate_rank": 1
+    },
+    "selection_reason": "keyword_count=2; base_weight=0.5; direction=forward",
     "matched_keywords": [
       "相关",
       "方向"
@@ -956,7 +1398,8 @@
         ],
         "keyword_count": 2,
         "base_weight": 0.5,
-        "selection_score": 2.5
+        "selection_score": 2.5,
+        "candidate_rank": 1
       }
     ],
     "reverse_candidates": [
@@ -975,7 +1418,8 @@
         ],
         "keyword_count": 2,
         "base_weight": 0.5,
-        "selection_score": 2.5
+        "selection_score": 2.5,
+        "candidate_rank": 1
       }
     ]
   }

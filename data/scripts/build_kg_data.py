@@ -76,6 +76,9 @@ class RelationCandidateTrace:
     target_type: str
     relation_type: str
     selected_direction: str
+    selected_candidate_rank: int
+    selected_candidate: dict[str, Any]
+    selection_reason: str
     matched_keywords: list[str]
     forward_candidates: list[dict[str, Any]]
     reverse_candidates: list[dict[str, Any]]
@@ -339,6 +342,15 @@ def choose_relation(
 ) -> tuple[str | None, list[str], dict[str, Any] | None, list[dict[str, Any]], list[dict[str, Any]]]:
     """根据实体类型组合和关键词判断关系类型。"""
 
+    def candidate_sort_key(item: dict[str, Any]) -> tuple[Any, ...]:
+        return (
+            -int(item["keyword_count"]),
+            -float(item["base_weight"]),
+            item["relation_type"],
+            item["source_id"],
+            item["target_id"],
+        )
+
     def build_candidates(
         current_source: Entity,
         current_target: Entity,
@@ -369,6 +381,9 @@ def choose_relation(
                     "selection_score": round(len(matched) + base_weight, 4),
                 }
             )
+        candidates.sort(key=candidate_sort_key)
+        for rank, candidate in enumerate(candidates, start=1):
+            candidate["candidate_rank"] = rank
         return candidates
 
     forward_candidates = build_candidates(source, target, "forward")
@@ -455,6 +470,11 @@ def extract_relation_instances(
                     )
                 )
 
+                selection_reason = (
+                    f"keyword_count={selected_candidate['keyword_count']}; "
+                    f"base_weight={selected_candidate['base_weight']}; "
+                    f"direction={selected_candidate['direction']}"
+                )
                 relation_candidates.append(
                     RelationCandidateTrace(
                         evidence_id=evidence_id,
@@ -474,6 +494,9 @@ def extract_relation_instances(
                         target_type=target_entity.type,
                         relation_type=relation_type,
                         selected_direction=str(selected_candidate["direction"]),
+                        selected_candidate_rank=int(selected_candidate["candidate_rank"]),
+                        selected_candidate=dict(selected_candidate),
+                        selection_reason=selection_reason,
                         matched_keywords=matched_keywords,
                         forward_candidates=forward_candidates,
                         reverse_candidates=reverse_candidates,
