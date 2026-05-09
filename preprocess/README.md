@@ -34,6 +34,7 @@
 - `mentions.json`：每一条实体命中记录
 - `entity_catalog.json`：完整实体目录快照，保留实体标签、层级、别名和别名来源
 - `document_entities.json`：按文档聚合的实体摘要，便于快速查看每篇原始文档抽到了哪些实体
+- `entity_documents.json`：按实体展开到文档维度的关联报告，便于分析实体分布和覆盖率
 - `entities.json`：按实体聚合后的统计结果
 - `disambiguation_review.json`：低置信度命中复核清单
 - `entity_coverage.json`：实体覆盖率报告
