@@ -50,6 +50,8 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 
 如果不传参数，默认读取 `preprocess/raw_sources/`，并写入 `preprocess/output/`。
 
+建议先用这个命令跑通一轮，再根据 `preprocess/output/summary.json` 和 `preprocess/output/disambiguation_review.json` 调整原始数据和别名词典。
+
 ## 设计说明
 
 - 采集阶段会对 `doc_id` 做唯一性校验，避免不同来源的文档在后续统计中互相覆盖。
@@ -61,6 +63,15 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 - 抽取阶段会把标题、正文和结构化元数据一起纳入搜索语料，尽量不漏掉藏在标题里的关键信息。
 - 消歧阶段会综合标题命中、正文命中、元数据上下文和实体层级先验，避免同名实体随机落点。
 - 复核阶段会把低于阈值的命中单独输出，方便人工检查和继续补词典。
+
+## 输出字段说明
+
+- `summary.json`：用于快速确认这次预处理是否成功，包含文档数、命中数、覆盖数、错误文件数和输出目录。
+- `source_manifest.json`：用于排查原始数据扫描情况，记录每个文件的状态、格式、错误行与跳过原因。
+- `entity_catalog.json`：用于核对当前实体词典是否完整，包含实体 ID、标签、层级、别名和别名来源。
+- `document_entities.json`：用于按文档抽查抽取效果，适合人工浏览某篇原始数据抽到了哪些实体。
+- `entity_documents.json`：用于按实体查看覆盖文档，适合分析某个实体在语料中的分布。
+- `disambiguation_review.json`：用于后续补词典和调权，专门收集低置信度命中。
 
 ## 后续扩展建议
 
