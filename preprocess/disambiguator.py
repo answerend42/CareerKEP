@@ -153,13 +153,16 @@ def resolve_entity(
     """在多个候选实体之间做消歧。"""
 
     scored = [_score_entity(entity, document, matched_alias, source) for entity, source in candidates]
-    scored.sort(
+
+    # 当多个候选实体的上下文评分完全相同时，按实体 ID 做确定性兜底，
+    # 避免结果依赖候选输入顺序，保证同一份原始数据多次运行时输出稳定。
+    return min(
+        scored,
         key=lambda item: (
-            item.score,
-            item.title_rank,
-            _layer_priority(item.entity.layer),
-            len(item.entity.label),
+            -item.score,
+            -item.title_rank,
+            -_layer_priority(item.entity.layer),
+            -len(item.entity.label),
+            item.entity.entity_id,
         ),
-        reverse=True,
     )
-    return scored[0]

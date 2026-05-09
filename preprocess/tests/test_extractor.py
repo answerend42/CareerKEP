@@ -208,6 +208,28 @@ class ExtractorTests(unittest.TestCase):
         self.assertFalse(any(mention.entity_id == "data_engineer" for mention in mentions))
         self.assertFalse(any(mention.entity_id == "data_engineering" and mention.surface == "数据" for mention in mentions))
 
+    def test_tied_candidates_fall_back_to_entity_id(self) -> None:
+        """当多个候选实体得分完全一致时，消歧结果应保持确定性。"""
+
+        document = RawDocument(
+            doc_id="tie_breaker",
+            source="test",
+            title="",
+            text="",
+            metadata={},
+        )
+
+        left = self.catalog.entities["backend_engineer"]
+        right = self.catalog.entities["backend_engineering"]
+
+        resolved = resolve_entity(
+            [(right, "explicit"), (left, "explicit")],
+            document=document,
+            matched_alias="后端工程",
+        )
+
+        self.assertEqual(resolved.entity.entity_id, "backend_engineer")
+
 
 if __name__ == "__main__":
     unittest.main()
