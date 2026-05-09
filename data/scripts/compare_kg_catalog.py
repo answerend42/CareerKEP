@@ -10,6 +10,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_CATALOG_FILE = "data_catalog.json"
 GRAPH_MANIFEST_FILE = "graph_manifest.json"
 RELATION_MATRIX_FILE = "relation_matrix.json"
+RELATION_CATALOG_FILE = "relation_catalog.json"
+RELATION_SUMMARY_FILE = "relation_summary.json"
+
 VOLATILE_FILES = {"graph_manifest.json", "extraction_log.json"}
 
 GRAPH_MANIFEST_FIELDS = (
@@ -38,6 +41,36 @@ RELATION_MATRIX_FIELDS = (
     "relation_types",
 )
 
+RELATION_CATALOG_FIELDS = (
+    "relation_type_count",
+    "observed_relation_type_count",
+    "coverage_summary",
+    "observed_relation_types",
+    "unobserved_relation_types",
+    "relations",
+    "edge_summary",
+)
+
+RELATION_SUMMARY_FIELDS = (
+    "edge_count",
+    "relation_count",
+    "type_pair_count",
+    "weight_range",
+)
+
+RELATION_STABLE_FIELDS = (
+    "relation_type",
+    "source_types",
+    "target_types",
+    "base_weight",
+    "is_observed",
+    "keyword_group_count",
+    "keyword_count",
+    "matched_edge_count",
+    "coverage_rate",
+    "weight_range",
+)
+
 
 def load_json(path: Path) -> Any:
     with path.open("r", encoding="utf-8") as fh:
@@ -62,18 +95,6 @@ def resolve_artifact_path(output_dir: Path, file_name: str) -> Path:
     if not artifact_path.exists():
         raise FileNotFoundError(f"目录中缺少 {file_name}: {output_dir}")
     return artifact_path
-
-
-def resolve_catalog_path(output_dir: Path) -> Path:
-    return resolve_artifact_path(output_dir, DATA_CATALOG_FILE)
-
-
-def resolve_manifest_path(output_dir: Path) -> Path:
-    return resolve_artifact_path(output_dir, GRAPH_MANIFEST_FILE)
-
-
-def resolve_relation_matrix_path(output_dir: Path) -> Path:
-    return resolve_artifact_path(output_dir, RELATION_MATRIX_FILE)
 
 
 def normalize_catalog(catalog: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
@@ -107,6 +128,58 @@ def normalize_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
     return normalized
 
 
+def normalize_relation_catalog(catalog: dict[str, Any]) -> dict[str, Any]:
+    """把关系目录规整成更适合对比的稳定结构。"""
+
+    normalized: dict[str, Any] = {
+        "relation_type_count": catalog.get("relation_type_count"),
+        "observed_relation_type_count": catalog.get("observed_relation_type_count"),
+        "coverage_summary": catalog.get("coverage_summary"),
+        "observed_relation_types": sorted(catalog.get("observed_relation_types", [])),
+        "unobserved_relation_types": sorted(catalog.get("unobserved_relation_types", [])),
+        "edge_summary": catalog.get("edge_summary"),
+    }
+
+    relations = catalog.get("relations", [])
+    if isinstance(relations, list):
+        normalized_relations: list[dict[str, Any]] = []
+        for relation_item in relations:
+            if not isinstance(relation_item, dict):
+                continue
+            normalized_relations.append(
+                {
+                    "relation_type": relation_item.get("relation_type"),
+                    "source_types": relation_item.get("source_types"),
+                    "target_types": relation_item.get("target_types"),
+                    "base_weight": relation_item.get("base_weight"),
+                    "is_observed": relation_item.get("is_observed"),
+                    "keyword_group_count": relation_item.get("keyword_group_count"),
+                    "keyword_count": relation_item.get("keyword_count"),
+                    "matched_edge_count": relation_item.get("matched_edge_count"),
+                    "coverage_rate": relation_item.get("coverage_rate"),
+                    "weight_range": relation_item.get("weight_range"),
+                }
+            )
+        normalized["relations"] = sorted(
+            normalized_relations,
+            key=lambda item: str(item.get("relation_type", "")),
+        )
+    else:
+        normalized["relations"] = relations
+
+    return normalized
+
+
+def normalize_relation_summary(summary: dict[str, Any]) -> dict[str, Any]:
+    """把关系统计摘要规整成稳定结构。"""
+
+    normalized = dict(summary)
+    normalized["relation_count"] = dict(sorted((normalized.get("relation_count") or {}).items()))
+    normalized["type_pair_count"] = dict(sorted((normalized.get("type_pair_count") or {}).items()))
+    normalized["weight_range"] = normalized.get("weight_range")
+    return normalized
+
+
 def split_catalog_diffs(changed: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
     stable_changed: list[dict[str, Any]] = []
     volatile_changed: list[dict[str, Any]] = []
@@ -125,8 +198,8 @@ def split_catalog_diffs(changed: list[dict[str, Any]]) -> dict[str, list[dict[st
 
 
 def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
-    left_catalog = load_json(resolve_catalog_path(left_dir))
-    right_catalog = load_json(resolve_catalog_path(right_dir))
+    left_catalog = load_json(resolve_artifact_path(left_dir, DATA_CATALOG_FILE))
+    right_catalog = load_json(resolve_artifact_path(right_dir, DATA_CATALOG_FILE))
 
     if not isinstance(left_catalog, list):
         raise ValueError("左侧目录中的 data_catalog.json 必须是列表")
@@ -152,19 +225,33 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
 
     diff_groups = split_catalog_diffs(changed)
 
-    left_manifest = load_json(resolve_manifest_path(left_dir))
-    right_manifest = load_json(resolve_manifest_path(right_dir))
+    left_manifest = load_json(resolve_artifact_path(left_dir, GRAPH_MANIFEST_FILE))
+    right_manifest = load_json(resolve_artifact_path(right_dir, GRAPH_MANIFEST_FILE))
     if not isinstance(left_manifest, dict):
         raise ValueError("左侧目录中的 graph_manifest.json 必须是对象")
     if not isinstance(right_manifest, dict):
         raise ValueError("右侧目录中的 graph_manifest.json 必须是对象")
 
-    left_matrix = load_json(resolve_relation_matrix_path(left_dir))
-    right_matrix = load_json(resolve_relation_matrix_path(right_dir))
+    left_matrix = load_json(resolve_artifact_path(left_dir, RELATION_MATRIX_FILE))
+    right_matrix = load_json(resolve_artifact_path(right_dir, RELATION_MATRIX_FILE))
     if not isinstance(left_matrix, dict):
         raise ValueError("左侧目录中的 relation_matrix.json 必须是对象")
     if not isinstance(right_matrix, dict):
         raise ValueError("右侧目录中的 relation_matrix.json 必须是对象")
+
+    left_relation_catalog = load_json(resolve_artifact_path(left_dir, RELATION_CATALOG_FILE))
+    right_relation_catalog = load_json(resolve_artifact_path(right_dir, RELATION_CATALOG_FILE))
+    if not isinstance(left_relation_catalog, dict):
+        raise ValueError("左侧目录中的 relation_catalog.json 必须是对象")
+    if not isinstance(right_relation_catalog, dict):
+        raise ValueError("右侧目录中的 relation_catalog.json 必须是对象")
+
+    left_relation_summary = load_json(resolve_artifact_path(left_dir, RELATION_SUMMARY_FILE))
+    right_relation_summary = load_json(resolve_artifact_path(right_dir, RELATION_SUMMARY_FILE))
+    if not isinstance(left_relation_summary, dict):
+        raise ValueError("左侧目录中的 relation_summary.json 必须是对象")
+    if not isinstance(right_relation_summary, dict):
+        raise ValueError("右侧目录中的 relation_summary.json 必须是对象")
 
     manifest_diffs = compare_value_dict(
         normalize_manifest(left_manifest),
@@ -172,14 +259,24 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
         GRAPH_MANIFEST_FIELDS,
     )
     matrix_diffs = compare_value_dict(left_matrix, right_matrix, RELATION_MATRIX_FIELDS)
+    catalog_diffs = compare_value_dict(
+        normalize_relation_catalog(left_relation_catalog),
+        normalize_relation_catalog(right_relation_catalog),
+        RELATION_CATALOG_FIELDS,
+    )
+    summary_diffs = compare_value_dict(
+        normalize_relation_summary(left_relation_summary),
+        normalize_relation_summary(right_relation_summary),
+        RELATION_SUMMARY_FIELDS,
+    )
 
     return {
         "left_dir": str(left_dir),
         "right_dir": str(right_dir),
         "artifacts": {
             "data_catalog": {
-                "left_path": str(resolve_catalog_path(left_dir)),
-                "right_path": str(resolve_catalog_path(right_dir)),
+                "left_path": str(resolve_artifact_path(left_dir, DATA_CATALOG_FILE)),
+                "right_path": str(resolve_artifact_path(right_dir, DATA_CATALOG_FILE)),
                 "added": added,
                 "removed": removed,
                 "changed": changed,
@@ -187,13 +284,23 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
                 "volatile_changed": diff_groups["volatile_changed"],
             },
             "graph_manifest": {
-                "left_path": str(resolve_manifest_path(left_dir)),
-                "right_path": str(resolve_manifest_path(right_dir)),
+                "left_path": str(resolve_artifact_path(left_dir, GRAPH_MANIFEST_FILE)),
+                "right_path": str(resolve_artifact_path(right_dir, GRAPH_MANIFEST_FILE)),
                 "diffs": manifest_diffs,
             },
+            "relation_catalog": {
+                "left_path": str(resolve_artifact_path(left_dir, RELATION_CATALOG_FILE)),
+                "right_path": str(resolve_artifact_path(right_dir, RELATION_CATALOG_FILE)),
+                "diffs": catalog_diffs,
+            },
+            "relation_summary": {
+                "left_path": str(resolve_artifact_path(left_dir, RELATION_SUMMARY_FILE)),
+                "right_path": str(resolve_artifact_path(right_dir, RELATION_SUMMARY_FILE)),
+                "diffs": summary_diffs,
+            },
             "relation_matrix": {
-                "left_path": str(resolve_relation_matrix_path(left_dir)),
-                "right_path": str(resolve_relation_matrix_path(right_dir)),
+                "left_path": str(resolve_artifact_path(left_dir, RELATION_MATRIX_FILE)),
+                "right_path": str(resolve_artifact_path(right_dir, RELATION_MATRIX_FILE)),
                 "diffs": matrix_diffs,
             },
         },
@@ -204,6 +311,8 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
             "stable_changed_count": len(diff_groups["stable_changed"]),
             "volatile_changed_count": len(diff_groups["volatile_changed"]),
             "graph_manifest_changed_count": len(manifest_diffs),
+            "relation_catalog_changed_count": len(catalog_diffs),
+            "relation_summary_changed_count": len(summary_diffs),
             "relation_matrix_changed_count": len(matrix_diffs),
             "same_count": len(common) - len(changed),
         },
