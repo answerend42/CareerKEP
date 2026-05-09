@@ -20,6 +20,8 @@
 - `tsv`
 - `txt`
 - `md`
+- `html`
+- `htm`
 
 采集器会递归扫描 `raw_sources/` 目录，自动把不同格式的数据统一成标准文档结构。
 
@@ -30,6 +32,9 @@
 - `documents.json`：标准化后的原始文档快照
 - `source_manifest.json`：原始数据扫描清单，包含已加载和被跳过的文件
 - `mentions.json`：每一条实体命中记录
+- `entity_catalog.json`：完整实体目录快照，保留实体标签、层级、别名和别名来源
+- `document_entities.json`：按文档聚合的实体摘要，便于快速查看每篇原始文档抽到了哪些实体
+- `entity_documents.json`：按实体展开到文档维度的关联报告，便于分析实体分布和覆盖率
 - `entities.json`：按实体聚合后的统计结果
 - `disambiguation_review.json`：低置信度命中复核清单
 - `entity_coverage.json`：实体覆盖率报告
@@ -52,6 +57,7 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 - 采集阶段会自动拆解常见的多层 JSON 套壳结构，兼容 `response/data/results/items` 这类接口快照。
 - 采集阶段会容忍 JSONL 中的局部坏行，能读多少算多少，并在清单里记录错误行信息和坏行总数。
 - 抽取阶段优先匹配长别名，再补充词干型生成别名，减少短词噪声。
+- 抽取阶段会避免把压缩后只剩单字符的别名拿去做模糊匹配，防止 `C++` 之类的实体被误缩成普通单字母噪声。
 - 抽取阶段会把标题、正文和结构化元数据一起纳入搜索语料，尽量不漏掉藏在标题里的关键信息。
 - 消歧阶段会综合标题命中、正文命中、元数据上下文和实体层级先验，避免同名实体随机落点。
 - 复核阶段会把低于阈值的命中单独输出，方便人工检查和继续补词典。

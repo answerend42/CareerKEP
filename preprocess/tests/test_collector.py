@@ -107,6 +107,36 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(documents[0].text, "我熟悉前端项目，也会 Web 基础。")
         self.assertEqual(documents[0].metadata["source_format"], "md")
 
+    def test_html_document_is_supported(self) -> None:
+        """HTML 快照应当能抽出标题和可见正文。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "page.html").write_text(
+                """
+                <html>
+                  <head>
+                    <title>机器学习方向候选人页面</title>
+                    <style>body { display: none; }</style>
+                  </head>
+                  <body>
+                    <h1>候选人画像</h1>
+                    <p>我更想做机器学习工程师，也会 Python。</p>
+                    <script>console.log('noise');</script>
+                  </body>
+                </html>
+                """.strip(),
+                encoding="utf-8",
+            )
+
+            documents = load_raw_documents(root)
+
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(documents[0].title, "机器学习方向候选人页面")
+        self.assertIn("我更想做机器学习工程师，也会 Python。", documents[0].text)
+        self.assertNotIn("console.log", documents[0].text)
+        self.assertEqual(documents[0].metadata["source_format"], "html")
+
     def test_fallback_doc_id_uses_relative_source_path(self) -> None:
         """同名文件放在不同目录时，兜底文档编号不应撞车。"""
 

@@ -45,6 +45,9 @@ class ExtractorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp_dir:
             output_dir = Path(tmp_dir) / "output"
             result = run_pipeline(output_dir=output_dir)
+            catalog_payload = json.loads((output_dir / "entity_catalog.json").read_text(encoding="utf-8"))
+            document_entities_payload = json.loads((output_dir / "document_entities.json").read_text(encoding="utf-8"))
+            entity_documents_payload = json.loads((output_dir / "entity_documents.json").read_text(encoding="utf-8"))
             entities_payload = json.loads((output_dir / "entities.json").read_text(encoding="utf-8"))
             coverage_payload = json.loads((output_dir / "entity_coverage.json").read_text(encoding="utf-8"))
             review_payload = json.loads((output_dir / "disambiguation_review.json").read_text(encoding="utf-8"))
@@ -55,9 +58,17 @@ class ExtractorTests(unittest.TestCase):
         self.assertGreaterEqual(result["entities"], 1)
         self.assertGreaterEqual(result["uncertain_mentions"], 0)
         self.assertIn("output_dir", result)
+        self.assertEqual(len(catalog_payload), len(self.catalog.entities))
+        self.assertEqual(len(document_entities_payload), result["documents"])
+        self.assertEqual(len(entity_documents_payload), len(self.catalog.entities))
         self.assertEqual(len(entities_payload), len(self.catalog.entities))
         self.assertEqual(coverage_payload["catalog_entities"], len(self.catalog.entities))
         self.assertEqual(coverage_payload["uncovered_entities"], 0)
+        self.assertTrue(all("alias_sources" in entity for entity in catalog_payload))
+        self.assertTrue(all("entities" in item for item in document_entities_payload))
+        self.assertTrue(all("mention_count" in item for item in document_entities_payload))
+        self.assertTrue(all("documents" in item for item in entity_documents_payload))
+        self.assertTrue(all("doc_count" in item for item in entity_documents_payload))
         self.assertEqual(review_payload["threshold"], 0.98)
         self.assertEqual(review_payload["uncertain_count"], 3)
         self.assertEqual(summary_payload["catalog_entities"], len(self.catalog.entities))
@@ -94,6 +105,29 @@ class ExtractorTests(unittest.TestCase):
 
         self.assertEqual(resolved.entity.entity_id, "backend_engineering")
         self.assertIn("标题", resolved.reason)
+
+    def test_entity_id_matches_outweigh_generic_aliases(self) -> None:
+        """实体 ID 命中应比普通生成别名更可靠。"""
+
+        document = RawDocument(
+            doc_id="id_priority",
+            source="test",
+            title="backend_engineering 路线",
+            text="我更关注 backend_engineering 的长期成长。",
+            metadata={},
+        )
+
+        preferred = self.catalog.entities["backend_engineering"]
+        fallback = self.catalog.entities["backend_engineer"]
+
+        resolved = resolve_entity(
+            [(preferred, "id"), (fallback, "generated")],
+            document=document,
+            matched_alias="backend_engineering",
+        )
+
+        self.assertEqual(resolved.entity.entity_id, "backend_engineering")
+        self.assertIn("实体ID", resolved.reason)
 
     def test_normalized_alias_matching_handles_punctuation_variants(self) -> None:
         """规范化匹配应覆盖原始文本里的空格和符号变体。"""
@@ -173,6 +207,58 @@ class ExtractorTests(unittest.TestCase):
         self.assertTrue(any(mention.entity_id == "database_practice" for mention in mentions))
         self.assertFalse(any(mention.entity_id == "data_engineer" for mention in mentions))
         self.assertFalse(any(mention.entity_id == "data_engineering" and mention.surface == "数据" for mention in mentions))
+
+    def test_short_compact_aliases_do_not_overmatch_plain_single_letters(self) -> None:
+        """压缩后过短的别名不应把普通单字母误判成弱信号实体。"""
+
+        document = RawDocument(
+            doc_id="short_compact_alias_noise",
+            source="test",
+            title="单字母降噪示例",
+            text="我会 C 语言，也接触过一些基础编程。",
+            metadata={},
+        )
+
+        mentions = extract_mentions(document, self.catalog)
+
+        self.assertFalse(any(mention.entity_id == "weak_cpp" for mention in mentions))
+
+    def test_cpp_alias_still_matches_true_cpp_mentions(self) -> None:
+        """真正的 C++ 画像仍然应该正常命中。"""
+
+        document = RawDocument(
+            doc_id="cpp_alias",
+            source="test",
+            title="C++ 方向画像",
+            text="我不擅长 C++，但愿意先从后端工程能力补起。",
+            metadata={},
+        )
+
+        mentions = extract_mentions(document, self.catalog)
+
+        self.assertTrue(any(mention.entity_id == "weak_cpp" for mention in mentions))
+
+    def test_tied_candidates_fall_back_to_entity_id(self) -> None:
+        """当多个候选实体得分完全一致时，消歧结果应保持确定性。"""
+
+        document = RawDocument(
+            doc_id="tie_breaker",
+            source="test",
+            title="",
+            text="",
+            metadata={},
+        )
+
+        left = self.catalog.entities["backend_engineer"]
+        right = self.catalog.entities["backend_engineering"]
+
+        resolved = resolve_entity(
+            [(right, "explicit"), (left, "explicit")],
+            document=document,
+            matched_alias="后端工程",
+        )
+
+        self.assertEqual(resolved.entity.entity_id, "backend_engineer")
 
 
 if __name__ == "__main__":

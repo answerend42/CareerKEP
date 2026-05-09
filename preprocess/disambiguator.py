@@ -17,6 +17,16 @@ LAYER_HINTS = {
     "role": ["工程师", "开发", "岗位", "职位", "招聘", "应聘", "目标"],
 }
 
+# 不同别名来源的可信度不同。
+# 实体 ID 命中通常意味着上游数据已经显式标注过目标实体，因此权重应高于普通生成别名。
+SOURCE_BASE_SCORES = {
+    "explicit": (0.92, "显式别名"),
+    "label": (0.86, "标签命中"),
+    "id": (0.9, "实体ID命中"),
+    "id_words": (0.8, "实体ID分词命中"),
+    "generated": (0.72, "生成别名命中"),
+}
+
 
 @dataclass(frozen=True)
 class CandidateScore:
@@ -96,18 +106,9 @@ def _score_entity(
     reasons: List[str] = []
     title_rank = 0
 
-    if candidate_source == "explicit":
-        score += 0.92
-        reasons.append("显式别名")
-    elif candidate_source == "label":
-        score += 0.86
-        reasons.append("标签命中")
-    elif candidate_source == "generated":
-        score += 0.72
-        reasons.append("生成别名命中")
-    else:
-        score += 0.68
-        reasons.append("通用别名命中")
+    base_score, base_reason = SOURCE_BASE_SCORES.get(candidate_source, (0.68, "通用别名命中"))
+    score += base_score
+    reasons.append(base_reason)
 
     if label and label in text:
         score += 0.16
@@ -152,13 +153,16 @@ def resolve_entity(
     """在多个候选实体之间做消歧。"""
 
     scored = [_score_entity(entity, document, matched_alias, source) for entity, source in candidates]
-    scored.sort(
+
+    # 当多个候选实体的上下文评分完全相同时，按实体 ID 做确定性兜底，
+    # 避免结果依赖候选输入顺序，保证同一份原始数据多次运行时输出稳定。
+    return min(
+        scored,
         key=lambda item: (
-            item.score,
-            item.title_rank,
-            _layer_priority(item.entity.layer),
-            len(item.entity.label),
+            -item.score,
+            -item.title_rank,
+            -_layer_priority(item.entity.layer),
+            -len(item.entity.label),
+            item.entity.entity_id,
         ),
-        reverse=True,
     )
-    return scored[0]

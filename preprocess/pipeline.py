@@ -42,6 +42,123 @@ def _build_entity_summary(catalog: EntityCatalog, mentions_by_doc: Dict[str, Lis
     return sorted(summary.values(), key=lambda item: (item.layer, item.entity_id))
 
 
+def _build_entity_catalog_snapshot(catalog: EntityCatalog) -> List[dict]:
+    """导出完整实体目录快照。
+
+    这里直接保留实体定义原貌，方便后续调试别名覆盖、人工补词典，
+    也方便把预处理输出直接喂给别的离线任务。
+    """
+
+    entities = [entity.to_dict() for entity in catalog.iter_entities()]
+    return sorted(entities, key=lambda item: (item["layer"], item["entity_id"]))
+
+
+def _build_document_entity_summary(
+    documents: List[RawDocument],
+    mentions_by_doc: Dict[str, List[dict]],
+) -> List[dict]:
+    """按文档汇总实体命中。
+
+    这个视图比原始 mentions 更适合人工抽查：
+    - 可以快速看到每篇文档抽到了哪些实体
+    - 可以直接定位一篇文档里的高频实体
+    - 也方便后续把实体统计喂给别的离线任务
+    """
+
+    entity_lookup: Dict[str, dict] = {}
+    for doc in documents:
+        mentions = mentions_by_doc.get(doc.doc_id, [])
+        entity_stats: Dict[str, dict] = {}
+
+        for mention in mentions:
+            entity_id = mention["entity_id"]
+            stats = entity_stats.setdefault(
+                entity_id,
+                {
+                    "entity_id": entity_id,
+                    "entity_label": mention["entity_label"],
+                    "layer": mention["layer"],
+                    "mention_count": 0,
+                    "sample_surfaces": [],
+                },
+            )
+            stats["mention_count"] += 1
+            if mention["surface"] not in stats["sample_surfaces"]:
+                stats["sample_surfaces"].append(mention["surface"])
+
+        entity_lookup[doc.doc_id] = {
+            "doc_id": doc.doc_id,
+            "source": doc.source,
+            "title": doc.title,
+            "mention_count": len(mentions),
+            "entity_count": len(entity_stats),
+            "entities": sorted(
+                entity_stats.values(),
+                key=lambda item: (-item["mention_count"], item["layer"], item["entity_id"]),
+            ),
+        }
+
+    return [entity_lookup[doc.doc_id] for doc in documents]
+
+
+def _build_entity_document_report(
+    catalog: EntityCatalog,
+    documents: List[RawDocument],
+    mentions_by_doc: Dict[str, List[dict]],
+) -> List[dict]:
+    """按实体展开到文档维度的关联报告。
+
+    这个报告比 `entities.json` 更细：
+    - 每个实体会列出命中的文档及各自的命中次数
+    - 每篇文档还会保留几条表面形式样例，方便人工快速定位
+    - 没有命中的实体也保留在结果里，便于检查覆盖率
+    """
+
+    report: Dict[str, dict] = {
+        entity.entity_id: {
+            "entity_id": entity.entity_id,
+            "label": entity.label,
+            "layer": entity.layer,
+            "mention_count": 0,
+            "doc_count": 0,
+            "documents": [],
+        }
+        for entity in catalog.iter_entities()
+    }
+
+    doc_lookup = {doc.doc_id: doc for doc in documents}
+    per_entity_doc_stats: Dict[str, Dict[str, dict]] = {entity_id: {} for entity_id in report}
+
+    for doc_id, mentions in mentions_by_doc.items():
+        if doc_id not in doc_lookup:
+            continue
+        doc = doc_lookup[doc_id]
+        for mention in mentions:
+            entity_id = mention["entity_id"]
+            entity_report = report[entity_id]
+            doc_stats = per_entity_doc_stats[entity_id].setdefault(
+                doc_id,
+                {
+                    "doc_id": doc_id,
+                    "title": doc.title,
+                    "mention_count": 0,
+                    "sample_surfaces": [],
+                },
+            )
+            doc_stats["mention_count"] += 1
+            if mention["surface"] not in doc_stats["sample_surfaces"]:
+                doc_stats["sample_surfaces"].append(mention["surface"])
+            entity_report["mention_count"] += 1
+
+    for entity_id, entity_report in report.items():
+        doc_items = list(per_entity_doc_stats[entity_id].values())
+        doc_items.sort(key=lambda item: (-item["mention_count"], item["doc_id"]))
+        entity_report["doc_count"] = len(doc_items)
+        entity_report["documents"] = doc_items
+
+    return sorted(report.values(), key=lambda item: (item["layer"], item["entity_id"]))
+
+
 def _build_entity_coverage_report(entity_summary: List[ResolvedEntity]) -> dict:
     """构建实体覆盖报告，方便人工快速检查哪些实体还没被语料覆盖。"""
 
@@ -159,6 +276,15 @@ def run_pipeline(
     _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
     _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
     _dump_json(resolved_output_dir / "mentions.json", all_mentions)
+    _dump_json(resolved_output_dir / "entity_catalog.json", _build_entity_catalog_snapshot(catalog))
+    _dump_json(
+        resolved_output_dir / "document_entities.json",
+        _build_document_entity_summary(documents, mentions_by_doc),
+    )
+    _dump_json(
+        resolved_output_dir / "entity_documents.json",
+        _build_entity_document_report(catalog, documents, mentions_by_doc),
+    )
     _dump_json(resolved_output_dir / "entities.json", [item.to_dict() for item in entity_summary])
     _dump_json(resolved_output_dir / "disambiguation_review.json", disambiguation_review)
     _dump_json(
