@@ -92,6 +92,91 @@ def assert_condition(condition: bool, message: str, errors: list[str]) -> None:
         errors.append(message)
 
 
+def validate_candidate_list(
+    candidates: list[dict[str, Any]],
+    expected_direction: str,
+    context: str,
+    errors: list[str],
+) -> None:
+    """校验候选列表是否按规则排序，并且字段齐全。"""
+
+    previous_sort_key: tuple[Any, ...] | None = None
+    for index, candidate in enumerate(candidates, start=1):
+        if not isinstance(candidate, dict):
+            errors.append(f"{context}[{index}] 必须是对象")
+            continue
+
+        required_keys = {
+            "direction",
+            "relation_type",
+            "source_id",
+            "target_id",
+            "source_name",
+            "target_name",
+            "source_type",
+            "target_type",
+            "matched_keywords",
+            "keyword_count",
+            "base_weight",
+            "selection_score",
+            "candidate_rank",
+        }
+        missing_keys = sorted(required_keys - set(candidate))
+        assert_condition(
+            not missing_keys,
+            f"{context}[{index}] 缺少字段: {', '.join(missing_keys)}",
+            errors,
+        )
+        if missing_keys:
+            continue
+
+        assert_condition(
+            candidate.get("direction") == expected_direction,
+            f"{context}[{index}] 的 direction 不正确",
+            errors,
+        )
+        assert_condition(
+            isinstance(candidate.get("matched_keywords"), list),
+            f"{context}[{index}] 的 matched_keywords 必须是列表",
+            errors,
+        )
+        assert_condition(
+            isinstance(candidate.get("keyword_count"), int) and candidate["keyword_count"] >= 1,
+            f"{context}[{index}] 的 keyword_count 非法",
+            errors,
+        )
+        assert_condition(
+            isinstance(candidate.get("base_weight"), (int, float)),
+            f"{context}[{index}] 的 base_weight 非法",
+            errors,
+        )
+        assert_condition(
+            isinstance(candidate.get("selection_score"), (int, float)),
+            f"{context}[{index}] 的 selection_score 非法",
+            errors,
+        )
+        assert_condition(
+            candidate.get("candidate_rank") == index,
+            f"{context}[{index}] 的 candidate_rank 与排序不一致",
+            errors,
+        )
+
+        sort_key = (
+            -int(candidate["keyword_count"]),
+            -float(candidate["base_weight"]),
+            str(candidate["relation_type"]),
+            str(candidate["source_id"]),
+            str(candidate["target_id"]),
+        )
+        if previous_sort_key is not None:
+            assert_condition(
+                previous_sort_key <= sort_key,
+                f"{context} 未按关键词命中数和基础权重排序: 第 {index} 条候选",
+                errors,
+            )
+        previous_sort_key = sort_key
+
+
 def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     """校验 data/output 下的图谱产物是否互相一致。"""
 
@@ -99,6 +184,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     files = {
         "nodes": output_dir / "nodes.json",
         "relation_instances": output_dir / "relation_instances.json",
+        "relation_candidates": output_dir / "relation_candidates.json",
         "edges": output_dir / "edges.json",
         "graph_index": output_dir / "graph_index.json",
         "graph_quality": output_dir / "graph_quality.json",
@@ -119,6 +205,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
 
     nodes = load_json(files["nodes"])
     relation_instances = load_json(files["relation_instances"])
+    relation_candidates = load_json(files["relation_candidates"])
     edges = load_json(files["edges"])
     graph_index = load_json(files["graph_index"])
     graph_quality = load_json(files["graph_quality"])
@@ -139,6 +226,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
 
     assert_condition(isinstance(nodes, list), "nodes.json 必须是列表", errors)
     assert_condition(isinstance(relation_instances, list), "relation_instances.json 必须是列表", errors)
+    assert_condition(isinstance(relation_candidates, list), "relation_candidates.json 必须是列表", errors)
     assert_condition(isinstance(edges, list), "edges.json 必须是列表", errors)
     assert_condition(isinstance(graph_index, dict), "graph_index.json 必须是对象", errors)
     assert_condition(isinstance(graph_quality, dict), "graph_quality.json 必须是对象", errors)
@@ -185,6 +273,103 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         assert_condition(len(outgoing) == computed_outgoing[node_id], f"节点 {node_id} 的 outgoing 数量不一致", errors)
 
     relation_counter = Counter(edge["relation_type"] for edge in edges)
+    assert_condition(
+        len(relation_candidates) == len(relation_instances),
+        "relation_candidates 与 relation_instances 数量不一致",
+        errors,
+    )
+    for index, (instance, candidate) in enumerate(zip(relation_instances, relation_candidates), start=1):
+        assert_condition(
+            instance.get("evidence_id") == candidate.get("evidence_id"),
+            f"第 {index} 条 relation_candidates 的 evidence_id 与 relation_instances 不一致",
+            errors,
+        )
+        assert_condition(
+            instance.get("source_id") == candidate.get("source_id"),
+            f"第 {index} 条 relation_candidates 的 source_id 与 relation_instances 不一致",
+            errors,
+        )
+        assert_condition(
+            instance.get("target_id") == candidate.get("target_id"),
+            f"第 {index} 条 relation_candidates 的 target_id 与 relation_instances 不一致",
+            errors,
+        )
+        assert_condition(
+            instance.get("relation_type") == candidate.get("relation_type"),
+            f"第 {index} 条 relation_candidates 的 relation_type 与 relation_instances 不一致",
+            errors,
+        )
+        assert_condition(
+            instance.get("matched_keywords") == candidate.get("matched_keywords"),
+            f"第 {index} 条 relation_candidates 的 matched_keywords 与 relation_instances 不一致",
+            errors,
+        )
+        assert_condition(
+            candidate.get("selected_candidate_rank") == 1,
+            f"第 {index} 条 relation_candidates 的 selected_candidate_rank 应为 1",
+            errors,
+        )
+        assert_condition(
+            isinstance(candidate.get("selected_candidate"), dict),
+            f"第 {index} 条 relation_candidates 缺少 selected_candidate",
+            errors,
+        )
+        assert_condition(
+            isinstance(candidate.get("selection_reason"), str) and candidate["selection_reason"],
+            f"第 {index} 条 relation_candidates 的 selection_reason 无效",
+            errors,
+        )
+        if isinstance(candidate.get("selected_candidate"), dict):
+            selected_candidate = candidate["selected_candidate"]
+            assert_condition(
+                selected_candidate.get("candidate_rank") == candidate.get("selected_candidate_rank"),
+                f"第 {index} 条 relation_candidates 的 selected_candidate_rank 与 selected_candidate 不一致",
+                errors,
+            )
+            assert_condition(
+                selected_candidate.get("relation_type") == instance.get("relation_type"),
+                f"第 {index} 条 relation_candidates 的 selected_candidate relation_type 不一致",
+                errors,
+            )
+            assert_condition(
+                selected_candidate.get("source_id") == instance.get("source_id")
+                and selected_candidate.get("target_id") == instance.get("target_id"),
+                f"第 {index} 条 relation_candidates 的 selected_candidate 方向不一致",
+                errors,
+            )
+
+    for index, candidate in enumerate(relation_candidates, start=1):
+        validate_candidate_list(
+            candidate.get("forward_candidates", []),
+            "forward",
+            f"relation_candidates[{index}].forward_candidates",
+            errors,
+        )
+        validate_candidate_list(
+            candidate.get("reverse_candidates", []),
+            "reverse",
+            f"relation_candidates[{index}].reverse_candidates",
+            errors,
+        )
+        selected_candidate = candidate.get("selected_candidate")
+        selected_direction = candidate.get("selected_direction")
+        selected_rank = candidate.get("selected_candidate_rank")
+        if isinstance(selected_candidate, dict) and isinstance(selected_rank, int):
+            selected_candidates = (
+                candidate.get("forward_candidates", [])
+                if selected_direction == "forward"
+                else candidate.get("reverse_candidates", [])
+            )
+            if 1 <= selected_rank <= len(selected_candidates):
+                selected_from_list = selected_candidates[selected_rank - 1]
+                assert_condition(
+                    selected_from_list.get("relation_type") == selected_candidate.get("relation_type")
+                    and selected_from_list.get("source_id") == selected_candidate.get("source_id")
+                    and selected_from_list.get("target_id") == selected_candidate.get("target_id"),
+                    f"第 {index} 条 relation_candidates 的 selected_candidate 与候选列表不一致",
+                    errors,
+                )
+
     assert_condition(
         relation_summary.get("edge_count") == len(edges),
         "relation_summary 的 edge_count 与 edges 数量不一致",
@@ -258,6 +443,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         errors,
     )
     assert_condition(
+        extraction_log.get("relation_candidate_count") == len(relation_candidates),
+        "extraction_log 的 relation_candidate_count 与 relation_candidates 数量不一致",
+        errors,
+    )
+    assert_condition(
         extraction_log.get("career_profile_count") == len(career_profiles),
         "extraction_log 的 career_profile_count 与 career_profiles 数量不一致",
         errors,
@@ -275,6 +465,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(
         graph_manifest.get("edge_count") == len(edges),
         "graph_manifest 的 edge_count 与 edges 数量不一致",
+        errors,
+    )
+    assert_condition(
+        graph_manifest.get("relation_candidate_count") == len(relation_candidates),
+        "graph_manifest 的 relation_candidate_count 与 relation_candidates 数量不一致",
         errors,
     )
 
