@@ -116,6 +116,34 @@ def normalize_catalog(catalog: list[dict[str, Any]]) -> dict[str, dict[str, Any]
     return indexed
 
 
+def normalize_data_catalog(catalog: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """规整 data_catalog，只保留稳定字段，避免把波动文件的时间戳噪声放大成稳定差异。"""
+
+    normalized: list[dict[str, Any]] = []
+    for item in catalog:
+        if not isinstance(item, dict):
+            continue
+
+        file_name = str(item.get("file_name", ""))
+        normalized_item = {
+            "file_name": file_name,
+            "description": item.get("description"),
+            "item_count": item.get("item_count"),
+        }
+
+        # 对 manifest 和构建日志这类天然会随每次构建变化的文件，只保留占位字段。
+        if file_name in VOLATILE_FILES:
+            normalized_item["size_bytes"] = None
+            normalized_item["sha256"] = None
+        else:
+            normalized_item["size_bytes"] = item.get("size_bytes")
+            normalized_item["sha256"] = item.get("sha256")
+
+        normalized.append(normalized_item)
+
+    return sorted(normalized, key=lambda item: item["file_name"])
+
+
 def compare_value_dict(left: dict[str, Any], right: dict[str, Any], fields: tuple[str, ...]) -> dict[str, Any]:
     """比较对象的指定字段，返回差异映射。"""
 
@@ -281,6 +309,27 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
 
     changed: list[dict[str, Any]] = []
     for file_name in common:
+        if file_name == DATA_CATALOG_FILE:
+            # data_catalog 本身会引用 graph_manifest / extraction_log 的哈希，
+            # 这些文件只要随构建时间变化就会触发目录表变动，因此这里先规整后再比。
+            left_data_catalog = load_json(resolve_artifact_path(left_dir, DATA_CATALOG_FILE))
+            right_data_catalog = load_json(resolve_artifact_path(right_dir, DATA_CATALOG_FILE))
+            if not isinstance(left_data_catalog, list):
+                raise ValueError("左侧目录中的 data_catalog.json 必须是列表")
+            if not isinstance(right_data_catalog, list):
+                raise ValueError("右侧目录中的 data_catalog.json 必须是列表")
+
+            if normalize_data_catalog(left_data_catalog) != normalize_data_catalog(right_data_catalog):
+                changed.append(
+                    {
+                        "file_name": file_name,
+                        "diffs": {
+                            "stable_catalog": "changed",
+                        },
+                    }
+                )
+            continue
+
         left_item = left_map[file_name]
         right_item = right_map[file_name]
         diffs = compare_value_dict(left_item, right_item, ("item_count", "size_bytes", "sha256", "description"))

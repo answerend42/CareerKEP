@@ -69,3 +69,4 @@ python scripts/validate_kg_data.py
 python scripts/compare_kg_catalog.py --left-dir output --right-dir output
 ```
 这个命令会同时对比 `data_catalog.json`、`graph_manifest.json`、`relation_catalog.json`、`relation_summary.json` 和 `relation_matrix.json`，还能进一步定位到具体 `relation_type` 的变化，方便排查关系规则和权重规则的回归。
+其中 `data_catalog.json` 会自动忽略 `graph_manifest.json` 和 `extraction_log.json` 这类天然波动文件引起的哈希变化，避免把纯时间戳噪声误判成稳定差异。
