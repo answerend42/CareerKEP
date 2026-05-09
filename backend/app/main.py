@@ -24,12 +24,55 @@ def _normalize_lookup_term(value: str) -> str:
     return "".join(str(value).strip().casefold().split())
 
 
+def _append_search_term(search_terms: list[str], value: str) -> None:
+    """把候选搜索词去空格、归一化后加入列表，保持去重。"""
+
+    normalized = _normalize_lookup_term(value)
+    if normalized and normalized not in search_terms:
+        search_terms.append(normalized)
+
+
+def _collect_role_search_terms(graph: Any, alias_map: dict[str, list[str]], node_id: str) -> list[str]:
+    """收集岗位节点可用于搜索的所有词条。
+
+    这里不仅收集岗位本身的 ID 和标签，还会沿着图谱向上回溯，把所有
+    祖先节点的 ID、标签和别名一起纳入，避免前端只会搜到表层岗位名，
+    漏掉更贴近用户输入习惯的能力词、证据词和别名词。
+    """
+
+    search_terms: list[str] = []
+    visited: set[str] = set()
+
+    def _visit(current_node_id: str) -> None:
+        if current_node_id in visited:
+            return
+        visited.add(current_node_id)
+
+        current_node = graph.nodes.get(current_node_id)
+        if current_node is None:
+            return
+
+        _append_search_term(search_terms, current_node.id)
+        _append_search_term(search_terms, current_node.label)
+        for alias in alias_map.get(current_node.id, []):
+            _append_search_term(search_terms, alias)
+
+        for edge in graph.incoming.get(current_node_id, []):
+            source_node = graph.nodes.get(edge.source)
+            if source_node is None:
+                continue
+            _visit(source_node.id)
+
+    _visit(node_id)
+    return search_terms
+
+
 def _build_role_options(graph: Any, alias_map: dict[str, list[str]]) -> list[dict[str, Any]]:
     """把角色节点整理成前端更容易直接使用的选项列表。
 
     这里额外附带 `search_terms`，方便前端做搜索下拉，不需要再自己处理
-    节点 ID、标签里的空格或大小写问题。再把别名词典一起合并进去，
-    这样前端可以直接用一份接口数据支持“岗位名 + 别名”搜索。
+    节点 ID、标签里的空格或大小写问题。搜索词会沿图谱祖先链向上收集，
+    这样前端可以直接用一份接口数据支持“岗位名 + 别名 + 能力词”搜索。
     """
 
     graph_summary = graph.summary()
@@ -37,22 +80,14 @@ def _build_role_options(graph: Any, alias_map: dict[str, list[str]]) -> list[dic
     for node in graph_summary.get("role_nodes", []):
         node_id = str(node.get("id") or "").strip()
         label = str(node.get("label") or node_id).strip()
-        search_terms: list[str] = []
-        for term in (node_id, label):
-            normalized = _normalize_lookup_term(term)
-            if normalized and normalized not in search_terms:
-                search_terms.append(normalized)
-
-        # 角色节点本身未必有独立别名，因此把它的上游能力/方向节点的别名也
-        # 合并进来，这样岗位搜索能同时覆盖“岗位名”和“相关能力词”。
-        for edge in graph.incoming.get(node_id, []):
-            source_node = graph.nodes.get(edge.source)
-            if source_node is None or source_node.layer == "evidence":
-                continue
-            for alias in alias_map.get(source_node.id, []):
-                normalized_alias = _normalize_lookup_term(alias)
-                if normalized_alias and normalized_alias not in search_terms:
-                    search_terms.append(normalized_alias)
+        search_terms = _collect_role_search_terms(graph, alias_map, node_id)
+        if label:
+            # 把展示标签挪到前面，便于前端调试时优先看到最直观的岗位名。
+            search_terms = [term for term in search_terms if term != _normalize_lookup_term(label)]
+            search_terms.insert(0, _normalize_lookup_term(label))
+        if node_id and _normalize_lookup_term(node_id) in search_terms:
+            search_terms = [term for term in search_terms if term != _normalize_lookup_term(node_id)]
+            search_terms.insert(0, _normalize_lookup_term(node_id))
         role_options.append(
             {
                 "node_id": node_id,
