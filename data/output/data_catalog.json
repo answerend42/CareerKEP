@@ -102,13 +102,13 @@
     "description": "机器可读图谱契约",
     "item_count": 17,
     "size_bytes": 9544,
-    "sha256": "92e2849a9d4e62678c225f8733373ce86b8ca69de68d757572eeaea5a7bddb1b"
+    "sha256": "638557e92acb4ccac07ad5bd252c6cbf8ed9575330c168499d1ca5d6c2b73283"
   },
   {
     "file_name": "graph_manifest.json",
     "description": "构建清单",
     "item_count": 17,
     "size_bytes": 1874,
-    "sha256": "ebb51bb7bb57de163ecc7e4997477a3047ec4fd7d791ef6295fec9cb960656dd"
+    "sha256": "7d662aa168bf8196c5db938583b1d2edf9df4643853f53b9864f1437d1a6cf05"
   }
 ]

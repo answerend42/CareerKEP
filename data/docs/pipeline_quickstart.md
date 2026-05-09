@@ -1,6 +1,6 @@
-# data 模块快速开始
+# data 模块快速上手
 
-这个目录只负责知识图谱数据，不碰 `preprocess/`、`backend/`、`frontend/`。
+`data/` 负责承接 `preprocess/` 阶段输出的实体与原始证据，完成关系抽取、边权聚合、图索引构建，并把 backend 可以直接消费的图谱数据沉淀到 `output/`。
 
 ## 推荐流程
 
@@ -10,51 +10,59 @@
 python scripts/rebuild_and_validate.py
 ```
 
-如果需要单独构建或指定输入，可以这样写：
+如果只想单独构建或单独校验，也可以这样运行：
 
 ```powershell
 python scripts/build_kg_data.py --entities input/sample_entities.json --evidence input/sample_evidence.json --output-dir output
-```
-
-```powershell
 python scripts/validate_kg_data.py --output-dir output
 ```
 
-## 主要输出
+如果要对比两次构建结果，可以使用：
+
+```powershell
+python scripts/compare_kg_catalog.py --left-dir output --right-dir output
+```
+
+## 核心输出
 
 - `output/nodes.json`
   - 去重后的实体节点。
 - `output/relation_instances.json`
   - 句子级关系实例，保留原始证据和命中的关键词。
 - `output/relation_candidates.json`
-  - 候选轨迹，记录最终关系为什么被选中，并保留目标邻近度分数和结构化选择因子。
+  - 候选关系轨迹，记录最终选择了哪一条关系，以及为什么选中。
 - `output/edges.json`
-  - 聚合后的图谱边，包含权重和证据数。
+  - 聚合后的图谱边，包含权重、证据数和关键词集合。
 - `output/relation_catalog.json`
-  - 关系目录，汇总关系类型、关键词分组和当前证据覆盖，方便后续调参。
+  - 关系目录，汇总关系类型、关键词分组和覆盖情况。
+- `output/relation_matrix.json`
+  - 按实体类型对关系做矩阵化汇总，便于后续传播逻辑直接使用。
 - `output/graph_index.json`
-  - 按节点和关系整理的索引，便于 backend 直接消费。
+  - 图索引，包含邻接表和按实体类型、关系类型划分的索引。
 - `output/graph_quality.json`
-  - 节点覆盖、孤立点和度分布摘要。
+  - 图谱质量报告，记录孤立节点、度分布和覆盖率。
 - `output/career_profiles.json`
-  - 职业画像聚合结果。
+  - 职业画像，聚合职业的技能、工具、学历、特质和相关岗位。
 - `output/recommendation_index.json`
-  - 反向推荐索引，适合召回层使用。
+  - 反向推荐索引，便于根据目标实体召回职业。
 - `output/entity_lookup.json`
-  - 按 ID 直接查询的实体索引，减少后端扫描。
+  - 实体查找索引，按职业画像和推荐结果做快速定位。
 - `output/node_lookup.json`
-  - 全量节点索引，按 ID、名称、别名和类型组织，便于快速检索。
+  - 节点查询索引，支持按 ID、名称、别名和类型查找。
 - `output/relation_summary.json`
-  - 关系统计摘要。
+  - 关系统计摘要，适合快速查看抽取是否正常。
 - `output/extraction_log.json`
-  - 构建日志和来源记录。
-- `output/data_catalog.json`
-  - 输出目录清单，记录大小和 SHA256。
+  - 构建日志和输入文件追踪信息。
 - `output/graph_manifest.json`
-  - 构建清单，记录输入来源和输出列表。
+  - 构建清单，记录输入来源和输出文件列表。
+- `output/graph_contract.json`
+  - 机器可读图谱契约，backend 可据此核对输出边界和约束。
+- `output/data_catalog.json`
+  - 输出目录清单，记录每个产物的大小和 SHA256。
 
-## 使用提醒
+## 维护要点
 
-- 最终输出尽量保持字段稳定，方便 backend 直接读取。
-- 新增字段优先追加，不要随意改名。
-- 如果要排查抽取问题，先看 `relation_candidates.json`，再看 `edges.json` 和 `graph_quality.json`。
+- 关系类型尽量少而稳定，避免图传播放大歧义。
+- 新增关键词优先补到 `config/`，不要把规则散落在脚本里。
+- 输出字段尽量保持稳定，新增字段优先追加，不要随意改名。
+- 若要比较两次构建，优先看 `compare_kg_catalog.py` 的结果，它已经把 `graph_contract.json` 纳入稳定比对。

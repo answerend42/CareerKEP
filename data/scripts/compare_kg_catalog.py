@@ -9,6 +9,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DATA_CATALOG_FILE = "data_catalog.json"
 GRAPH_MANIFEST_FILE = "graph_manifest.json"
+GRAPH_CONTRACT_FILE = "graph_contract.json"
 RELATION_MATRIX_FILE = "relation_matrix.json"
 RELATION_CATALOG_FILE = "relation_catalog.json"
 RELATION_SUMMARY_FILE = "relation_summary.json"
@@ -56,6 +57,17 @@ RELATION_SUMMARY_FIELDS = (
     "relation_count",
     "type_pair_count",
     "weight_range",
+)
+
+GRAPH_CONTRACT_FIELDS = (
+    "contract_version",
+    "allowed_entity_types",
+    "source_files",
+    "weight_rules",
+    "relation_catalog_summary",
+    "relation_matrix_summary",
+    "graph_health",
+    "output_files",
 )
 
 RELATION_STABLE_FIELDS = (
@@ -160,6 +172,14 @@ def normalize_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
     """去掉时间戳后再做比较，避免同一批数据仅因生成时间不同而产生噪声。"""
 
     normalized = dict(manifest)
+    normalized.pop("generated_at", None)
+    return normalized
+
+
+def normalize_graph_contract(contract: dict[str, Any]) -> dict[str, Any]:
+    """把图谱契约规整成稳定结构，便于比较不同构建批次是否真的发生变化。"""
+
+    normalized = dict(contract)
     normalized.pop("generated_at", None)
     return normalized
 
@@ -366,10 +386,22 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
     if not isinstance(right_relation_summary, dict):
         raise ValueError("右侧目录中的 relation_summary.json 必须是对象")
 
+    left_graph_contract = load_json(resolve_artifact_path(left_dir, GRAPH_CONTRACT_FILE))
+    right_graph_contract = load_json(resolve_artifact_path(right_dir, GRAPH_CONTRACT_FILE))
+    if not isinstance(left_graph_contract, dict):
+        raise ValueError("左侧目录中的 graph_contract.json 必须是对象")
+    if not isinstance(right_graph_contract, dict):
+        raise ValueError("右侧目录中的 graph_contract.json 必须是对象")
+
     manifest_diffs = compare_value_dict(
         normalize_manifest(left_manifest),
         normalize_manifest(right_manifest),
         GRAPH_MANIFEST_FIELDS,
+    )
+    graph_contract_diffs = compare_value_dict(
+        normalize_graph_contract(left_graph_contract),
+        normalize_graph_contract(right_graph_contract),
+        GRAPH_CONTRACT_FIELDS,
     )
     matrix_diffs = compare_value_dict(left_matrix, right_matrix, RELATION_MATRIX_FIELDS)
     catalog_diffs = compare_value_dict(
@@ -422,6 +454,11 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
                 "right_path": str(resolve_artifact_path(right_dir, GRAPH_MANIFEST_FILE)),
                 "diffs": manifest_diffs,
             },
+            "graph_contract": {
+                "left_path": str(resolve_artifact_path(left_dir, GRAPH_CONTRACT_FILE)),
+                "right_path": str(resolve_artifact_path(right_dir, GRAPH_CONTRACT_FILE)),
+                "diffs": graph_contract_diffs,
+            },
             "relation_catalog": {
                 "left_path": str(resolve_artifact_path(left_dir, RELATION_CATALOG_FILE)),
                 "right_path": str(resolve_artifact_path(right_dir, RELATION_CATALOG_FILE)),
@@ -446,6 +483,7 @@ def compare_catalogs(left_dir: Path, right_dir: Path) -> dict[str, Any]:
             "stable_changed_count": len(diff_groups["stable_changed"]),
             "volatile_changed_count": len(diff_groups["volatile_changed"]),
             "graph_manifest_changed_count": len(manifest_diffs),
+            "graph_contract_changed_count": len(graph_contract_diffs),
             "relation_catalog_changed_count": len(catalog_diffs),
             "relation_detail_changed_count": len(relation_detail_diffs),
             "relation_summary_changed_count": len(summary_diffs),
