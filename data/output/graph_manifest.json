@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-09T15:42:01Z",
+  "generated_at": "2026-05-09T15:51:40Z",
   "entity_count": 17,
   "evidence_count": 6,
   "relation_instance_count": 20,
@@ -31,8 +31,9 @@
     "node_lookup.json",
     "relation_summary.json",
     "extraction_log.json",
-    "data_catalog.json",
-    "graph_manifest.json"
+    "graph_contract.json",
+    "graph_manifest.json",
+    "data_catalog.json"
   ],
   "source_files": {
     "entities": {

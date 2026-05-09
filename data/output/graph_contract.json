@@ -1,0 +1,403 @@
+{
+  "contract_version": "1.0",
+  "generated_at": "2026-05-09T15:51:40Z",
+  "allowed_entity_types": [
+    "education",
+    "occupation",
+    "skill",
+    "tool",
+    "trait"
+  ],
+  "source_files": {
+    "entities": {
+      "path": "input/sample_entities.json",
+      "size_bytes": 2951,
+      "sha256": "9cf8498b06010d53a72b8c639d9d756dc477afcce6eb81ac3c049bd170b80723"
+    },
+    "evidence": {
+      "path": "input/sample_evidence.json",
+      "size_bytes": 1145,
+      "sha256": "290054e40a828d6c0bb6e39d4b7d6011df9d4edabce2ada501743cc3a90e46b3"
+    },
+    "schema": {
+      "path": "config/relation_schema.json",
+      "size_bytes": 1347,
+      "sha256": "718b44c0a15bf5b7ee537e51eba38b7131d8b0bf54a249f705e3d3a5f96f9e89"
+    },
+    "keywords": {
+      "path": "config/relation_keywords.json",
+      "size_bytes": 1632,
+      "sha256": "ace725d9071cc5841eac34e83570be000b609af7b4ccc0b13898e7e858710d2a"
+    },
+    "rules": {
+      "path": "config/weight_rules.json",
+      "size_bytes": 303,
+      "sha256": "fa0a9f4a9c2b9b911c550af15d845845f347522f3ab808e75dd437b6fce17714"
+    }
+  },
+  "weight_rules": {
+    "evidence_bonus_per_extra_sentence": 0.08,
+    "max_evidence_bonus": 0.24,
+    "entity_confidence_floor": 0.5,
+    "entity_confidence_ceiling": 1.0,
+    "relation_confidence_multiplier": 0.5,
+    "weight_min": 0.1,
+    "weight_max": 1.2
+  },
+  "relation_catalog_summary": {
+    "relation_type_count": 6,
+    "observed_relation_type_count": 6,
+    "coverage_summary": {
+      "relation_type_count": 6,
+      "observed_relation_type_count": 6,
+      "unobserved_relation_type_count": 0,
+      "coverage_rate": 1.0
+    },
+    "observed_relation_types": [
+      "needs_trait",
+      "preferred_skill",
+      "related_role",
+      "requires_education",
+      "requires_skill",
+      "uses_tool"
+    ],
+    "unobserved_relation_types": []
+  },
+  "relation_types": [
+    {
+      "relation_type": "needs_trait",
+      "source_types": [
+        "occupation"
+      ],
+      "target_types": [
+        "trait"
+      ],
+      "base_weight": 0.55,
+      "description": "职业偏好的能力或性格特征",
+      "keyword_groups": [
+        {
+          "source_type": "occupation",
+          "target_type": "trait",
+          "keywords": [
+            "思维",
+            "沟通",
+            "素质",
+            "细致",
+            "耐心",
+            "能力"
+          ],
+          "keyword_count": 6
+        }
+      ],
+      "keyword_count": 6,
+      "matched_edge_count": 2,
+      "coverage_rate": 0.1,
+      "weight_range": {
+        "min": 0.7675,
+        "max": 0.77
+      }
+    },
+    {
+      "relation_type": "preferred_skill",
+      "source_types": [
+        "occupation"
+      ],
+      "target_types": [
+        "skill"
+      ],
+      "base_weight": 0.7,
+      "description": "职业加分项或优先技能",
+      "keyword_groups": [
+        {
+          "source_type": "occupation",
+          "target_type": "skill",
+          "keywords": [
+            "优先",
+            "加分",
+            "建议",
+            "更佳"
+          ],
+          "keyword_count": 4
+        }
+      ],
+      "keyword_count": 4,
+      "matched_edge_count": 1,
+      "coverage_rate": 0.05,
+      "weight_range": {
+        "min": 0.9275,
+        "max": 0.9275
+      }
+    },
+    {
+      "relation_type": "related_role",
+      "source_types": [
+        "occupation"
+      ],
+      "target_types": [
+        "occupation"
+      ],
+      "base_weight": 0.5,
+      "description": "相近或可迁移的岗位关系",
+      "keyword_groups": [
+        {
+          "source_type": "occupation",
+          "target_type": "occupation",
+          "keywords": [
+            "可迁移",
+            "延伸",
+            "方向",
+            "相关",
+            "转向"
+          ],
+          "keyword_count": 5
+        }
+      ],
+      "keyword_count": 5,
+      "matched_edge_count": 1,
+      "coverage_rate": 0.05,
+      "weight_range": {
+        "min": 0.7375,
+        "max": 0.7375
+      }
+    },
+    {
+      "relation_type": "requires_education",
+      "source_types": [
+        "occupation"
+      ],
+      "target_types": [
+        "education"
+      ],
+      "base_weight": 0.65,
+      "description": "职业常见学历要求",
+      "keyword_groups": [
+        {
+          "source_type": "occupation",
+          "target_type": "education",
+          "keywords": [
+            "专科",
+            "学历",
+            "本科",
+            "研究生",
+            "硕士"
+          ],
+          "keyword_count": 5
+        }
+      ],
+      "keyword_count": 5,
+      "matched_edge_count": 1,
+      "coverage_rate": 0.05,
+      "weight_range": {
+        "min": 0.885,
+        "max": 0.885
+      }
+    },
+    {
+      "relation_type": "requires_skill",
+      "source_types": [
+        "occupation"
+      ],
+      "target_types": [
+        "skill"
+      ],
+      "base_weight": 1.0,
+      "description": "职业要求掌握的核心技能",
+      "keyword_groups": [
+        {
+          "source_type": "occupation",
+          "target_type": "skill",
+          "keywords": [
+            "具备",
+            "必须",
+            "掌握",
+            "熟悉",
+            "要求",
+            "需要"
+          ],
+          "keyword_count": 6
+        }
+      ],
+      "keyword_count": 6,
+      "matched_edge_count": 10,
+      "coverage_rate": 0.5,
+      "weight_range": {
+        "min": 1.2,
+        "max": 1.2
+      }
+    },
+    {
+      "relation_type": "uses_tool",
+      "source_types": [
+        "occupation"
+      ],
+      "target_types": [
+        "tool"
+      ],
+      "base_weight": 0.85,
+      "description": "职业工作中常用的工具或技术栈",
+      "keyword_groups": [
+        {
+          "source_type": "occupation",
+          "target_type": "tool",
+          "keywords": [
+            "使用",
+            "依赖",
+            "借助",
+            "基于"
+          ],
+          "keyword_count": 4
+        },
+        {
+          "source_type": "occupation",
+          "target_type": "tool",
+          "keywords": [
+            "具备",
+            "必须",
+            "掌握",
+            "熟悉",
+            "要求",
+            "需要"
+          ],
+          "keyword_count": 6
+        }
+      ],
+      "keyword_count": 10,
+      "matched_edge_count": 5,
+      "coverage_rate": 0.25,
+      "weight_range": {
+        "min": 1.0775,
+        "max": 1.0875
+      }
+    }
+  ],
+  "relation_matrix_summary": {
+    "edge_count": 20,
+    "pair_count": 5,
+    "source_types": [
+      "occupation"
+    ],
+    "target_types": [
+      "education",
+      "occupation",
+      "skill",
+      "tool",
+      "trait"
+    ],
+    "relation_types": [
+      "needs_trait",
+      "preferred_skill",
+      "related_role",
+      "requires_education",
+      "requires_skill",
+      "uses_tool"
+    ]
+  },
+  "graph_health": {
+    "node_count": 17,
+    "edge_count": 20,
+    "connected_node_count": 17,
+    "isolated_node_count": 0,
+    "average_degree": 2.3529,
+    "node_type_coverage": {
+      "education": {
+        "total": 1,
+        "connected": 1,
+        "coverage_rate": 1.0
+      },
+      "occupation": {
+        "total": 5,
+        "connected": 5,
+        "coverage_rate": 1.0
+      },
+      "skill": {
+        "total": 6,
+        "connected": 6,
+        "coverage_rate": 1.0
+      },
+      "tool": {
+        "total": 3,
+        "connected": 3,
+        "coverage_rate": 1.0
+      },
+      "trait": {
+        "total": 2,
+        "connected": 2,
+        "coverage_rate": 1.0
+      }
+    },
+    "quality_flags": {
+      "has_isolated_node": false,
+      "edge_density": 1.1765
+    }
+  },
+  "output_files": [
+    {
+      "file_name": "nodes.json",
+      "role": "去重后的实体节点"
+    },
+    {
+      "file_name": "relation_instances.json",
+      "role": "证据级关系实例"
+    },
+    {
+      "file_name": "relation_candidates.json",
+      "role": "关系候选轨迹"
+    },
+    {
+      "file_name": "edges.json",
+      "role": "聚合后的图谱边"
+    },
+    {
+      "file_name": "relation_catalog.json",
+      "role": "关系目录"
+    },
+    {
+      "file_name": "relation_matrix.json",
+      "role": "关系矩阵"
+    },
+    {
+      "file_name": "graph_index.json",
+      "role": "图索引"
+    },
+    {
+      "file_name": "graph_quality.json",
+      "role": "图谱质量报告"
+    },
+    {
+      "file_name": "career_profiles.json",
+      "role": "职业画像"
+    },
+    {
+      "file_name": "recommendation_index.json",
+      "role": "反向推荐索引"
+    },
+    {
+      "file_name": "entity_lookup.json",
+      "role": "实体查询索引"
+    },
+    {
+      "file_name": "node_lookup.json",
+      "role": "节点查询索引"
+    },
+    {
+      "file_name": "relation_summary.json",
+      "role": "关系统计摘要"
+    },
+    {
+      "file_name": "extraction_log.json",
+      "role": "构建日志"
+    },
+    {
+      "file_name": "graph_contract.json",
+      "role": "机器可读图谱契约"
+    },
+    {
+      "file_name": "graph_manifest.json",
+      "role": "构建清单"
+    },
+    {
+      "file_name": "data_catalog.json",
+      "role": "输出目录清单"
+    }
+  ]
+}
