@@ -435,6 +435,54 @@ pre {
   border: 1px solid rgba(114, 240, 192, 0.18);
 }
 
+.run-status {
+  display: grid;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.run-status small {
+  color: var(--muted);
+}
+
+.run-status-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 7px 11px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.88rem;
+}
+
+.run-status-badge.success {
+  background: rgba(114, 240, 192, 0.12);
+  border-color: rgba(114, 240, 192, 0.24);
+  color: var(--accent);
+}
+
+.run-status-badge.warning {
+  background: rgba(255, 184, 107, 0.12);
+  border-color: rgba(255, 184, 107, 0.24);
+  color: var(--warning);
+}
+
+.run-status-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.run-status-panel h3 {
+  margin: 0 0 6px;
+}
+
+.run-status-panel p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .slider-group .field input[type='range'] {
   padding: 0;
   width: 100%;

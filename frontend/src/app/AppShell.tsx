@@ -13,15 +13,23 @@ import { InputPane } from './panes/InputPane';
 import { TunePane } from './panes/TunePane';
 import { GraphPane } from './panes/GraphPane';
 import { ResultPane } from './panes/ResultPane';
-import type { DemoState, RecommendationResponse } from './types';
+import type { DemoState, RecommendationResponse, RunStatus } from './types';
 
-const stepLabels = ['输入画像', '微调画像', '图谱传播', '结果解释'] as const;
+const stepLabels = ['输入画像', '调整参数', '图谱传播', '结果解释'] as const;
+const requestTimeoutMs = 6000;
+
+const localRunStatus: RunStatus = {
+  source: 'local-demo',
+  label: '本地模拟结果',
+  detail: '当前由前端 demoData 直接生成，便于离线演示和后端未启动时查看。'
+};
 
 export function AppShell() {
   const [state, setState] = useState<DemoState>(defaultDemoState);
   const [activeStep, setActiveStep] = useState<(typeof stepLabels)[number]>('输入画像');
   const [lastRun, setLastRun] = useState<RecommendationResponse>(() => buildRecommendationResponse(defaultDemoState));
   const [isRunning, setIsRunning] = useState(false);
+  const [runStatus, setRunStatus] = useState<RunStatus>(localRunStatus);
 
   const roleOptions = useMemo(() => getRoleOptions(), []);
   const demoCopy = useMemo(() => getDemoCopy(lastRun), [lastRun]);
@@ -33,6 +41,7 @@ export function AppShell() {
     setState((current) => {
       const nextState = { ...current, [key]: value };
       setLastRun(buildRecommendationResponse(nextState));
+      setRunStatus(localRunStatus);
       return nextState;
     });
   };
@@ -45,17 +54,22 @@ export function AppShell() {
 
     setState(preset.state);
     setLastRun(buildRecommendationResponse(preset.state));
+    setRunStatus(localRunStatus);
     setActiveStep('输入画像');
   };
 
   const runRecommendation = async () => {
     setIsRunning(true);
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), requestTimeoutMs);
+
     try {
       const response = await fetch('/api/recommend', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
+        signal: controller.signal,
         body: JSON.stringify({
           text: state.text,
           target_role: state.targetRole,
@@ -71,11 +85,27 @@ export function AppShell() {
 
       const payload = (await response.json()) as RecommendationResponse;
       setLastRun(payload);
+      setRunStatus({
+        source: 'backend',
+        label: '后端推荐结果',
+        detail: '当前内容来自 `/api/recommend`，可以直接和本地模拟结果对比。'
+      });
       setActiveStep('结果解释');
-    } catch {
+    } catch (error) {
+      const detail =
+        error instanceof DOMException && error.name === 'AbortError'
+          ? '后端请求超时，页面已回退到本地模拟结果。'
+          : '后端请求失败，页面已回退到本地模拟结果。';
+
       setLastRun(buildRecommendationResponse(state));
+      setRunStatus({
+        source: 'local-demo',
+        label: '本地模拟结果',
+        detail
+      });
       setActiveStep('结果解释');
     } finally {
+      window.clearTimeout(timeoutId);
       setIsRunning(false);
     }
   };
@@ -83,6 +113,7 @@ export function AppShell() {
   const syncAndPreview = (nextState: DemoState) => {
     setState(nextState);
     setLastRun(buildRecommendationResponse(nextState));
+    setRunStatus(localRunStatus);
   };
 
   const exportDiagnosticSnapshot = () => {
@@ -124,7 +155,7 @@ export function AppShell() {
 
       <header className="hero-card">
         <div className="hero-copy">
-          <p className="eyebrow">Career KG · 前端工作台</p>
+          <p className="eyebrow">Career KG 前端工作台</p>
           <h1>把自然语言画像，变成可解释的职业推荐</h1>
           <p className="hero-text">
             这个前端围绕四个阶段展开：输入画像、微调画像、图谱传播、结果解释。
@@ -151,6 +182,12 @@ export function AppShell() {
             <h2>{demoCopy.headline}</h2>
             <p>{demoCopy.summary}</p>
             <p className="summary-note">{demoCopy.targetLine}</p>
+            <div className="run-status">
+              <span className={`run-status-badge ${runStatus.source === 'backend' ? 'success' : 'warning'}`}>
+                {runStatus.label}
+              </span>
+              <small>{runStatus.detail}</small>
+            </div>
           </div>
           <div className="step-rail" aria-label="四阶段导航">
             {stepLabels.map((label, index) => (
@@ -200,6 +237,7 @@ export function AppShell() {
             response={lastRun}
             activeStep={activeStep}
             robustnessReport={robustnessReport}
+            runStatus={runStatus}
             onExportSnapshot={exportDiagnosticSnapshot}
             onCopySnapshot={copyDiagnosticSnapshot}
           />

@@ -1,9 +1,10 @@
-import type { RecommendationResponse, RobustnessReport } from '../types';
+import type { RecommendationResponse, RobustnessReport, RunStatus } from '../types';
 
 interface ResultPaneProps {
   response: RecommendationResponse;
   activeStep: string;
   robustnessReport: RobustnessReport;
+  runStatus: RunStatus;
   onExportSnapshot: () => void;
   onCopySnapshot: () => void;
 }
@@ -18,6 +19,7 @@ export function ResultPane({
   response,
   activeStep,
   robustnessReport,
+  runStatus,
   onExportSnapshot,
   onCopySnapshot
 }: ResultPaneProps) {
@@ -31,6 +33,17 @@ export function ResultPane({
         <span className="status-badge">{activeStep === '结果解释' ? '当前焦点' : '输出摘要'}</span>
       </div>
 
+      <section className="analysis-card run-status-panel">
+        <div>
+          <p className="pane-kicker">运行来源</p>
+          <h3>{runStatus.label}</h3>
+          <p>{runStatus.detail}</p>
+        </div>
+        <span className={`run-status-badge ${runStatus.source === 'backend' ? 'success' : 'warning'}`}>
+          {runStatus.source === 'backend' ? '后端接口' : '本地回退'}
+        </span>
+      </section>
+
       <section className="result-block">
         <div className="section-head">
           <h3>正式推荐</h3>
@@ -43,8 +56,8 @@ export function ResultPane({
                 <strong>{item.label}</strong>
                 <span>{formatPercent(item.score)}</span>
               </div>
-              <p>{item.reason.join('；')}</p>
-              <small>路径：{item.path.join(' · ')}</small>
+              <p>{item.reason.join('、')}</p>
+              <small>路径：{item.path.join(' -> ')}</small>
             </article>
           ))}
         </div>
@@ -161,7 +174,7 @@ export function ResultPane({
             <small className="summary-note-inline">{formatDelta(robustnessReport.worstRegressionDelta)}</small>
           </div>
           <div className="result-summary-card">
-            <span>改进率</span>
+            <span>改善率</span>
             <strong>{formatPercent(robustnessReport.cases.length ? robustnessReport.improvedCount / robustnessReport.cases.length : 0)}</strong>
           </div>
         </div>
@@ -174,8 +187,8 @@ export function ResultPane({
               </div>
               <p>{item.description}</p>
               <small>
-                {item.warning} · 默认 {formatPercent(item.baselineTopScore)} · 变化 {formatDelta(item.scoreDelta)} · 推荐{' '}
-                {item.recommendationCount} 个 · near miss {item.nearMissCount} 个 · 覆盖率 {formatPercent(item.coverage)}
+                {item.warning} | 基线 {formatPercent(item.baselineTopScore)} | 变化 {formatDelta(item.scoreDelta)} | 推荐{' '}
+                {item.recommendationCount} 个 | near miss {item.nearMissCount} 个 | 覆盖率 {formatPercent(item.coverage)}
               </small>
               <div className="tag-row">
                 <span className={`tag ${item.scoreDelta >= 0 ? 'success' : 'warning'}`}>

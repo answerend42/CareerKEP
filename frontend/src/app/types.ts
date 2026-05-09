@@ -145,3 +145,11 @@ export interface SnapshotExportResult {
   filename: string;
   content: string;
 }
+
+export type RunSource = 'backend' | 'local-demo';
+
+export interface RunStatus {
+  source: RunSource;
+  label: string;
+  detail: string;
+}
