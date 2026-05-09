@@ -1114,6 +1114,47 @@ def build_entity_lookup(
     }
 
 
+def build_node_lookup(nodes: list[dict[str, Any]]) -> dict[str, Any]:
+    """把全部节点整理成可直接按 ID、名称、别名和类型查询的索引。"""
+
+    by_id: dict[str, dict[str, Any]] = {}
+    by_name: dict[str, list[str]] = defaultdict(list)
+    by_alias: dict[str, list[str]] = defaultdict(list)
+    by_type: dict[str, list[str]] = defaultdict(list)
+
+    for node in nodes:
+        node_id = str(node["id"])
+        node_name = str(node["name"])
+        node_type = str(node["type"])
+        by_id[node_id] = node
+        by_name[node_name].append(node_id)
+        by_type[node_type].append(node_id)
+
+        aliases = node.get("aliases", [])
+        if isinstance(aliases, list):
+            for alias in aliases:
+                alias_text = str(alias)
+                if alias_text:
+                    by_alias[alias_text].append(node_id)
+
+    for mapping in (by_name, by_alias, by_type):
+        for key in mapping:
+            mapping[key].sort()
+
+    return {
+        "by_id": dict(sorted(by_id.items())),
+        "by_name": dict(sorted(by_name.items())),
+        "by_alias": dict(sorted(by_alias.items())),
+        "by_type": dict(sorted(by_type.items())),
+        "summary": {
+            "node_count": len(nodes),
+            "name_count": len(by_name),
+            "alias_count": len(by_alias),
+            "type_count": len(by_type),
+        },
+    }
+
+
 def build_manifest(
     nodes: list[dict[str, Any]],
     relation_instances: list[RelationInstance],
@@ -1122,6 +1163,7 @@ def build_manifest(
     career_profiles: list[dict[str, Any]],
     recommendation_index: list[dict[str, Any]],
     entity_lookup: dict[str, Any],
+    node_lookup: dict[str, Any],
     evidence_count: int,
     args: argparse.Namespace,
 ) -> dict[str, Any]:
@@ -1150,6 +1192,7 @@ def build_manifest(
             "career_profiles.json",
             "recommendation_index.json",
             "entity_lookup.json",
+            "node_lookup.json",
             "relation_summary.json",
             "extraction_log.json",
             "data_catalog.json",
@@ -1174,6 +1217,7 @@ def build_data_catalog(
     career_profiles: list[dict[str, Any]],
     recommendation_index: list[dict[str, Any]],
     entity_lookup: dict[str, Any],
+    node_lookup: dict[str, Any],
 ) -> list[dict[str, Any]]:
     """生成所有输出文件的目录和校验信息。"""
 
@@ -1188,6 +1232,7 @@ def build_data_catalog(
         ("career_profiles.json", "职业画像"),
         ("recommendation_index.json", "反向推荐索引"),
         ("entity_lookup.json", "实体查询索引"),
+        ("node_lookup.json", "节点查询索引"),
         ("relation_summary.json", "关系统计摘要"),
         ("extraction_log.json", "构建日志"),
         ("graph_manifest.json", "构建清单"),
@@ -1201,6 +1246,7 @@ def build_data_catalog(
         "career_profiles.json": career_profiles,
         "recommendation_index.json": recommendation_index,
         "entity_lookup.json": entity_lookup,
+        "node_lookup.json": node_lookup,
     }
 
     catalog: list[dict[str, Any]] = []
@@ -1220,6 +1266,8 @@ def build_data_catalog(
                 item_count = len(payload.get("output_files", []))
             elif file_name == "relation_catalog.json":
                 item_count = int(payload.get("relation_type_count", len(payload.get("relations", []))))
+            elif file_name == "node_lookup.json":
+                item_count = int(payload.get("summary", {}).get("node_count", len(payload.get("by_id", {}))))
             elif "edge_count" in payload:
                 item_count = int(payload["edge_count"])
             elif "node_count" in payload:
@@ -1279,6 +1327,7 @@ def main() -> int:
     career_profiles = build_career_profiles(entities, edges)
     recommendation_index = build_recommendation_index(entities, edges)
     entity_lookup = build_entity_lookup(career_profiles, recommendation_index)
+    node_lookup = build_node_lookup(nodes)
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1293,6 +1342,7 @@ def main() -> int:
     write_json(output_dir / "career_profiles.json", career_profiles)
     write_json(output_dir / "recommendation_index.json", recommendation_index)
     write_json(output_dir / "entity_lookup.json", entity_lookup)
+    write_json(output_dir / "node_lookup.json", node_lookup)
     write_json(output_dir / "relation_summary.json", summarize_edges(edges))
     write_json(
         output_dir / "extraction_log.json",
@@ -1337,6 +1387,7 @@ def main() -> int:
         career_profiles,
         recommendation_index,
         entity_lookup,
+        node_lookup,
         len(evidence_items),
         args,
     )
@@ -1350,6 +1401,7 @@ def main() -> int:
         career_profiles,
         recommendation_index,
         entity_lookup,
+        node_lookup,
     )
     write_json(output_dir / "data_catalog.json", data_catalog)
 

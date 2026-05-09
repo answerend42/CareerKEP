@@ -42,6 +42,8 @@ python scripts/validate_kg_data.py --output-dir output
   - 反向推荐索引，适合召回层使用。
 - `output/entity_lookup.json`
   - 按 ID 直接查询的实体索引，减少后端扫描。
+- `output/node_lookup.json`
+  - 全量节点索引，按 ID、名称、别名和类型组织，便于快速检索。
 - `output/relation_summary.json`
   - 关系统计摘要。
 - `output/extraction_log.json`

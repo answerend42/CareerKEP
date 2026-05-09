@@ -1,0 +1,283 @@
+{
+  "by_id": {
+    "edu_bachelor": {
+      "id": "edu_bachelor",
+      "name": "本科",
+      "type": "education",
+      "aliases": [
+        "本科学历"
+      ],
+      "confidence": 0.99,
+      "source": "preprocess"
+    },
+    "occ_algo_engineer": {
+      "id": "occ_algo_engineer",
+      "name": "算法工程师",
+      "type": "occupation",
+      "aliases": [
+        "机器学习工程师"
+      ],
+      "confidence": 0.96,
+      "source": "preprocess"
+    },
+    "occ_backend_engineer": {
+      "id": "occ_backend_engineer",
+      "name": "后端开发工程师",
+      "type": "occupation",
+      "aliases": [
+        "后端开发",
+        "后端工程师"
+      ],
+      "confidence": 0.98,
+      "source": "preprocess"
+    },
+    "occ_data_analyst": {
+      "id": "occ_data_analyst",
+      "name": "数据分析师",
+      "type": "occupation",
+      "aliases": [
+        "数据分析岗位"
+      ],
+      "confidence": 0.96,
+      "source": "preprocess"
+    },
+    "occ_python_engineer": {
+      "id": "occ_python_engineer",
+      "name": "Python开发工程师",
+      "type": "occupation",
+      "aliases": [
+        "Python工程师",
+        "Python开发"
+      ],
+      "confidence": 0.97,
+      "source": "preprocess"
+    },
+    "occ_test_engineer": {
+      "id": "occ_test_engineer",
+      "name": "测试工程师",
+      "type": "occupation",
+      "aliases": [
+        "软件测试工程师"
+      ],
+      "confidence": 0.95,
+      "source": "preprocess"
+    },
+    "skill_excel": {
+      "id": "skill_excel",
+      "name": "Excel",
+      "type": "skill",
+      "aliases": [],
+      "confidence": 0.95,
+      "source": "preprocess"
+    },
+    "skill_git": {
+      "id": "skill_git",
+      "name": "Git",
+      "type": "tool",
+      "aliases": [],
+      "confidence": 0.96,
+      "source": "preprocess"
+    },
+    "skill_java": {
+      "id": "skill_java",
+      "name": "Java",
+      "type": "skill",
+      "aliases": [
+        "Java语言"
+      ],
+      "confidence": 0.99,
+      "source": "preprocess"
+    },
+    "skill_linux": {
+      "id": "skill_linux",
+      "name": "Linux",
+      "type": "tool",
+      "aliases": [],
+      "confidence": 0.97,
+      "source": "preprocess"
+    },
+    "skill_mysql": {
+      "id": "skill_mysql",
+      "name": "MySQL",
+      "type": "tool",
+      "aliases": [
+        "数据库MySQL"
+      ],
+      "confidence": 0.97,
+      "source": "preprocess"
+    },
+    "skill_numpy": {
+      "id": "skill_numpy",
+      "name": "NumPy",
+      "type": "skill",
+      "aliases": [],
+      "confidence": 0.95,
+      "source": "preprocess"
+    },
+    "skill_pandas": {
+      "id": "skill_pandas",
+      "name": "Pandas",
+      "type": "skill",
+      "aliases": [],
+      "confidence": 0.95,
+      "source": "preprocess"
+    },
+    "skill_python": {
+      "id": "skill_python",
+      "name": "Python",
+      "type": "skill",
+      "aliases": [
+        "Python语言"
+      ],
+      "confidence": 0.99,
+      "source": "preprocess"
+    },
+    "skill_sql": {
+      "id": "skill_sql",
+      "name": "SQL",
+      "type": "skill",
+      "aliases": [],
+      "confidence": 0.98,
+      "source": "preprocess"
+    },
+    "trait_communication": {
+      "id": "trait_communication",
+      "name": "沟通能力",
+      "type": "trait",
+      "aliases": [],
+      "confidence": 0.92,
+      "source": "preprocess"
+    },
+    "trait_logic": {
+      "id": "trait_logic",
+      "name": "逻辑思维",
+      "type": "trait",
+      "aliases": [],
+      "confidence": 0.92,
+      "source": "preprocess"
+    }
+  },
+  "by_name": {
+    "Excel": [
+      "skill_excel"
+    ],
+    "Git": [
+      "skill_git"
+    ],
+    "Java": [
+      "skill_java"
+    ],
+    "Linux": [
+      "skill_linux"
+    ],
+    "MySQL": [
+      "skill_mysql"
+    ],
+    "NumPy": [
+      "skill_numpy"
+    ],
+    "Pandas": [
+      "skill_pandas"
+    ],
+    "Python": [
+      "skill_python"
+    ],
+    "Python开发工程师": [
+      "occ_python_engineer"
+    ],
+    "SQL": [
+      "skill_sql"
+    ],
+    "后端开发工程师": [
+      "occ_backend_engineer"
+    ],
+    "数据分析师": [
+      "occ_data_analyst"
+    ],
+    "本科": [
+      "edu_bachelor"
+    ],
+    "沟通能力": [
+      "trait_communication"
+    ],
+    "测试工程师": [
+      "occ_test_engineer"
+    ],
+    "算法工程师": [
+      "occ_algo_engineer"
+    ],
+    "逻辑思维": [
+      "trait_logic"
+    ]
+  },
+  "by_alias": {
+    "Java语言": [
+      "skill_java"
+    ],
+    "Python工程师": [
+      "occ_python_engineer"
+    ],
+    "Python开发": [
+      "occ_python_engineer"
+    ],
+    "Python语言": [
+      "skill_python"
+    ],
+    "后端工程师": [
+      "occ_backend_engineer"
+    ],
+    "后端开发": [
+      "occ_backend_engineer"
+    ],
+    "数据分析岗位": [
+      "occ_data_analyst"
+    ],
+    "数据库MySQL": [
+      "skill_mysql"
+    ],
+    "本科学历": [
+      "edu_bachelor"
+    ],
+    "机器学习工程师": [
+      "occ_algo_engineer"
+    ],
+    "软件测试工程师": [
+      "occ_test_engineer"
+    ]
+  },
+  "by_type": {
+    "education": [
+      "edu_bachelor"
+    ],
+    "occupation": [
+      "occ_algo_engineer",
+      "occ_backend_engineer",
+      "occ_data_analyst",
+      "occ_python_engineer",
+      "occ_test_engineer"
+    ],
+    "skill": [
+      "skill_excel",
+      "skill_java",
+      "skill_numpy",
+      "skill_pandas",
+      "skill_python",
+      "skill_sql"
+    ],
+    "tool": [
+      "skill_git",
+      "skill_linux",
+      "skill_mysql"
+    ],
+    "trait": [
+      "trait_communication",
+      "trait_logic"
+    ]
+  },
+  "summary": {
+    "node_count": 17,
+    "name_count": 17,
+    "alias_count": 11,
+    "type_count": 5
+  }
+}

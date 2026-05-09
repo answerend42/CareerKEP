@@ -33,6 +33,7 @@
    - `output/career_profiles.json`
    - `output/recommendation_index.json`
    - `output/entity_lookup.json`
+   - `output/node_lookup.json`
    - `output/relation_summary.json`
    - `output/extraction_log.json`
    - `output/data_catalog.json`
@@ -47,6 +48,7 @@
 - 职业画像把职业出边整理成可直接用于推荐的结构，减少 backend 的重复聚合工作。
 - 反向推荐索引把目标要素映射回职业，适合做召回层输入。
 - `entity_lookup.json` 把职业画像和反向推荐索引整理成按 ID 可直接查询的映射，适合 backend 做快速查找。
+- `node_lookup.json` 把所有节点按 ID、名称、别名和类型整理成索引，适合做统一实体查询入口。
 - 构建清单和目录文件记录输入来源、输出文件和 SHA256，方便版本对比和完整性检查。
 
 ## 运行建议
