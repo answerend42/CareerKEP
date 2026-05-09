@@ -106,6 +106,29 @@ class ExtractorTests(unittest.TestCase):
         self.assertEqual(resolved.entity.entity_id, "backend_engineering")
         self.assertIn("标题", resolved.reason)
 
+    def test_entity_id_matches_outweigh_generic_aliases(self) -> None:
+        """实体 ID 命中应比普通生成别名更可靠。"""
+
+        document = RawDocument(
+            doc_id="id_priority",
+            source="test",
+            title="backend_engineering 路线",
+            text="我更关注 backend_engineering 的长期成长。",
+            metadata={},
+        )
+
+        preferred = self.catalog.entities["backend_engineering"]
+        fallback = self.catalog.entities["backend_engineer"]
+
+        resolved = resolve_entity(
+            [(preferred, "id"), (fallback, "generated")],
+            document=document,
+            matched_alias="backend_engineering",
+        )
+
+        self.assertEqual(resolved.entity.entity_id, "backend_engineering")
+        self.assertIn("实体ID", resolved.reason)
+
     def test_normalized_alias_matching_handles_punctuation_variants(self) -> None:
         """规范化匹配应覆盖原始文本里的空格和符号变体。"""
 
