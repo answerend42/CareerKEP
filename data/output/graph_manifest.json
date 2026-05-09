@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-09T14:44:39Z",
+  "generated_at": "2026-05-09T14:50:04Z",
   "entity_count": 17,
   "evidence_count": 6,
   "relation_instance_count": 20,
@@ -20,6 +20,7 @@
     "relation_instances.json",
     "relation_candidates.json",
     "edges.json",
+    "relation_catalog.json",
     "graph_index.json",
     "graph_quality.json",
     "career_profiles.json",

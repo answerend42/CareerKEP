@@ -28,6 +28,13 @@
     "sha256": "fe921e92c92ea752ca867657bc906e738ecc913a06d5bf855a8a5cb43021ff3d"
   },
   {
+    "file_name": "relation_catalog.json",
+    "description": "关系目录",
+    "item_count": 6,
+    "size_bytes": 5520,
+    "sha256": "efc2e37b0375cb664a69813a70b02b65e385b47f88f51ef5710cddcfe4bd116a"
+  },
+  {
     "file_name": "graph_index.json",
     "description": "图索引",
     "item_count": 20,
@@ -79,8 +86,8 @@
   {
     "file_name": "graph_manifest.json",
     "description": "构建清单",
-    "item_count": 13,
-    "size_bytes": 1731,
-    "sha256": "a645dda5cf8ab0a98bfdf6ef6edd0d4ffb5c294b6c651f98c0fa7b347a8e8424"
+    "item_count": 14,
+    "size_bytes": 1761,
+    "sha256": "6e2c17a021fbd27ff232579dee23c73efcf901a6bc40d78fb7937889ef6fb13e"
   }
 ]

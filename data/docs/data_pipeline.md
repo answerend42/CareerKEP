@@ -24,6 +24,8 @@
    - `output/relation_instances.json`
    - `output/relation_candidates.json`
    - `output/edges.json`
+   - `output/relation_catalog.json`
+     - 关系目录，把关系类型定义、关键词分组和当前证据覆盖情况放在一起，便于调参和排查漏抽。
    - `output/graph_index.json`
    - `output/graph_quality.json`
    - `output/career_profiles.json`

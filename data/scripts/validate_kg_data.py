@@ -186,6 +186,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "relation_instances": output_dir / "relation_instances.json",
         "relation_candidates": output_dir / "relation_candidates.json",
         "edges": output_dir / "edges.json",
+        "relation_catalog": output_dir / "relation_catalog.json",
         "graph_index": output_dir / "graph_index.json",
         "graph_quality": output_dir / "graph_quality.json",
         "career_profiles": output_dir / "career_profiles.json",
@@ -208,6 +209,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     relation_instances = load_json(files["relation_instances"])
     relation_candidates = load_json(files["relation_candidates"])
     edges = load_json(files["edges"])
+    relation_catalog = load_json(files["relation_catalog"])
     graph_index = load_json(files["graph_index"])
     graph_quality = load_json(files["graph_quality"])
     career_profiles = load_json(files["career_profiles"])
@@ -230,6 +232,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(isinstance(relation_instances, list), "relation_instances.json 必须是列表", errors)
     assert_condition(isinstance(relation_candidates, list), "relation_candidates.json 必须是列表", errors)
     assert_condition(isinstance(edges, list), "edges.json 必须是列表", errors)
+    assert_condition(isinstance(relation_catalog, dict), "relation_catalog.json 必须是对象", errors)
     assert_condition(isinstance(graph_index, dict), "graph_index.json 必须是对象", errors)
     assert_condition(isinstance(graph_quality, dict), "graph_quality.json 必须是对象", errors)
     assert_condition(isinstance(career_profiles, list), "career_profiles.json 必须是列表", errors)
@@ -383,6 +386,97 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "relation_summary 的 relation_count 与 edges 聚合结果不一致",
         errors,
     )
+    assert_condition(
+        relation_catalog.get("edge_summary", {}).get("edge_count") == len(edges),
+        "relation_catalog 的 edge_count 与 edges 数量不一致",
+        errors,
+    )
+    assert_condition(
+        relation_catalog.get("edge_summary", {}).get("relation_count") == dict(sorted(relation_counter.items())),
+        "relation_catalog 的 relation_count 与 edges 聚合结果不一致",
+        errors,
+    )
+    assert_condition(
+        relation_catalog.get("edge_summary", {}).get("type_pair_count") == dict(sorted(Counter(f'{edge["source_type"]}->{edge["target_type"]}' for edge in edges).items())),
+        "relation_catalog 的 type_pair_count 与 edges 聚合结果不一致",
+        errors,
+    )
+    relations_in_catalog = relation_catalog.get("relations", [])
+    assert_condition(
+        relation_catalog.get("relation_type_count") == len(relations_in_catalog),
+        "relation_catalog 的 relation_type_count 与 relations 数量不一致",
+        errors,
+    )
+    observed_relation_count = sum(1 for item in relations_in_catalog if item.get("matched_edge_count", 0) > 0)
+    assert_condition(
+        relation_catalog.get("observed_relation_type_count") == observed_relation_count,
+        "relation_catalog 的 observed_relation_type_count 不正确",
+        errors,
+    )
+    for index, relation_item in enumerate(relations_in_catalog, start=1):
+        assert_condition(
+            isinstance(relation_item, dict),
+            f"relation_catalog.relations[{index}] 必须是对象",
+            errors,
+        )
+        required_relation_keys = {
+            "relation_type",
+            "source_types",
+            "target_types",
+            "base_weight",
+            "description",
+            "keyword_groups",
+            "keyword_group_count",
+            "keyword_count",
+            "matched_edge_count",
+            "coverage_rate",
+            "weight_range",
+        }
+        missing_relation_keys = sorted(required_relation_keys - set(relation_item))
+        assert_condition(
+            not missing_relation_keys,
+            f"relation_catalog.relations[{index}] 缺少字段: {', '.join(missing_relation_keys)}",
+            errors,
+        )
+        if missing_relation_keys:
+            continue
+        assert_condition(
+            isinstance(relation_item.get("source_types"), list) and relation_item["source_types"],
+            f"relation_catalog.relations[{index}] 的 source_types 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(relation_item.get("target_types"), list) and relation_item["target_types"],
+            f"relation_catalog.relations[{index}] 的 target_types 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(relation_item.get("keyword_groups"), list),
+            f"relation_catalog.relations[{index}] 的 keyword_groups 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(relation_item.get("matched_edge_count"), int) and relation_item["matched_edge_count"] >= 0,
+            f"relation_catalog.relations[{index}] 的 matched_edge_count 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(relation_item.get("coverage_rate"), (int, float)) and 0.0 <= float(relation_item["coverage_rate"]) <= 1.0,
+            f"relation_catalog.relations[{index}] 的 coverage_rate 无效",
+            errors,
+        )
+        weight_range = relation_item.get("weight_range", {})
+        assert_condition(
+            isinstance(weight_range, dict),
+            f"relation_catalog.relations[{index}] 的 weight_range 无效",
+            errors,
+        )
+        if isinstance(weight_range, dict):
+            assert_condition(
+                "min" in weight_range and "max" in weight_range,
+                f"relation_catalog.relations[{index}] 的 weight_range 缺少 min/max",
+                errors,
+            )
 
     occupation_nodes = [node for node in nodes if node["type"] == "occupation"]
     assert_condition(
@@ -607,7 +701,8 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
             "career_profile_count": len(career_profiles),
             "recommendation_index_count": len(recommendation_index),
             "catalog_file_count": len(data_catalog),
-            "relation_types": dict(sorted(relation_counter.items())),
+        "relation_types": dict(sorted(relation_counter.items())),
+            "relation_catalog_types": len(relations_in_catalog),
         },
     }
 

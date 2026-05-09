@@ -596,6 +596,80 @@ def summarize_edges(edges: list[Edge]) -> dict[str, Any]:
     }
 
 
+def build_relation_catalog(
+    relation_map: dict[str, dict[str, Any]],
+    relation_keyword_map: dict[tuple[str, str], list[tuple[str, list[str]]]],
+    edges: list[Edge],
+) -> dict[str, Any]:
+    """整理关系类型目录，把配置、关键词和实际覆盖情况放到一个文件里。"""
+
+    relation_counter = Counter(edge.relation_type for edge in edges)
+    pair_counter = Counter(f"{edge.source_type}->{edge.target_type}" for edge in edges)
+    weight_by_relation: dict[str, list[float]] = defaultdict(list)
+    for edge in edges:
+        weight_by_relation[edge.relation_type].append(edge.weight)
+
+    keyword_groups_by_relation: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for (source_type, target_type), relation_items in relation_keyword_map.items():
+        for relation_type, keywords in relation_items:
+            normalized_keywords = sorted({keyword for keyword in keywords if keyword})
+            keyword_groups_by_relation[relation_type].append(
+                {
+                    "source_type": source_type,
+                    "target_type": target_type,
+                    "keywords": normalized_keywords,
+                    "keyword_count": len(normalized_keywords),
+                }
+            )
+
+    relations: list[dict[str, Any]] = []
+    for relation_type in sorted(relation_map):
+        relation_config = relation_map[relation_type]
+        keyword_groups = sorted(
+            keyword_groups_by_relation.get(relation_type, []),
+            key=lambda item: (item["source_type"], item["target_type"]),
+        )
+        unique_keywords = sorted({keyword for group in keyword_groups for keyword in group["keywords"]})
+        relation_weights = weight_by_relation.get(relation_type, [])
+        relations.append(
+            {
+                "relation_type": relation_type,
+                "source_types": list(relation_config["source_types"]),
+                "target_types": list(relation_config["target_types"]),
+                "base_weight": relation_config["base_weight"],
+                "description": relation_config["description"],
+                "keyword_groups": keyword_groups,
+                "keyword_group_count": len(keyword_groups),
+                "keyword_count": len(unique_keywords),
+                "matched_edge_count": relation_counter.get(relation_type, 0),
+                "coverage_rate": round(
+                    relation_counter.get(relation_type, 0) / len(edges), 4
+                )
+                if edges
+                else 0.0,
+                "weight_range": {
+                    "min": min(relation_weights) if relation_weights else None,
+                    "max": max(relation_weights) if relation_weights else None,
+                },
+            }
+        )
+
+    return {
+        "relation_type_count": len(relations),
+        "observed_relation_type_count": sum(1 for item in relations if item["matched_edge_count"] > 0),
+        "relations": relations,
+        "edge_summary": {
+            "edge_count": len(edges),
+            "relation_count": dict(sorted(relation_counter.items())),
+            "type_pair_count": dict(sorted(pair_counter.items())),
+            "weight_range": {
+                "min": min((edge.weight for edge in edges), default=None),
+                "max": max((edge.weight for edge in edges), default=None),
+            },
+        },
+    }
+
+
 def summarize_instances(instances: list[RelationInstance]) -> dict[str, Any]:
     relation_counter = Counter(item.relation_type for item in instances)
     type_counter = Counter(f"{item.source_type}->{item.target_type}" for item in instances)
@@ -967,6 +1041,7 @@ def build_manifest(
             "relation_instances.json",
             "relation_candidates.json",
             "edges.json",
+            "relation_catalog.json",
             "graph_index.json",
             "graph_quality.json",
             "career_profiles.json",
@@ -990,6 +1065,7 @@ def build_manifest(
 def build_data_catalog(
     output_dir: Path,
     manifest: dict[str, Any],
+    relation_catalog: dict[str, Any],
     graph_index: dict[str, Any],
     quality_report: dict[str, Any],
     career_profiles: list[dict[str, Any]],
@@ -1003,6 +1079,7 @@ def build_data_catalog(
         ("relation_instances.json", "证据级关系实例"),
         ("relation_candidates.json", "关系候选轨迹"),
         ("edges.json", "图谱边"),
+        ("relation_catalog.json", "关系目录"),
         ("graph_index.json", "图索引"),
         ("graph_quality.json", "图谱质量报告"),
         ("career_profiles.json", "职业画像"),
@@ -1015,6 +1092,7 @@ def build_data_catalog(
 
     file_overrides = {
         "graph_manifest.json": manifest,
+        "relation_catalog.json": relation_catalog,
         "graph_index.json": graph_index,
         "graph_quality.json": quality_report,
         "career_profiles.json": career_profiles,
@@ -1037,6 +1115,8 @@ def build_data_catalog(
                 # graph_manifest 的核心含义是“输出文件清单”，因此这里按清单条目数统计，
                 # 比按 edge_count 这类内部统计字段更稳定、更符合目录语义。
                 item_count = len(payload.get("output_files", []))
+            elif file_name == "relation_catalog.json":
+                item_count = int(payload.get("relation_type_count", len(payload.get("relations", []))))
             elif "edge_count" in payload:
                 item_count = int(payload["edge_count"])
             elif "node_count" in payload:
@@ -1090,6 +1170,7 @@ def main() -> int:
     )
     edges = build_edges(entities, relation_instances, relation_map, weight_rules)
     nodes = build_nodes(entities)
+    relation_catalog = build_relation_catalog(relation_map, relation_keyword_map, edges)
     graph_index = build_graph_index(nodes, edges)
     quality_report = build_quality_report(nodes, edges, graph_index)
     career_profiles = build_career_profiles(entities, edges)
@@ -1103,6 +1184,7 @@ def main() -> int:
     write_json(output_dir / "relation_instances.json", [asdict(item) for item in relation_instances])
     write_json(output_dir / "relation_candidates.json", [asdict(item) for item in relation_candidates])
     write_json(output_dir / "edges.json", [asdict(edge) for edge in edges])
+    write_json(output_dir / "relation_catalog.json", relation_catalog)
     write_json(output_dir / "graph_index.json", graph_index)
     write_json(output_dir / "graph_quality.json", quality_report)
     write_json(output_dir / "career_profiles.json", career_profiles)
@@ -1159,6 +1241,7 @@ def main() -> int:
     data_catalog = build_data_catalog(
         output_dir,
         graph_manifest,
+        relation_catalog,
         graph_index,
         quality_report,
         career_profiles,

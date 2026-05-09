@@ -30,6 +30,8 @@ python scripts/validate_kg_data.py --output-dir output
   - 候选轨迹，记录最终关系为什么被选中。
 - `output/edges.json`
   - 聚合后的图谱边，包含权重和证据数。
+- `output/relation_catalog.json`
+  - 关系目录，汇总关系类型、关键词分组和当前证据覆盖，方便后续调参。
 - `output/graph_index.json`
   - 按节点和关系整理的索引，便于 backend 直接消费。
 - `output/graph_quality.json`
