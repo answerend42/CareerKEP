@@ -663,6 +663,10 @@ pre {
   gap: 12px;
 }
 
+.trace-summary.compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .trace-metrics {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -702,6 +706,45 @@ pre {
 .trace-box p {
   margin: 0;
   color: var(--muted);
+}
+
+.structured-evidence {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.evidence-mini-card {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(156, 176, 210, 0.14);
+  background: rgba(6, 11, 23, 0.72);
+}
+
+.evidence-mini-card p {
+  margin: 8px 0 6px;
+  color: var(--text);
+}
+
+.evidence-mini-card small {
+  display: block;
+  color: var(--muted);
+}
+
+.json-toggle {
+  border: 1px solid rgba(156, 176, 210, 0.14);
+  border-radius: 14px;
+  background: rgba(6, 11, 23, 0.72);
+  padding: 12px 14px;
+}
+
+.json-toggle summary {
+  cursor: pointer;
+  color: var(--accent-strong);
+}
+
+.json-toggle pre {
+  margin-top: 12px;
 }
 
 .result-summary-row {
@@ -795,12 +838,17 @@ pre {
   }
 
   .evidence-grid,
+  .structured-evidence,
   .field-grid,
   .micro-summary,
   .result-summary-row,
   .trace-metrics,
   .trace-summary,
   .hero-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .trace-summary.compact {
     grid-template-columns: 1fr;
   }
 }

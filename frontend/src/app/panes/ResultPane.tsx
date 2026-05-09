@@ -229,6 +229,41 @@ export function ResultPane({
             <p>{response.inputTrace.signalTrace.negatedSignals.join('、') || '暂无否定信号'}</p>
           </div>
         </div>
+        <div className="trace-summary compact">
+          <div className="trace-box">
+            <span>图谱节点</span>
+            <p>{response.graphSnapshot.nodeCount} 个</p>
+          </div>
+          <div className="trace-box">
+            <span>图谱边</span>
+            <p>{response.graphSnapshot.edgeCount} 条</p>
+          </div>
+          <div className="trace-box">
+            <span>目标覆盖</span>
+            <p>{formatPercent(response.targetRoleAnalysis.coverage)}</p>
+          </div>
+        </div>
+        <div className="structured-evidence">
+          {response.inputTrace.structuredEvidence.map((item) => (
+            <article key={item.nodeId} className="evidence-mini-card">
+              <div className="node-row">
+                <strong>{item.label}</strong>
+                <span>{formatPercent(item.score)}</span>
+              </div>
+              <p>{item.rawText}</p>
+              <small>
+                来源：{item.source} | 节点：{item.nodeId}
+              </small>
+              <div className="score-bar">
+                <span style={{ width: `${Math.round(item.score * 100)}%` }} />
+              </div>
+            </article>
+          ))}
+        </div>
+        <details className="json-toggle">
+          <summary>查看原始 JSON 快照</summary>
+          <pre>{JSON.stringify(response.inputTrace, null, 2)}</pre>
+        </details>
         <div className="clause-list">
           {response.inputTrace.signalTrace.clauses.map((clause, index) => (
             <span key={`${index}-${clause}`} className="clause-chip">
@@ -236,7 +271,6 @@ export function ResultPane({
             </span>
           ))}
         </div>
-        <pre>{JSON.stringify(response.inputTrace, null, 2)}</pre>
       </section>
     </div>
   );
