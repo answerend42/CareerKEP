@@ -95,7 +95,7 @@ python3 -m backend.app.main validate-graph
 - `GET /api/meta`
 - `POST /api/recommend`
 
-`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计、聚合器统计、别名统计、基础校验状态、所有 `role` 节点列表，以及可直接用于前端搜索下拉的 `role_options`。`graph.validation.warnings` 会把当前图谱和别名词典的本地告警一起带出来，前端或启动脚本可以直接据此判断要不要提示用户。
+`GET /api/meta` 返回图谱节点数、边数、分层统计、关系统计、聚合器统计、别名统计、基础校验状态、所有 `role` 节点列表，以及可直接用于前端搜索下拉的 `role_options` 和 `role_search_index`。`graph.validation.warnings` 会把当前图谱和别名词典的本地告警一起带出来，前端或启动脚本可以直接据此判断要不要提示用户。
 
 - `POST /api/recommend` 需要带 `Content-Type: application/json`，否则返回 `415`
 - `POST /api/recommend` 的请求体上限是 `1 MiB`，超过后返回 `413`
@@ -133,6 +133,8 @@ python3 -m backend.app.main validate-graph
 `bridge_recommendations` 也会返回图路径，不再只是孤立节点名。
 
 `role_options` 里的每一项都包含 `node_id`、`label` 和 `search_terms`，其中 `search_terms` 会沿着岗位节点的祖先链收集节点 ID、岗位标签、相关别名、上游能力词和证据词，前端可以直接拿来做岗位选择器，不需要再自己处理空格、大小写或别名归一化。
+
+`role_search_index` 是 `search_term -> role_node_id[]` 的倒排索引，适合直接驱动搜索框输入联想或岗位筛选，不需要前端再把 `role_options` 重新加工一遍。
 
 ## 设计说明
 

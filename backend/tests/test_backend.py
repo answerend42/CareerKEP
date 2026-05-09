@@ -429,6 +429,7 @@ class BackendSmokeTest(unittest.TestCase):
             self.assertIn("aggregators", meta_json["graph"])
             self.assertIn("validation", meta_json["graph"])
             self.assertIn("role_options", meta_json)
+            self.assertIn("role_search_index", meta_json)
             self.assertIn("endpoints", meta_json)
             self.assertIn("alias_count", meta_json["graph"])
             self.assertIn("alias_node_count", meta_json["graph"])
@@ -440,6 +441,8 @@ class BackendSmokeTest(unittest.TestCase):
             self.assertIn("后端", backend_role["search_terms"])
             self.assertIn("会python", backend_role["search_terms"])
             self.assertIn("数据库", backend_role["search_terms"])
+            self.assertIn("backend_engineer", meta_json["role_search_index"]["后端"])
+            self.assertIn("backend_engineer", meta_json["role_search_index"]["python"])
             conn.close()
 
             conn = HTTPConnection("127.0.0.1", port, timeout=5)

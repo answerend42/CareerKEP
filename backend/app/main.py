@@ -98,6 +98,28 @@ def _build_role_options(graph: Any, alias_map: dict[str, list[str]]) -> list[dic
     return role_options
 
 
+def _build_role_search_index(role_options: list[dict[str, Any]]) -> dict[str, list[str]]:
+    """把岗位搜索词整理成 `term -> role_id[]` 的索引。
+
+    前端如果要做即时搜索，直接消费这个索引会更轻，不需要自己再把
+    `role_options.search_terms` 反向压成查找表。
+    """
+
+    search_index: dict[str, list[str]] = {}
+    for role in role_options:
+        node_id = str(role.get("node_id") or "").strip()
+        if not node_id:
+            continue
+        for term in role.get("search_terms", []):
+            normalized_term = _normalize_lookup_term(term)
+            if not normalized_term:
+                continue
+            role_ids = search_index.setdefault(normalized_term, [])
+            if node_id not in role_ids:
+                role_ids.append(node_id)
+    return search_index
+
+
 class _RequestHandler(BaseHTTPRequestHandler):
     """简单 HTTP 接口，方便本地联调。"""
 
@@ -151,6 +173,7 @@ class _RequestHandler(BaseHTTPRequestHandler):
                 alias_warnings = validate_alias_map(graph, alias_map)
                 quality_warnings = validate_graph_quality(graph)
                 graph_summary = build_graph_diagnostics(graph, alias_map, alias_warnings + quality_warnings)
+                role_options = _build_role_options(graph, alias_map)
                 # 元信息接口既要稳定，也要把本地诊断尽量暴露出来，方便前端启动时直接判断图谱健康状态。
                 self._send_json(
                     200,
@@ -158,7 +181,8 @@ class _RequestHandler(BaseHTTPRequestHandler):
                         "service": "career-kg-backend",
                         "version": "0.1.0",
                         "graph": graph_summary,
-                        "role_options": _build_role_options(graph, alias_map),
+                        "role_options": role_options,
+                        "role_search_index": _build_role_search_index(role_options),
                         "aliases_count": len(alias_map),
                         "alias_count": graph_summary["alias_count"],
                         "alias_node_count": graph_summary["alias_node_count"],
