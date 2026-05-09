@@ -3,6 +3,8 @@ import type { RecommendationResponse } from '../types';
 interface GraphPaneProps {
   snapshot: RecommendationResponse['propagationSnapshot'];
   activeStep: string;
+  selectedNodeId: string | null;
+  onSelectNode: (nodeId: string) => void;
 }
 
 const layerTone: Record<string, string> = {
@@ -13,7 +15,7 @@ const layerTone: Record<string, string> = {
   role: 'tone-role'
 };
 
-export function GraphPane({ snapshot, activeStep }: GraphPaneProps) {
+export function GraphPane({ snapshot, activeStep, selectedNodeId, onSelectNode }: GraphPaneProps) {
   return (
     <div className="pane-stack">
       <div className="pane-header">
@@ -21,7 +23,7 @@ export function GraphPane({ snapshot, activeStep }: GraphPaneProps) {
           <p className="pane-kicker">阶段 3</p>
           <h2>图谱传播</h2>
         </div>
-        <span className="status-badge">{activeStep === '图谱传播' ? '正在查看' : '传播快照'}</span>
+        <span className="status-badge">{activeStep === '鍥捐氨浼犳挱' ? '正在查看' : '传播快照'}</span>
       </div>
 
       <div className="graph-columns">
@@ -33,7 +35,15 @@ export function GraphPane({ snapshot, activeStep }: GraphPaneProps) {
             </div>
             <div className="node-stack">
               {layer.nodes.map((node) => (
-                <article key={node.id} className="node-card">
+                <article key={node.id} className={`node-card ${selectedNodeId === node.id ? 'active' : ''}`}>
+                  <button
+                    type="button"
+                    className="node-card-hitbox"
+                    onClick={() => onSelectNode(node.id)}
+                    aria-label={`选择 ${node.label}`}
+                  >
+                    <span className="sr-only">选择 {node.label}</span>
+                  </button>
                   <div className="node-row">
                     <strong>{node.label}</strong>
                     <span>{node.score.toFixed(2)}</span>
@@ -55,15 +65,20 @@ export function GraphPane({ snapshot, activeStep }: GraphPaneProps) {
           <span>{snapshot.edges.length} 条</span>
         </div>
         {snapshot.edges.map((edge) => (
-          <div key={`${edge.source}-${edge.target}`} className="edge-row">
+          <button
+            key={`${edge.source}-${edge.target}`}
+            type="button"
+            className="edge-row edge-row-button"
+            onClick={() => onSelectNode(edge.target)}
+          >
             <div>
               <strong>
-                {edge.source} → {edge.target}
+                {edge.source} {'→'} {edge.target}
               </strong>
               <p>{edge.relation}</p>
             </div>
             <span>{edge.contribution.toFixed(2)}</span>
-          </div>
+          </button>
         ))}
       </div>
     </div>

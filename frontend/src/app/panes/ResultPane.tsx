@@ -1,10 +1,11 @@
-import type { RecommendationResponse, RobustnessReport, RunStatus } from '../types';
+import type { RecommendationResponse, RobustnessReport, RunStatus, StageNode } from '../types';
 
 interface ResultPaneProps {
   response: RecommendationResponse;
   activeStep: string;
   robustnessReport: RobustnessReport;
   runStatus: RunStatus;
+  selectedNodeId: string | null;
   onExportSnapshot: () => void;
   onCopySnapshot: () => void;
 }
@@ -15,14 +16,29 @@ const formatDelta = (value: number) => {
   return rounded > 0 ? `+${rounded}%` : `${rounded}%`;
 };
 
+const flattenNodes = (response: RecommendationResponse): StageNode[] =>
+  response.propagationSnapshot.layers.flatMap((layer) => layer.nodes);
+
 export function ResultPane({
   response,
   activeStep,
   robustnessReport,
   runStatus,
+  selectedNodeId,
   onExportSnapshot,
   onCopySnapshot
 }: ResultPaneProps) {
+  const selectedNode = flattenNodes(response).find((node) => node.id === selectedNodeId) ?? null;
+  const incomingEdges = selectedNodeId
+    ? response.propagationSnapshot.edges.filter((edge) => edge.target === selectedNodeId)
+    : [];
+  const outgoingEdges = selectedNodeId
+    ? response.propagationSnapshot.edges.filter((edge) => edge.source === selectedNodeId)
+    : [];
+
+  const selectedLayerLabel =
+    response.propagationSnapshot.layers.find((layer) => layer.nodes.some((node) => node.id === selectedNodeId))?.label ?? '未选择';
+
   return (
     <div className="pane-stack">
       <div className="pane-header">
@@ -30,7 +46,7 @@ export function ResultPane({
           <p className="pane-kicker">阶段 4</p>
           <h2>结果解释</h2>
         </div>
-        <span className="status-badge">{activeStep === '结果解释' ? '当前焦点' : '输出摘要'}</span>
+        <span className="status-badge">{activeStep === '缁撴灉瑙ｉ噴' ? '当前焦点' : '输出摘要'}</span>
       </div>
 
       <section className="analysis-card run-status-panel">
@@ -42,6 +58,76 @@ export function ResultPane({
         <span className={`run-status-badge ${runStatus.source === 'backend' ? 'success' : 'warning'}`}>
           {runStatus.source === 'backend' ? '后端接口' : '本地回退'}
         </span>
+      </section>
+
+      <section className="analysis-card graph-detail">
+        <div className="section-head">
+          <h3>当前图谱锚点</h3>
+          <span>{selectedLayerLabel}</span>
+        </div>
+        {selectedNode ? (
+          <>
+            <div className="graph-detail-head">
+              <div>
+                <strong>{selectedNode.label}</strong>
+                <p>{selectedNode.detail}</p>
+              </div>
+              <span>{formatPercent(selectedNode.score)}</span>
+            </div>
+            <div className="graph-detail-stats">
+              <div>
+                <span>节点 ID</span>
+                <strong>{selectedNode.id}</strong>
+              </div>
+              <div>
+                <span>层级</span>
+                <strong>{selectedLayerLabel}</strong>
+              </div>
+              <div>
+                <span>关联边</span>
+                <strong>
+                  {incomingEdges.length} 入 / {outgoingEdges.length} 出
+                </strong>
+              </div>
+            </div>
+            <div className="graph-edge-grid">
+              <div className="graph-edge-column">
+                <span>入边</span>
+                {incomingEdges.length ? (
+                  incomingEdges.map((edge) => (
+                    <div key={`${edge.source}-${edge.target}`} className="graph-edge-item">
+                      <strong>
+                        {edge.source} {'→'} {edge.target}
+                      </strong>
+                      <p>{edge.relation}</p>
+                      <small>{formatPercent(edge.contribution)}</small>
+                    </div>
+                  ))
+                ) : (
+                  <p className="graph-edge-empty">没有入边</p>
+                )}
+              </div>
+              <div className="graph-edge-column">
+                <span>出边</span>
+                {outgoingEdges.length ? (
+                  outgoingEdges.map((edge) => (
+                    <div key={`${edge.source}-${edge.target}`} className="graph-edge-item">
+                      <strong>
+                        {edge.source} {'→'} {edge.target}
+                      </strong>
+                      <p>{edge.relation}</p>
+                      <small>{formatPercent(edge.contribution)}</small>
+                    </div>
+                  ))
+                ) : (
+                  <p className="graph-edge-empty">没有出边</p>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <p className="result-intro">点击左侧图谱中的任意节点，查看它在推荐链路中的位置和关联边。</p>
+        )}
       </section>
 
       <section className="result-block">
