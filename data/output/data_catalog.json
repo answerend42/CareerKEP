@@ -31,8 +31,8 @@
     "file_name": "relation_catalog.json",
     "description": "关系目录",
     "item_count": 6,
-    "size_bytes": 5553,
-    "sha256": "cbcb9c63579c1bf00ad19a4e1e48daad6d0518e78c9dc356fd8465fb129b6922"
+    "size_bytes": 6097,
+    "sha256": "0e717377a9f53912b7ada694f07b99cb494e81e4f6018ecf2d6b240b59e0d9a6"
   },
   {
     "file_name": "graph_index.json",
@@ -88,6 +88,6 @@
     "description": "构建清单",
     "item_count": 14,
     "size_bytes": 1761,
-    "sha256": "549d3f6ec333076c3c49dc35b73ba98f0741ca0ed564e287497139ee3b6c1eb1"
+    "sha256": "0f2e8194866484766f897d974670675deb63d825b0af5d66be8191d721d5ea42"
   }
 ]

@@ -452,6 +452,61 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "relation_catalog 的 observed_relation_type_count 不正确",
         errors,
     )
+    coverage_summary = relation_catalog.get("coverage_summary", {})
+    assert_condition(
+        isinstance(coverage_summary, dict),
+        "relation_catalog.coverage_summary 必须是对象",
+        errors,
+    )
+    if isinstance(coverage_summary, dict):
+        assert_condition(
+            coverage_summary.get("relation_type_count") == relation_catalog.get("relation_type_count"),
+            "relation_catalog.coverage_summary.relation_type_count 不一致",
+            errors,
+        )
+        assert_condition(
+            coverage_summary.get("observed_relation_type_count") == observed_relation_count,
+            "relation_catalog.coverage_summary.observed_relation_type_count 不一致",
+            errors,
+        )
+        assert_condition(
+            coverage_summary.get("unobserved_relation_type_count") == len(relations_in_catalog) - observed_relation_count,
+            "relation_catalog.coverage_summary.unobserved_relation_type_count 不一致",
+            errors,
+        )
+        if isinstance(coverage_summary.get("coverage_rate"), (int, float)) and relations_in_catalog:
+            expected_rate = round(observed_relation_count / len(relations_in_catalog), 4)
+            assert_condition(
+                float(coverage_summary["coverage_rate"]) == expected_rate,
+                "relation_catalog.coverage_summary.coverage_rate 不一致",
+                errors,
+            )
+
+    observed_relation_types = relation_catalog.get("observed_relation_types", [])
+    unobserved_relation_types = relation_catalog.get("unobserved_relation_types", [])
+    assert_condition(
+        isinstance(observed_relation_types, list),
+        "relation_catalog.observed_relation_types 必须是列表",
+        errors,
+    )
+    assert_condition(
+        isinstance(unobserved_relation_types, list),
+        "relation_catalog.unobserved_relation_types 必须是列表",
+        errors,
+    )
+    if isinstance(observed_relation_types, list) and isinstance(unobserved_relation_types, list):
+        expected_observed = sorted(item["relation_type"] for item in relations_in_catalog if item.get("is_observed"))
+        expected_unobserved = sorted(item["relation_type"] for item in relations_in_catalog if not item.get("is_observed"))
+        assert_condition(
+            sorted(observed_relation_types) == expected_observed,
+            "relation_catalog.observed_relation_types 不一致",
+            errors,
+        )
+        assert_condition(
+            sorted(unobserved_relation_types) == expected_unobserved,
+            "relation_catalog.unobserved_relation_types 不一致",
+            errors,
+        )
     for index, relation_item in enumerate(relations_in_catalog, start=1):
         assert_condition(
             isinstance(relation_item, dict),
@@ -464,6 +519,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
             "target_types",
             "base_weight",
             "description",
+            "is_observed",
             "keyword_groups",
             "keyword_group_count",
             "keyword_count",
@@ -487,6 +543,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         assert_condition(
             isinstance(relation_item.get("target_types"), list) and relation_item["target_types"],
             f"relation_catalog.relations[{index}] 的 target_types 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(relation_item.get("is_observed"), bool),
+            f"relation_catalog.relations[{index}] 的 is_observed 无效",
             errors,
         )
         assert_condition(

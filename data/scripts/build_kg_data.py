@@ -729,6 +729,7 @@ def build_relation_catalog(
                 "target_types": list(relation_config["target_types"]),
                 "base_weight": relation_config["base_weight"],
                 "description": relation_config["description"],
+                "is_observed": relation_counter.get(relation_type, 0) > 0,
                 "keyword_groups": keyword_groups,
                 "keyword_group_count": len(keyword_groups),
                 "keyword_count": len(unique_keywords),
@@ -745,9 +746,20 @@ def build_relation_catalog(
             }
         )
 
+    observed_relation_types = [item["relation_type"] for item in relations if item["is_observed"]]
+    unobserved_relation_types = [item["relation_type"] for item in relations if not item["is_observed"]]
+
     return {
         "relation_type_count": len(relations),
         "observed_relation_type_count": sum(1 for item in relations if item["matched_edge_count"] > 0),
+        "coverage_summary": {
+            "relation_type_count": len(relations),
+            "observed_relation_type_count": len(observed_relation_types),
+            "unobserved_relation_type_count": len(unobserved_relation_types),
+            "coverage_rate": round(len(observed_relation_types) / len(relations), 4) if relations else 0.0,
+        },
+        "observed_relation_types": observed_relation_types,
+        "unobserved_relation_types": unobserved_relation_types,
         "relations": relations,
         "edge_summary": {
             "edge_count": len(edges),

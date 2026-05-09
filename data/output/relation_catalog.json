@@ -1,6 +1,21 @@
 {
   "relation_type_count": 6,
   "observed_relation_type_count": 6,
+  "coverage_summary": {
+    "relation_type_count": 6,
+    "observed_relation_type_count": 6,
+    "unobserved_relation_type_count": 0,
+    "coverage_rate": 1.0
+  },
+  "observed_relation_types": [
+    "needs_trait",
+    "preferred_skill",
+    "related_role",
+    "requires_education",
+    "requires_skill",
+    "uses_tool"
+  ],
+  "unobserved_relation_types": [],
   "relations": [
     {
       "relation_type": "needs_trait",
@@ -12,6 +27,7 @@
       ],
       "base_weight": 0.55,
       "description": "职业偏好的能力或性格特征",
+      "is_observed": true,
       "keyword_groups": [
         {
           "source_type": "occupation",
@@ -46,6 +62,7 @@
       ],
       "base_weight": 0.7,
       "description": "职业加分项或优先技能",
+      "is_observed": true,
       "keyword_groups": [
         {
           "source_type": "occupation",
@@ -78,6 +95,7 @@
       ],
       "base_weight": 0.5,
       "description": "相近或可迁移的岗位关系",
+      "is_observed": true,
       "keyword_groups": [
         {
           "source_type": "occupation",
@@ -111,6 +129,7 @@
       ],
       "base_weight": 0.65,
       "description": "职业常见学历要求",
+      "is_observed": true,
       "keyword_groups": [
         {
           "source_type": "occupation",
@@ -144,6 +163,7 @@
       ],
       "base_weight": 1.0,
       "description": "职业要求掌握的核心技能",
+      "is_observed": true,
       "keyword_groups": [
         {
           "source_type": "occupation",
@@ -178,6 +198,7 @@
       ],
       "base_weight": 0.85,
       "description": "职业工作中常用的工具或技术栈",
+      "is_observed": true,
       "keyword_groups": [
         {
           "source_type": "occupation",
