@@ -271,6 +271,12 @@ def run_pipeline(
     total_entities = len(entity_summary)
     coverage_report = _build_entity_coverage_report(entity_summary)
     disambiguation_review = _build_disambiguation_review(all_mentions, review_threshold)
+    format_stats = {
+        "loaded_by_format": source_manifest.get("loaded_by_format", {}),
+        "skipped_by_format": source_manifest.get("skipped_by_format", {}),
+        "error_by_format": source_manifest.get("error_by_format", {}),
+        "loaded_with_errors_by_format": source_manifest.get("loaded_with_errors_by_format", {}),
+    }
 
     resolved_output_dir = output_dir or OUTPUT_DIR
     _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
@@ -307,6 +313,7 @@ def run_pipeline(
             "error_source_files": source_manifest.get("error_files", 0),
             "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
             "parse_error_count": source_manifest.get("parse_error_count", 0),
+            "format_stats": format_stats,
             "mentions": len(all_mentions),
             "entities": total_entities,
             "catalog_entities": len(catalog.entities),
@@ -334,6 +341,7 @@ def run_pipeline(
         "error_source_files": source_manifest.get("error_files", 0),
         "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
         "parse_error_count": source_manifest.get("parse_error_count", 0),
+        "format_stats": format_stats,
         "output_dir": str(resolved_output_dir),
     }
 

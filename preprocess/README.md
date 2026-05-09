@@ -39,6 +39,7 @@
 - `disambiguation_review.json`：低置信度命中复核清单
 - `entity_coverage.json`：实体覆盖率报告
 - `summary.json`：整体运行摘要
+  - 额外包含 `format_stats`，用于查看各类输入文件的加载、跳过和异常分布
 
 ## 运行方式
 
