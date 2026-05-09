@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
   buildDiagnosticSnapshot,
+  buildDiagnosticFilename,
   buildRecommendationResponse,
   buildRobustnessReport,
   defaultDemoState,
@@ -92,7 +93,7 @@ export function AppShell() {
     const link = document.createElement('a');
 
     link.href = url;
-    link.download = `career-kg-diagnostic-${snapshot.generatedAt.replace(/[:.]/g, '-')}.json`;
+    link.download = buildDiagnosticFilename(snapshot);
     link.click();
     URL.revokeObjectURL(url);
   };

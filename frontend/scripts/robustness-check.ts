@@ -1,5 +1,6 @@
 import {
   buildDiagnosticSnapshot,
+  buildDiagnosticFilename,
   buildRecommendationResponse,
   buildRobustnessReport,
   defaultDemoState,
@@ -74,6 +75,10 @@ assert(diagnosticSnapshot.generatedAt.length > 0, '诊断快照应该有生成�
 assert(diagnosticSnapshot.activeStep === '结果解释', '诊断快照应该记录当前阶段');
 assert(diagnosticSnapshot.recommendation.recommendations.length > 0, '诊断快照应该包含推荐结果');
 assert(diagnosticSnapshot.robustness.tuningAdvice.length > 0, '诊断快照应该包含鲁棒性建议');
+
+const diagnosticFilename = buildDiagnosticFilename(diagnosticSnapshot);
+assert(diagnosticFilename.startsWith('career-kg-结果解释-后端开发工程师'), '诊断快照文件名应该包含阶段和目标岗位');
+assert(!/[\\/:*?"<>| ]/.test(diagnosticFilename), '诊断快照文件名不应包含非法字符或空格');
 
 console.log(
   [

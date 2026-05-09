@@ -709,6 +709,23 @@ export const buildDiagnosticSnapshot = (
   robustness
 });
 
+const slugify = (value: string): string =>
+  value
+    .normalize('NFKC')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 48);
+
+export const buildDiagnosticFilename = (snapshot: DiagnosticSnapshot): string => {
+  const step = slugify(snapshot.activeStep);
+  const target = slugify(snapshot.currentState.targetRole);
+  const topRole = slugify(snapshot.recommendation.recommendations[0]?.label ?? snapshot.recommendation.targetRoleAnalysis.label);
+  const timestamp = snapshot.generatedAt.replace(/[:.]/g, '-');
+  return `career-kg-${step}-${target}-${topRole}-${timestamp}.json`;
+};
+
 export const getRoleOptions = (): RoleOption[] => roleCatalog;
 
 export const buildRecommendationResponse = (state: DemoState): RecommendationResponse => {
