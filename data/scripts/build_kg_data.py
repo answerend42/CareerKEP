@@ -78,6 +78,7 @@ class RelationCandidateTrace:
     selected_direction: str
     selected_candidate_rank: int
     selected_candidate: dict[str, Any]
+    selection_factors: dict[str, Any]
     selection_reason: str
     matched_keywords: list[str]
     forward_candidates: list[dict[str, Any]]
@@ -333,6 +334,75 @@ def find_mentions(text: str, entities: dict[str, Entity]) -> list[str]:
     return matched
 
 
+def find_term_spans(text: str, terms: Iterable[str]) -> list[tuple[int, int]]:
+    """找出词语在文本中的所有位置，用于后面做局部关系判断。"""
+
+    spans: list[tuple[int, int]] = []
+    seen_spans: set[tuple[int, int]] = set()
+    normalized_terms = sorted({term for term in terms if term}, key=len, reverse=True)
+    for term in normalized_terms:
+        start = text.find(term)
+        while start != -1:
+            span = (start, start + len(term))
+            if span not in seen_spans:
+                spans.append(span)
+                seen_spans.add(span)
+            start = text.find(term, start + 1)
+    spans.sort()
+    return spans
+
+
+def span_distance(left: tuple[int, int], right: tuple[int, int]) -> int:
+    """计算两个区间的字符距离，重叠或相邻时记为 0。"""
+
+    left_start, left_end = left
+    right_start, right_end = right
+    if left_end < right_start:
+        return right_start - left_end
+    if right_end < left_start:
+        return left_start - right_end
+    return 0
+
+
+def keyword_proximity_score(
+    text: str,
+    target_terms: Iterable[str],
+    keywords: Iterable[str],
+    window_size: int = 12,
+) -> tuple[float, list[dict[str, Any]]]:
+    """计算关键词和目标实体之间的距离分数，越靠近目标越容易被选中。"""
+
+    target_spans = find_term_spans(text, target_terms)
+    if not target_spans:
+        return 0.0, []
+
+    proximity_details: list[dict[str, Any]] = []
+    total_score = 0.0
+    for keyword in sorted({keyword for keyword in keywords if keyword}, key=len, reverse=True):
+        keyword_spans = find_term_spans(text, [keyword])
+        if not keyword_spans:
+            continue
+
+        best_distance = min(
+            span_distance(keyword_span, target_span)
+            for keyword_span in keyword_spans
+            for target_span in target_spans
+        )
+        proximity_score = max(0, window_size - best_distance)
+        total_score += proximity_score
+        proximity_details.append(
+            {
+                "keyword": keyword,
+                "best_distance": best_distance,
+                "proximity_score": proximity_score,
+                "occurrence_count": len(keyword_spans),
+            }
+        )
+
+    proximity_details.sort(key=lambda item: (-item["proximity_score"], item["best_distance"], item["keyword"]))
+    return round(total_score, 4), proximity_details
+
+
 def choose_relation(
     source: Entity,
     target: Entity,
@@ -344,6 +414,7 @@ def choose_relation(
 
     def candidate_sort_key(item: dict[str, Any]) -> tuple[Any, ...]:
         return (
+            -float(item["target_proximity_score"]),
             -int(item["keyword_count"]),
             -float(item["base_weight"]),
             item["relation_type"],
@@ -364,6 +435,11 @@ def choose_relation(
             if not matched:
                 continue
             base_weight = float(relation_map[relation_type]["base_weight"])
+            target_proximity_score, proximity_details = keyword_proximity_score(
+                text,
+                current_target.all_terms,
+                matched,
+            )
             candidates.append(
                 {
                     "direction": direction,
@@ -377,8 +453,10 @@ def choose_relation(
                     "matched_keywords": matched,
                     "keyword_count": len(matched),
                     "base_weight": base_weight,
-                    # 词命中数量优先，其次是 schema 基础权重，最后才看方向稳定性。
-                    "selection_score": round(len(matched) + base_weight, 4),
+                    "target_proximity_score": target_proximity_score,
+                    "keyword_proximity_details": proximity_details,
+                    # 先看关键词是否贴近目标实体，再看词命中数量、基础权重和方向稳定性。
+                    "selection_score": round(target_proximity_score + len(matched) + base_weight, 4),
                 }
             )
         candidates.sort(key=candidate_sort_key)
@@ -393,6 +471,7 @@ def choose_relation(
         selected = max(
             all_candidates,
             key=lambda item: (
+                item["target_proximity_score"],
                 item["keyword_count"],
                 item["base_weight"],
                 1 if item["direction"] == "forward" else 0,
@@ -471,10 +550,21 @@ def extract_relation_instances(
                 )
 
                 selection_reason = (
+                    f"target_proximity_score={selected_candidate['target_proximity_score']}; "
                     f"keyword_count={selected_candidate['keyword_count']}; "
                     f"base_weight={selected_candidate['base_weight']}; "
                     f"direction={selected_candidate['direction']}"
                 )
+                selection_factors = {
+                    "target_proximity_score": selected_candidate["target_proximity_score"],
+                    "keyword_count": selected_candidate["keyword_count"],
+                    "base_weight": selected_candidate["base_weight"],
+                    "direction": selected_candidate["direction"],
+                    "selected_candidate_rank": selected_candidate["candidate_rank"],
+                    "matched_keyword_count": len(matched_keywords),
+                    "forward_candidate_count": len(forward_candidates),
+                    "reverse_candidate_count": len(reverse_candidates),
+                }
                 relation_candidates.append(
                     RelationCandidateTrace(
                         evidence_id=evidence_id,
@@ -496,6 +586,7 @@ def extract_relation_instances(
                         selected_direction=str(selected_candidate["direction"]),
                         selected_candidate_rank=int(selected_candidate["candidate_rank"]),
                         selected_candidate=dict(selected_candidate),
+                        selection_factors=selection_factors,
                         selection_reason=selection_reason,
                         matched_keywords=matched_keywords,
                         forward_candidates=forward_candidates,
@@ -592,6 +683,80 @@ def summarize_edges(edges: list[Edge]) -> dict[str, Any]:
         "weight_range": {
             "min": min(weights) if weights else None,
             "max": max(weights) if weights else None,
+        },
+    }
+
+
+def build_relation_catalog(
+    relation_map: dict[str, dict[str, Any]],
+    relation_keyword_map: dict[tuple[str, str], list[tuple[str, list[str]]]],
+    edges: list[Edge],
+) -> dict[str, Any]:
+    """整理关系类型目录，把配置、关键词和实际覆盖情况放到一个文件里。"""
+
+    relation_counter = Counter(edge.relation_type for edge in edges)
+    pair_counter = Counter(f"{edge.source_type}->{edge.target_type}" for edge in edges)
+    weight_by_relation: dict[str, list[float]] = defaultdict(list)
+    for edge in edges:
+        weight_by_relation[edge.relation_type].append(edge.weight)
+
+    keyword_groups_by_relation: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for (source_type, target_type), relation_items in relation_keyword_map.items():
+        for relation_type, keywords in relation_items:
+            normalized_keywords = sorted({keyword for keyword in keywords if keyword})
+            keyword_groups_by_relation[relation_type].append(
+                {
+                    "source_type": source_type,
+                    "target_type": target_type,
+                    "keywords": normalized_keywords,
+                    "keyword_count": len(normalized_keywords),
+                }
+            )
+
+    relations: list[dict[str, Any]] = []
+    for relation_type in sorted(relation_map):
+        relation_config = relation_map[relation_type]
+        keyword_groups = sorted(
+            keyword_groups_by_relation.get(relation_type, []),
+            key=lambda item: (item["source_type"], item["target_type"]),
+        )
+        unique_keywords = sorted({keyword for group in keyword_groups for keyword in group["keywords"]})
+        relation_weights = weight_by_relation.get(relation_type, [])
+        relations.append(
+            {
+                "relation_type": relation_type,
+                "source_types": list(relation_config["source_types"]),
+                "target_types": list(relation_config["target_types"]),
+                "base_weight": relation_config["base_weight"],
+                "description": relation_config["description"],
+                "keyword_groups": keyword_groups,
+                "keyword_group_count": len(keyword_groups),
+                "keyword_count": len(unique_keywords),
+                "matched_edge_count": relation_counter.get(relation_type, 0),
+                "coverage_rate": round(
+                    relation_counter.get(relation_type, 0) / len(edges), 4
+                )
+                if edges
+                else 0.0,
+                "weight_range": {
+                    "min": min(relation_weights) if relation_weights else None,
+                    "max": max(relation_weights) if relation_weights else None,
+                },
+            }
+        )
+
+    return {
+        "relation_type_count": len(relations),
+        "observed_relation_type_count": sum(1 for item in relations if item["matched_edge_count"] > 0),
+        "relations": relations,
+        "edge_summary": {
+            "edge_count": len(edges),
+            "relation_count": dict(sorted(relation_counter.items())),
+            "type_pair_count": dict(sorted(pair_counter.items())),
+            "weight_range": {
+                "min": min((edge.weight for edge in edges), default=None),
+                "max": max((edge.weight for edge in edges), default=None),
+            },
         },
     }
 
@@ -911,11 +1076,40 @@ def build_recommendation_index(
     return recommendation_index
 
 
+def build_entity_lookup(
+    career_profiles: list[dict[str, Any]],
+    recommendation_index: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """把列表型产物整理成按 ID 可直接查询的索引，减少后端二次扫描。"""
+
+    occupation_profiles_by_id: dict[str, dict[str, Any]] = {}
+    for profile in career_profiles:
+        occupation_id = str(profile["occupation_id"])
+        occupation_profiles_by_id[occupation_id] = profile
+
+    recommendation_index_by_target_id: dict[str, dict[str, Any]] = {}
+    for item in recommendation_index:
+        target_id = str(item["target_id"])
+        recommendation_index_by_target_id[target_id] = item
+
+    return {
+        "occupation_profiles_by_id": occupation_profiles_by_id,
+        "recommendation_index_by_target_id": recommendation_index_by_target_id,
+        "summary": {
+            "occupation_profile_count": len(occupation_profiles_by_id),
+            "recommendation_target_count": len(recommendation_index_by_target_id),
+        },
+    }
+
+
 def build_manifest(
     nodes: list[dict[str, Any]],
     relation_instances: list[RelationInstance],
     relation_candidates: list[RelationCandidateTrace],
     edges: list[Edge],
+    career_profiles: list[dict[str, Any]],
+    recommendation_index: list[dict[str, Any]],
+    entity_lookup: dict[str, Any],
     evidence_count: int,
     args: argparse.Namespace,
 ) -> dict[str, Any]:
@@ -929,16 +1123,21 @@ def build_manifest(
         "relation_instance_count": len(relation_instances),
         "relation_candidate_count": len(relation_candidates),
         "edge_count": len(edges),
+        "career_profile_count": len(career_profiles),
+        "recommendation_index_count": len(recommendation_index),
+        "entity_lookup_section_count": len(entity_lookup) - 1,
         "node_type_count": dict(sorted(node_type_counter.items())),
         "output_files": [
             "nodes.json",
             "relation_instances.json",
             "relation_candidates.json",
             "edges.json",
+            "relation_catalog.json",
             "graph_index.json",
             "graph_quality.json",
             "career_profiles.json",
             "recommendation_index.json",
+            "entity_lookup.json",
             "relation_summary.json",
             "extraction_log.json",
             "data_catalog.json",
@@ -957,10 +1156,12 @@ def build_manifest(
 def build_data_catalog(
     output_dir: Path,
     manifest: dict[str, Any],
+    relation_catalog: dict[str, Any],
     graph_index: dict[str, Any],
     quality_report: dict[str, Any],
     career_profiles: list[dict[str, Any]],
     recommendation_index: list[dict[str, Any]],
+    entity_lookup: dict[str, Any],
 ) -> list[dict[str, Any]]:
     """生成所有输出文件的目录和校验信息。"""
 
@@ -969,10 +1170,12 @@ def build_data_catalog(
         ("relation_instances.json", "证据级关系实例"),
         ("relation_candidates.json", "关系候选轨迹"),
         ("edges.json", "图谱边"),
+        ("relation_catalog.json", "关系目录"),
         ("graph_index.json", "图索引"),
         ("graph_quality.json", "图谱质量报告"),
         ("career_profiles.json", "职业画像"),
         ("recommendation_index.json", "反向推荐索引"),
+        ("entity_lookup.json", "实体查询索引"),
         ("relation_summary.json", "关系统计摘要"),
         ("extraction_log.json", "构建日志"),
         ("graph_manifest.json", "构建清单"),
@@ -980,10 +1183,12 @@ def build_data_catalog(
 
     file_overrides = {
         "graph_manifest.json": manifest,
+        "relation_catalog.json": relation_catalog,
         "graph_index.json": graph_index,
         "graph_quality.json": quality_report,
         "career_profiles.json": career_profiles,
         "recommendation_index.json": recommendation_index,
+        "entity_lookup.json": entity_lookup,
     }
 
     catalog: list[dict[str, Any]] = []
@@ -1001,6 +1206,8 @@ def build_data_catalog(
                 # graph_manifest 的核心含义是“输出文件清单”，因此这里按清单条目数统计，
                 # 比按 edge_count 这类内部统计字段更稳定、更符合目录语义。
                 item_count = len(payload.get("output_files", []))
+            elif file_name == "relation_catalog.json":
+                item_count = int(payload.get("relation_type_count", len(payload.get("relations", []))))
             elif "edge_count" in payload:
                 item_count = int(payload["edge_count"])
             elif "node_count" in payload:
@@ -1054,10 +1261,12 @@ def main() -> int:
     )
     edges = build_edges(entities, relation_instances, relation_map, weight_rules)
     nodes = build_nodes(entities)
+    relation_catalog = build_relation_catalog(relation_map, relation_keyword_map, edges)
     graph_index = build_graph_index(nodes, edges)
     quality_report = build_quality_report(nodes, edges, graph_index)
     career_profiles = build_career_profiles(entities, edges)
     recommendation_index = build_recommendation_index(entities, edges)
+    entity_lookup = build_entity_lookup(career_profiles, recommendation_index)
 
     output_dir = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1066,10 +1275,12 @@ def main() -> int:
     write_json(output_dir / "relation_instances.json", [asdict(item) for item in relation_instances])
     write_json(output_dir / "relation_candidates.json", [asdict(item) for item in relation_candidates])
     write_json(output_dir / "edges.json", [asdict(edge) for edge in edges])
+    write_json(output_dir / "relation_catalog.json", relation_catalog)
     write_json(output_dir / "graph_index.json", graph_index)
     write_json(output_dir / "graph_quality.json", quality_report)
     write_json(output_dir / "career_profiles.json", career_profiles)
     write_json(output_dir / "recommendation_index.json", recommendation_index)
+    write_json(output_dir / "entity_lookup.json", entity_lookup)
     write_json(output_dir / "relation_summary.json", summarize_edges(edges))
     write_json(
         output_dir / "extraction_log.json",
@@ -1083,6 +1294,7 @@ def main() -> int:
             "graph_index_edge_count": graph_index["edge_count"],
             "career_profile_count": len(career_profiles),
             "recommendation_index_count": len(recommendation_index),
+            "entity_lookup_section_count": len(entity_lookup) - 1,
             "isolated_node_count": quality_report["isolated_node_count"],
             "connected_node_count": quality_report["connected_node_count"],
             "source_files": {
@@ -1110,6 +1322,9 @@ def main() -> int:
         relation_instances,
         relation_candidates,
         edges,
+        career_profiles,
+        recommendation_index,
+        entity_lookup,
         len(evidence_items),
         args,
     )
@@ -1117,10 +1332,12 @@ def main() -> int:
     data_catalog = build_data_catalog(
         output_dir,
         graph_manifest,
+        relation_catalog,
         graph_index,
         quality_report,
         career_profiles,
         recommendation_index,
+        entity_lookup,
     )
     write_json(output_dir / "data_catalog.json", data_catalog)
 

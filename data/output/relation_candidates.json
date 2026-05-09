@@ -34,10 +34,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 0.85,
-      "selection_score": 3.85,
+      "target_proximity_score": 13.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "掌握",
+          "best_distance": 6,
+          "proximity_score": 6,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 8,
+          "proximity_score": 4,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "熟悉",
+          "best_distance": 9,
+          "proximity_score": 3,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 16.85,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=0.85; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 13.0,
+      "keyword_count": 3,
+      "base_weight": 0.85,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=13.0; keyword_count=3; base_weight=0.85; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -60,7 +91,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.85,
-        "selection_score": 3.85,
+        "target_proximity_score": 13.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "掌握",
+            "best_distance": 6,
+            "proximity_score": 6,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 8,
+            "proximity_score": 4,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "熟悉",
+            "best_distance": 9,
+            "proximity_score": 3,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 16.85,
         "candidate_rank": 1
       }
     ],
@@ -101,10 +153,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 0.85,
-      "selection_score": 3.85,
+      "target_proximity_score": 11.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "熟悉",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "掌握",
+          "best_distance": 14,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 16,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 14.85,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=0.85; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 11.0,
+      "keyword_count": 3,
+      "base_weight": 0.85,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=11.0; keyword_count=3; base_weight=0.85; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -127,7 +210,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.85,
-        "selection_score": 3.85,
+        "target_proximity_score": 11.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "熟悉",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "掌握",
+            "best_distance": 14,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 16,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 14.85,
         "candidate_rank": 1
       }
     ],
@@ -168,10 +272,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 1.0,
-      "selection_score": 4.0,
+      "target_proximity_score": 20.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "掌握",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 3,
+          "proximity_score": 9,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "熟悉",
+          "best_distance": 15,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 24.0,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=1.0; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 20.0,
+      "keyword_count": 3,
+      "base_weight": 1.0,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=20.0; keyword_count=3; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -194,7 +329,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 1.0,
-        "selection_score": 4.0,
+        "target_proximity_score": 20.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "掌握",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 3,
+            "proximity_score": 9,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "熟悉",
+            "best_distance": 15,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 24.0,
         "candidate_rank": 1
       }
     ],
@@ -235,10 +391,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 1.0,
-      "selection_score": 4.0,
+      "target_proximity_score": 9.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "掌握",
+          "best_distance": 8,
+          "proximity_score": 4,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "熟悉",
+          "best_distance": 9,
+          "proximity_score": 3,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 10,
+          "proximity_score": 2,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 13.0,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=1.0; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 9.0,
+      "keyword_count": 3,
+      "base_weight": 1.0,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=9.0; keyword_count=3; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -261,7 +448,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 1.0,
-        "selection_score": 4.0,
+        "target_proximity_score": 9.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "掌握",
+            "best_distance": 8,
+            "proximity_score": 4,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "熟悉",
+            "best_distance": 9,
+            "proximity_score": 3,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 10,
+            "proximity_score": 2,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 13.0,
         "candidate_rank": 1
       }
     ],
@@ -302,10 +510,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 0.85,
-      "selection_score": 3.85,
+      "target_proximity_score": 11.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "熟悉",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "掌握",
+          "best_distance": 23,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 25,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 14.85,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=0.85; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 11.0,
+      "keyword_count": 3,
+      "base_weight": 0.85,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=11.0; keyword_count=3; base_weight=0.85; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -328,7 +567,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.85,
-        "selection_score": 3.85,
+        "target_proximity_score": 11.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "熟悉",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "掌握",
+            "best_distance": 23,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 25,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 14.85,
         "candidate_rank": 1
       }
     ],
@@ -369,10 +629,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 1.0,
-      "selection_score": 4.0,
+      "target_proximity_score": 20.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "掌握",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 3,
+          "proximity_score": 9,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "熟悉",
+          "best_distance": 14,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 24.0,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=1.0; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 20.0,
+      "keyword_count": 3,
+      "base_weight": 1.0,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=20.0; keyword_count=3; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -395,7 +686,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 1.0,
-        "selection_score": 4.0,
+        "target_proximity_score": 20.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "掌握",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 3,
+            "proximity_score": 9,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "熟悉",
+            "best_distance": 14,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 24.0,
         "candidate_rank": 1
       }
     ],
@@ -436,10 +748,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 1.0,
-      "selection_score": 4.0,
+      "target_proximity_score": 11.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "熟悉",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "掌握",
+          "best_distance": 14,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 16,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 15.0,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=1.0; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 11.0,
+      "keyword_count": 3,
+      "base_weight": 1.0,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=11.0; keyword_count=3; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -462,7 +805,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 1.0,
-        "selection_score": 4.0,
+        "target_proximity_score": 11.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "熟悉",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "掌握",
+            "best_distance": 14,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 16,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 15.0,
         "candidate_rank": 1
       }
     ],
@@ -503,10 +867,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 1.0,
-      "selection_score": 4.0,
+      "target_proximity_score": 8.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "掌握",
+          "best_distance": 8,
+          "proximity_score": 4,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "熟悉",
+          "best_distance": 10,
+          "proximity_score": 2,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 10,
+          "proximity_score": 2,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 12.0,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=1.0; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 8.0,
+      "keyword_count": 3,
+      "base_weight": 1.0,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=8.0; keyword_count=3; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -529,7 +924,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 1.0,
-        "selection_score": 4.0,
+        "target_proximity_score": 8.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "掌握",
+            "best_distance": 8,
+            "proximity_score": 4,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "熟悉",
+            "best_distance": 10,
+            "proximity_score": 2,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 10,
+            "proximity_score": 2,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 12.0,
         "candidate_rank": 1
       }
     ],
@@ -571,10 +987,47 @@
       ],
       "keyword_count": 4,
       "base_weight": 1.0,
-      "selection_score": 5.0,
+      "target_proximity_score": 12.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "掌握",
+          "best_distance": 5,
+          "proximity_score": 7,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 7,
+          "proximity_score": 5,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "熟悉",
+          "best_distance": 12,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "具备",
+          "best_distance": 21,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 17.0,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=4; base_weight=1.0; direction=reverse",
+    "selection_factors": {
+      "target_proximity_score": 12.0,
+      "keyword_count": 4,
+      "base_weight": 1.0,
+      "direction": "reverse",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 4,
+      "forward_candidate_count": 0,
+      "reverse_candidate_count": 2
+    },
+    "selection_reason": "target_proximity_score=12.0; keyword_count=4; base_weight=1.0; direction=reverse",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -600,7 +1053,34 @@
         ],
         "keyword_count": 4,
         "base_weight": 1.0,
-        "selection_score": 5.0,
+        "target_proximity_score": 12.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "掌握",
+            "best_distance": 5,
+            "proximity_score": 7,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 7,
+            "proximity_score": 5,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "熟悉",
+            "best_distance": 12,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "具备",
+            "best_distance": 21,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 17.0,
         "candidate_rank": 1
       },
       {
@@ -617,7 +1097,16 @@
         ],
         "keyword_count": 1,
         "base_weight": 0.7,
-        "selection_score": 1.7,
+        "target_proximity_score": 2.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "优先",
+            "best_distance": 10,
+            "proximity_score": 2,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 3.7,
         "candidate_rank": 2
       }
     ]
@@ -638,12 +1127,12 @@
     "target_name": "Pandas",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "requires_skill",
+    "relation_type": "preferred_skill",
     "selected_direction": "reverse",
     "selected_candidate_rank": 1,
     "selected_candidate": {
       "direction": "reverse",
-      "relation_type": "requires_skill",
+      "relation_type": "preferred_skill",
       "source_id": "occ_data_analyst",
       "target_id": "skill_pandas",
       "source_name": "数据分析师",
@@ -651,25 +1140,64 @@
       "source_type": "occupation",
       "target_type": "skill",
       "matched_keywords": [
-        "需要",
-        "掌握",
-        "熟悉",
-        "具备"
+        "优先"
       ],
-      "keyword_count": 4,
-      "base_weight": 1.0,
-      "selection_score": 5.0,
+      "keyword_count": 1,
+      "base_weight": 0.7,
+      "target_proximity_score": 11.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "优先",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 12.7,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=4; base_weight=1.0; direction=reverse",
+    "selection_factors": {
+      "target_proximity_score": 11.0,
+      "keyword_count": 1,
+      "base_weight": 0.7,
+      "direction": "reverse",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 1,
+      "forward_candidate_count": 0,
+      "reverse_candidate_count": 2
+    },
+    "selection_reason": "target_proximity_score=11.0; keyword_count=1; base_weight=0.7; direction=reverse",
     "matched_keywords": [
-      "需要",
-      "掌握",
-      "熟悉",
-      "具备"
+      "优先"
     ],
     "forward_candidates": [],
     "reverse_candidates": [
+      {
+        "direction": "reverse",
+        "relation_type": "preferred_skill",
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_pandas",
+        "source_name": "数据分析师",
+        "target_name": "Pandas",
+        "source_type": "occupation",
+        "target_type": "skill",
+        "matched_keywords": [
+          "优先"
+        ],
+        "keyword_count": 1,
+        "base_weight": 0.7,
+        "target_proximity_score": 11.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "优先",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 12.7,
+        "candidate_rank": 1
+      },
       {
         "direction": "reverse",
         "relation_type": "requires_skill",
@@ -687,24 +1215,34 @@
         ],
         "keyword_count": 4,
         "base_weight": 1.0,
-        "selection_score": 5.0,
-        "candidate_rank": 1
-      },
-      {
-        "direction": "reverse",
-        "relation_type": "preferred_skill",
-        "source_id": "occ_data_analyst",
-        "target_id": "skill_pandas",
-        "source_name": "数据分析师",
-        "target_name": "Pandas",
-        "source_type": "occupation",
-        "target_type": "skill",
-        "matched_keywords": [
-          "优先"
+        "target_proximity_score": 9.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "熟悉",
+            "best_distance": 3,
+            "proximity_score": 9,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "具备",
+            "best_distance": 12,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "掌握",
+            "best_distance": 14,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 16,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
         ],
-        "keyword_count": 1,
-        "base_weight": 0.7,
-        "selection_score": 1.7,
+        "selection_score": 14.0,
         "candidate_rank": 2
       }
     ]
@@ -745,10 +1283,47 @@
       ],
       "keyword_count": 4,
       "base_weight": 1.0,
-      "selection_score": 5.0,
+      "target_proximity_score": 22.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "具备",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "熟悉",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "掌握",
+          "best_distance": 26,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 28,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 27.0,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=4; base_weight=1.0; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 22.0,
+      "keyword_count": 4,
+      "base_weight": 1.0,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 4,
+      "forward_candidate_count": 2,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=22.0; keyword_count=4; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -773,7 +1348,34 @@
         ],
         "keyword_count": 4,
         "base_weight": 1.0,
-        "selection_score": 5.0,
+        "target_proximity_score": 22.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "具备",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "熟悉",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "掌握",
+            "best_distance": 26,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 28,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 27.0,
         "candidate_rank": 1
       },
       {
@@ -790,7 +1392,16 @@
         ],
         "keyword_count": 1,
         "base_weight": 0.7,
-        "selection_score": 1.7,
+        "target_proximity_score": 9.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "优先",
+            "best_distance": 3,
+            "proximity_score": 9,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 10.7,
         "candidate_rank": 2
       }
     ],
@@ -830,10 +1441,35 @@
       ],
       "keyword_count": 2,
       "base_weight": 0.55,
-      "selection_score": 2.55,
+      "target_proximity_score": 24.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "思维",
+          "best_distance": 0,
+          "proximity_score": 12,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "能力",
+          "best_distance": 0,
+          "proximity_score": 12,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 26.55,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=2; base_weight=0.55; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 24.0,
+      "keyword_count": 2,
+      "base_weight": 0.55,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 2,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=24.0; keyword_count=2; base_weight=0.55; direction=forward",
     "matched_keywords": [
       "能力",
       "思维"
@@ -854,7 +1490,22 @@
         ],
         "keyword_count": 2,
         "base_weight": 0.55,
-        "selection_score": 2.55,
+        "target_proximity_score": 24.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "思维",
+            "best_distance": 0,
+            "proximity_score": 12,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "能力",
+            "best_distance": 0,
+            "proximity_score": 12,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 26.55,
         "candidate_rank": 1
       }
     ],
@@ -896,10 +1547,47 @@
       ],
       "keyword_count": 4,
       "base_weight": 1.0,
-      "selection_score": 5.0,
+      "target_proximity_score": 20.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "掌握",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 3,
+          "proximity_score": 9,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "熟悉",
+          "best_distance": 19,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "具备",
+          "best_distance": 28,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 25.0,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=4; base_weight=1.0; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 20.0,
+      "keyword_count": 4,
+      "base_weight": 1.0,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 4,
+      "forward_candidate_count": 2,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=20.0; keyword_count=4; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -924,7 +1612,34 @@
         ],
         "keyword_count": 4,
         "base_weight": 1.0,
-        "selection_score": 5.0,
+        "target_proximity_score": 20.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "掌握",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 3,
+            "proximity_score": 9,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "熟悉",
+            "best_distance": 19,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "具备",
+            "best_distance": 28,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 25.0,
         "candidate_rank": 1
       },
       {
@@ -941,6 +1656,15 @@
         ],
         "keyword_count": 1,
         "base_weight": 0.7,
+        "target_proximity_score": 0.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "优先",
+            "best_distance": 17,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
         "selection_score": 1.7,
         "candidate_rank": 2
       }
@@ -981,10 +1705,35 @@
       ],
       "keyword_count": 2,
       "base_weight": 1.0,
-      "selection_score": 3.0,
+      "target_proximity_score": 20.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "掌握",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 3,
+          "proximity_score": 9,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 23.0,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=2; base_weight=1.0; direction=reverse",
+    "selection_factors": {
+      "target_proximity_score": 20.0,
+      "keyword_count": 2,
+      "base_weight": 1.0,
+      "direction": "reverse",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 2,
+      "forward_candidate_count": 0,
+      "reverse_candidate_count": 1
+    },
+    "selection_reason": "target_proximity_score=20.0; keyword_count=2; base_weight=1.0; direction=reverse",
     "matched_keywords": [
       "需要",
       "掌握"
@@ -1006,7 +1755,22 @@
         ],
         "keyword_count": 2,
         "base_weight": 1.0,
-        "selection_score": 3.0,
+        "target_proximity_score": 20.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "掌握",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 3,
+            "proximity_score": 9,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 23.0,
         "candidate_rank": 1
       }
     ]
@@ -1045,10 +1809,35 @@
       ],
       "keyword_count": 2,
       "base_weight": 1.0,
-      "selection_score": 3.0,
+      "target_proximity_score": 6.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "掌握",
+          "best_distance": 8,
+          "proximity_score": 4,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 10,
+          "proximity_score": 2,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 9.0,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=2; base_weight=1.0; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 6.0,
+      "keyword_count": 2,
+      "base_weight": 1.0,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 2,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=6.0; keyword_count=2; base_weight=1.0; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握"
@@ -1069,7 +1858,22 @@
         ],
         "keyword_count": 2,
         "base_weight": 1.0,
-        "selection_score": 3.0,
+        "target_proximity_score": 6.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "掌握",
+            "best_distance": 8,
+            "proximity_score": 4,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 10,
+            "proximity_score": 2,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 9.0,
         "candidate_rank": 1
       }
     ],
@@ -1110,10 +1914,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 0.85,
-      "selection_score": 3.85,
+      "target_proximity_score": 27.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "掌握",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 3,
+          "proximity_score": 9,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "具备",
+          "best_distance": 5,
+          "proximity_score": 7,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 30.85,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=0.85; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 27.0,
+      "keyword_count": 3,
+      "base_weight": 0.85,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=27.0; keyword_count=3; base_weight=0.85; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -1136,7 +1971,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.85,
-        "selection_score": 3.85,
+        "target_proximity_score": 27.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "掌握",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 3,
+            "proximity_score": 9,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "具备",
+            "best_distance": 5,
+            "proximity_score": 7,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 30.85,
         "candidate_rank": 1
       }
     ],
@@ -1177,10 +2033,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 0.55,
-      "selection_score": 3.55,
+      "target_proximity_score": 35.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "沟通",
+          "best_distance": 0,
+          "proximity_score": 12,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "能力",
+          "best_distance": 0,
+          "proximity_score": 12,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "细致",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 38.55,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=0.55; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 35.0,
+      "keyword_count": 3,
+      "base_weight": 0.55,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=35.0; keyword_count=3; base_weight=0.55; direction=forward",
     "matched_keywords": [
       "能力",
       "沟通",
@@ -1203,7 +2090,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.55,
-        "selection_score": 3.55,
+        "target_proximity_score": 35.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "沟通",
+            "best_distance": 0,
+            "proximity_score": 12,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "能力",
+            "best_distance": 0,
+            "proximity_score": 12,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "细致",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 38.55,
         "candidate_rank": 1
       }
     ],
@@ -1244,10 +2152,41 @@
       ],
       "keyword_count": 3,
       "base_weight": 0.85,
-      "selection_score": 3.85,
+      "target_proximity_score": 19.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "具备",
+          "best_distance": 1,
+          "proximity_score": 11,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "掌握",
+          "best_distance": 7,
+          "proximity_score": 5,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "需要",
+          "best_distance": 9,
+          "proximity_score": 3,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 22.85,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=3; base_weight=0.85; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 19.0,
+      "keyword_count": 3,
+      "base_weight": 0.85,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 3,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=19.0; keyword_count=3; base_weight=0.85; direction=forward",
     "matched_keywords": [
       "需要",
       "掌握",
@@ -1270,7 +2209,28 @@
         ],
         "keyword_count": 3,
         "base_weight": 0.85,
-        "selection_score": 3.85,
+        "target_proximity_score": 19.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "具备",
+            "best_distance": 1,
+            "proximity_score": 11,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "掌握",
+            "best_distance": 7,
+            "proximity_score": 5,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "需要",
+            "best_distance": 9,
+            "proximity_score": 3,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 22.85,
         "candidate_rank": 1
       }
     ],
@@ -1310,10 +2270,35 @@
       ],
       "keyword_count": 2,
       "base_weight": 0.65,
-      "selection_score": 2.65,
+      "target_proximity_score": 21.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "本科",
+          "best_distance": 0,
+          "proximity_score": 12,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "学历",
+          "best_distance": 3,
+          "proximity_score": 9,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 23.65,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=2; base_weight=0.65; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 21.0,
+      "keyword_count": 2,
+      "base_weight": 0.65,
+      "direction": "forward",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 2,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 0
+    },
+    "selection_reason": "target_proximity_score=21.0; keyword_count=2; base_weight=0.65; direction=forward",
     "matched_keywords": [
       "学历",
       "本科"
@@ -1334,7 +2319,22 @@
         ],
         "keyword_count": 2,
         "base_weight": 0.65,
-        "selection_score": 2.65,
+        "target_proximity_score": 21.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "本科",
+            "best_distance": 0,
+            "proximity_score": 12,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "学历",
+            "best_distance": 3,
+            "proximity_score": 9,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 23.65,
         "candidate_rank": 1
       }
     ],
@@ -1350,22 +2350,22 @@
     "pair_target_name": "后端开发工程师",
     "pair_source_type": "occupation",
     "pair_target_type": "occupation",
-    "source_id": "occ_python_engineer",
-    "target_id": "occ_backend_engineer",
-    "source_name": "Python开发工程师",
-    "target_name": "后端开发工程师",
+    "source_id": "occ_backend_engineer",
+    "target_id": "occ_python_engineer",
+    "source_name": "后端开发工程师",
+    "target_name": "Python开发工程师",
     "source_type": "occupation",
     "target_type": "occupation",
     "relation_type": "related_role",
-    "selected_direction": "forward",
+    "selected_direction": "reverse",
     "selected_candidate_rank": 1,
     "selected_candidate": {
-      "direction": "forward",
+      "direction": "reverse",
       "relation_type": "related_role",
-      "source_id": "occ_python_engineer",
-      "target_id": "occ_backend_engineer",
-      "source_name": "Python开发工程师",
-      "target_name": "后端开发工程师",
+      "source_id": "occ_backend_engineer",
+      "target_id": "occ_python_engineer",
+      "source_name": "后端开发工程师",
+      "target_name": "Python开发工程师",
       "source_type": "occupation",
       "target_type": "occupation",
       "matched_keywords": [
@@ -1374,10 +2374,35 @@
       ],
       "keyword_count": 2,
       "base_weight": 0.5,
-      "selection_score": 2.5,
+      "target_proximity_score": 6.0,
+      "keyword_proximity_details": [
+        {
+          "keyword": "方向",
+          "best_distance": 6,
+          "proximity_score": 6,
+          "occurrence_count": 1
+        },
+        {
+          "keyword": "相关",
+          "best_distance": 12,
+          "proximity_score": 0,
+          "occurrence_count": 1
+        }
+      ],
+      "selection_score": 8.5,
       "candidate_rank": 1
     },
-    "selection_reason": "keyword_count=2; base_weight=0.5; direction=forward",
+    "selection_factors": {
+      "target_proximity_score": 6.0,
+      "keyword_count": 2,
+      "base_weight": 0.5,
+      "direction": "reverse",
+      "selected_candidate_rank": 1,
+      "matched_keyword_count": 2,
+      "forward_candidate_count": 1,
+      "reverse_candidate_count": 1
+    },
+    "selection_reason": "target_proximity_score=6.0; keyword_count=2; base_weight=0.5; direction=reverse",
     "matched_keywords": [
       "相关",
       "方向"
@@ -1398,6 +2423,21 @@
         ],
         "keyword_count": 2,
         "base_weight": 0.5,
+        "target_proximity_score": 0.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "方向",
+            "best_distance": 19,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "相关",
+            "best_distance": 25,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
         "selection_score": 2.5,
         "candidate_rank": 1
       }
@@ -1418,7 +2458,22 @@
         ],
         "keyword_count": 2,
         "base_weight": 0.5,
-        "selection_score": 2.5,
+        "target_proximity_score": 6.0,
+        "keyword_proximity_details": [
+          {
+            "keyword": "方向",
+            "best_distance": 6,
+            "proximity_score": 6,
+            "occurrence_count": 1
+          },
+          {
+            "keyword": "相关",
+            "best_distance": 12,
+            "proximity_score": 0,
+            "occurrence_count": 1
+          }
+        ],
+        "selection_score": 8.5,
         "candidate_rank": 1
       }
     ]

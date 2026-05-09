@@ -37,6 +37,24 @@
   },
   {
     "source_id": "occ_backend_engineer",
+    "target_id": "occ_python_engineer",
+    "source_name": "后端开发工程师",
+    "target_name": "Python开发工程师",
+    "source_type": "occupation",
+    "target_type": "occupation",
+    "relation_type": "related_role",
+    "weight": 0.7375,
+    "evidence_ids": [
+      "evidence_006"
+    ],
+    "evidence_count": 1,
+    "matched_keywords": [
+      "方向",
+      "相关"
+    ]
+  },
+  {
+    "source_id": "occ_backend_engineer",
     "target_id": "skill_git",
     "source_name": "后端开发工程师",
     "target_name": "Git",
@@ -157,17 +175,14 @@
     "target_name": "Pandas",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "requires_skill",
-    "weight": 1.2,
+    "relation_type": "preferred_skill",
+    "weight": 0.9275,
     "evidence_ids": [
       "evidence_003"
     ],
     "evidence_count": 1,
     "matched_keywords": [
-      "具备",
-      "掌握",
-      "熟悉",
-      "需要"
+      "优先"
     ]
   },
   {
@@ -226,24 +241,6 @@
     "matched_keywords": [
       "思维",
       "能力"
-    ]
-  },
-  {
-    "source_id": "occ_python_engineer",
-    "target_id": "occ_backend_engineer",
-    "source_name": "Python开发工程师",
-    "target_name": "后端开发工程师",
-    "source_type": "occupation",
-    "target_type": "occupation",
-    "relation_type": "related_role",
-    "weight": 0.7375,
-    "evidence_ids": [
-      "evidence_006"
-    ],
-    "evidence_count": 1,
-    "matched_keywords": [
-      "方向",
-      "相关"
     ]
   },
   {

@@ -47,8 +47,8 @@
       "total": 3
     },
     "occ_python_engineer": {
-      "incoming": 0,
-      "outgoing": 4,
+      "incoming": 1,
+      "outgoing": 3,
       "total": 4
     },
     "skill_sql": {
@@ -57,8 +57,8 @@
       "total": 3
     },
     "occ_backend_engineer": {
-      "incoming": 1,
-      "outgoing": 5,
+      "incoming": 0,
+      "outgoing": 6,
       "total": 6
     },
     "occ_data_analyst": {
@@ -96,8 +96,8 @@
     {
       "node_id": "occ_backend_engineer",
       "degree": 6,
-      "incoming": 1,
-      "outgoing": 5
+      "incoming": 0,
+      "outgoing": 6
     },
     {
       "node_id": "occ_data_analyst",
@@ -108,8 +108,8 @@
     {
       "node_id": "occ_python_engineer",
       "degree": 4,
-      "incoming": 0,
-      "outgoing": 4
+      "incoming": 1,
+      "outgoing": 3
     },
     {
       "node_id": "occ_test_engineer",

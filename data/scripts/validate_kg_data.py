@@ -118,6 +118,7 @@ def validate_candidate_list(
             "matched_keywords",
             "keyword_count",
             "base_weight",
+            "target_proximity_score",
             "selection_score",
             "candidate_rank",
         }
@@ -151,6 +152,11 @@ def validate_candidate_list(
             errors,
         )
         assert_condition(
+            isinstance(candidate.get("target_proximity_score"), (int, float)),
+            f"{context}[{index}] 的 target_proximity_score 非法",
+            errors,
+        )
+        assert_condition(
             isinstance(candidate.get("selection_score"), (int, float)),
             f"{context}[{index}] 的 selection_score 非法",
             errors,
@@ -162,6 +168,7 @@ def validate_candidate_list(
         )
 
         sort_key = (
+            -float(candidate["target_proximity_score"]),
             -int(candidate["keyword_count"]),
             -float(candidate["base_weight"]),
             str(candidate["relation_type"]),
@@ -186,10 +193,12 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "relation_instances": output_dir / "relation_instances.json",
         "relation_candidates": output_dir / "relation_candidates.json",
         "edges": output_dir / "edges.json",
+        "relation_catalog": output_dir / "relation_catalog.json",
         "graph_index": output_dir / "graph_index.json",
         "graph_quality": output_dir / "graph_quality.json",
         "career_profiles": output_dir / "career_profiles.json",
         "recommendation_index": output_dir / "recommendation_index.json",
+        "entity_lookup": output_dir / "entity_lookup.json",
         "relation_summary": output_dir / "relation_summary.json",
         "extraction_log": output_dir / "extraction_log.json",
         "data_catalog": output_dir / "data_catalog.json",
@@ -207,10 +216,12 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     relation_instances = load_json(files["relation_instances"])
     relation_candidates = load_json(files["relation_candidates"])
     edges = load_json(files["edges"])
+    relation_catalog = load_json(files["relation_catalog"])
     graph_index = load_json(files["graph_index"])
     graph_quality = load_json(files["graph_quality"])
     career_profiles = load_json(files["career_profiles"])
     recommendation_index = load_json(files["recommendation_index"])
+    entity_lookup = load_json(files["entity_lookup"])
     relation_summary = load_json(files["relation_summary"])
     extraction_log = load_json(files["extraction_log"])
     data_catalog = load_json(files["data_catalog"])
@@ -228,10 +239,12 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(isinstance(relation_instances, list), "relation_instances.json 必须是列表", errors)
     assert_condition(isinstance(relation_candidates, list), "relation_candidates.json 必须是列表", errors)
     assert_condition(isinstance(edges, list), "edges.json 必须是列表", errors)
+    assert_condition(isinstance(relation_catalog, dict), "relation_catalog.json 必须是对象", errors)
     assert_condition(isinstance(graph_index, dict), "graph_index.json 必须是对象", errors)
     assert_condition(isinstance(graph_quality, dict), "graph_quality.json 必须是对象", errors)
     assert_condition(isinstance(career_profiles, list), "career_profiles.json 必须是列表", errors)
     assert_condition(isinstance(recommendation_index, list), "recommendation_index.json 必须是列表", errors)
+    assert_condition(isinstance(entity_lookup, dict), "entity_lookup.json 必须是对象", errors)
     assert_condition(isinstance(relation_summary, dict), "relation_summary.json 必须是对象", errors)
     assert_condition(isinstance(extraction_log, dict), "extraction_log.json 必须是对象", errors)
     assert_condition(isinstance(data_catalog, list), "data_catalog.json 必须是列表", errors)
@@ -315,6 +328,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
             errors,
         )
         assert_condition(
+            isinstance(candidate.get("selection_factors"), dict),
+            f"第 {index} 条 relation_candidates 缺少 selection_factors",
+            errors,
+        )
+        assert_condition(
             isinstance(candidate.get("selection_reason"), str) and candidate["selection_reason"],
             f"第 {index} 条 relation_candidates 的 selection_reason 无效",
             errors,
@@ -337,6 +355,33 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
                 f"第 {index} 条 relation_candidates 的 selected_candidate 方向不一致",
                 errors,
             )
+            selection_factors = candidate.get("selection_factors", {})
+            assert_condition(
+                isinstance(selection_factors, dict),
+                f"第 {index} 条 relation_candidates 的 selection_factors 无效",
+                errors,
+            )
+            if isinstance(selection_factors, dict):
+                assert_condition(
+                    selection_factors.get("selected_candidate_rank") == candidate.get("selected_candidate_rank"),
+                    f"第 {index} 条 relation_candidates 的 selection_factors.selected_candidate_rank 不一致",
+                    errors,
+                )
+                assert_condition(
+                    selection_factors.get("direction") == candidate.get("selected_direction"),
+                    f"第 {index} 条 relation_candidates 的 selection_factors.direction 不一致",
+                    errors,
+                )
+                assert_condition(
+                    selection_factors.get("keyword_count") == candidate.get("selected_candidate", {}).get("keyword_count"),
+                    f"第 {index} 条 relation_candidates 的 selection_factors.keyword_count 不一致",
+                    errors,
+                )
+                assert_condition(
+                    selection_factors.get("base_weight") == candidate.get("selected_candidate", {}).get("base_weight"),
+                    f"第 {index} 条 relation_candidates 的 selection_factors.base_weight 不一致",
+                    errors,
+                )
 
     for index, candidate in enumerate(relation_candidates, start=1):
         validate_candidate_list(
@@ -380,6 +425,97 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "relation_summary 的 relation_count 与 edges 聚合结果不一致",
         errors,
     )
+    assert_condition(
+        relation_catalog.get("edge_summary", {}).get("edge_count") == len(edges),
+        "relation_catalog 的 edge_count 与 edges 数量不一致",
+        errors,
+    )
+    assert_condition(
+        relation_catalog.get("edge_summary", {}).get("relation_count") == dict(sorted(relation_counter.items())),
+        "relation_catalog 的 relation_count 与 edges 聚合结果不一致",
+        errors,
+    )
+    assert_condition(
+        relation_catalog.get("edge_summary", {}).get("type_pair_count") == dict(sorted(Counter(f'{edge["source_type"]}->{edge["target_type"]}' for edge in edges).items())),
+        "relation_catalog 的 type_pair_count 与 edges 聚合结果不一致",
+        errors,
+    )
+    relations_in_catalog = relation_catalog.get("relations", [])
+    assert_condition(
+        relation_catalog.get("relation_type_count") == len(relations_in_catalog),
+        "relation_catalog 的 relation_type_count 与 relations 数量不一致",
+        errors,
+    )
+    observed_relation_count = sum(1 for item in relations_in_catalog if item.get("matched_edge_count", 0) > 0)
+    assert_condition(
+        relation_catalog.get("observed_relation_type_count") == observed_relation_count,
+        "relation_catalog 的 observed_relation_type_count 不正确",
+        errors,
+    )
+    for index, relation_item in enumerate(relations_in_catalog, start=1):
+        assert_condition(
+            isinstance(relation_item, dict),
+            f"relation_catalog.relations[{index}] 必须是对象",
+            errors,
+        )
+        required_relation_keys = {
+            "relation_type",
+            "source_types",
+            "target_types",
+            "base_weight",
+            "description",
+            "keyword_groups",
+            "keyword_group_count",
+            "keyword_count",
+            "matched_edge_count",
+            "coverage_rate",
+            "weight_range",
+        }
+        missing_relation_keys = sorted(required_relation_keys - set(relation_item))
+        assert_condition(
+            not missing_relation_keys,
+            f"relation_catalog.relations[{index}] 缺少字段: {', '.join(missing_relation_keys)}",
+            errors,
+        )
+        if missing_relation_keys:
+            continue
+        assert_condition(
+            isinstance(relation_item.get("source_types"), list) and relation_item["source_types"],
+            f"relation_catalog.relations[{index}] 的 source_types 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(relation_item.get("target_types"), list) and relation_item["target_types"],
+            f"relation_catalog.relations[{index}] 的 target_types 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(relation_item.get("keyword_groups"), list),
+            f"relation_catalog.relations[{index}] 的 keyword_groups 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(relation_item.get("matched_edge_count"), int) and relation_item["matched_edge_count"] >= 0,
+            f"relation_catalog.relations[{index}] 的 matched_edge_count 无效",
+            errors,
+        )
+        assert_condition(
+            isinstance(relation_item.get("coverage_rate"), (int, float)) and 0.0 <= float(relation_item["coverage_rate"]) <= 1.0,
+            f"relation_catalog.relations[{index}] 的 coverage_rate 无效",
+            errors,
+        )
+        weight_range = relation_item.get("weight_range", {})
+        assert_condition(
+            isinstance(weight_range, dict),
+            f"relation_catalog.relations[{index}] 的 weight_range 无效",
+            errors,
+        )
+        if isinstance(weight_range, dict):
+            assert_condition(
+                "min" in weight_range and "max" in weight_range,
+                f"relation_catalog.relations[{index}] 的 weight_range 缺少 min/max",
+                errors,
+            )
 
     occupation_nodes = [node for node in nodes if node["type"] == "occupation"]
     assert_condition(
@@ -432,6 +568,52 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
             errors,
         )
 
+    occupation_profiles_by_id = entity_lookup.get("occupation_profiles_by_id", {})
+    recommendation_index_by_target_id = entity_lookup.get("recommendation_index_by_target_id", {})
+    assert_condition(
+        isinstance(occupation_profiles_by_id, dict),
+        "entity_lookup.occupation_profiles_by_id 必须是对象",
+        errors,
+    )
+    assert_condition(
+        isinstance(recommendation_index_by_target_id, dict),
+        "entity_lookup.recommendation_index_by_target_id 必须是对象",
+        errors,
+    )
+    assert_condition(
+        set(occupation_profiles_by_id) == {item["occupation_id"] for item in career_profiles},
+        "entity_lookup 的职业画像索引与 career_profiles 不一致",
+        errors,
+    )
+    assert_condition(
+        set(recommendation_index_by_target_id) == {item["target_id"] for item in recommendation_index},
+        "entity_lookup 的反向推荐索引与 recommendation_index 不一致",
+        errors,
+    )
+    entity_lookup_summary = entity_lookup.get("summary", {})
+    assert_condition(
+        entity_lookup_summary.get("occupation_profile_count") == len(occupation_profiles_by_id),
+        "entity_lookup.summary 的职业画像计数不一致",
+        errors,
+    )
+    assert_condition(
+        entity_lookup_summary.get("recommendation_target_count") == len(recommendation_index_by_target_id),
+        "entity_lookup.summary 的反向推荐计数不一致",
+        errors,
+    )
+    for occupation_id, profile in occupation_profiles_by_id.items():
+        assert_condition(
+            profile.get("occupation_id") == occupation_id,
+            f"entity_lookup 中的职业画像键和值不一致: {occupation_id}",
+            errors,
+        )
+    for target_id, item in recommendation_index_by_target_id.items():
+        assert_condition(
+            item.get("target_id") == target_id,
+            f"entity_lookup 中的反向索引键和值不一致: {target_id}",
+            errors,
+        )
+
     assert_condition(
         extraction_log.get("entity_count") == len(nodes),
         "extraction_log 的 entity_count 与 nodes 数量不一致",
@@ -458,6 +640,11 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         errors,
     )
     assert_condition(
+        extraction_log.get("entity_lookup_section_count") == 2,
+        "extraction_log 的 entity_lookup_section_count 不正确",
+        errors,
+    )
+    assert_condition(
         graph_manifest.get("entity_count") == len(nodes),
         "graph_manifest 的 entity_count 与 nodes 数量不一致",
         errors,
@@ -470,6 +657,21 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(
         graph_manifest.get("relation_candidate_count") == len(relation_candidates),
         "graph_manifest 的 relation_candidate_count 与 relation_candidates 数量不一致",
+        errors,
+    )
+    assert_condition(
+        graph_manifest.get("career_profile_count") == len(career_profiles),
+        "graph_manifest 的 career_profile_count 与 career_profiles 数量不一致",
+        errors,
+    )
+    assert_condition(
+        graph_manifest.get("recommendation_index_count") == len(recommendation_index),
+        "graph_manifest 的 recommendation_index_count 与 recommendation_index 数量不一致",
+        errors,
+    )
+    assert_condition(
+        graph_manifest.get("entity_lookup_section_count") == 2,
+        "graph_manifest 的 entity_lookup_section_count 不正确",
         errors,
     )
 
@@ -538,7 +740,8 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
             "career_profile_count": len(career_profiles),
             "recommendation_index_count": len(recommendation_index),
             "catalog_file_count": len(data_catalog),
-            "relation_types": dict(sorted(relation_counter.items())),
+        "relation_types": dict(sorted(relation_counter.items())),
+            "relation_catalog_types": len(relations_in_catalog),
         },
     }
 

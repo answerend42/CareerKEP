@@ -8,6 +8,7 @@
   "graph_index_edge_count": 20,
   "career_profile_count": 5,
   "recommendation_index_count": 13,
+  "entity_lookup_section_count": 2,
   "isolated_node_count": 0,
   "connected_node_count": 17,
   "source_files": {
@@ -41,9 +42,10 @@
     "relation_instance_count": 20,
     "relation_instance_count_by_type": {
       "needs_trait": 2,
+      "preferred_skill": 1,
       "related_role": 1,
       "requires_education": 1,
-      "requires_skill": 11,
+      "requires_skill": 10,
       "uses_tool": 5
     },
     "relation_instance_count_by_pair": {
@@ -58,14 +60,15 @@
     "relation_candidate_count": 20,
     "relation_candidate_count_by_type": {
       "needs_trait": 2,
+      "preferred_skill": 1,
       "related_role": 1,
       "requires_education": 1,
-      "requires_skill": 11,
+      "requires_skill": 10,
       "uses_tool": 5
     },
     "relation_candidate_count_by_direction": {
-      "forward": 17,
-      "reverse": 3
+      "forward": 16,
+      "reverse": 4
     }
   },
   "validation": {
