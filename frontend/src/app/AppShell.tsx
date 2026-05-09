@@ -9,10 +9,10 @@ import {
   getRoleOptions,
   scenarioPresets
 } from './demoData';
-import { InputPane } from './panes/InputPane';
-import { TunePane } from './panes/TunePane';
 import { GraphPane } from './panes/GraphPane';
+import { InputPane } from './panes/InputPane';
 import { ResultPane } from './panes/ResultPane';
+import { TunePane } from './panes/TunePane';
 import type { DemoState, RecommendationResponse, RunStatus } from './types';
 
 const stepLabels = ['输入画像', '调整参数', '图谱传播', '结果解释'] as const;
@@ -54,6 +54,13 @@ export function AppShell() {
 
     setState(preset.state);
     setLastRun(buildRecommendationResponse(preset.state));
+    setRunStatus(localRunStatus);
+    setActiveStep('输入画像');
+  };
+
+  const resetDemoState = () => {
+    setState(defaultDemoState);
+    setLastRun(buildRecommendationResponse(defaultDemoState));
     setRunStatus(localRunStatus);
     setActiveStep('输入画像');
   };
@@ -158,7 +165,7 @@ export function AppShell() {
           <p className="eyebrow">Career KG 前端工作台</p>
           <h1>把自然语言画像，变成可解释的职业推荐</h1>
           <p className="hero-text">
-            这个前端围绕四个阶段展开：输入画像、微调画像、图谱传播、结果解释。
+            这个前端围绕四个阶段展开：输入画像、调整参数、图谱传播、结果解释。
             你可以直接跑本地演示，也可以接到后端 `/api/recommend`。
           </p>
           <div className="hero-metrics">
@@ -215,6 +222,7 @@ export function AppShell() {
             onChange={updateState}
             onPreset={applyPreset}
             onRun={runRecommendation}
+            onReset={resetDemoState}
             isRunning={isRunning}
           />
         </section>

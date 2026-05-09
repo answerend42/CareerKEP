@@ -8,6 +8,7 @@ interface InputPaneProps {
   onChange: <K extends keyof DemoState>(key: K, value: DemoState[K]) => void;
   onPreset: (presetId: string) => void;
   onRun: () => void;
+  onReset: () => void;
   isRunning: boolean;
 }
 
@@ -19,6 +20,7 @@ export function InputPane({
   onChange,
   onPreset,
   onRun,
+  onReset,
   isRunning
 }: InputPaneProps) {
   return (
@@ -28,9 +30,14 @@ export function InputPane({
           <p className="pane-kicker">阶段 1</p>
           <h2>输入画像</h2>
         </div>
-        <button className="primary-button" type="button" onClick={onRun} disabled={isRunning}>
-          {isRunning ? '正在推理…' : '执行推荐'}
-        </button>
+        <div className="button-row">
+          <button className="ghost-button" type="button" onClick={onReset} disabled={isRunning}>
+            重置默认
+          </button>
+          <button className="primary-button" type="button" onClick={onRun} disabled={isRunning}>
+            {isRunning ? '正在推荐...' : '执行推荐'}
+          </button>
+        </div>
       </div>
 
       <label className="field">
