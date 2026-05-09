@@ -1,4 +1,4 @@
-import type { DemoState, RoleOption, ScenarioPreset } from '../types';
+import type { DemoState, EvidenceItem, RoleOption, ScenarioPreset } from '../types';
 
 interface InputPaneProps {
   state: DemoState;
@@ -12,6 +12,12 @@ interface InputPaneProps {
   isRunning: boolean;
 }
 
+const updateEvidenceItem = (
+  evidence: EvidenceItem[],
+  nodeId: string,
+  updater: (item: EvidenceItem) => EvidenceItem
+): EvidenceItem[] => evidence.map((item) => (item.nodeId === nodeId ? updater(item) : item));
+
 export function InputPane({
   state,
   roleOptions,
@@ -23,6 +29,26 @@ export function InputPane({
   onReset,
   isRunning
 }: InputPaneProps) {
+  const handleEvidenceScoreChange = (nodeId: string, nextScore: number) => {
+    onChange(
+      'evidence',
+      updateEvidenceItem(state.evidence, nodeId, (item) => ({
+        ...item,
+        score: nextScore
+      }))
+    );
+  };
+
+  const handleEvidenceTextChange = (nodeId: string, nextText: string) => {
+    onChange(
+      'evidence',
+      updateEvidenceItem(state.evidence, nodeId, (item) => ({
+        ...item,
+        rawText: nextText
+      }))
+    );
+  };
+
   return (
     <div className="pane-stack">
       <div className="pane-header">
@@ -39,6 +65,8 @@ export function InputPane({
           </button>
         </div>
       </div>
+
+      <p className="pane-hint">修改文本或证据后会自动重算图谱、推荐和鲁棒性摘要，方便单独调试前端演示。</p>
 
       <label className="field">
         <span>自然语言画像</span>
@@ -75,7 +103,7 @@ export function InputPane({
       </div>
 
       <div className="preset-row">
-        <span className="field-caption">快速场景</span>
+        <span className="field-caption">快捷场景</span>
         <div className="chip-row">
           {presets.map((preset) => (
             <button key={preset.id} type="button" className="chip" onClick={() => onPreset(preset.id)}>
@@ -99,11 +127,36 @@ export function InputPane({
       <div className="evidence-grid">
         {state.evidence.map((item) => (
           <article key={item.nodeId} className="evidence-card">
-            <div>
-              <strong>{item.label}</strong>
-              <p>{item.rawText}</p>
+            <div className="evidence-card-head">
+              <div>
+                <strong>{item.label}</strong>
+                <p>{item.source}</p>
+              </div>
+              <span>{item.score.toFixed(2)}</span>
             </div>
-            <span>{item.score.toFixed(2)}</span>
+
+            <label className="evidence-control">
+              <span>证据权重</span>
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={item.score}
+                onChange={(event) => handleEvidenceScoreChange(item.nodeId, Number(event.target.value))}
+              />
+            </label>
+
+            <label className="evidence-control">
+              <span>证据原文（诊断导出）</span>
+              <textarea
+                rows={3}
+                value={item.rawText}
+                onChange={(event) => handleEvidenceTextChange(item.nodeId, event.target.value)}
+                placeholder="输入该证据在简历或自述里的原始表述"
+              />
+            </label>
+            <small className="evidence-note">权重会即时重算推荐，文本会同步进入诊断快照。</small>
           </article>
         ))}
       </div>

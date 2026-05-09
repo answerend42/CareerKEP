@@ -181,6 +181,10 @@ export function AppShell() {
               <strong>{lastRun.recommendations.length}</strong>
               <span>正式推荐</span>
             </div>
+            <div>
+              <strong>{state.evidence.length}</strong>
+              <span>可调证据</span>
+            </div>
           </div>
         </div>
         <aside className="hero-aside">
