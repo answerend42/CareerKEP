@@ -118,6 +118,7 @@ def validate_candidate_list(
             "matched_keywords",
             "keyword_count",
             "base_weight",
+            "target_proximity_score",
             "selection_score",
             "candidate_rank",
         }
@@ -151,6 +152,11 @@ def validate_candidate_list(
             errors,
         )
         assert_condition(
+            isinstance(candidate.get("target_proximity_score"), (int, float)),
+            f"{context}[{index}] 的 target_proximity_score 非法",
+            errors,
+        )
+        assert_condition(
             isinstance(candidate.get("selection_score"), (int, float)),
             f"{context}[{index}] 的 selection_score 非法",
             errors,
@@ -162,6 +168,7 @@ def validate_candidate_list(
         )
 
         sort_key = (
+            -float(candidate["target_proximity_score"]),
             -int(candidate["keyword_count"]),
             -float(candidate["base_weight"]),
             str(candidate["relation_type"]),

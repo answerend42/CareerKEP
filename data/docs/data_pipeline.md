@@ -17,7 +17,7 @@
 
 1. 读取 `input/sample_entities.json`，统一实体结构并去重。
 2. 读取 `input/sample_evidence.json`，根据实体名和别名做长词优先匹配。
-3. 结合 `config/relation_keywords.json` 和 `config/relation_schema.json` 抽取关系实例。
+3. 结合 `config/relation_keywords.json` 和 `config/relation_schema.json` 抽取关系实例，并优先选择更靠近目标实体的关系关键词。
 4. 结合 `config/weight_rules.json` 计算边权重。
 5. 输出以下构建产物：
    - `output/nodes.json`

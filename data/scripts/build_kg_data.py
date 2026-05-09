@@ -333,6 +333,75 @@ def find_mentions(text: str, entities: dict[str, Entity]) -> list[str]:
     return matched
 
 
+def find_term_spans(text: str, terms: Iterable[str]) -> list[tuple[int, int]]:
+    """找出词语在文本中的所有位置，用于后面做局部关系判断。"""
+
+    spans: list[tuple[int, int]] = []
+    seen_spans: set[tuple[int, int]] = set()
+    normalized_terms = sorted({term for term in terms if term}, key=len, reverse=True)
+    for term in normalized_terms:
+        start = text.find(term)
+        while start != -1:
+            span = (start, start + len(term))
+            if span not in seen_spans:
+                spans.append(span)
+                seen_spans.add(span)
+            start = text.find(term, start + 1)
+    spans.sort()
+    return spans
+
+
+def span_distance(left: tuple[int, int], right: tuple[int, int]) -> int:
+    """计算两个区间的字符距离，重叠或相邻时记为 0。"""
+
+    left_start, left_end = left
+    right_start, right_end = right
+    if left_end < right_start:
+        return right_start - left_end
+    if right_end < left_start:
+        return left_start - right_end
+    return 0
+
+
+def keyword_proximity_score(
+    text: str,
+    target_terms: Iterable[str],
+    keywords: Iterable[str],
+    window_size: int = 12,
+) -> tuple[float, list[dict[str, Any]]]:
+    """计算关键词和目标实体之间的距离分数，越靠近目标越容易被选中。"""
+
+    target_spans = find_term_spans(text, target_terms)
+    if not target_spans:
+        return 0.0, []
+
+    proximity_details: list[dict[str, Any]] = []
+    total_score = 0.0
+    for keyword in sorted({keyword for keyword in keywords if keyword}, key=len, reverse=True):
+        keyword_spans = find_term_spans(text, [keyword])
+        if not keyword_spans:
+            continue
+
+        best_distance = min(
+            span_distance(keyword_span, target_span)
+            for keyword_span in keyword_spans
+            for target_span in target_spans
+        )
+        proximity_score = max(0, window_size - best_distance)
+        total_score += proximity_score
+        proximity_details.append(
+            {
+                "keyword": keyword,
+                "best_distance": best_distance,
+                "proximity_score": proximity_score,
+                "occurrence_count": len(keyword_spans),
+            }
+        )
+
+    proximity_details.sort(key=lambda item: (-item["proximity_score"], item["best_distance"], item["keyword"]))
+    return round(total_score, 4), proximity_details
+
+
 def choose_relation(
     source: Entity,
     target: Entity,
@@ -344,6 +413,7 @@ def choose_relation(
 
     def candidate_sort_key(item: dict[str, Any]) -> tuple[Any, ...]:
         return (
+            -float(item["target_proximity_score"]),
             -int(item["keyword_count"]),
             -float(item["base_weight"]),
             item["relation_type"],
@@ -364,6 +434,11 @@ def choose_relation(
             if not matched:
                 continue
             base_weight = float(relation_map[relation_type]["base_weight"])
+            target_proximity_score, proximity_details = keyword_proximity_score(
+                text,
+                current_target.all_terms,
+                matched,
+            )
             candidates.append(
                 {
                     "direction": direction,
@@ -377,8 +452,10 @@ def choose_relation(
                     "matched_keywords": matched,
                     "keyword_count": len(matched),
                     "base_weight": base_weight,
-                    # 词命中数量优先，其次是 schema 基础权重，最后才看方向稳定性。
-                    "selection_score": round(len(matched) + base_weight, 4),
+                    "target_proximity_score": target_proximity_score,
+                    "keyword_proximity_details": proximity_details,
+                    # 先看关键词是否贴近目标实体，再看词命中数量、基础权重和方向稳定性。
+                    "selection_score": round(target_proximity_score + len(matched) + base_weight, 4),
                 }
             )
         candidates.sort(key=candidate_sort_key)
@@ -393,6 +470,7 @@ def choose_relation(
         selected = max(
             all_candidates,
             key=lambda item: (
+                item["target_proximity_score"],
                 item["keyword_count"],
                 item["base_weight"],
                 1 if item["direction"] == "forward" else 0,
@@ -471,6 +549,7 @@ def extract_relation_instances(
                 )
 
                 selection_reason = (
+                    f"target_proximity_score={selected_candidate['target_proximity_score']}; "
                     f"keyword_count={selected_candidate['keyword_count']}; "
                     f"base_weight={selected_candidate['base_weight']}; "
                     f"direction={selected_candidate['direction']}"

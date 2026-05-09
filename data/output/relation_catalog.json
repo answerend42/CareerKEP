@@ -1,6 +1,6 @@
 {
   "relation_type_count": 6,
-  "observed_relation_type_count": 5,
+  "observed_relation_type_count": 6,
   "relations": [
     {
       "relation_type": "needs_trait",
@@ -61,11 +61,11 @@
       ],
       "keyword_group_count": 1,
       "keyword_count": 4,
-      "matched_edge_count": 0,
-      "coverage_rate": 0.0,
+      "matched_edge_count": 1,
+      "coverage_rate": 0.05,
       "weight_range": {
-        "min": null,
-        "max": null
+        "min": 0.9275,
+        "max": 0.9275
       }
     },
     {
@@ -161,8 +161,8 @@
       ],
       "keyword_group_count": 1,
       "keyword_count": 6,
-      "matched_edge_count": 11,
-      "coverage_rate": 0.55,
+      "matched_edge_count": 10,
+      "coverage_rate": 0.5,
       "weight_range": {
         "min": 1.2,
         "max": 1.2
@@ -218,9 +218,10 @@
     "edge_count": 20,
     "relation_count": {
       "needs_trait": 2,
+      "preferred_skill": 1,
       "related_role": 1,
       "requires_education": 1,
-      "requires_skill": 11,
+      "requires_skill": 10,
       "uses_tool": 5
     },
     "type_pair_count": {

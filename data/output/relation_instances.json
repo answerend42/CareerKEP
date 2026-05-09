@@ -163,12 +163,9 @@
     "target_name": "Pandas",
     "source_type": "occupation",
     "target_type": "skill",
-    "relation_type": "requires_skill",
+    "relation_type": "preferred_skill",
     "matched_keywords": [
-      "需要",
-      "掌握",
-      "熟悉",
-      "具备"
+      "优先"
     ]
   },
   {
@@ -326,10 +323,10 @@
     "evidence_id": "evidence_006",
     "evidence_source": "career_similarity",
     "evidence_text": "后端开发工程师与 Python开发工程师在服务端开发方向上有较强相关性。",
-    "source_id": "occ_python_engineer",
-    "target_id": "occ_backend_engineer",
-    "source_name": "Python开发工程师",
-    "target_name": "后端开发工程师",
+    "source_id": "occ_backend_engineer",
+    "target_id": "occ_python_engineer",
+    "source_name": "后端开发工程师",
+    "target_name": "Python开发工程师",
     "source_type": "occupation",
     "target_type": "occupation",
     "relation_type": "related_role",

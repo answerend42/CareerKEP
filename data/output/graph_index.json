@@ -47,10 +47,19 @@
         "evidence_count": 1
       }
     ],
+    "preferred_skill": [
+      {
+        "source_id": "occ_data_analyst",
+        "target_id": "skill_pandas",
+        "relation_type": "preferred_skill",
+        "weight": 0.9275,
+        "evidence_count": 1
+      }
+    ],
     "related_role": [
       {
-        "source_id": "occ_python_engineer",
-        "target_id": "occ_backend_engineer",
+        "source_id": "occ_backend_engineer",
+        "target_id": "occ_python_engineer",
         "relation_type": "related_role",
         "weight": 0.7375,
         "evidence_count": 1
@@ -97,13 +106,6 @@
       {
         "source_id": "occ_data_analyst",
         "target_id": "skill_excel",
-        "relation_type": "requires_skill",
-        "weight": 1.2,
-        "evidence_count": 1
-      },
-      {
-        "source_id": "occ_data_analyst",
-        "target_id": "skill_pandas",
         "relation_type": "requires_skill",
         "weight": 1.2,
         "evidence_count": 1
@@ -273,17 +275,17 @@
       "outgoing": [],
       "incoming": [
         {
-          "source_id": "occ_data_analyst",
+          "source_id": "occ_python_engineer",
           "target_id": "skill_pandas",
           "relation_type": "requires_skill",
           "weight": 1.2,
           "evidence_count": 1
         },
         {
-          "source_id": "occ_python_engineer",
+          "source_id": "occ_data_analyst",
           "target_id": "skill_pandas",
-          "relation_type": "requires_skill",
-          "weight": 1.2,
+          "relation_type": "preferred_skill",
+          "weight": 0.9275,
           "evidence_count": 1
         }
       ]
@@ -336,16 +338,17 @@
           "relation_type": "requires_skill",
           "weight": 1.2,
           "evidence_count": 1
-        },
+        }
+      ],
+      "incoming": [
         {
-          "source_id": "occ_python_engineer",
-          "target_id": "occ_backend_engineer",
+          "source_id": "occ_backend_engineer",
+          "target_id": "occ_python_engineer",
           "relation_type": "related_role",
           "weight": 0.7375,
           "evidence_count": 1
         }
-      ],
-      "incoming": []
+      ]
     },
     "skill_sql": {
       "outgoing": [],
@@ -409,30 +412,22 @@
           "relation_type": "uses_tool",
           "weight": 1.085,
           "evidence_count": 1
-        }
-      ],
-      "incoming": [
+        },
         {
-          "source_id": "occ_python_engineer",
-          "target_id": "occ_backend_engineer",
+          "source_id": "occ_backend_engineer",
+          "target_id": "occ_python_engineer",
           "relation_type": "related_role",
           "weight": 0.7375,
           "evidence_count": 1
         }
-      ]
+      ],
+      "incoming": []
     },
     "occ_data_analyst": {
       "outgoing": [
         {
           "source_id": "occ_data_analyst",
           "target_id": "skill_excel",
-          "relation_type": "requires_skill",
-          "weight": 1.2,
-          "evidence_count": 1
-        },
-        {
-          "source_id": "occ_data_analyst",
-          "target_id": "skill_pandas",
           "relation_type": "requires_skill",
           "weight": 1.2,
           "evidence_count": 1
@@ -449,6 +444,13 @@
           "target_id": "skill_sql",
           "relation_type": "requires_skill",
           "weight": 1.2,
+          "evidence_count": 1
+        },
+        {
+          "source_id": "occ_data_analyst",
+          "target_id": "skill_pandas",
+          "relation_type": "preferred_skill",
+          "weight": 0.9275,
           "evidence_count": 1
         },
         {
