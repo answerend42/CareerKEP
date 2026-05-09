@@ -15,21 +15,25 @@ import { ResultPane } from './panes/ResultPane';
 import { TunePane } from './panes/TunePane';
 import type { DemoState, RecommendationResponse, RunStatus } from './types';
 
-const stepLabels = ['输入画像', '调整参数', '图谱传播', '结果解释'] as const;
+const stepLabels = ['杈撳叆鐢诲儚', '璋冩暣鍙傛暟', '鍥捐氨浼犳挱', '缁撴灉瑙ｉ噴'] as const;
 const requestTimeoutMs = 6000;
 
 const localRunStatus: RunStatus = {
   source: 'local-demo',
-  label: '本地模拟结果',
-  detail: '当前由前端 demoData 直接生成，便于离线演示和后端未启动时查看。'
+  label: '鏈湴妯℃嫙缁撴灉',
+  detail: '褰撳墠鐢卞墠绔?demoData 鐩存帴鐢熸垚锛屼究浜庣绾挎紨绀哄拰鍚庣鏈惎鍔ㄦ椂鏌ョ湅銆?'
 };
+
+const pickDefaultSelectedNodeId = (response: RecommendationResponse): string | null =>
+  response.recommendations[0]?.nodeId ?? response.inputTrace.structuredEvidence[0]?.nodeId ?? response.targetRoleAnalysis.nodeId ?? null;
 
 export function AppShell() {
   const [state, setState] = useState<DemoState>(defaultDemoState);
-  const [activeStep, setActiveStep] = useState<(typeof stepLabels)[number]>('输入画像');
+  const [activeStep, setActiveStep] = useState<(typeof stepLabels)[number]>('杈撳叆鐢诲儚');
   const [lastRun, setLastRun] = useState<RecommendationResponse>(() => buildRecommendationResponse(defaultDemoState));
   const [isRunning, setIsRunning] = useState(false);
   const [runStatus, setRunStatus] = useState<RunStatus>(localRunStatus);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(() => pickDefaultSelectedNodeId(buildRecommendationResponse(defaultDemoState)));
 
   const roleOptions = useMemo(() => getRoleOptions(), []);
   const demoCopy = useMemo(() => getDemoCopy(lastRun), [lastRun]);
@@ -52,17 +56,21 @@ export function AppShell() {
       return;
     }
 
+    const nextResponse = buildRecommendationResponse(preset.state);
     setState(preset.state);
-    setLastRun(buildRecommendationResponse(preset.state));
+    setLastRun(nextResponse);
     setRunStatus(localRunStatus);
-    setActiveStep('输入画像');
+    setSelectedNodeId(pickDefaultSelectedNodeId(nextResponse));
+    setActiveStep('杈撳叆鐢诲儚');
   };
 
   const resetDemoState = () => {
+    const nextResponse = buildRecommendationResponse(defaultDemoState);
     setState(defaultDemoState);
-    setLastRun(buildRecommendationResponse(defaultDemoState));
+    setLastRun(nextResponse);
     setRunStatus(localRunStatus);
-    setActiveStep('输入画像');
+    setSelectedNodeId(pickDefaultSelectedNodeId(nextResponse));
+    setActiveStep('杈撳叆鐢诲儚');
   };
 
   const runRecommendation = async () => {
@@ -87,30 +95,33 @@ export function AppShell() {
       });
 
       if (!response.ok) {
-        throw new Error(`后端返回状态码 ${response.status}`);
+        throw new Error(`鍚庣杩斿洖鐘舵€佺爜 ${response.status}`);
       }
 
       const payload = (await response.json()) as RecommendationResponse;
       setLastRun(payload);
+      setSelectedNodeId(pickDefaultSelectedNodeId(payload));
       setRunStatus({
         source: 'backend',
-        label: '后端推荐结果',
-        detail: '当前内容来自 `/api/recommend`，可以直接和本地模拟结果对比。'
+        label: '鍚庣鎺ㄨ崘缁撴灉',
+        detail: '褰撳墠鍐呭鏉ヨ嚜 `/api/recommend`锛屽彲浠ョ洿鎺ュ拰鏈湴妯℃嫙缁撴灉瀵规瘮銆?'
       });
-      setActiveStep('结果解释');
+      setActiveStep('缁撴灉瑙ｉ噴');
     } catch (error) {
       const detail =
         error instanceof DOMException && error.name === 'AbortError'
-          ? '后端请求超时，页面已回退到本地模拟结果。'
-          : '后端请求失败，页面已回退到本地模拟结果。';
+          ? '鍚庣璇锋眰瓒呮椂锛岄〉闈㈠凡鍥為€€鍒版湰鍦版ā鎷熺粨鏋溿€?'
+          : '鍚庣璇锋眰澶辫触锛岄〉闈㈠凡鍥為€€鍒版湰鍦版ā鎷熺粨鏋溿€?';
 
-      setLastRun(buildRecommendationResponse(state));
+      const fallbackResponse = buildRecommendationResponse(state);
+      setLastRun(fallbackResponse);
+      setSelectedNodeId(pickDefaultSelectedNodeId(fallbackResponse));
       setRunStatus({
         source: 'local-demo',
-        label: '本地模拟结果',
+        label: '鏈湴妯℃嫙缁撴灉',
         detail
       });
-      setActiveStep('结果解释');
+      setActiveStep('缁撴灉瑙ｉ噴');
     } finally {
       window.clearTimeout(timeoutId);
       setIsRunning(false);
@@ -118,9 +129,16 @@ export function AppShell() {
   };
 
   const syncAndPreview = (nextState: DemoState) => {
+    const nextResponse = buildRecommendationResponse(nextState);
     setState(nextState);
-    setLastRun(buildRecommendationResponse(nextState));
+    setLastRun(nextResponse);
+    setSelectedNodeId(pickDefaultSelectedNodeId(nextResponse));
     setRunStatus(localRunStatus);
+  };
+
+  const selectGraphNode = (nodeId: string) => {
+    setSelectedNodeId(nodeId);
+    setActiveStep('鍥捐氨浼犳挱');
   };
 
   const exportDiagnosticSnapshot = () => {
@@ -165,8 +183,8 @@ export function AppShell() {
           <p className="eyebrow">Career KG 前端工作台</p>
           <h1>把自然语言画像，变成可解释的职业推荐</h1>
           <p className="hero-text">
-            这个前端围绕四个阶段展开：输入画像、调整参数、图谱传播、结果解释。
-            你可以直接跑本地演示，也可以接到后端 `/api/recommend`。
+            这个前端围绕四个阶段展开：输入画像、调整参数、图谱传播、结果解释。你可以直接跑本地演示，也可以接到后端
+            `/api/recommend`。
           </p>
           <div className="hero-metrics">
             <div>
@@ -241,7 +259,12 @@ export function AppShell() {
         </section>
 
         <section className="panel panel-graph">
-          <GraphPane snapshot={lastRun.propagationSnapshot} activeStep={activeStep} />
+          <GraphPane
+            snapshot={lastRun.propagationSnapshot}
+            activeStep={activeStep}
+            selectedNodeId={selectedNodeId}
+            onSelectNode={selectGraphNode}
+          />
         </section>
 
         <section className="panel panel-result">
@@ -252,6 +275,7 @@ export function AppShell() {
             runStatus={runStatus}
             onExportSnapshot={exportDiagnosticSnapshot}
             onCopySnapshot={copyDiagnosticSnapshot}
+            selectedNodeId={selectedNodeId}
           />
         </section>
       </main>
