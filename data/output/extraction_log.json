@@ -4,6 +4,7 @@
   "relation_instance_count": 20,
   "relation_candidate_count": 20,
   "matched_edge_count": 20,
+  "relation_matrix_count": 5,
   "graph_index_node_count": 17,
   "graph_index_edge_count": 20,
   "career_profile_count": 5,

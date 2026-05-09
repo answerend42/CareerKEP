@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
@@ -194,6 +194,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "relation_candidates": output_dir / "relation_candidates.json",
         "edges": output_dir / "edges.json",
         "relation_catalog": output_dir / "relation_catalog.json",
+        "relation_matrix": output_dir / "relation_matrix.json",
         "graph_index": output_dir / "graph_index.json",
         "graph_quality": output_dir / "graph_quality.json",
         "career_profiles": output_dir / "career_profiles.json",
@@ -218,6 +219,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     relation_candidates = load_json(files["relation_candidates"])
     edges = load_json(files["edges"])
     relation_catalog = load_json(files["relation_catalog"])
+    relation_matrix = load_json(files["relation_matrix"])
     graph_index = load_json(files["graph_index"])
     graph_quality = load_json(files["graph_quality"])
     career_profiles = load_json(files["career_profiles"])
@@ -242,6 +244,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(isinstance(relation_candidates, list), "relation_candidates.json 必须是列表", errors)
     assert_condition(isinstance(edges, list), "edges.json 必须是列表", errors)
     assert_condition(isinstance(relation_catalog, dict), "relation_catalog.json 必须是对象", errors)
+    assert_condition(isinstance(relation_matrix, dict), "relation_matrix.json 必须是对象", errors)
     assert_condition(isinstance(graph_index, dict), "graph_index.json 必须是对象", errors)
     assert_condition(isinstance(graph_quality, dict), "graph_quality.json 必须是对象", errors)
     assert_condition(isinstance(career_profiles, list), "career_profiles.json 必须是列表", errors)
@@ -289,6 +292,9 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         assert_condition(len(outgoing) == computed_outgoing[node_id], f"节点 {node_id} 的 outgoing 数量不一致", errors)
 
     relation_counter = Counter(edge["relation_type"] for edge in edges)
+    pair_counter = Counter(f'{edge["source_type"]}->{edge["target_type"]}' for edge in edges)
+    source_type_counter = Counter(edge["source_type"] for edge in edges)
+    target_type_counter = Counter(edge["target_type"] for edge in edges)
     assert_condition(
         len(relation_candidates) == len(relation_instances),
         "relation_candidates 与 relation_instances 数量不一致",
@@ -441,6 +447,146 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(
         relation_catalog.get("edge_summary", {}).get("type_pair_count") == dict(sorted(Counter(f'{edge["source_type"]}->{edge["target_type"]}' for edge in edges).items())),
         "relation_catalog 的 type_pair_count 与 edges 聚合结果不一致",
+        errors,
+    )
+    relation_matrix_pairs = relation_matrix.get("pairs", [])
+    assert_condition(
+        relation_matrix.get("edge_count") == len(edges),
+        "relation_matrix 的 edge_count 与 edges 数量不一致",
+        errors,
+    )
+    assert_condition(
+        relation_matrix.get("pair_count") == len(relation_matrix_pairs),
+        "relation_matrix 的 pair_count 与 pairs 数量不一致",
+        errors,
+    )
+    assert_condition(
+        relation_matrix.get("source_type_count") == len(source_type_counter),
+        "relation_matrix 的 source_type_count 不正确",
+        errors,
+    )
+    assert_condition(
+        relation_matrix.get("target_type_count") == len(target_type_counter),
+        "relation_matrix 的 target_type_count 不正确",
+        errors,
+    )
+    assert_condition(
+        relation_matrix.get("relation_type_count") == len(relation_counter),
+        "relation_matrix 的 relation_type_count 不正确",
+        errors,
+    )
+    assert_condition(
+        relation_matrix.get("source_types") == sorted(source_type_counter),
+        "relation_matrix 的 source_types 与 edges 不一致",
+        errors,
+    )
+    assert_condition(
+        relation_matrix.get("target_types") == sorted(target_type_counter),
+        "relation_matrix 的 target_types 与 edges 不一致",
+        errors,
+    )
+    assert_condition(
+        relation_matrix.get("relation_types") == sorted(relation_counter),
+        "relation_matrix 的 relation_types 与 edges 不一致",
+        errors,
+    )
+    expected_pair_map: dict[tuple[str, str], dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
+    expected_pair_evidence: dict[tuple[str, str], dict[str, int]] = defaultdict(lambda: defaultdict(int))
+    for edge in edges:
+        pair_key = (edge["source_type"], edge["target_type"])
+        expected_pair_map[pair_key][edge["relation_type"]].append(float(edge["weight"]))
+        expected_pair_evidence[pair_key][edge["relation_type"]] += int(edge["evidence_count"])
+    expected_pairs = sorted(expected_pair_map)
+    actual_pairs = []
+    for pair_item in relation_matrix_pairs:
+        assert_condition(
+            isinstance(pair_item, dict),
+            "relation_matrix.pairs 的元素必须是对象",
+            errors,
+        )
+        source_type = pair_item.get("source_type")
+        target_type = pair_item.get("target_type")
+        pair_key = (source_type, target_type)
+        actual_pairs.append(pair_key)
+        assert_condition(
+            pair_item.get("pair_key") == f"{source_type}->{target_type}",
+            f"relation_matrix.pairs[{source_type}->{target_type}] 的 pair_key 不正确",
+            errors,
+        )
+        relation_items = pair_item.get("relation_types", [])
+        assert_condition(
+            isinstance(relation_items, list),
+            f"relation_matrix.pairs[{source_type}->{target_type}] 的 relation_types 必须是列表",
+            errors,
+        )
+        if pair_key not in expected_pair_map:
+            errors.append(f"relation_matrix 包含了 edges 中不存在的类型对: {source_type}->{target_type}")
+            continue
+
+        expected_relation_map = expected_pair_map[pair_key]
+        expected_relation_evidence = expected_pair_evidence[pair_key]
+        assert_condition(
+            pair_item.get("edge_count") == sum(len(values) for values in expected_relation_map.values()),
+            f"relation_matrix.pairs[{source_type}->{target_type}] 的 edge_count 不正确",
+            errors,
+        )
+        assert_condition(
+            pair_item.get("relation_type_count") == len(expected_relation_map),
+            f"relation_matrix.pairs[{source_type}->{target_type}] 的 relation_type_count 不正确",
+            errors,
+        )
+        assert_condition(
+            pair_item.get("evidence_count") == sum(expected_relation_evidence.values()),
+            f"relation_matrix.pairs[{source_type}->{target_type}] 的 evidence_count 不正确",
+            errors,
+        )
+        assert_condition(
+            isinstance(pair_item.get("weight_range"), dict),
+            f"relation_matrix.pairs[{source_type}->{target_type}] 的 weight_range 必须是对象",
+            errors,
+        )
+        relation_names = []
+        for relation_item in relation_items:
+            relation_name = relation_item.get("relation_type")
+            relation_names.append(relation_name)
+            relation_weights = expected_relation_map.get(relation_name)
+            assert_condition(
+                relation_name in expected_relation_map,
+                f"relation_matrix.pairs[{source_type}->{target_type}] 包含未知关系: {relation_name}",
+                errors,
+            )
+            if relation_weights:
+                assert_condition(
+                    relation_item.get("edge_count") == len(relation_weights),
+                    f"relation_matrix.pairs[{source_type}->{target_type}].{relation_name} 的 edge_count 不正确",
+                    errors,
+                )
+                assert_condition(
+                    relation_item.get("evidence_count") == expected_relation_evidence.get(relation_name),
+                    f"relation_matrix.pairs[{source_type}->{target_type}].{relation_name} 的 evidence_count 不正确",
+                    errors,
+                )
+                weights = [float(value) for value in relation_weights]
+                weight_range = relation_item.get("weight_range", {})
+                if isinstance(weight_range, dict):
+                    assert_condition(
+                        weight_range.get("min") == min(weights) and weight_range.get("max") == max(weights),
+                        f"relation_matrix.pairs[{source_type}->{target_type}].{relation_name} 的 weight_range 不正确",
+                        errors,
+                    )
+                assert_condition(
+                    relation_item.get("average_weight") == round(sum(weights) / len(weights), 4),
+                    f"relation_matrix.pairs[{source_type}->{target_type}].{relation_name} 的 average_weight 不正确",
+                    errors,
+                )
+        assert_condition(
+            sorted(relation_names) == sorted(expected_relation_map),
+            f"relation_matrix.pairs[{source_type}->{target_type}] 的 relation_types 不完整",
+            errors,
+        )
+    assert_condition(
+        sorted(actual_pairs) == expected_pairs,
+        "relation_matrix.pairs 与 edges 聚合结果不一致",
         errors,
     )
     relations_in_catalog = relation_catalog.get("relations", [])

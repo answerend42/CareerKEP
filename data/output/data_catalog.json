@@ -35,6 +35,13 @@
     "sha256": "0e717377a9f53912b7ada694f07b99cb494e81e4f6018ecf2d6b240b59e0d9a6"
   },
   {
+    "file_name": "relation_matrix.json",
+    "description": "关系矩阵",
+    "item_count": 5,
+    "size_bytes": 3650,
+    "sha256": "a6538ac5216e0359315b0e92f91ca11905b0134ab7344080870da633537b0437"
+  },
+  {
     "file_name": "graph_index.json",
     "description": "图索引",
     "item_count": 20,
@@ -87,14 +94,14 @@
     "file_name": "extraction_log.json",
     "description": "构建日志",
     "item_count": 17,
-    "size_bytes": 2542,
-    "sha256": "cca4654c473e1a250552c7c62263092dc64b1da5f9ddb5cea48fe602ebf5cba8"
+    "size_bytes": 2573,
+    "sha256": "e8415a009cfc25a22041c13a82ba0d219175f2c3d41143c0586582886e238889"
   },
   {
     "file_name": "graph_manifest.json",
     "description": "构建清单",
-    "item_count": 15,
-    "size_bytes": 1786,
-    "sha256": "97e87434b2260d17d8080ad9de719d57442e410521250e7cff52a6e2d9020b86"
+    "item_count": 16,
+    "size_bytes": 1846,
+    "sha256": "6cffe72e9f251fefc6bf7eb89e60423a2a74901e1f57bb10adc339a662842d18"
   }
 ]

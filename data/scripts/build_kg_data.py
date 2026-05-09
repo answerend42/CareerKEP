@@ -773,6 +773,75 @@ def build_relation_catalog(
     }
 
 
+def build_relation_matrix(edges: list[Edge]) -> dict[str, Any]:
+    """按实体类型对关系做矩阵化汇总，方便后续传播逻辑直接消费。"""
+
+    pair_relation_buckets: dict[tuple[str, str], dict[str, list[Edge]]] = defaultdict(lambda: defaultdict(list))
+    source_types: set[str] = set()
+    target_types: set[str] = set()
+    relation_types: set[str] = set()
+
+    for edge in edges:
+        pair_relation_buckets[(edge.source_type, edge.target_type)][edge.relation_type].append(edge)
+        source_types.add(edge.source_type)
+        target_types.add(edge.target_type)
+        relation_types.add(edge.relation_type)
+
+    pairs: list[dict[str, Any]] = []
+    for (source_type, target_type) in sorted(pair_relation_buckets):
+        relation_groups = pair_relation_buckets[(source_type, target_type)]
+        relation_items: list[dict[str, Any]] = []
+        pair_weights: list[float] = []
+        pair_evidence_count = 0
+
+        for relation_type in sorted(relation_groups):
+            relation_edges = relation_groups[relation_type]
+            weights = [edge.weight for edge in relation_edges]
+            evidence_count = sum(edge.evidence_count for edge in relation_edges)
+            pair_weights.extend(weights)
+            pair_evidence_count += evidence_count
+            relation_items.append(
+                {
+                    "relation_type": relation_type,
+                    "edge_count": len(relation_edges),
+                    "evidence_count": evidence_count,
+                    "weight_range": {
+                        "min": min(weights) if weights else None,
+                        "max": max(weights) if weights else None,
+                    },
+                    "average_weight": round(sum(weights) / len(weights), 4) if weights else None,
+                }
+            )
+
+        pairs.append(
+            {
+                "source_type": source_type,
+                "target_type": target_type,
+                "pair_key": f"{source_type}->{target_type}",
+                "edge_count": sum(item["edge_count"] for item in relation_items),
+                "evidence_count": pair_evidence_count,
+                "relation_type_count": len(relation_items),
+                "relation_types": relation_items,
+                "weight_range": {
+                    "min": min(pair_weights) if pair_weights else None,
+                    "max": max(pair_weights) if pair_weights else None,
+                },
+            }
+        )
+
+    return {
+        "edge_count": len(edges),
+        "pair_count": len(pairs),
+        "source_type_count": len(source_types),
+        "target_type_count": len(target_types),
+        "relation_type_count": len(relation_types),
+        "source_types": sorted(source_types),
+        "target_types": sorted(target_types),
+        "relation_types": sorted(relation_types),
+        "pairs": pairs,
+    }
+
+
 def summarize_instances(instances: list[RelationInstance]) -> dict[str, Any]:
     relation_counter = Counter(item.relation_type for item in instances)
     type_counter = Counter(f"{item.source_type}->{item.target_type}" for item in instances)
@@ -1160,6 +1229,7 @@ def build_manifest(
     relation_instances: list[RelationInstance],
     relation_candidates: list[RelationCandidateTrace],
     edges: list[Edge],
+    relation_matrix: dict[str, Any],
     career_profiles: list[dict[str, Any]],
     recommendation_index: list[dict[str, Any]],
     entity_lookup: dict[str, Any],
@@ -1177,6 +1247,7 @@ def build_manifest(
         "relation_instance_count": len(relation_instances),
         "relation_candidate_count": len(relation_candidates),
         "edge_count": len(edges),
+        "relation_matrix_count": int(relation_matrix.get("pair_count", 0)),
         "career_profile_count": len(career_profiles),
         "recommendation_index_count": len(recommendation_index),
         "entity_lookup_section_count": len(entity_lookup) - 1,
@@ -1187,6 +1258,7 @@ def build_manifest(
             "relation_candidates.json",
             "edges.json",
             "relation_catalog.json",
+            "relation_matrix.json",
             "graph_index.json",
             "graph_quality.json",
             "career_profiles.json",
@@ -1212,6 +1284,7 @@ def build_data_catalog(
     output_dir: Path,
     manifest: dict[str, Any],
     relation_catalog: dict[str, Any],
+    relation_matrix: dict[str, Any],
     graph_index: dict[str, Any],
     quality_report: dict[str, Any],
     career_profiles: list[dict[str, Any]],
@@ -1227,6 +1300,7 @@ def build_data_catalog(
         ("relation_candidates.json", "关系候选轨迹"),
         ("edges.json", "图谱边"),
         ("relation_catalog.json", "关系目录"),
+        ("relation_matrix.json", "关系矩阵"),
         ("graph_index.json", "图索引"),
         ("graph_quality.json", "图谱质量报告"),
         ("career_profiles.json", "职业画像"),
@@ -1241,6 +1315,7 @@ def build_data_catalog(
     file_overrides = {
         "graph_manifest.json": manifest,
         "relation_catalog.json": relation_catalog,
+        "relation_matrix.json": relation_matrix,
         "graph_index.json": graph_index,
         "graph_quality.json": quality_report,
         "career_profiles.json": career_profiles,
@@ -1266,6 +1341,8 @@ def build_data_catalog(
                 item_count = len(payload.get("output_files", []))
             elif file_name == "relation_catalog.json":
                 item_count = int(payload.get("relation_type_count", len(payload.get("relations", []))))
+            elif file_name == "relation_matrix.json":
+                item_count = int(payload.get("pair_count", len(payload.get("pairs", []))))
             elif file_name == "node_lookup.json":
                 item_count = int(payload.get("summary", {}).get("node_count", len(payload.get("by_id", {}))))
             elif "edge_count" in payload:
@@ -1322,6 +1399,7 @@ def main() -> int:
     edges = build_edges(entities, relation_instances, relation_map, weight_rules)
     nodes = build_nodes(entities)
     relation_catalog = build_relation_catalog(relation_map, relation_keyword_map, edges)
+    relation_matrix = build_relation_matrix(edges)
     graph_index = build_graph_index(nodes, edges)
     quality_report = build_quality_report(nodes, edges, graph_index)
     career_profiles = build_career_profiles(entities, edges)
@@ -1337,6 +1415,7 @@ def main() -> int:
     write_json(output_dir / "relation_candidates.json", [asdict(item) for item in relation_candidates])
     write_json(output_dir / "edges.json", [asdict(edge) for edge in edges])
     write_json(output_dir / "relation_catalog.json", relation_catalog)
+    write_json(output_dir / "relation_matrix.json", relation_matrix)
     write_json(output_dir / "graph_index.json", graph_index)
     write_json(output_dir / "graph_quality.json", quality_report)
     write_json(output_dir / "career_profiles.json", career_profiles)
@@ -1352,6 +1431,7 @@ def main() -> int:
             "relation_instance_count": len(relation_instances),
             "relation_candidate_count": len(relation_candidates),
             "matched_edge_count": len(edges),
+            "relation_matrix_count": relation_matrix["pair_count"],
             "graph_index_node_count": graph_index["node_count"],
             "graph_index_edge_count": graph_index["edge_count"],
             "career_profile_count": len(career_profiles),
@@ -1384,6 +1464,7 @@ def main() -> int:
         relation_instances,
         relation_candidates,
         edges,
+        relation_matrix,
         career_profiles,
         recommendation_index,
         entity_lookup,
@@ -1396,6 +1477,7 @@ def main() -> int:
         output_dir,
         graph_manifest,
         relation_catalog,
+        relation_matrix,
         graph_index,
         quality_report,
         career_profiles,
