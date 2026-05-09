@@ -433,6 +433,11 @@ class BackendSmokeTest(unittest.TestCase):
             self.assertIn("alias_count", meta_json["graph"])
             self.assertIn("alias_node_count", meta_json["graph"])
             self.assertIn("warnings", meta_json["graph"]["validation"])
+
+            backend_role = next(item for item in meta_json["role_options"] if item["node_id"] == "backend_engineer")
+            self.assertIn("backend_engineer", backend_role["search_terms"])
+            self.assertIn("后端开发工程师", backend_role["search_terms"])
+            self.assertIn("后端", backend_role["search_terms"])
             conn.close()
 
             conn = HTTPConnection("127.0.0.1", port, timeout=5)

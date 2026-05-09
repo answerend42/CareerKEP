@@ -132,7 +132,7 @@ python3 -m backend.app.main validate-graph
 `target_role_analysis` 里会附带目标岗位路径、覆盖度、准备度分级、当前聚焦提示、优先级分组、优势项和缺口项，`learning_path` 还会给出带 `rank`、`priority`、`gap`、`estimated_effort` 的行动计划，方便前端直接做“我离目标岗位还差什么、先做什么”的展示。
 `bridge_recommendations` 也会返回图路径，不再只是孤立节点名。
 
-`role_options` 里的每一项都包含 `node_id`、`label` 和 `search_terms`，前端可以直接拿来做岗位选择器，不需要再自己处理空格或大小写归一化。
+`role_options` 里的每一项都包含 `node_id`、`label` 和 `search_terms`，其中 `search_terms` 会同时合并节点 ID、岗位标签和该岗位的别名词典，前端可以直接拿来做岗位选择器，不需要再自己处理空格、大小写或别名归一化。
 
 ## 设计说明
 

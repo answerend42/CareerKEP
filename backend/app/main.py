@@ -24,13 +24,15 @@ def _normalize_lookup_term(value: str) -> str:
     return "".join(str(value).strip().casefold().split())
 
 
-def _build_role_options(graph_summary: dict[str, Any]) -> list[dict[str, Any]]:
+def _build_role_options(graph: Any, alias_map: dict[str, list[str]]) -> list[dict[str, Any]]:
     """把角色节点整理成前端更容易直接使用的选项列表。
 
     这里额外附带 `search_terms`，方便前端做搜索下拉，不需要再自己处理
-    节点 ID、标签里的空格或大小写问题。
+    节点 ID、标签里的空格或大小写问题。再把别名词典一起合并进去，
+    这样前端可以直接用一份接口数据支持“岗位名 + 别名”搜索。
     """
 
+    graph_summary = graph.summary()
     role_options: list[dict[str, Any]] = []
     for node in graph_summary.get("role_nodes", []):
         node_id = str(node.get("id") or "").strip()
@@ -40,6 +42,17 @@ def _build_role_options(graph_summary: dict[str, Any]) -> list[dict[str, Any]]:
             normalized = _normalize_lookup_term(term)
             if normalized and normalized not in search_terms:
                 search_terms.append(normalized)
+
+        # 角色节点本身未必有独立别名，因此把它的上游能力/方向节点的别名也
+        # 合并进来，这样岗位搜索能同时覆盖“岗位名”和“相关能力词”。
+        for edge in graph.incoming.get(node_id, []):
+            source_node = graph.nodes.get(edge.source)
+            if source_node is None or source_node.layer == "evidence":
+                continue
+            for alias in alias_map.get(source_node.id, []):
+                normalized_alias = _normalize_lookup_term(alias)
+                if normalized_alias and normalized_alias not in search_terms:
+                    search_terms.append(normalized_alias)
         role_options.append(
             {
                 "node_id": node_id,
@@ -110,7 +123,7 @@ class _RequestHandler(BaseHTTPRequestHandler):
                         "service": "career-kg-backend",
                         "version": "0.1.0",
                         "graph": graph_summary,
-                        "role_options": _build_role_options(graph_summary),
+                        "role_options": _build_role_options(graph, alias_map),
                         "aliases_count": len(alias_map),
                         "alias_count": graph_summary["alias_count"],
                         "alias_node_count": graph_summary["alias_node_count"],
