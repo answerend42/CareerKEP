@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import hashlib
@@ -203,6 +203,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         "node_lookup": output_dir / "node_lookup.json",
         "relation_summary": output_dir / "relation_summary.json",
         "extraction_log": output_dir / "extraction_log.json",
+        "graph_contract": output_dir / "graph_contract.json",
         "data_catalog": output_dir / "data_catalog.json",
         "graph_manifest": output_dir / "graph_manifest.json",
     }
@@ -228,6 +229,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     node_lookup = load_json(files["node_lookup"])
     relation_summary = load_json(files["relation_summary"])
     extraction_log = load_json(files["extraction_log"])
+    graph_contract = load_json(files["graph_contract"])
     data_catalog = load_json(files["data_catalog"])
     graph_manifest = load_json(files["graph_manifest"])
 
@@ -236,6 +238,16 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(
         graph_manifest.get("source_files") == extraction_log.get("source_files"),
         "graph_manifest 与 extraction_log 记录的 source_files 不一致",
+        errors,
+    )
+    assert_condition(
+        graph_contract.get("source_files") == graph_manifest.get("source_files"),
+        "graph_contract 与 graph_manifest 记录的 source_files 不一致",
+        errors,
+    )
+    assert_condition(
+        graph_contract.get("allowed_entity_types") == sorted({"occupation", "skill", "tool", "education", "trait"}),
+        "graph_contract.allowed_entity_types 不一致",
         errors,
     )
 
@@ -253,6 +265,7 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
     assert_condition(isinstance(node_lookup, dict), "node_lookup.json 必须是对象", errors)
     assert_condition(isinstance(relation_summary, dict), "relation_summary.json 必须是对象", errors)
     assert_condition(isinstance(extraction_log, dict), "extraction_log.json 必须是对象", errors)
+    assert_condition(isinstance(graph_contract, dict), "graph_contract.json 必须是对象", errors)
     assert_condition(isinstance(data_catalog, list), "data_catalog.json 必须是列表", errors)
     assert_condition(isinstance(graph_manifest, dict), "graph_manifest.json 必须是对象", errors)
     if errors:
@@ -955,6 +968,38 @@ def validate_output_dir(output_dir: Path) -> dict[str, Any]:
         errors,
     )
     assert_condition(
+        graph_contract.get("relation_catalog_summary", {}).get("relation_type_count") == relation_catalog.get("relation_type_count"),
+        "graph_contract 的 relation_type_count 与 relation_catalog 不一致",
+        errors,
+    )
+    assert_condition(
+        graph_contract.get("relation_catalog_summary", {}).get("observed_relation_types") == relation_catalog.get("observed_relation_types"),
+        "graph_contract 的 observed_relation_types 与 relation_catalog 不一致",
+        errors,
+    )
+    assert_condition(
+        graph_contract.get("relation_matrix_summary", {}).get("pair_count") == relation_matrix.get("pair_count"),
+        "graph_contract 的 pair_count 与 relation_matrix 不一致",
+        errors,
+    )
+    assert_condition(
+        graph_contract.get("graph_health", {}).get("node_count") == graph_quality.get("node_count"),
+        "graph_contract 的 node_count 与 graph_quality 不一致",
+        errors,
+    )
+    assert_condition(
+        graph_contract.get("graph_health", {}).get("edge_count") == graph_quality.get("edge_count"),
+        "graph_contract 的 edge_count 与 graph_quality 不一致",
+        errors,
+    )
+    contract_output_files = graph_contract.get("output_files", [])
+    if isinstance(contract_output_files, list):
+        assert_condition(
+            {item.get("file_name") for item in contract_output_files if isinstance(item, dict)} == set(file_paths_by_name),
+            "graph_contract.output_files 与 output 实际文件不一致",
+            errors,
+        )
+    assert_condition(
         graph_manifest.get("career_profile_count") == len(career_profiles),
         "graph_manifest 的 career_profile_count 与 career_profiles 数量不一致",
         errors,
@@ -1083,3 +1128,6 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+

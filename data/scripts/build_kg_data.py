@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import hashlib
@@ -19,6 +19,26 @@ DEFAULT_RULES = ROOT / "config" / "weight_rules.json"
 DEFAULT_OUTPUT = ROOT / "output"
 
 ALLOWED_ENTITY_TYPES = {"occupation", "skill", "tool", "education", "trait"}
+
+OUTPUT_FILE_SPECS: list[dict[str, str]] = [
+    {"file_name": "nodes.json", "role": "去重后的实体节点"},
+    {"file_name": "relation_instances.json", "role": "证据级关系实例"},
+    {"file_name": "relation_candidates.json", "role": "关系候选轨迹"},
+    {"file_name": "edges.json", "role": "聚合后的图谱边"},
+    {"file_name": "relation_catalog.json", "role": "关系目录"},
+    {"file_name": "relation_matrix.json", "role": "关系矩阵"},
+    {"file_name": "graph_index.json", "role": "图索引"},
+    {"file_name": "graph_quality.json", "role": "图谱质量报告"},
+    {"file_name": "career_profiles.json", "role": "职业画像"},
+    {"file_name": "recommendation_index.json", "role": "反向推荐索引"},
+    {"file_name": "entity_lookup.json", "role": "实体查询索引"},
+    {"file_name": "node_lookup.json", "role": "节点查询索引"},
+    {"file_name": "relation_summary.json", "role": "关系统计摘要"},
+    {"file_name": "extraction_log.json", "role": "构建日志"},
+    {"file_name": "graph_contract.json", "role": "机器可读图谱契约"},
+    {"file_name": "graph_manifest.json", "role": "构建清单"},
+    {"file_name": "data_catalog.json", "role": "输出目录清单"},
+]
 
 
 @dataclass(frozen=True)
@@ -1252,24 +1272,7 @@ def build_manifest(
         "recommendation_index_count": len(recommendation_index),
         "entity_lookup_section_count": len(entity_lookup) - 1,
         "node_type_count": dict(sorted(node_type_counter.items())),
-        "output_files": [
-            "nodes.json",
-            "relation_instances.json",
-            "relation_candidates.json",
-            "edges.json",
-            "relation_catalog.json",
-            "relation_matrix.json",
-            "graph_index.json",
-            "graph_quality.json",
-            "career_profiles.json",
-            "recommendation_index.json",
-            "entity_lookup.json",
-            "node_lookup.json",
-            "relation_summary.json",
-            "extraction_log.json",
-            "data_catalog.json",
-            "graph_manifest.json",
-        ],
+        "output_files": [item["file_name"] for item in OUTPUT_FILE_SPECS],
         "source_files": {
             "entities": source_file_record(args.entities),
             "evidence": source_file_record(args.evidence),
@@ -1280,9 +1283,70 @@ def build_manifest(
     }
 
 
+def build_graph_contract(
+    graph_manifest: dict[str, Any],
+    relation_catalog: dict[str, Any],
+    relation_matrix: dict[str, Any],
+    quality_report: dict[str, Any],
+    weight_rules: dict[str, Any],
+) -> dict[str, Any]:
+    """生成给后端直接消费的图谱契约，减少散落 JSON 之间的手工对照成本。"""
+
+    relation_items: list[dict[str, Any]] = []
+    for relation_item in relation_catalog.get("relations", []):
+        relation_items.append(
+            {
+                "relation_type": relation_item.get("relation_type"),
+                "source_types": relation_item.get("source_types", []),
+                "target_types": relation_item.get("target_types", []),
+                "base_weight": relation_item.get("base_weight"),
+                "description": relation_item.get("description", ""),
+                "keyword_groups": relation_item.get("keyword_groups", []),
+                "keyword_count": relation_item.get("keyword_count", 0),
+                "matched_edge_count": relation_item.get("matched_edge_count", 0),
+                "coverage_rate": relation_item.get("coverage_rate", 0.0),
+                "weight_range": relation_item.get("weight_range", {}),
+            }
+        )
+
+    return {
+        "contract_version": "1.0",
+        "generated_at": graph_manifest.get("generated_at"),
+        "allowed_entity_types": sorted(ALLOWED_ENTITY_TYPES),
+        "source_files": graph_manifest.get("source_files", {}),
+        "weight_rules": weight_rules,
+        "relation_catalog_summary": {
+            "relation_type_count": relation_catalog.get("relation_type_count", 0),
+            "observed_relation_type_count": relation_catalog.get("observed_relation_type_count", 0),
+            "coverage_summary": relation_catalog.get("coverage_summary", {}),
+            "observed_relation_types": relation_catalog.get("observed_relation_types", []),
+            "unobserved_relation_types": relation_catalog.get("unobserved_relation_types", []),
+        },
+        "relation_types": relation_items,
+        "relation_matrix_summary": {
+            "edge_count": relation_matrix.get("edge_count", 0),
+            "pair_count": relation_matrix.get("pair_count", 0),
+            "source_types": relation_matrix.get("source_types", []),
+            "target_types": relation_matrix.get("target_types", []),
+            "relation_types": relation_matrix.get("relation_types", []),
+        },
+        "graph_health": {
+            "node_count": quality_report.get("node_count", 0),
+            "edge_count": quality_report.get("edge_count", 0),
+            "connected_node_count": quality_report.get("connected_node_count", 0),
+            "isolated_node_count": quality_report.get("isolated_node_count", 0),
+            "average_degree": quality_report.get("average_degree", 0.0),
+            "node_type_coverage": quality_report.get("node_type_coverage", {}),
+            "quality_flags": quality_report.get("quality_flags", {}),
+        },
+        "output_files": OUTPUT_FILE_SPECS,
+    }
+
+
 def build_data_catalog(
     output_dir: Path,
     manifest: dict[str, Any],
+    graph_contract: dict[str, Any],
     relation_catalog: dict[str, Any],
     relation_matrix: dict[str, Any],
     graph_index: dict[str, Any],
@@ -1292,28 +1356,17 @@ def build_data_catalog(
     entity_lookup: dict[str, Any],
     node_lookup: dict[str, Any],
 ) -> list[dict[str, Any]]:
-    """生成所有输出文件的目录和校验信息。"""
+    """生成所有输出文件的目录与校验摘要，方便版本比对和完整性检查。"""
 
     file_items = [
-        ("nodes.json", "节点数据"),
-        ("relation_instances.json", "证据级关系实例"),
-        ("relation_candidates.json", "关系候选轨迹"),
-        ("edges.json", "图谱边"),
-        ("relation_catalog.json", "关系目录"),
-        ("relation_matrix.json", "关系矩阵"),
-        ("graph_index.json", "图索引"),
-        ("graph_quality.json", "图谱质量报告"),
-        ("career_profiles.json", "职业画像"),
-        ("recommendation_index.json", "反向推荐索引"),
-        ("entity_lookup.json", "实体查询索引"),
-        ("node_lookup.json", "节点查询索引"),
-        ("relation_summary.json", "关系统计摘要"),
-        ("extraction_log.json", "构建日志"),
-        ("graph_manifest.json", "构建清单"),
+        (item["file_name"], item["role"])
+        for item in OUTPUT_FILE_SPECS
+        if item["file_name"] != "data_catalog.json"
     ]
 
     file_overrides = {
         "graph_manifest.json": manifest,
+        "graph_contract.json": graph_contract,
         "relation_catalog.json": relation_catalog,
         "relation_matrix.json": relation_matrix,
         "graph_index.json": graph_index,
@@ -1336,8 +1389,8 @@ def build_data_catalog(
             item_count = len(payload)
         elif isinstance(payload, dict):
             if file_name == "graph_manifest.json":
-                # graph_manifest 的核心含义是“输出文件清单”，因此这里按清单条目数统计，
-                # 比按 edge_count 这类内部统计字段更稳定、更符合目录语义。
+                item_count = len(payload.get("output_files", []))
+            elif file_name == "graph_contract.json":
                 item_count = len(payload.get("output_files", []))
             elif file_name == "relation_catalog.json":
                 item_count = int(payload.get("relation_type_count", len(payload.get("relations", []))))
@@ -1367,7 +1420,6 @@ def build_data_catalog(
         )
 
     return catalog
-
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="构建知识图谱数据文件")
@@ -1472,10 +1524,19 @@ def main() -> int:
         len(evidence_items),
         args,
     )
+    graph_contract = build_graph_contract(
+        graph_manifest,
+        relation_catalog,
+        relation_matrix,
+        quality_report,
+        weight_rules,
+    )
     write_json(output_dir / "graph_manifest.json", graph_manifest)
+    write_json(output_dir / "graph_contract.json", graph_contract)
     data_catalog = build_data_catalog(
         output_dir,
         graph_manifest,
+        graph_contract,
         relation_catalog,
         relation_matrix,
         graph_index,
@@ -1496,3 +1557,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+

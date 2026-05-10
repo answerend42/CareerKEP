@@ -1,7 +1,7 @@
 [
   {
     "file_name": "nodes.json",
-    "description": "节点数据",
+    "description": "去重后的实体节点",
     "item_count": 17,
     "size_bytes": 3091,
     "sha256": "0b62bcefba4ec76d1da4cff549abf89c84839c6645c1967b06cfafe8314ca1fa"
@@ -22,7 +22,7 @@
   },
   {
     "file_name": "edges.json",
-    "description": "图谱边",
+    "description": "聚合后的图谱边",
     "item_count": 20,
     "size_bytes": 8786,
     "sha256": "03a801592f238bc38e1ab461b2ef4361052d84711798aa1483d394fdf8302008"
@@ -98,10 +98,17 @@
     "sha256": "e8415a009cfc25a22041c13a82ba0d219175f2c3d41143c0586582886e238889"
   },
   {
+    "file_name": "graph_contract.json",
+    "description": "机器可读图谱契约",
+    "item_count": 17,
+    "size_bytes": 9544,
+    "sha256": "638557e92acb4ccac07ad5bd252c6cbf8ed9575330c168499d1ca5d6c2b73283"
+  },
+  {
     "file_name": "graph_manifest.json",
     "description": "构建清单",
-    "item_count": 16,
-    "size_bytes": 1846,
-    "sha256": "6cffe72e9f251fefc6bf7eb89e60423a2a74901e1f57bb10adc339a662842d18"
+    "item_count": 17,
+    "size_bytes": 1874,
+    "sha256": "7d662aa168bf8196c5db938583b1d2edf9df4643853f53b9864f1437d1a6cf05"
   }
 ]
