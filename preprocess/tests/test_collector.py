@@ -248,6 +248,8 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(manifest["skipped_files"], 1)
         self.assertEqual(manifest["loaded_by_format"]["txt"], 1)
         self.assertEqual(manifest["skipped_by_format"]["pdf"], 1)
+        self.assertEqual(manifest["files"][0]["record_count"], 0)
+        self.assertEqual(manifest["files"][1]["record_count"], 1)
         self.assertEqual([entry["status"] for entry in manifest["files"]], ["skipped", "loaded"])
         self.assertEqual(len(documents), 1)
         self.assertEqual(documents[0].metadata["source_path"], "keep.txt")
@@ -271,13 +273,41 @@ class CollectorTests(unittest.TestCase):
 
         self.assertEqual(manifest["scanned_files"], 1)
         self.assertEqual(manifest["loaded_files"], 1)
-        self.assertEqual(manifest["error_files"], 1)
+        self.assertEqual(manifest["error_files"], 0)
         self.assertEqual(manifest["loaded_with_errors_files"], 1)
         self.assertEqual(manifest["parse_error_count"], 1)
         self.assertEqual(manifest["files"][0]["status"], "loaded_with_errors")
         self.assertEqual(manifest["files"][0]["error_count"], 1)
+        self.assertEqual(manifest["files"][0]["record_count"], 2)
         self.assertEqual(len(documents), 2)
         self.assertEqual([doc.doc_id for doc in documents], ["jsonl_good_1", "jsonl_good_2"])
+
+    def test_invalid_json_files_are_reported_in_manifest(self) -> None:
+        """普通 JSON 文件解析失败时，清单里也应保留错误信息。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "broken.json").write_text(
+                """
+                {
+                  "documents": [
+                    {
+                      "doc_id": "broken_doc",
+                      "title": "坏掉的 JSON"
+                }
+                """.strip(),
+                encoding="utf-8",
+            )
+
+            manifest = collect_source_manifest(root)
+
+        self.assertEqual(manifest["scanned_files"], 1)
+        self.assertEqual(manifest["loaded_files"], 0)
+        self.assertEqual(manifest["error_files"], 1)
+        self.assertEqual(manifest["parse_error_count"], 1)
+        self.assertEqual(manifest["files"][0]["status"], "error")
+        self.assertEqual(manifest["files"][0]["record_count"], 0)
+        self.assertIn("error", manifest["files"][0])
 
 
 if __name__ == "__main__":

@@ -475,6 +475,21 @@ def _load_html_document(path: Path, source_path: str) -> List[RawDocument]:
     ]
 
 
+def _load_supported_source_documents(path: Path, source_path: str) -> List[RawDocument]:
+    """按文件后缀加载单个原始文件，供预览和正式采集复用。"""
+
+    suffix = path.suffix.lower()
+    if suffix in {".json", ".jsonl"}:
+        return _load_json_documents(path, source_path)
+    if suffix in {".csv", ".tsv"}:
+        return _load_tabular_documents(path, source_path)
+    if suffix in {".txt", ".md"}:
+        return _load_text_document(path, source_path)
+    if suffix in {".html", ".htm"}:
+        return _load_html_document(path, source_path)
+    return []
+
+
 def _ensure_unique_doc_ids(documents: List[RawDocument]) -> None:
     """校验文档 ID 是否重复。
 
@@ -529,23 +544,48 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
             "source_path": source_path,
             "source_format": source_format,
             "status": "loaded" if is_supported else "skipped",
+            "record_count": 0,
         }
         if is_supported:
-            if path.suffix.lower() == ".jsonl":
-                _records, errors = _load_jsonl_records(path)
-                if errors:
-                    entry["status"] = "loaded_with_errors" if _records else "error"
-                    entry["record_count"] = len(_records)
-                    entry["error_count"] = len(errors)
-                    entry["errors"] = errors[:5]
-                    parse_error_count += len(errors)
-                    error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
-                if _records:
-                    loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
+            try:
+                if path.suffix.lower() == ".jsonl":
+                    records, errors = _load_jsonl_records(path)
+                    entry["record_count"] = len(records)
                     if errors:
-                        loaded_with_errors_by_format[source_format] = loaded_with_errors_by_format.get(source_format, 0) + 1
-            else:
-                loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
+                        entry["error_count"] = len(errors)
+                        entry["errors"] = errors[:5]
+                        parse_error_count += len(errors)
+                        if records:
+                            entry["status"] = "loaded_with_errors"
+                            loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
+                            loaded_with_errors_by_format[source_format] = loaded_with_errors_by_format.get(source_format, 0) + 1
+                        else:
+                            entry["status"] = "error"
+                            error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
+                    elif records:
+                        entry["status"] = "loaded"
+                        loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
+                    else:
+                        entry["status"] = "error"
+                        entry["error"] = "JSONL 文件中没有可用记录"
+                        error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
+                        parse_error_count += 1
+                else:
+                    preview_documents = _load_supported_source_documents(path, source_path)
+                    entry["record_count"] = len(preview_documents)
+                    if preview_documents:
+                        entry["status"] = "loaded"
+                        loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
+                    else:
+                        entry["status"] = "error"
+                        entry["error"] = "原始文件中没有可用文档"
+                        error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
+                        parse_error_count += 1
+            except Exception as exc:  # noqa: BLE001
+                entry["status"] = "error"
+                entry["error"] = str(exc)
+                error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
+                parse_error_count += 1
         else:
             skipped_by_format[source_format] = skipped_by_format.get(source_format, 0) + 1
             entry["reason"] = "不支持的文件类型"
@@ -582,16 +622,7 @@ def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
         is_supported, _source_format = _classify_source_file(path)
         if not is_supported:
             continue
-
-        suffix = path.suffix.lower()
-        if suffix in {".json", ".jsonl"}:
-            documents.extend(_load_json_documents(path, source_path))
-        elif suffix in {".csv", ".tsv"}:
-            documents.extend(_load_tabular_documents(path, source_path))
-        elif suffix in {".txt", ".md"}:
-            documents.extend(_load_text_document(path, source_path))
-        elif suffix in {".html", ".htm"}:
-            documents.extend(_load_html_document(path, source_path))
+        documents.extend(_load_supported_source_documents(path, source_path))
 
     if not documents:
         raise ValueError(f"在目录 {directory} 中没有找到可用的原始数据文件")

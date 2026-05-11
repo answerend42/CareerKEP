@@ -30,7 +30,7 @@
 默认会写入 `preprocess/output/`，包含以下文件：
 
 - `documents.json`：标准化后的原始文档快照
-- `source_manifest.json`：原始数据扫描清单，包含已加载和被跳过的文件
+- `source_manifest.json`：原始数据扫描清单，包含已加载、被跳过和解析失败的文件，并记录每个文件的文档数
 - `mentions.json`：每一条实体命中记录
 - `entity_catalog.json`：完整实体目录快照，保留实体标签、层级、别名和别名来源
 - `alias_index.json`：反向别名索引，展开每个别名会命中的候选实体，便于排查冲突和补词典
@@ -61,6 +61,7 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 
 - 采集阶段会对 `doc_id` 做唯一性校验，避免不同来源的文档在后续统计中互相覆盖。
 - 采集阶段会额外输出原始数据清单，显式记录被跳过的文件，避免数据源里有文件但流水线完全不知道。
+- 采集阶段会在清单里预览每个支持文件的实际文档数，并把解析失败的文件直接标出来，方便第一时间定位坏数据。
 - 采集阶段会自动拆解常见的多层 JSON 套壳结构，兼容 `response/data/results/items` 这类接口快照。
 - 采集阶段会把同一份 JSON 里并列存在的多个集合分支一起展开，避免只取到第一条可用列表而漏采其余记录。
 - 采集阶段会容忍 JSONL 中的局部坏行，能读多少算多少，并在清单里记录错误行信息和坏行总数。
@@ -73,7 +74,7 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 ## 输出字段说明
 
 - `summary.json`：用于快速确认这次预处理是否成功，包含文档数、命中数、覆盖数、别名索引统计、消歧歧义统计、错误文件数和输出目录。
-- `source_manifest.json`：用于排查原始数据扫描情况，记录每个文件的状态、格式、错误行与跳过原因。
+- `source_manifest.json`：用于排查原始数据扫描情况，记录每个文件的状态、格式、文档数、错误行与跳过原因。
 - `entity_catalog.json`：用于核对当前实体词典是否完整，包含实体 ID、标签、层级、别名和别名来源。
 - `entities.json`：用于直接消费预处理后的实体清单，除了 `entity_catalog.json` 的词典信息，还会附带命中次数、文档数、样例表面形式和文档来源。
 - `alias_index.json`：用于检查别名歧义和覆盖盲区，适合人工补充别名和调整消歧规则。
