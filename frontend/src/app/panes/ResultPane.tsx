@@ -100,7 +100,7 @@ export function ResultPane({
           <p className="pane-kicker">阶段 4</p>
           <h2>结果解释</h2>
         </div>
-        <span className="status-badge">{activeStep === '缁撴灉瑙ｉ噴' ? '当前焦点' : '输出摘要'}</span>
+        <span className="status-badge">{activeStep === '结果解释' ? '当前焦点' : '输出摘要'}</span>
       </div>
 
       <section className="analysis-card run-status-panel">

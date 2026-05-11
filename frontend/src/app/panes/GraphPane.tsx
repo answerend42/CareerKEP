@@ -23,7 +23,7 @@ export function GraphPane({ snapshot, activeStep, selectedNodeId, onSelectNode }
           <p className="pane-kicker">阶段 3</p>
           <h2>图谱传播</h2>
         </div>
-        <span className="status-badge">{activeStep === '鍥捐氨浼犳挱' ? '正在查看' : '传播快照'}</span>
+        <span className="status-badge">{activeStep === '图谱传播' ? '正在查看' : '传播快照'}</span>
       </div>
 
       <div className="graph-columns">
