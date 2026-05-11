@@ -274,32 +274,41 @@ def _extract_document_items(payload: object) -> List[dict]:
     """
 
     if isinstance(payload, list):
-        return [item for item in payload if isinstance(item, dict)]
+        records: List[dict] = []
+        for item in payload:
+            if isinstance(item, dict):
+                if _looks_like_document_record(item):
+                    records.append(item)
+                else:
+                    records.extend(_extract_document_items(item))
+            elif isinstance(item, list):
+                records.extend(_extract_document_items(item))
+        return records
 
     if not isinstance(payload, dict):
         return []
 
+    if _looks_like_document_record(payload):
+        return [payload]
+
+    records: List[dict] = []
     for key in COMMON_COLLECTION_KEYS:
         value = payload.get(key)
-        if isinstance(value, list):
-            records = [item for item in value if isinstance(item, dict)]
-            if records:
-                return records
-        elif isinstance(value, dict) and _looks_like_collection_container(value):
-            nested_records = _extract_document_items(value)
-            if nested_records:
-                return nested_records
+        if isinstance(value, (dict, list)):
+            records.extend(_extract_document_items(value))
 
-    # 如果当前字典本身不像一条文档记录，就继续向下找更深层的包装结构。
-    # 这样可以兼容 `response -> data -> items` 这类常见的接口快照。
-    if not _looks_like_document_record(payload):
-        for value in payload.values():
-            if isinstance(value, (dict, list)):
-                nested_records = _extract_document_items(value)
-                if nested_records:
-                    return nested_records
+    if records:
+        return records
 
-    return [payload]
+    # 如果常见容器字段里没有命中，就把其余分支也继续向下找。
+    # 这样可以兼容同一份 JSON 快照里并列存在多个集合分支的情况。
+    for key, value in payload.items():
+        if key in COMMON_COLLECTION_KEYS:
+            continue
+        if isinstance(value, (dict, list)):
+            records.extend(_extract_document_items(value))
+
+    return records
 
 
 def _load_jsonl_records(path: Path) -> tuple[List[dict], List[dict]]:

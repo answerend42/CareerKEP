@@ -90,6 +90,44 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(documents[0].metadata["source_path"], "wrapped.json")
         self.assertEqual(documents[0].metadata["source_format"], "json")
 
+    def test_multiple_nested_json_branches_are_all_collected(self) -> None:
+        """同一份 JSON 快照里并列存在的多个集合分支都应被展开。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "multi_branch.json").write_text(
+                """
+                {
+                  "response": {
+                    "payload": {
+                      "items": [
+                        {
+                          "doc_id": "branch_doc_1",
+                          "title": "分支文档一",
+                          "text": "后端工程能力。"
+                        }
+                      ]
+                    }
+                  },
+                  "extras": {
+                    "results": [
+                      {
+                        "doc_id": "branch_doc_2",
+                        "title": "分支文档二",
+                        "text": "前端项目经验。"
+                      }
+                    ]
+                  }
+                }
+                """.strip(),
+                encoding="utf-8",
+            )
+
+            documents = load_raw_documents(root)
+
+        self.assertEqual([doc.doc_id for doc in documents], ["branch_doc_1", "branch_doc_2"])
+        self.assertEqual([doc.metadata["source_path"] for doc in documents], ["multi_branch.json", "multi_branch.json"])
+
     def test_markdown_heading_is_used_as_title(self) -> None:
         """Markdown 文档的首个标题应当被识别为标题，并从正文中剥离。"""
 
