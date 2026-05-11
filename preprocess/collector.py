@@ -297,11 +297,9 @@ def _extract_document_items(payload: object) -> List[dict]:
         if isinstance(value, (dict, list)):
             records.extend(_extract_document_items(value))
 
-    if records:
-        return records
-
-    # 如果常见容器字段里没有命中，就把其余分支也继续向下找。
-    # 这样可以兼容同一份 JSON 快照里并列存在多个集合分支的情况。
+    # 这里不要在常见容器字段命中后提前返回。
+    # 同一份 JSON 快照里经常会同时存在 `data` / `results` / `extras` 等并列分支，
+    # 只要其中某一个分支有记录，就会把其它同级分支漏掉，影响原始数据覆盖率。
     for key, value in payload.items():
         if key in COMMON_COLLECTION_KEYS:
             continue

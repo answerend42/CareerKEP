@@ -128,6 +128,40 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual([doc.doc_id for doc in documents], ["branch_doc_1", "branch_doc_2"])
         self.assertEqual([doc.metadata["source_path"] for doc in documents], ["multi_branch.json", "multi_branch.json"])
 
+    def test_common_collection_key_does_not_hide_sibling_branches(self) -> None:
+        """常见集合键命中后，仍然要继续扫描同级分支，避免漏采。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "mixed.json").write_text(
+                """
+                {
+                  "data": [
+                    {
+                      "doc_id": "data_doc",
+                      "title": "数据分支文档",
+                      "text": "后端工程能力。"
+                    }
+                  ],
+                  "extras": {
+                    "results": [
+                      {
+                        "doc_id": "extra_doc",
+                        "title": "额外分支文档",
+                        "text": "前端项目经验。"
+                      }
+                    ]
+                  }
+                }
+                """.strip(),
+                encoding="utf-8",
+            )
+
+            documents = load_raw_documents(root)
+
+        self.assertEqual([doc.doc_id for doc in documents], ["data_doc", "extra_doc"])
+        self.assertEqual([doc.metadata["source_path"] for doc in documents], ["mixed.json", "mixed.json"])
+
     def test_markdown_heading_is_used_as_title(self) -> None:
         """Markdown 文档的首个标题应当被识别为标题，并从正文中剥离。"""
 
