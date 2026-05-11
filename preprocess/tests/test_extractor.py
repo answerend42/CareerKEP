@@ -6,7 +6,9 @@ import json
 import tempfile
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
+import preprocess.catalog as catalog_module
 from preprocess.catalog import load_entity_catalog
 from preprocess.extractor import extract_mentions
 from preprocess.disambiguator import resolve_entity
@@ -285,6 +287,60 @@ class ExtractorTests(unittest.TestCase):
         )
 
         self.assertEqual(resolved.entity.entity_id, "backend_engineer")
+
+    def test_explicit_alias_source_wins_over_generated_source(self) -> None:
+        """同名别名同时来自显式词典和生成规则时，应优先保留显式来源。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "nodes.json").write_text(
+                json.dumps(
+                    [
+                        {
+                            "id": "backend_engineering",
+                            "label": "后端工程能力",
+                            "layer": "composite",
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            (root / "aliases.json").write_text(
+                json.dumps(
+                    {
+                        "backend_engineering": [
+                            "后端",
+                        ]
+                    },
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+
+            with patch.object(catalog_module, "SEED_NODES_PATH", root / "nodes.json"), patch.object(
+                catalog_module, "SEED_ALIASES_PATH", root / "aliases.json"
+            ):
+                catalog = load_entity_catalog()
+                self.assertEqual(catalog.entities["backend_engineering"].alias_sources["后端"], "explicit")
+
+                document = RawDocument(
+                    doc_id="alias_priority",
+                    source="test",
+                    title="",
+                    text="我关注后端，也想继续补工程能力。",
+                    metadata={},
+                )
+                mentions = extract_mentions(document, catalog)
+
+        self.assertTrue(
+            any(
+                mention.entity_id == "backend_engineering"
+                and mention.surface == "后端"
+                and mention.matched_by == "explicit"
+                for mention in mentions
+            )
+        )
 
 
 if __name__ == "__main__":

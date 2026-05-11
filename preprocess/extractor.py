@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass
 from typing import Any, List, Tuple
 
-from .catalog import EntityCatalog, compact_text
+from .catalog import ALIAS_SOURCE_PRIORITY, EntityCatalog, compact_text
 from .disambiguator import rank_entity_candidates
 from .models import EntityMention, RawDocument
 
@@ -161,7 +161,12 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
     hits: List[AliasHit] = []
     doc_text = _build_search_corpus(document)
 
-    # 长别名优先，能减少短词抢占长词的问题。
+    def _source_priority(source: str) -> int:
+        return ALIAS_SOURCE_PRIORITY.get(source, 0)
+
+    # 同一个 surface 可能来自多个实体或多个来源，这里保留所有 source 变体，
+    # 但把更可信的来源排在前面。这样可以让 `matched_by` 更稳定，
+    # 同时不影响后续“更短词干作为兜底命中”的能力。
     alias_candidates: List[AliasCandidate] = []
     seen_candidates = set()
     for _compact_alias, items in catalog.alias_index.items():
@@ -176,7 +181,14 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
             seen_candidates.add(candidate_key)
             alias_candidates.append(AliasCandidate(surface=surface, source=source))
 
-    alias_candidates.sort(key=lambda item: len(item.surface), reverse=True)
+    alias_candidates.sort(
+        key=lambda item: (
+            len(item.surface),
+            _source_priority(item.source),
+            item.surface,
+        ),
+        reverse=True,
+    )
 
     occupied_spans: List[Tuple[int, int]] = []
     seen_spans = set()

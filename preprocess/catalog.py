@@ -18,6 +18,13 @@ from .models import EntityDefinition
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SEED_NODES_PATH = REPO_ROOT / "backend" / "data" / "seeds" / "nodes.json"
 SEED_ALIASES_PATH = REPO_ROOT / "backend" / "data" / "dictionaries" / "aliases.json"
+ALIAS_SOURCE_PRIORITY = {
+    "explicit": 5,
+    "label": 4,
+    "id": 3,
+    "id_words": 2,
+    "generated": 1,
+}
 
 
 def _read_json(path: Path) -> object:
@@ -86,6 +93,16 @@ def _default_alias_forms(node_id: str, label: str) -> List[Tuple[str, str]]:
     return aliases
 
 
+def _source_priority(source: str) -> int:
+    """给别名来源一个稳定优先级。
+
+    当同一个 alias 同时来自多个来源时，优先保留更可信的来源，避免
+    生成别名把显式别名或标签别名覆盖掉。
+    """
+
+    return ALIAS_SOURCE_PRIORITY.get(source, 0)
+
+
 def _dedupe_preserve_order(items: Iterable[str]) -> List[str]:
     seen = set()
     ordered: List[str] = []
@@ -149,7 +166,9 @@ def load_entity_catalog() -> EntityCatalog:
             if not compact:
                 continue
             normalized_aliases.append(alias)
-            normalized_sources[alias] = source
+            previous_source = normalized_sources.get(alias)
+            if previous_source is None or _source_priority(source) > _source_priority(previous_source):
+                normalized_sources[alias] = source
 
             alias_index.setdefault(compact, []).append((entity_id, alias, source))
 
