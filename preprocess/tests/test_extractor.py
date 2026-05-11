@@ -11,7 +11,7 @@ from unittest.mock import patch
 import preprocess.catalog as catalog_module
 from preprocess.catalog import load_entity_catalog
 from preprocess.extractor import extract_mentions
-from preprocess.disambiguator import resolve_entity
+from preprocess.disambiguator import rank_entity_candidates, resolve_entity
 from preprocess.models import RawDocument
 from preprocess.pipeline import run_pipeline
 
@@ -156,6 +156,32 @@ class ExtractorTests(unittest.TestCase):
 
         self.assertEqual(resolved.entity.entity_id, "backend_engineering")
         self.assertIn("实体ID", resolved.reason)
+
+    def test_duplicate_candidates_for_same_entity_are_deduplicated(self) -> None:
+        """同一实体如果被多种别名来源命中，只应保留一条候选记录。"""
+
+        document = RawDocument(
+            doc_id="dedup_candidates",
+            source="test",
+            title="候选去重示例",
+            text="后端工程能力和后端工程师都会在这里出现。",
+            metadata={},
+        )
+
+        backend_engineering = self.catalog.entities["backend_engineering"]
+
+        scored_candidates = rank_entity_candidates(
+            [
+                (backend_engineering, "generated"),
+                (backend_engineering, "explicit"),
+                (backend_engineering, "label"),
+            ],
+            document=document,
+            matched_alias="后端工程",
+        )
+
+        self.assertEqual(len(scored_candidates), 1)
+        self.assertEqual(scored_candidates[0].entity.entity_id, "backend_engineering")
 
     def test_normalized_alias_matching_handles_punctuation_variants(self) -> None:
         """规范化匹配应覆盖原始文本里的空格和符号变体。"""

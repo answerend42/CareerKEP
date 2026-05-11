@@ -78,6 +78,38 @@ def _build_search_text(document: RawDocument) -> str:
     return "\n\n".join(part for part in parts if part)
 
 
+def _source_priority(source: str) -> int:
+    """给别名来源一个稳定优先级。
+
+    同一个实体如果被多种别名来源同时命中，优先保留更可信的来源，
+    这样 `candidate_count` 和 `score_gap` 不会被重复候选污染。
+    """
+
+    return SOURCE_BASE_SCORES.get(source, (0.0, ""))[0]  # 只取基础分数作为来源优先级
+
+
+def _normalize_candidates(candidates: List[Tuple[EntityDefinition, str]]) -> List[Tuple[EntityDefinition, str]]:
+    """去重候选实体，避免同一实体因为多个别名来源重复进入排序。
+
+    这里保留每个 `entity_id` 的最佳来源即可：
+    - 显式别名优先于标签别名
+    - 标签别名优先于实体 ID 和生成别名
+    - 相同来源下只保留第一条
+    """
+
+    best_candidates: dict[str, Tuple[EntityDefinition, str]] = {}
+    best_scores: dict[str, float] = {}
+
+    for entity, source in candidates:
+        current_score = _source_priority(source)
+        previous_score = best_scores.get(entity.entity_id)
+        if previous_score is None or current_score > previous_score:
+            best_candidates[entity.entity_id] = (entity, source)
+            best_scores[entity.entity_id] = current_score
+
+    return list(best_candidates.values())
+
+
 def _layer_priority(layer: str) -> int:
     order = {
         "role": 5,
@@ -155,7 +187,8 @@ def rank_entity_candidates(
     这个结果用于后续输出消歧轨迹，方便人工复核为什么会选择当前实体。
     """
 
-    scored = [_score_entity(entity, document, matched_alias, source) for entity, source in candidates]
+    normalized_candidates = _normalize_candidates(candidates)
+    scored = [_score_entity(entity, document, matched_alias, source) for entity, source in normalized_candidates]
     return sorted(
         scored,
         key=lambda item: (
