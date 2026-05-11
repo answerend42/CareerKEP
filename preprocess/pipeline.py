@@ -438,6 +438,123 @@ def _build_disambiguation_trace(mentions: List[dict]) -> dict:
     }
 
 
+def _build_alias_ambiguity_report(mentions: List[dict]) -> dict:
+    """把歧义命中按别名和实体聚合，便于优先修词典。
+
+    只看总量不够定位问题，这里进一步输出：
+    - 哪些表面形式最容易撞多个候选实体
+    - 哪些实体最容易出现在歧义命中里
+    - 近似平局的歧义样本主要集中在哪些别名上
+    """
+
+    ambiguous_mentions = [
+        mention
+        for mention in mentions
+        if int(mention.get("candidate_count", 0)) > 1
+    ]
+
+    surface_buckets: Dict[str, dict] = {}
+    entity_buckets: Dict[str, dict] = {}
+
+    for mention in ambiguous_mentions:
+        surface = str(mention.get("surface", "")).strip() or "<empty>"
+        entity_id = str(mention.get("entity_id", "")).strip() or "<unknown>"
+        score_gap = mention.get("score_gap")
+        is_near_tie = score_gap is not None and float(score_gap) <= 0.05
+
+        surface_bucket = surface_buckets.setdefault(
+            surface,
+            {
+                "surface": surface,
+                "count": 0,
+                "near_tie_count": 0,
+                "entity_ids": set(),
+                "doc_ids": set(),
+                "max_candidate_count": 0,
+                "min_score_gap": None,
+            },
+        )
+        surface_bucket["count"] += 1
+        if is_near_tie:
+            surface_bucket["near_tie_count"] += 1
+        surface_bucket["entity_ids"].add(entity_id)
+        surface_bucket["doc_ids"].add(str(mention.get("doc_id", "")))
+        surface_bucket["max_candidate_count"] = max(
+            surface_bucket["max_candidate_count"],
+            int(mention.get("candidate_count", 0)),
+        )
+        current_gap = float(score_gap) if score_gap is not None else None
+        previous_gap = surface_bucket["min_score_gap"]
+        if current_gap is not None and (previous_gap is None or current_gap < previous_gap):
+            surface_bucket["min_score_gap"] = current_gap
+
+        entity_bucket = entity_buckets.setdefault(
+            entity_id,
+            {
+                "entity_id": entity_id,
+                "count": 0,
+                "near_tie_count": 0,
+                "surfaces": set(),
+                "doc_ids": set(),
+            },
+        )
+        entity_bucket["count"] += 1
+        if is_near_tie:
+            entity_bucket["near_tie_count"] += 1
+        entity_bucket["surfaces"].add(surface)
+        entity_bucket["doc_ids"].add(str(mention.get("doc_id", "")))
+
+    top_surfaces = []
+    for bucket in surface_buckets.values():
+        top_surfaces.append(
+            {
+                "surface": bucket["surface"],
+                "count": bucket["count"],
+                "near_tie_count": bucket["near_tie_count"],
+                "unique_entity_count": len(bucket["entity_ids"]),
+                "unique_document_count": len(bucket["doc_ids"]),
+                "max_candidate_count": bucket["max_candidate_count"],
+                "min_score_gap": bucket["min_score_gap"],
+            }
+        )
+    top_surfaces.sort(
+        key=lambda item: (
+            -item["count"],
+            -item["near_tie_count"],
+            -item["unique_entity_count"],
+            item["surface"],
+        )
+    )
+
+    top_entities = []
+    for bucket in entity_buckets.values():
+        top_entities.append(
+            {
+                "entity_id": bucket["entity_id"],
+                "count": bucket["count"],
+                "near_tie_count": bucket["near_tie_count"],
+                "unique_surface_count": len(bucket["surfaces"]),
+                "unique_document_count": len(bucket["doc_ids"]),
+            }
+        )
+    top_entities.sort(
+        key=lambda item: (
+            -item["count"],
+            -item["near_tie_count"],
+            -item["unique_surface_count"],
+            item["entity_id"],
+        )
+    )
+
+    return {
+        "ambiguous_mention_count": len(ambiguous_mentions),
+        "unique_surface_count": len(surface_buckets),
+        "unique_entity_count": len(entity_buckets),
+        "top_surfaces": top_surfaces[:20],
+        "top_entities": top_entities[:20],
+    }
+
+
 def _dump_json(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -472,6 +589,7 @@ def run_pipeline(
     uncovered_entity_candidate_report = _build_uncovered_entity_candidate_report(catalog, entity_summary)
     disambiguation_review = _build_disambiguation_review(all_mentions, review_threshold)
     disambiguation_trace = _build_disambiguation_trace(all_mentions)
+    alias_ambiguity_report = _build_alias_ambiguity_report(all_mentions)
     alias_index_snapshot, alias_index_stats = _build_alias_index_snapshot(catalog)
     format_stats = {
         "loaded_by_format": source_manifest.get("loaded_by_format", {}),
@@ -497,6 +615,7 @@ def run_pipeline(
     _dump_json(resolved_output_dir / "entities.json", [item.to_dict() for item in entity_summary])
     _dump_json(resolved_output_dir / "disambiguation_review.json", disambiguation_review)
     _dump_json(resolved_output_dir / "disambiguation_trace.json", disambiguation_trace)
+    _dump_json(resolved_output_dir / "alias_ambiguity.json", alias_ambiguity_report)
     _dump_json(
         resolved_output_dir / "entity_coverage.json",
         {
@@ -528,6 +647,8 @@ def run_pipeline(
             "single_entity_aliases": alias_index_stats["single_entity_aliases"],
             "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
             "near_tie_mentions": disambiguation_trace["near_tie_count"],
+            "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
+            "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
             "hit_entities": covered_entities,
             "covered_entities": covered_entities,
             "uncovered_entities": total_entities - covered_entities,
@@ -549,6 +670,8 @@ def run_pipeline(
         "uncertain_mentions": disambiguation_review["uncertain_count"],
         "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
         "near_tie_mentions": disambiguation_trace["near_tie_count"],
+        "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
+        "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
         "uncovered_entity_candidates": len(uncovered_entity_candidate_report),
         "review_threshold": review_threshold,
         "scanned_source_files": source_manifest["scanned_files"],
