@@ -26,6 +26,7 @@ def _build_entity_summary(catalog: EntityCatalog, mentions_by_doc: Dict[str, Lis
             label=entity.label,
             layer=entity.layer,
             aliases=list(entity.aliases),
+            alias_sources=dict(entity.alias_sources),
         )
 
     for doc_id, mentions in mentions_by_doc.items():

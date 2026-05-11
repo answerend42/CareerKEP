@@ -65,6 +65,7 @@ class ResolvedEntity:
     label: str
     layer: str
     aliases: List[str] = field(default_factory=list)
+    alias_sources: Dict[str, str] = field(default_factory=dict)
     mention_count: int = 0
     doc_count: int = 0
     sample_surfaces: List[str] = field(default_factory=list)

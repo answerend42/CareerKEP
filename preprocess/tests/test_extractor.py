@@ -77,6 +77,7 @@ class ExtractorTests(unittest.TestCase):
         self.assertTrue(all("candidates" in item for item in alias_index_payload))
         self.assertTrue(all("candidate_count" in item for item in disambiguation_trace_payload["top_ambiguous_mentions"]))
         self.assertTrue(all("top_candidates" in item for item in disambiguation_trace_payload["top_ambiguous_mentions"]))
+        self.assertTrue(all("alias_sources" in item for item in entities_payload))
         self.assertTrue(all("alias_sources" in item for item in uncovered_entities_payload))
         self.assertTrue(all("recommended_aliases" in item for item in uncovered_entity_candidates_payload))
         self.assertTrue(all("coverage_priority" in item for item in uncovered_entity_candidates_payload))
