@@ -127,6 +127,29 @@ class ExtractorTests(unittest.TestCase):
         self.assertEqual(summary_payload["loaded_with_errors_source_files"], 0)
         self.assertEqual(summary_payload["parse_error_count"], 0)
 
+    def test_pipeline_handles_empty_input_directory(self) -> None:
+        """空输入目录也应能跑通，避免采集阶段直接中断。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            input_dir = Path(tmp_dir) / "input"
+            output_dir = Path(tmp_dir) / "output"
+            input_dir.mkdir(parents=True, exist_ok=True)
+
+            result = run_pipeline(input_dir=input_dir, output_dir=output_dir, stage="full")
+            summary_payload = json.loads((output_dir / "summary.json").read_text(encoding="utf-8"))
+            stage_summary_payload = json.loads((output_dir / "stage_summary.json").read_text(encoding="utf-8"))
+            entity_coverage_payload = json.loads((output_dir / "entity_coverage.json").read_text(encoding="utf-8"))
+
+            self.assertEqual(result["documents"], 0)
+            self.assertEqual(result["mentions"], 0)
+            self.assertEqual(summary_payload["documents"], 0)
+            self.assertEqual(summary_payload["mentions"], 0)
+            self.assertEqual(stage_summary_payload["stage"], "full")
+            self.assertEqual(stage_summary_payload["extraction"]["documents"], 0)
+            self.assertEqual(entity_coverage_payload["covered_entities"], 0)
+            self.assertEqual(entity_coverage_payload["catalog_entities"], len(self.catalog.entities))
+            self.assertTrue((output_dir / "entities.json").exists())
+
     def test_title_guides_ambiguous_entity_resolution(self) -> None:
         """标题信息应能帮助同义别名在多个候选实体之间做消歧。"""
 

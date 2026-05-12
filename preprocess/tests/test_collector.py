@@ -12,6 +12,21 @@ from preprocess.collector import collect_source_manifest, load_raw_documents
 class CollectorTests(unittest.TestCase):
     """验证原始数据收集阶段的基础兼容能力。"""
 
+    def test_empty_directory_returns_no_documents(self) -> None:
+        """空目录不应直接报错，采集器应返回空文档列表。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+
+            manifest = collect_source_manifest(root)
+            documents = load_raw_documents(root)
+
+        self.assertEqual(manifest["scanned_files"], 0)
+        self.assertEqual(manifest["loaded_files"], 0)
+        self.assertEqual(manifest["skipped_files"], 0)
+        self.assertEqual(manifest["error_files"], 0)
+        self.assertEqual(documents, [])
+
     def test_recursive_directory_and_tabular_inputs(self) -> None:
         """采集器应支持子目录以及 CSV/JSON 混合输入。"""
 

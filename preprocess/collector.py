@@ -705,6 +705,9 @@ def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
             continue
         documents.extend(_load_supported_source_documents(path, source_path))
 
+    if not paths:
+        return []
+
     if not documents:
         raise ValueError(f"在目录 {directory} 中没有找到可用的原始数据文件")
 
