@@ -10,7 +10,11 @@ from ..services.action_simulator import simulate_actions
 from ..services.explainer import build_explanation
 from ..services.graph_loader import GraphData, load_graph_data
 from ..services.inference_engine import infer
-from ..services.input_normalizer import load_alias_map, merge_evidence_maps, normalize_structured_input
+from ..services.input_normalizer import (
+    load_alias_map,
+    merge_evidence_maps,
+    normalize_structured_input_with_warnings,
+)
 from ..services.learning_path_planner import build_learning_path
 from ..services.nl_parser import parse_natural_language
 from ..services.role_gap_analyzer import analyze_role_gap, suggest_bridge_nodes
@@ -200,7 +204,7 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
     alias_map = load_alias_map()
     resolved_target_role = resolve_target_role(graph, alias_map, request.target_role)
 
-    structured_evidence = normalize_structured_input(request.evidence)
+    structured_evidence, structured_evidence_warnings = normalize_structured_input_with_warnings(request.evidence)
     nl_evidence = parse_natural_language(request.text or "", alias_map) if request.text else {}
     evidence_map = merge_evidence_maps(structured_evidence, nl_evidence)
     result = infer(graph, evidence_map)
@@ -212,6 +216,7 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
         # 这里把输入解析过程拆开返回，方便前端直接定位“为什么这个节点被命中”。
         "structured_evidence": [item.to_dict() for item in request.evidence],
         "structured_evidence_map": structured_evidence,
+        "structured_evidence_warnings": structured_evidence_warnings,
         "parsed_natural_language_evidence": nl_evidence,
         "merged_evidence": evidence_map,
     }

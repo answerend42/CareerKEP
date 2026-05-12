@@ -88,6 +88,27 @@ class BackendSmokeTest(unittest.TestCase):
 
         self.assertEqual(result, {})
 
+    def test_recommend_exposes_structured_input_warnings(self) -> None:
+        # 跳过脏证据时，输入轨迹应该告诉前端具体跳过了什么，方便排查。
+        response = recommend(
+            {
+                "text": "我会 Python",
+                "evidence": [
+                    {"node_id": "sql", "score": "bad"},
+                    {"node_id": "docker", "score": True},
+                    {"node_id": "linux", "score": None},
+                    {"node_id": "python", "score": 0.8},
+                ],
+            }
+        ).to_dict()
+
+        trace = response["input_trace"]
+        self.assertIn("structured_evidence_warnings", trace)
+        self.assertEqual(trace["structured_evidence_map"], {"python": 0.8, "linux": 0.0})
+        self.assertEqual(len(trace["structured_evidence_warnings"]), 2)
+        self.assertTrue(any("非法分值" in item for item in trace["structured_evidence_warnings"]))
+        self.assertTrue(any("布尔值不是合法分值" in item for item in trace["structured_evidence_warnings"]))
+
     def test_recommend_smoke(self) -> None:
         response = recommend(
             {

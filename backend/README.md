@@ -127,6 +127,7 @@ python3 -m backend.app.main validate-graph
 - `graph_snapshot`
 
 `input_trace` 会拆开返回原始文本、结构化证据、自然语言解析结果、合并后的证据映射，便于前端调试“为什么这个岗位被推荐出来”。
+`input_trace` 里还会返回 `structured_evidence_warnings`，专门记录哪些结构化证据因为空 ID、非法分值或布尔值被跳过，方便前端和脚本排查脏数据来源。
 `input_trace` 里会额外返回 `resolved_target_role`，方便前端确认目标岗位最终命中了图谱里的哪个节点。
 `result_summary` 会给出这一轮推荐的总览信息，包括推荐数、near miss 数、桥接建议数、是否命中目标岗位、准备度分级，以及首条正式推荐、首条桥接建议和 `highlights` 卡片列表，方便前端首页直接渲染概览卡片。
 每个 `recommendations`、`near_miss_roles` 和 `bridge_recommendations` 条目里都会带 `explanation`，其中包含 `path`、`evidence`、`evidence_details` 和 `diagnostics`，前端可以直接拿来做展开式解释面板。

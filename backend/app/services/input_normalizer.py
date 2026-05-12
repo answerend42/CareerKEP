@@ -43,6 +43,12 @@ def _coerce_score(value: Any) -> float | None:
         return None
 
 
+def _record_score_warning(warnings: list[str], location: str, reason: str, value: Any) -> None:
+    """把被跳过的脏分值记录成可读 warning。"""
+
+    warnings.append(f"{location}: {reason} {value!r}")
+
+
 @lru_cache(maxsize=1)
 def load_alias_map() -> dict[str, list[str]]:
     """加载别名词典，供自然语言解析使用。"""
@@ -98,38 +104,56 @@ def validate_alias_map(graph: GraphData, alias_map: dict[str, list[str]]) -> lis
 def normalize_structured_input(payload: Any) -> dict[str, float]:
     """把结构化输入统一成 node_id -> score。"""
 
+    result, _warnings = normalize_structured_input_with_warnings(payload)
+    return result
+
+
+def normalize_structured_input_with_warnings(payload: Any) -> tuple[dict[str, float], list[str]]:
+    """把结构化输入统一成 node_id -> score，并返回被跳过项的说明。
+
+    这里保留 `normalize_structured_input()` 的兼容入口，同时给推荐流程补一层
+    可见化 diagnostics，方便前端和命令行调试“为什么某条证据没生效”。
+    """
+
     result: dict[str, float] = {}
+    warnings: list[str] = []
 
     if payload is None:
-        return result
+        return result, warnings
 
     if isinstance(payload, dict):
         for node_id, score in payload.items():
             normalized_node_id = str(node_id or "").strip()
             if not normalized_node_id:
+                _record_score_warning(warnings, "structured_input.<key>", "空节点 ID 已跳过", node_id)
                 continue
             normalized_score = _coerce_score(score)
             if normalized_score is None:
+                _record_score_warning(warnings, f"structured_input.{normalized_node_id}.score", "非法分值已跳过", score)
                 continue
             result[normalized_node_id] = normalized_score
-        return result
+        return result, warnings
 
     if not isinstance(payload, list):
         raise TypeError("结构化输入必须是 dict 或 list")
 
-    for item in payload:
+    for index, item in enumerate(payload):
         if isinstance(item, EvidenceInput):
             # 布尔值是最常见的脏数据之一，不能在这里悄悄被当成 0/1 分。
             if isinstance(item.score, bool):
+                _record_score_warning(warnings, f"structured_input[{index}].score", "布尔值不是合法分值，已跳过", item.score)
                 continue
             try:
                 normalized = item.normalized()
             except (TypeError, ValueError):
+                _record_score_warning(warnings, f"structured_input[{index}].score", "非法分值已跳过", item.score)
                 continue
             if not normalized.node_id:
+                _record_score_warning(warnings, f"structured_input[{index}].node_id", "空节点 ID 已跳过", item.node_id)
                 continue
             normalized_score = _coerce_score(normalized.score)
             if normalized_score is None:
+                _record_score_warning(warnings, f"structured_input[{index}].score", "非法分值已跳过", normalized.score)
                 continue
             result[normalized.node_id] = normalized_score
             continue
@@ -139,13 +163,15 @@ def normalize_structured_input(payload: Any) -> dict[str, float]:
 
         node_id = str(item.get("node_id") or item.get("id") or "").strip()
         if not node_id:
+            _record_score_warning(warnings, f"structured_input[{index}].node_id", "空节点 ID 已跳过", item.get("node_id") or item.get("id"))
             continue
         normalized_score = _coerce_score(item.get("score", 1.0))
         if normalized_score is None:
+            _record_score_warning(warnings, f"structured_input[{index}].score", "非法分值已跳过", item.get("score", 1.0))
             continue
         result[node_id] = normalized_score
 
-    return result
+    return result, warnings
 
 
 def merge_evidence_maps(*maps: dict[str, float]) -> dict[str, float]:
