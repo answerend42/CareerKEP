@@ -442,19 +442,25 @@ def _load_jsonl_records(path: Path) -> tuple[List[dict], List[dict]]:
     return records, errors
 
 
-def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
+def _load_json_documents_with_errors(path: Path, source_path: str) -> tuple[List[RawDocument], List[dict]]:
+    """加载 JSON / JSONL 文档，并返回解析阶段的错误信息。
+
+    这样采集清单和文档加载可以共享同一套解析结果，避免同一个文件被重复读两次。
+    """
+
     shared_metadata: dict = {}
+    parse_errors: List[dict] = []
     if path.suffix.lower() == ".jsonl":
-        documents, errors = _load_jsonl_records(path)
+        documents, parse_errors = _load_jsonl_records(path)
         payload: object = documents
     else:
         payload = json.loads(path.read_text(encoding="utf-8"))
         shared_metadata = _extract_shared_metadata(payload)
     documents = _extract_document_items(payload)
     if not documents:
-        if path.suffix.lower() == ".jsonl" and errors:
+        if path.suffix.lower() == ".jsonl" and parse_errors:
             error_detail = "; ".join(
-                f"第{item['line_number']}行: {item['error']}" for item in errors[:5]
+                f"第{item['line_number']}行: {item['error']}" for item in parse_errors[:5]
             )
             raise ValueError(f"原始文档文件中没有可用的 JSONL 记录: {path}，{error_detail}")
         raise ValueError(f"原始文档文件格式不支持: {path}")
@@ -473,7 +479,12 @@ def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
                 shared_metadata=shared_metadata,
             )
         )
-    return result
+    return result, parse_errors
+
+
+def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
+    documents, _parse_errors = _load_json_documents_with_errors(path, source_path)
+    return documents
 
 
 def _load_tabular_documents(path: Path, source_path: str) -> List[RawDocument]:
@@ -567,19 +578,26 @@ def _load_html_document(path: Path, source_path: str) -> List[RawDocument]:
     ]
 
 
-def _load_supported_source_documents(path: Path, source_path: str) -> List[RawDocument]:
-    """按文件后缀加载单个原始文件，供预览和正式采集复用。"""
+def _load_supported_source_documents_with_errors(path: Path, source_path: str) -> tuple[List[RawDocument], List[dict]]:
+    """按文件后缀加载单个原始文件，供预览、正式采集和清单统计复用。"""
 
     suffix = path.suffix.lower()
     if suffix in {".json", ".jsonl"}:
-        return _load_json_documents(path, source_path)
+        return _load_json_documents_with_errors(path, source_path)
     if suffix in {".csv", ".tsv"}:
-        return _load_tabular_documents(path, source_path)
+        return _load_tabular_documents(path, source_path), []
     if suffix in {".txt", ".md"}:
-        return _load_text_document(path, source_path)
+        return _load_text_document(path, source_path), []
     if suffix in {".html", ".htm"}:
-        return _load_html_document(path, source_path)
-    return []
+        return _load_html_document(path, source_path), []
+    return [], []
+
+
+def _load_supported_source_documents(path: Path, source_path: str) -> List[RawDocument]:
+    """按文件后缀加载单个原始文件，供预览和正式采集复用。"""
+
+    documents, _parse_errors = _load_supported_source_documents_with_errors(path, source_path)
+    return documents
 
 
 def _ensure_unique_doc_ids(documents: List[RawDocument]) -> None:
@@ -610,16 +628,12 @@ def _ensure_unique_doc_ids(documents: List[RawDocument]) -> None:
         raise ValueError(f"发现重复的文档 ID，请先清理原始数据: {detail}")
 
 
-def collect_source_manifest(input_dir: Path | None = None) -> dict:
-    """收集原始数据清单。
+def _load_directory_snapshot(directory: Path, enforce_unique_doc_ids: bool = False) -> tuple[dict, List[RawDocument]]:
+    """一次性加载目录的清单和文档快照。
 
-    这个清单会把扫描到但未纳入预处理的文件也记录下来，避免数据源里有
-    新文件却没有被流水线感知到。
+    这个内部入口会统一完成扫描、解析、清单统计和文档构建，避免调用方
+    分别调用采集和加载时把同一批文件读两遍。
     """
-
-    directory = input_dir or RAW_SOURCE_DIR
-    if not directory.exists():
-        raise FileNotFoundError(f"原始数据目录不存在: {directory}")
 
     files = _scan_source_files(directory)
     manifest_entries: List[dict] = []
@@ -629,6 +643,7 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
     loaded_with_errors_by_format: dict[str, int] = {}
     parse_error_count = 0
     doc_id_sources: dict[str, List[str]] = {}
+    documents: List[RawDocument] = []
 
     for path in files:
         source_path = str(path.relative_to(directory))
@@ -641,43 +656,25 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
         }
         if is_supported:
             try:
-                if path.suffix.lower() == ".jsonl":
-                    records, errors = _load_jsonl_records(path)
-                    entry["record_count"] = len(records)
-                    for index, record in enumerate(records, 1):
-                        doc_id = _extract_doc_id_from_record(record, _build_fallback_doc_id(source_path, index))
-                        doc_id_sources.setdefault(doc_id, []).append(source_path)
-                    if errors:
-                        entry["error_count"] = len(errors)
-                        entry["errors"] = errors[:5]
-                        parse_error_count += len(errors)
-                        if records:
-                            entry["status"] = "loaded_with_errors"
-                            loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
-                            loaded_with_errors_by_format[source_format] = loaded_with_errors_by_format.get(source_format, 0) + 1
-                        else:
-                            entry["status"] = "error"
-                            error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
-                    elif records:
-                        entry["status"] = "loaded"
-                        loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
-                    else:
-                        entry["status"] = "error"
-                        entry["error"] = "JSONL 文件中没有可用记录"
-                        error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
-                        parse_error_count += 1
+                preview_documents, parse_errors = _load_supported_source_documents_with_errors(path, source_path)
+                entry["record_count"] = len(preview_documents)
+                documents.extend(preview_documents)
+                for document in preview_documents:
+                    doc_id_sources.setdefault(document.doc_id, []).append(source_path)
+                if parse_errors:
+                    entry["error_count"] = len(parse_errors)
+                    entry["errors"] = parse_errors[:5]
+                    parse_error_count += len(parse_errors)
+                if preview_documents:
+                    entry["status"] = "loaded_with_errors" if parse_errors else "loaded"
+                    loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
+                    if parse_errors:
+                        loaded_with_errors_by_format[source_format] = loaded_with_errors_by_format.get(source_format, 0) + 1
                 else:
-                    preview_documents = _load_supported_source_documents(path, source_path)
-                    entry["record_count"] = len(preview_documents)
-                    for document in preview_documents:
-                        doc_id_sources.setdefault(document.doc_id, []).append(source_path)
-                    if preview_documents:
-                        entry["status"] = "loaded"
-                        loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
-                    else:
-                        entry["status"] = "error"
-                        entry["error"] = "原始文件中没有可用文档"
-                        error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
+                    entry["status"] = "error"
+                    entry["error"] = "JSONL 文件中没有可用记录" if path.suffix.lower() == ".jsonl" and parse_errors else "原始文件中没有可用文档"
+                    error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
+                    if not parse_errors:
                         parse_error_count += 1
             except Exception as exc:  # noqa: BLE001
                 entry["status"] = "error"
@@ -689,7 +686,7 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
             entry["reason"] = "不支持的文件类型"
         manifest_entries.append(entry)
 
-    return {
+    manifest = {
         "input_dir": str(directory),
         "scanned_files": len(files),
         "loaded_files": sum(loaded_by_format.values()),
@@ -713,6 +710,24 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
         ],
         "files": manifest_entries,
     }
+    if enforce_unique_doc_ids:
+        _ensure_unique_doc_ids(documents)
+    return manifest, documents
+
+
+def collect_source_manifest(input_dir: Path | None = None) -> dict:
+    """收集原始数据清单。
+
+    这个清单会把扫描到但未纳入预处理的文件也记录下来，避免数据源里有
+    新文件却没有被流水线感知到。
+    """
+
+    directory = input_dir or RAW_SOURCE_DIR
+    if not directory.exists():
+        raise FileNotFoundError(f"原始数据目录不存在: {directory}")
+
+    manifest, _documents = _load_directory_snapshot(directory)
+    return manifest
 
 
 def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
@@ -722,21 +737,9 @@ def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
     if not directory.exists():
         raise FileNotFoundError(f"原始数据目录不存在: {directory}")
 
-    documents: List[RawDocument] = []
-    # 递归读取子目录，方便把爬虫、人工整理和导出数据按主题分层存放。
-    paths = _scan_source_files(directory)
-    for path in paths:
-        source_path = str(path.relative_to(directory))
-        is_supported, _source_format = _classify_source_file(path)
-        if not is_supported:
-            continue
-        documents.extend(_load_supported_source_documents(path, source_path))
-
-    if not paths:
+    manifest, documents = _load_directory_snapshot(directory, enforce_unique_doc_ids=True)
+    if manifest["scanned_files"] == 0:
         return []
-
     if not documents:
         raise ValueError(f"在目录 {directory} 中没有找到可用的原始数据文件")
-
-    _ensure_unique_doc_ids(documents)
     return documents

@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from .catalog import EntityCatalog, compact_text, load_entity_catalog
-from .collector import RAW_SOURCE_DIR, collect_source_manifest, load_raw_documents
+from .collector import RAW_SOURCE_DIR, _load_directory_snapshot
 from .extractor import extract_mentions
 from .models import RawDocument, ResolvedEntity
 
@@ -654,9 +654,10 @@ def run_pipeline(
 ) -> Dict[str, object]:
     """执行完整预处理流程。"""
 
-    source_manifest = collect_source_manifest(input_dir)
-    documents = load_raw_documents(input_dir)
     resolved_output_dir = output_dir or OUTPUT_DIR
+    directory = input_dir or RAW_SOURCE_DIR
+
+    source_manifest, documents = _load_directory_snapshot(directory, enforce_unique_doc_ids=True)
 
     if stage == "collect":
         stage_summary = _build_collection_only_stage_summary(stage, source_manifest, len(documents))
