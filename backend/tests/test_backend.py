@@ -66,6 +66,28 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertEqual(result, {"python": 1.0, "sql": 0.0})
         self.assertNotIn("", result)
 
+    def test_normalize_structured_input_skips_invalid_scores(self) -> None:
+        # 脏分值不应该把整条输入链路打断，应该直接跳过。
+        payload = {
+            "python": "0.8",
+            "sql": "not-a-number",
+            "docker": True,
+            "linux": None,
+        }
+
+        result = normalize_structured_input(payload)
+
+        self.assertEqual(result, {"python": 0.8, "linux": 0.0})
+        self.assertNotIn("sql", result)
+        self.assertNotIn("docker", result)
+
+    def test_normalize_structured_input_skips_bool_scores(self) -> None:
+        payload = [EvidenceInput(node_id="python", score=True), {"node_id": "sql", "score": False}]
+
+        result = normalize_structured_input(payload)
+
+        self.assertEqual(result, {})
+
     def test_recommend_smoke(self) -> None:
         response = recommend(
             {

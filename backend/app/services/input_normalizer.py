@@ -26,6 +26,23 @@ def normalize_alias_text(value: str) -> str:
     return "".join(str(value).strip().casefold().split())
 
 
+def _coerce_score(value: Any) -> float | None:
+    """把外部输入的分值尽量安全地转成 0 到 1 之间的数。
+
+    `None` 视为默认值 0；明显非法的字符串、对象或布尔值则直接返回 `None`，
+    让上层调用者跳过这条脏输入，避免整条推荐链路被打断。
+    """
+
+    if value is None:
+        return 0.0
+    if isinstance(value, bool):
+        return None
+    try:
+        return clamp01(value)
+    except (TypeError, ValueError):
+        return None
+
+
 @lru_cache(maxsize=1)
 def load_alias_map() -> dict[str, list[str]]:
     """加载别名词典，供自然语言解析使用。"""
@@ -91,7 +108,10 @@ def normalize_structured_input(payload: Any) -> dict[str, float]:
             normalized_node_id = str(node_id or "").strip()
             if not normalized_node_id:
                 continue
-            result[normalized_node_id] = clamp01(score)
+            normalized_score = _coerce_score(score)
+            if normalized_score is None:
+                continue
+            result[normalized_node_id] = normalized_score
         return result
 
     if not isinstance(payload, list):
@@ -99,10 +119,19 @@ def normalize_structured_input(payload: Any) -> dict[str, float]:
 
     for item in payload:
         if isinstance(item, EvidenceInput):
-            normalized = item.normalized()
+            # 布尔值是最常见的脏数据之一，不能在这里悄悄被当成 0/1 分。
+            if isinstance(item.score, bool):
+                continue
+            try:
+                normalized = item.normalized()
+            except (TypeError, ValueError):
+                continue
             if not normalized.node_id:
                 continue
-            result[normalized.node_id] = clamp01(normalized.score)
+            normalized_score = _coerce_score(normalized.score)
+            if normalized_score is None:
+                continue
+            result[normalized.node_id] = normalized_score
             continue
 
         if not isinstance(item, dict):
@@ -111,7 +140,10 @@ def normalize_structured_input(payload: Any) -> dict[str, float]:
         node_id = str(item.get("node_id") or item.get("id") or "").strip()
         if not node_id:
             continue
-        result[node_id] = clamp01(item.get("score", 1.0))
+        normalized_score = _coerce_score(item.get("score", 1.0))
+        if normalized_score is None:
+            continue
+        result[node_id] = normalized_score
 
     return result
 
