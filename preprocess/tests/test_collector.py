@@ -211,6 +211,41 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(documents[0].metadata["source_path"], "article.json")
         self.assertEqual(documents[0].metadata["source_format"], "json")
 
+    def test_nested_metadata_fields_are_supported(self) -> None:
+        """有些快照会把标题和正文藏在 `metadata` 或 `extra` 里，也应能识别。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "nested_fields.json").write_text(
+                """
+                {
+                  "items": [
+                    {
+                      "metadata": {
+                        "headline": "嵌套标题",
+                        "snippet": "嵌套正文里提到后端工程师和 Python。",
+                        "source": "nested_feed"
+                      },
+                      "extra": {
+                        "category": "career"
+                      }
+                    }
+                  ]
+                }
+                """.strip(),
+                encoding="utf-8",
+            )
+
+            documents = load_raw_documents(root)
+
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(documents[0].title, "嵌套标题")
+        self.assertEqual(documents[0].text, "嵌套正文里提到后端工程师和 Python。")
+        self.assertEqual(documents[0].source, "nested_feed")
+        self.assertEqual(documents[0].metadata["category"], "career")
+        self.assertEqual(documents[0].metadata["source_path"], "nested_fields.json")
+        self.assertEqual(documents[0].metadata["source_format"], "json")
+
     def test_html_document_is_supported(self) -> None:
         """HTML 快照应当能抽出标题和可见正文。"""
 

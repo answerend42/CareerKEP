@@ -200,6 +200,32 @@ def _pick_first_text(item: dict, keys: tuple[str, ...]) -> str:
     return ""
 
 
+def _pick_first_text_from_sources(item: dict, keys: tuple[str, ...], shared_metadata: object | None = None) -> str:
+    """从多个常见来源里按顺序挑选文本字段。
+
+    真实原始数据里，标题和正文有时不直接放在顶层，而是藏在 `metadata` 或
+    `extra` 里。这里统一补一层查找，避免这些内容被静默漏掉。
+    """
+
+    sources: List[object] = [item]
+    metadata = item.get("metadata")
+    extra = item.get("extra")
+    if isinstance(metadata, dict):
+        sources.append(metadata)
+    if isinstance(extra, dict):
+        sources.append(extra)
+    if isinstance(shared_metadata, dict):
+        sources.append(shared_metadata)
+
+    for source in sources:
+        if not isinstance(source, dict):
+            continue
+        value = _pick_first_text(source, keys)
+        if value:
+            return value
+    return ""
+
+
 def _looks_like_collection_container(payload: dict) -> bool:
     """判断一个字典是否更像“集合容器”而不是单条文档。"""
 
@@ -222,6 +248,22 @@ def _looks_like_document_record(payload: dict) -> bool:
     return any(key in payload and payload.get(key) not in (None, "") for key in DOCUMENT_HINT_KEYS)
 
 
+def _looks_like_nested_document_record(payload: dict) -> bool:
+    """判断一个字典或其常见嵌套字段是否包含文档信息。
+
+    有些快照会把 `title` / `text` / `source` 放在 `metadata` 或 `extra` 里，
+    这类记录本质上仍然是一条文档，但外层还保留了其它补充字段。
+    """
+
+    if _looks_like_document_record(payload):
+        return True
+    for key in ("metadata", "extra"):
+        value = payload.get(key)
+        if isinstance(value, dict) and _looks_like_document_record(value):
+            return True
+    return False
+
+
 def _build_document(
     item: dict,
     fallback_id: str,
@@ -235,10 +277,14 @@ def _build_document(
     """从单条原始记录构造统一的文档对象。"""
 
     doc_id = _coerce_text(item.get("doc_id") or item.get("id") or fallback_id).strip() or fallback_id
-    source = _pick_first_text(item, ("source", "origin")) or fallback_source
-    title = _pick_first_text(item, ("title", "name", "heading", "headline")) or fallback_title
+    source = _pick_first_text_from_sources(item, ("source", "origin"), shared_metadata) or fallback_source
+    title = _pick_first_text_from_sources(item, ("title", "name", "heading", "headline"), shared_metadata) or fallback_title
 
-    text = _pick_first_text(item, ("text", "content", "body", "description", "summary", "abstract", "snippet", "excerpt", "body_text"))
+    text = _pick_first_text_from_sources(
+        item,
+        ("text", "content", "body", "description", "summary", "abstract", "snippet", "excerpt", "body_text"),
+        shared_metadata,
+    )
 
     # 如果采集源只提供了 url 或 link，也保留到正文里，避免静默丢失。
     if not text:
@@ -301,6 +347,11 @@ def _extract_document_items(payload: object) -> List[dict]:
         return []
 
     if _looks_like_document_record(payload):
+        return [payload]
+
+    # 如果文档信息藏在 `metadata` / `extra` 里，保留外层记录，不要只返回嵌套字典。
+    # 这样可以同时拿到嵌套字段中的标题/正文，也不会丢失外层补充列。
+    if not _looks_like_collection_container(payload) and _looks_like_nested_document_record(payload):
         return [payload]
 
     records: List[dict] = []
