@@ -42,7 +42,21 @@ def build_learning_path(gap_analysis: dict[str, Any]) -> list[dict[str, Any]]:
         gap = float(item.get("gap", 0.0))
         priority = _priority_from_gap(gap, relation)
         effort = _effort_from_priority(priority)
-        if relation == "requires":
+        # 已覆盖的要求不再写成“补齐”，否则行动建议会和实际缺口状态打架。
+        if gap <= 0:
+            if relation == "requires":
+                reason = "这是目标岗位的基础要求，当前已经满足，建议继续巩固。"
+                action = f"继续巩固 {label}，保持这项关键能力稳定。"
+            elif relation == "supports":
+                reason = "这是关键支撑能力，当前已经覆盖，建议继续巩固。"
+                action = f"继续巩固 {label}，让相关能力保持稳定输出。"
+            elif relation == "prefers":
+                reason = "这是加分项，当前已经具备，继续保持即可。"
+                action = f"继续保持 {label}，维持对目标岗位的适配度。"
+            else:
+                reason = "这是辅助信号，当前已经补齐，后续继续维持即可。"
+                action = f"继续维持 {label}，让能力画像保持完整。"
+        elif relation == "requires":
             reason = "这是目标岗位的硬门槛，优先级最高。"
             action = f"优先补齐 {label}，因为这是目标岗位的关键前置条件。"
         elif relation == "supports":

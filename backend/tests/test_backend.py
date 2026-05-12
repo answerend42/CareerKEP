@@ -26,6 +26,7 @@ from backend.app.schemas import EvidenceInput, clamp01
 from backend.app.services.graph_loader import GraphValidationError, _build_graph
 from backend.app.services.input_normalizer import normalize_structured_input
 from backend.app.services.inference_engine import infer
+from backend.app.services.learning_path_planner import build_learning_path
 from backend.app.services.role_gap_analyzer import analyze_role_gap
 from backend.app.services.role_search import build_role_options, build_role_search_index, collect_role_search_terms
 
@@ -147,6 +148,24 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertIn("high", analysis["priority_groups"])
         self.assertTrue(analysis["priority_groups"]["high"])
         self.assertEqual(analysis["priority_groups"]["high"][0]["priority"], "high")
+
+    def test_learning_path_distinguishes_missing_and_covered_items(self) -> None:
+        # 已经满足的要求不应该再被写成“优先补齐”，否则会误导用户。
+        plan = build_learning_path(
+            {
+                "requirements": [
+                    {"label": "沟通能力", "relation": "prefers", "gap": 0.45},
+                    {"label": "后端工程能力", "relation": "requires", "gap": 0.0},
+                    {"label": "数据库实践", "relation": "requires", "gap": 0.0},
+                ]
+            }
+        )
+
+        self.assertEqual(plan[0]["target"], "沟通能力")
+        self.assertIn("继续巩固", plan[1]["why_now"])
+        self.assertIn("继续巩固", plan[1]["action"])
+        self.assertIn("继续巩固", plan[2]["why_now"])
+        self.assertIn("继续巩固", plan[2]["action"])
 
     def test_recommend_orders_same_score_roles_stably(self) -> None:
         nodes = [
