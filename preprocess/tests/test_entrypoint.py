@@ -40,6 +40,41 @@ class EntrypointTests(unittest.TestCase):
             self.assertEqual("", completed.stderr.strip())
             self.assertTrue((output_dir / "summary.json").exists())
 
+    def test_package_entrypoint_collect_stage(self) -> None:
+        """只做采集阶段时，应只落盘采集相关结果。"""
+
+        repo_root = Path(__file__).resolve().parents[2]
+        input_dir = repo_root / "preprocess" / "raw_sources"
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            output_dir = Path(tmp_dir) / "output"
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "preprocess",
+                    "--stage",
+                    "collect",
+                    "--input-dir",
+                    str(input_dir),
+                    "--output-dir",
+                    str(output_dir),
+                ],
+                cwd=repo_root,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertIn("stage=collect", completed.stdout)
+            self.assertTrue((output_dir / "documents.json").exists())
+            self.assertTrue((output_dir / "source_manifest.json").exists())
+            self.assertTrue((output_dir / "stage_summary.json").exists())
+            self.assertTrue((output_dir / "summary.json").exists())
+            self.assertFalse((output_dir / "mentions.json").exists())
+            self.assertFalse((output_dir / "entities.json").exists())
+            self.assertEqual("", completed.stderr.strip())
+
 
 if __name__ == "__main__":
     unittest.main()

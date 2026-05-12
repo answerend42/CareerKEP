@@ -615,6 +615,28 @@ def _build_stage_summary(
     }
 
 
+def _build_collection_only_stage_summary(source_manifest: dict, document_count: int) -> dict:
+    """只做原始数据收集时使用的阶段摘要。
+
+    采集阶段只关心原始输入是否读进来、读进来多少、有没有错误，
+    不引入后续抽取和消歧结果，避免对外释放不准确的统计。
+    """
+
+    return {
+        "mode": "collect",
+        "collection": {
+            "input_dir": source_manifest.get("input_dir"),
+            "scanned_files": source_manifest.get("scanned_files", 0),
+            "loaded_files": source_manifest.get("loaded_files", 0),
+            "loaded_with_errors_files": source_manifest.get("loaded_with_errors_files", 0),
+            "skipped_files": source_manifest.get("skipped_files", 0),
+            "error_files": source_manifest.get("error_files", 0),
+            "parse_error_count": source_manifest.get("parse_error_count", 0),
+        },
+        "documents": document_count,
+    }
+
+
 def _dump_json(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -624,12 +646,93 @@ def run_pipeline(
     input_dir: Path | None = None,
     output_dir: Path | None = None,
     review_threshold: float = 0.98,
+    stage: str = "full",
 ) -> Dict[str, object]:
     """执行完整预处理流程。"""
 
-    catalog = load_entity_catalog()
     source_manifest = collect_source_manifest(input_dir)
     documents = load_raw_documents(input_dir)
+    resolved_output_dir = output_dir or OUTPUT_DIR
+
+    if stage == "collect":
+        stage_summary = _build_collection_only_stage_summary(source_manifest, len(documents))
+        _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
+        _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
+        _dump_json(resolved_output_dir / "stage_summary.json", stage_summary)
+        _dump_json(
+            resolved_output_dir / "summary.json",
+            {
+                "stage": stage,
+                "documents": len(documents),
+                "source_files": len({doc.metadata.get("source_path", doc.doc_id) for doc in documents}),
+                "scanned_source_files": source_manifest["scanned_files"],
+                "loaded_source_files": source_manifest["loaded_files"],
+                "skipped_source_files": source_manifest["skipped_files"],
+                "error_source_files": source_manifest.get("error_files", 0),
+                "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
+                "parse_error_count": source_manifest.get("parse_error_count", 0),
+                "mentions": 0,
+                "entities": 0,
+                "catalog_entities": 0,
+                "alias_entries": 0,
+                "ambiguous_aliases": 0,
+                "single_entity_aliases": 0,
+                "ambiguous_mentions": 0,
+                "near_tie_mentions": 0,
+                "ambiguous_surface_count": 0,
+                "ambiguous_entity_count": 0,
+                "hit_entities": 0,
+                "covered_entities": 0,
+                "uncovered_entities": 0,
+                "uncovered_entity_details": 0,
+                "uncovered_entity_candidates": 0,
+                "documents_with_mentions": 0,
+                "average_mentions_per_document": 0.0,
+                "review_threshold": review_threshold,
+                "uncertain_mentions": 0,
+                "source_dir": str(input_dir or RAW_SOURCE_DIR),
+                "output_dir": str(resolved_output_dir),
+                "format_stats": {
+                    "loaded_by_format": source_manifest.get("loaded_by_format", {}),
+                    "skipped_by_format": source_manifest.get("skipped_by_format", {}),
+                    "error_by_format": source_manifest.get("error_by_format", {}),
+                    "loaded_with_errors_by_format": source_manifest.get("loaded_with_errors_by_format", {}),
+                },
+                "stage_summary": stage_summary,
+            },
+        )
+        return {
+            "stage": stage,
+            "documents": len(documents),
+            "mentions": 0,
+            "entities": 0,
+            "uncertain_mentions": 0,
+            "ambiguous_mentions": 0,
+            "near_tie_mentions": 0,
+            "ambiguous_surface_count": 0,
+            "ambiguous_entity_count": 0,
+            "uncovered_entity_candidates": 0,
+            "review_threshold": review_threshold,
+            "scanned_source_files": source_manifest["scanned_files"],
+            "loaded_source_files": source_manifest["loaded_files"],
+            "skipped_source_files": source_manifest["skipped_files"],
+            "error_source_files": source_manifest.get("error_files", 0),
+            "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
+            "parse_error_count": source_manifest.get("parse_error_count", 0),
+            "format_stats": {
+                "loaded_by_format": source_manifest.get("loaded_by_format", {}),
+                "skipped_by_format": source_manifest.get("skipped_by_format", {}),
+                "error_by_format": source_manifest.get("error_by_format", {}),
+                "loaded_with_errors_by_format": source_manifest.get("loaded_with_errors_by_format", {}),
+            },
+            "stage_summary": stage_summary,
+            "output_dir": str(resolved_output_dir),
+        }
+
+    if stage != "full":
+        raise ValueError(f"不支持的 stage: {stage}")
+
+    catalog = load_entity_catalog()
 
     all_mentions: List[dict] = []
     mentions_by_doc: Dict[str, List[dict]] = defaultdict(list)
@@ -672,7 +775,6 @@ def run_pipeline(
         review_threshold=review_threshold,
     )
 
-    resolved_output_dir = output_dir or OUTPUT_DIR
     _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
     _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
     _dump_json(resolved_output_dir / "mentions.json", all_mentions)
@@ -782,6 +884,12 @@ def _parse_args() -> argparse.Namespace:
         default=0.98,
         help="消歧复核阈值，低于该分数的命中会写入 disambiguation_review.json",
     )
+    parser.add_argument(
+        "--stage",
+        choices=("collect", "full"),
+        default="full",
+        help="预处理阶段，collect 只做原始数据收集，full 会继续完成实体抽取和消歧",
+    )
     return parser.parse_args()
 
 
@@ -791,12 +899,14 @@ def main() -> None:
         input_dir=args.input_dir,
         output_dir=args.output_dir,
         review_threshold=args.review_threshold,
+        stage=args.stage,
     )
     print(
         "预处理完成: "
         f"documents={result['documents']}, "
         f"mentions={result['mentions']}, "
         f"entities={result['entities']}, "
+        f"stage={result.get('stage', 'full')}, "
         f"review={result['uncertain_mentions']}, "
         f"output_dir={result['output_dir']}"
     )
