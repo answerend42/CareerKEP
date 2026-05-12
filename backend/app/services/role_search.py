@@ -47,10 +47,20 @@ def collect_role_search_terms(graph: GraphData, alias_map: dict[str, list[str]],
 
         _append_search_term(search_terms, current_node.id)
         _append_search_term(search_terms, current_node.label)
-        for alias in alias_map.get(current_node.id, []):
+        # 别名列表也按归一化结果排序，避免 JSON 原始顺序变化时接口返回漂移。
+        aliases = sorted(alias_map.get(current_node.id, []), key=normalize_lookup_term)
+        for alias in aliases:
             _append_search_term(search_terms, alias)
 
-        for edge in graph.incoming.get(current_node_id, []):
+        # 父节点按“标签优先、ID 次之”排序，保证祖先链收集结果稳定。
+        incoming_edges = sorted(
+            graph.incoming.get(current_node_id, []),
+            key=lambda edge: (
+                normalize_lookup_term(graph.nodes.get(edge.source).label if graph.nodes.get(edge.source) else ""),
+                normalize_lookup_term(edge.source),
+            ),
+        )
+        for edge in incoming_edges:
             source_node = graph.nodes.get(edge.source)
             if source_node is None:
                 continue
@@ -101,7 +111,10 @@ def build_role_search_index(role_options: list[dict[str, Any]]) -> dict[str, lis
             role_ids = search_index.setdefault(normalized_term, [])
             if node_id not in role_ids:
                 role_ids.append(node_id)
-    return search_index
+    # 返回前统一排序，避免不同遍历顺序影响前端联调和测试快照。
+    for term, role_ids in search_index.items():
+        search_index[term] = sorted(role_ids)
+    return dict(sorted(search_index.items(), key=lambda item: item[0]))
 
 
 def resolve_target_role(graph: GraphData, alias_map: dict[str, list[str]], raw_target_role: str | None) -> str | None:

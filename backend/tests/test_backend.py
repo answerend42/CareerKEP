@@ -27,6 +27,7 @@ from backend.app.services.graph_loader import GraphValidationError, _build_graph
 from backend.app.services.input_normalizer import normalize_structured_input
 from backend.app.services.inference_engine import infer
 from backend.app.services.role_gap_analyzer import analyze_role_gap
+from backend.app.services.role_search import build_role_options, build_role_search_index, collect_role_search_terms
 
 
 class BackendSmokeTest(unittest.TestCase):
@@ -289,6 +290,47 @@ class BackendSmokeTest(unittest.TestCase):
         trace = response["input_trace"]
         self.assertEqual(trace["resolved_target_role"], "backend_engineer")
         self.assertEqual(response["target_role_analysis"]["role_id"], "backend_engineer")
+
+    def test_role_search_terms_and_index_are_deterministic(self) -> None:
+        # 这里专门把父节点顺序打乱，确认搜索词和索引不会因为遍历顺序不同而漂移。
+        nodes = [
+            {"id": "role_node", "label": "角色", "layer": "role"},
+            {"id": "zeta_skill", "label": "Zeta 技能", "layer": "ability"},
+            {"id": "alpha_skill", "label": "Alpha 技能", "layer": "ability"},
+        ]
+        edges = [
+            {"source": "zeta_skill", "target": "role_node", "relation": "requires", "weight": 0.8},
+            {"source": "alpha_skill", "target": "role_node", "relation": "supports", "weight": 0.8},
+        ]
+        graph = _build_graph(nodes, edges)
+        alias_map = {
+            "role_node": ["角色别名"],
+            "alpha_skill": ["别名 B", "别名 A"],
+            "zeta_skill": ["别名 C"],
+        }
+
+        search_terms = collect_role_search_terms(graph, alias_map, "role_node")
+        self.assertEqual(
+            search_terms,
+            [
+                "role_node",
+                "角色",
+                "角色别名",
+                "alpha_skill",
+                "alpha技能",
+                "别名a",
+                "别名b",
+                "zeta_skill",
+                "zeta技能",
+                "别名c",
+            ],
+        )
+
+        role_options = build_role_options(graph, alias_map)
+        index = build_role_search_index(role_options)
+        self.assertEqual(index["alpha技能"], ["role_node"])
+        self.assertEqual(index["角色"], ["role_node"])
+        self.assertEqual(index["别名a"], ["role_node"])
 
     def test_recommend_leaves_ambiguous_target_role_unresolved(self) -> None:
         # 如果输入过于宽泛，后端不应胡乱猜一个岗位。
