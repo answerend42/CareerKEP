@@ -276,6 +276,20 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertEqual(trace["resolved_target_role"], "backend_engineer")
         self.assertEqual(response["target_role_analysis"]["role_id"], "backend_engineer")
 
+    def test_recommend_resolves_target_role_by_search_term(self) -> None:
+        # 岗位相关的搜索词条应该与前端下拉一致，能够直接命中唯一岗位。
+        response = recommend(
+            {
+                "text": "我会 Python、SQL",
+                "target_role": "web后端方向",
+                "top_k": 2,
+            }
+        ).to_dict()
+
+        trace = response["input_trace"]
+        self.assertEqual(trace["resolved_target_role"], "backend_engineer")
+        self.assertEqual(response["target_role_analysis"]["role_id"], "backend_engineer")
+
     def test_recommend_leaves_ambiguous_target_role_unresolved(self) -> None:
         # 如果输入过于宽泛，后端不应胡乱猜一个岗位。
         response = recommend(

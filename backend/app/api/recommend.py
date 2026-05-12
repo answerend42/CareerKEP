@@ -10,10 +10,11 @@ from ..services.action_simulator import simulate_actions
 from ..services.explainer import build_explanation
 from ..services.graph_loader import GraphData, load_graph_data
 from ..services.inference_engine import infer
-from ..services.input_normalizer import load_alias_map, merge_evidence_maps, normalize_alias_text, normalize_structured_input
+from ..services.input_normalizer import load_alias_map, merge_evidence_maps, normalize_structured_input
 from ..services.learning_path_planner import build_learning_path
 from ..services.nl_parser import parse_natural_language
 from ..services.role_gap_analyzer import analyze_role_gap, suggest_bridge_nodes
+from ..services.role_search import resolve_target_role
 
 
 @lru_cache(maxsize=1)
@@ -31,12 +32,6 @@ def _coerce_top_k(value: Any, default: int = 5) -> int:
     return max(1, top_k)
 
 
-def _normalize_identifier(value: str) -> str:
-    """把输入字符串统一成便于匹配的形式。"""
-
-    return normalize_alias_text(value)
-
-
 def _state_sort_key(item: Any) -> tuple[float, str, str]:
     """给推荐结果排序用的稳定键。
 
@@ -46,85 +41,6 @@ def _state_sort_key(item: Any) -> tuple[float, str, str]:
     label = str(getattr(item, "label", "") or "").casefold()
     node_id = str(getattr(item, "node_id", "") or "").casefold()
     return (-float(getattr(item, "score", 0.0)), label, node_id)
-
-
-def _resolve_target_role(graph: GraphData, alias_map: dict[str, list[str]], raw_target_role: str | None) -> str | None:
-    """把目标岗位输入统一解析成图谱中的 role 节点 ID。
-
-    这里同时支持三种输入方式：
-    - 直接传节点 ID
-    - 传中文/英文标签
-    - 传词典别名
-
-    这样前端既可以保留内部节点 ID，也可以直接让用户选中文岗位名。
-    """
-
-    if not raw_target_role:
-        return None
-
-    normalized_input = _normalize_identifier(raw_target_role)
-    if not normalized_input:
-        return None
-
-    generic_terms = {
-        "工程师",
-        "开发",
-        "岗位",
-        "方向",
-        "职业",
-        "技术",
-        "能力",
-    }
-    if normalized_input in generic_terms:
-        return None
-
-    exact_matches: list[tuple[str, str]] = []
-    partial_matches: list[tuple[int, str, str]] = []
-
-    def _consider(node_id: str, candidate: str, exact_score: str) -> None:
-        candidate_norm = _normalize_identifier(candidate)
-        if not candidate_norm:
-            return
-        if candidate_norm == normalized_input:
-            exact_matches.append((exact_score, node_id))
-            return
-        if normalized_input in candidate_norm or candidate_norm in normalized_input:
-            # 用长度差粗略区分“更像”的候选，短输入优先匹配更短的唯一目标。
-            distance = abs(len(candidate_norm) - len(normalized_input))
-            partial_matches.append((distance, candidate_norm, node_id))
-
-    # 优先匹配节点 ID 和标签，避免别名误命中。
-    for node_id, node in graph.nodes.items():
-        if node.layer != "role":
-            continue
-        _consider(node_id, node_id, "id")
-        _consider(node_id, node.label, "label")
-
-    # 再匹配别名词典。
-    for node_id, aliases in alias_map.items():
-        node = graph.nodes.get(node_id)
-        if node is None or node.layer != "role":
-            continue
-        for alias in aliases:
-            _consider(node_id, alias, "alias")
-
-    if exact_matches:
-        # exact 匹配可能同时命中别名和标签，但都指向同一个节点时是安全的。
-        matched_nodes = {node_id for _, node_id in exact_matches}
-        if len(matched_nodes) == 1:
-            return matched_nodes.pop()
-        return None
-
-    if not partial_matches:
-        return None
-
-    partial_matches.sort(key=lambda item: (item[0], item[1], item[2]))
-    best_distance = partial_matches[0][0]
-    best_candidates = [item for item in partial_matches if item[0] == best_distance]
-    matched_nodes = {node_id for _, _, node_id in best_candidates}
-    if len(matched_nodes) == 1:
-        return matched_nodes.pop()
-    return None
 
 
 def _coerce_evidence_item(item: Any) -> EvidenceInput:
@@ -282,7 +198,7 @@ def recommend(payload: RecommendationRequest | dict[str, Any]) -> Recommendation
 
     graph = _graph()
     alias_map = load_alias_map()
-    resolved_target_role = _resolve_target_role(graph, alias_map, request.target_role)
+    resolved_target_role = resolve_target_role(graph, alias_map, request.target_role)
 
     structured_evidence = normalize_structured_input(request.evidence)
     nl_evidence = parse_natural_language(request.text or "", alias_map) if request.text else {}

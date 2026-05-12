@@ -111,7 +111,8 @@ python3 -m backend.app.main validate-graph
 }
 ```
 
-`target_role` 支持 `node_id`、中文标签和词典别名，后端会自动统一解析成图谱中的岗位节点。
+`target_role` 支持 `node_id`、中文标签、词典别名，以及和该岗位相关的搜索词条，后端会自动统一解析成图谱中的岗位节点。
+这里的搜索词条与 `role_options.search_terms` 保持同源，因此前端在下拉搜索里看到什么，传给后端的目标岗位解析也会沿用同一套语义。
 其中 `evidence` 支持 `node_id` / `id`、`score`、`source`、`raw_text` 这几类字段，其他附加字段会被忽略；`evidence` 也可以是单个对象或列表，列表里的无效项会被跳过，方便前端和脚本自由携带调试信息。
 
 返回中包含：
