@@ -2,7 +2,6 @@ import type { DemoState } from '../types';
 
 interface TunePaneProps {
   state: DemoState;
-  onChange: <K extends keyof DemoState>(key: K, value: DemoState[K]) => void;
   onApply: (nextState: DemoState) => void;
   activeStep: string;
 }
@@ -15,10 +14,9 @@ const updateTuning = (state: DemoState, key: keyof DemoState['tuning'], value: n
   }
 });
 
-export function TunePane({ state, onChange, onApply, activeStep }: TunePaneProps) {
+export function TunePane({ state, onApply, activeStep }: TunePaneProps) {
   const applyTuning = (key: keyof DemoState['tuning'], value: number) => {
     const nextState = updateTuning(state, key, value);
-    onChange('tuning', nextState.tuning);
     onApply(nextState);
   };
 

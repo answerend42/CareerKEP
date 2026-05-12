@@ -421,7 +421,6 @@ export function AppShell() {
         <section className="panel panel-tune">
           <TunePane
             state={state}
-            onChange={updateState}
             onApply={(nextState) => syncAndPreview(nextState)}
             activeStep={activeStep}
           />
