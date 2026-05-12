@@ -370,6 +370,53 @@ class CollectorTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "重复的文档 ID"):
                 load_raw_documents(root)
 
+    def test_manifest_reports_duplicate_doc_ids(self) -> None:
+        """采集清单应提前标出重复 doc_id，方便排查原始数据冲突。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "a.json").write_text(
+                """
+                {
+                  "documents": [
+                    {
+                      "doc_id": "duplicate_doc",
+                      "title": "文档 A",
+                      "text": "后端工程能力。",
+                      "source": "source_a"
+                    }
+                  ]
+                }
+                """.strip(),
+                encoding="utf-8",
+            )
+            (root / "b.json").write_text(
+                """
+                {
+                  "documents": [
+                    {
+                      "doc_id": "duplicate_doc",
+                      "title": "文档 B",
+                      "text": "前端项目经验。",
+                      "source": "source_b"
+                    }
+                  ]
+                }
+                """.strip(),
+                encoding="utf-8",
+            )
+
+            manifest = collect_source_manifest(root)
+
+        self.assertEqual(manifest["duplicate_doc_id_count"], 1)
+        self.assertEqual(len(manifest["duplicate_doc_ids"]), 1)
+        self.assertEqual(manifest["duplicate_doc_ids"][0]["doc_id"], "duplicate_doc")
+        self.assertEqual(manifest["duplicate_doc_ids"][0]["count"], 2)
+        self.assertEqual(
+            manifest["duplicate_doc_ids"][0]["source_paths"],
+            ["a.json", "b.json"],
+        )
+
     def test_manifest_records_skipped_files(self) -> None:
         """原始数据清单应显式记录不支持的文件，避免静默漏采。"""
 

@@ -117,6 +117,7 @@ class ExtractorTests(unittest.TestCase):
         self.assertIn("error_source_files", summary_payload)
         self.assertIn("loaded_with_errors_source_files", summary_payload)
         self.assertIn("parse_error_count", summary_payload)
+        self.assertIn("duplicate_doc_id_count", summary_payload)
         self.assertIn("ambiguous_surface_count", summary_payload)
         self.assertIn("ambiguous_entity_count", summary_payload)
         self.assertIn("format_stats", summary_payload)

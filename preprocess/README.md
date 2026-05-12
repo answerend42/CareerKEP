@@ -52,6 +52,7 @@ result = run_pipeline()
 - 会递归扫描 `input_dir` 下的所有子目录
 - 会保留每个文件的 `source_path`、`source_format`
 - 会记录不支持的文件、空文件和解析错误
+- 会在采集清单里提前标出重复的 `doc_id`，避免后续实体聚合时才发现冲突
 - 会检查 `doc_id` 是否重复，避免后续实体统计串文档
 
 ## 实体抽取思路
@@ -112,5 +113,6 @@ result = run_pipeline()
 - 如果原始数据结构变化较大，优先统一升级解析逻辑，不要同时保留多套分叉入口
 - `summary.json` 偏向整体统计，`stage_summary.json` 偏向按阶段排查问题，二者一起看更容易定位覆盖缺口
 - `stage_summary.json` 顶层统一保留 `stage` 字段，便于下游脚本直接判断当前运行阶段
+- `source_manifest.json` 会额外记录 `duplicate_doc_id_count` 和 `duplicate_doc_ids`，便于快速排查重复文档编号
 - 如果只想先检查原始数据是否能稳定收集，可以先跑 `python3 -m preprocess --stage collect`
 - 如果想先看实体抽取和消歧结果，可以先跑 `python3 -m preprocess --stage extract`

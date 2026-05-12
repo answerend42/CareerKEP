@@ -126,6 +126,17 @@ def _build_fallback_doc_id(source_path: str, record_index: int | None = None) ->
     return path_key or (f"document_{record_index}" if record_index is not None else "document")
 
 
+def _extract_doc_id_from_record(item: dict, fallback_id: str) -> str:
+    """从原始记录里提取文档编号。
+
+    采集阶段和正式加载阶段都需要同一套 doc_id 规则，否则清单里看到的重复
+    风险可能和最终落盘的结果不一致。
+    """
+
+    doc_id = _coerce_text(item.get("doc_id") or item.get("id") or fallback_id).strip()
+    return doc_id or fallback_id
+
+
 def _scan_source_files(directory: Path) -> List[Path]:
     """扫描目录下所有文件，统一供采集和清单生成复用。"""
 
@@ -296,7 +307,7 @@ def _build_document(
 ) -> RawDocument:
     """从单条原始记录构造统一的文档对象。"""
 
-    doc_id = _coerce_text(item.get("doc_id") or item.get("id") or fallback_id).strip() or fallback_id
+    doc_id = _extract_doc_id_from_record(item, fallback_id)
     source = _pick_first_text_from_sources(item, ("source", "origin"), shared_metadata) or fallback_source
     title = _pick_first_text_from_sources(item, ("title", "name", "heading", "headline"), shared_metadata) or fallback_title
 
@@ -617,6 +628,7 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
     error_by_format: dict[str, int] = {}
     loaded_with_errors_by_format: dict[str, int] = {}
     parse_error_count = 0
+    doc_id_sources: dict[str, List[str]] = {}
 
     for path in files:
         source_path = str(path.relative_to(directory))
@@ -632,6 +644,9 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
                 if path.suffix.lower() == ".jsonl":
                     records, errors = _load_jsonl_records(path)
                     entry["record_count"] = len(records)
+                    for index, record in enumerate(records, 1):
+                        doc_id = _extract_doc_id_from_record(record, _build_fallback_doc_id(source_path, index))
+                        doc_id_sources.setdefault(doc_id, []).append(source_path)
                     if errors:
                         entry["error_count"] = len(errors)
                         entry["errors"] = errors[:5]
@@ -654,6 +669,8 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
                 else:
                     preview_documents = _load_supported_source_documents(path, source_path)
                     entry["record_count"] = len(preview_documents)
+                    for document in preview_documents:
+                        doc_id_sources.setdefault(document.doc_id, []).append(source_path)
                     if preview_documents:
                         entry["status"] = "loaded"
                         loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
@@ -684,6 +701,16 @@ def collect_source_manifest(input_dir: Path | None = None) -> dict:
         "skipped_by_format": skipped_by_format,
         "error_by_format": error_by_format,
         "loaded_with_errors_by_format": loaded_with_errors_by_format,
+        "duplicate_doc_id_count": sum(1 for sources in doc_id_sources.values() if len(sources) > 1),
+        "duplicate_doc_ids": [
+            {
+                "doc_id": doc_id,
+                "count": len(sources),
+                "source_paths": sources,
+            }
+            for doc_id, sources in sorted(doc_id_sources.items())
+            if len(sources) > 1
+        ],
         "files": manifest_entries,
     }
 

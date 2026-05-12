@@ -586,6 +586,7 @@ def _build_stage_summary(
             "skipped_files": source_manifest.get("skipped_files", 0),
             "error_files": source_manifest.get("error_files", 0),
             "parse_error_count": source_manifest.get("parse_error_count", 0),
+            "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
             "format_stats": {
                 "loaded_by_format": source_manifest.get("loaded_by_format", {}),
                 "skipped_by_format": source_manifest.get("skipped_by_format", {}),
@@ -634,6 +635,7 @@ def _build_collection_only_stage_summary(stage: str, source_manifest: dict, docu
             "skipped_files": source_manifest.get("skipped_files", 0),
             "error_files": source_manifest.get("error_files", 0),
             "parse_error_count": source_manifest.get("parse_error_count", 0),
+            "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
         },
         "documents": document_count,
     }
@@ -673,6 +675,7 @@ def run_pipeline(
                 "error_source_files": source_manifest.get("error_files", 0),
                 "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
                 "parse_error_count": source_manifest.get("parse_error_count", 0),
+                "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
                 "mentions": 0,
                 "entities": 0,
                 "catalog_entities": 0,
@@ -721,6 +724,7 @@ def run_pipeline(
             "error_source_files": source_manifest.get("error_files", 0),
             "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
             "parse_error_count": source_manifest.get("parse_error_count", 0),
+            "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
             "format_stats": {
                 "loaded_by_format": source_manifest.get("loaded_by_format", {}),
                 "skipped_by_format": source_manifest.get("skipped_by_format", {}),
@@ -810,6 +814,7 @@ def run_pipeline(
                 "error_source_files": source_manifest.get("error_files", 0),
                 "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
                 "parse_error_count": source_manifest.get("parse_error_count", 0),
+                "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
                 "format_stats": format_stats,
                 "mentions": len(all_mentions),
                 "entities": total_entities,
@@ -848,6 +853,7 @@ def run_pipeline(
             "error_source_files": source_manifest.get("error_files", 0),
             "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
             "parse_error_count": source_manifest.get("parse_error_count", 0),
+            "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
             "format_stats": format_stats,
             "stage_summary": stage_summary,
             "output_dir": str(resolved_output_dir),
@@ -876,6 +882,7 @@ def run_pipeline(
             "error_source_files": source_manifest.get("error_files", 0),
             "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
             "parse_error_count": source_manifest.get("parse_error_count", 0),
+            "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
             "format_stats": format_stats,
             "mentions": len(all_mentions),
             "entities": total_entities,
@@ -921,6 +928,7 @@ def run_pipeline(
         "error_source_files": source_manifest.get("error_files", 0),
         "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
         "parse_error_count": source_manifest.get("parse_error_count", 0),
+        "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
         "format_stats": format_stats,
         "output_dir": str(resolved_output_dir),
     }
