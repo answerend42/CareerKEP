@@ -729,7 +729,7 @@ def run_pipeline(
             "output_dir": str(resolved_output_dir),
         }
 
-    if stage != "full":
+    if stage not in {"extract", "full"}:
         raise ValueError(f"不支持的 stage: {stage}")
 
     catalog = load_entity_catalog()
@@ -793,6 +793,63 @@ def run_pipeline(
     _dump_json(resolved_output_dir / "disambiguation_trace.json", disambiguation_trace)
     _dump_json(resolved_output_dir / "alias_ambiguity.json", alias_ambiguity_report)
     _dump_json(resolved_output_dir / "stage_summary.json", stage_summary)
+
+    if stage == "extract":
+        _dump_json(
+            resolved_output_dir / "summary.json",
+            {
+                "stage": stage,
+                "documents": len(documents),
+                "source_files": len({doc.metadata.get("source_path", doc.doc_id) for doc in documents}),
+                "scanned_source_files": source_manifest["scanned_files"],
+                "loaded_source_files": source_manifest["loaded_files"],
+                "skipped_source_files": source_manifest["skipped_files"],
+                "error_source_files": source_manifest.get("error_files", 0),
+                "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
+                "parse_error_count": source_manifest.get("parse_error_count", 0),
+                "format_stats": format_stats,
+                "mentions": len(all_mentions),
+                "entities": total_entities,
+                "catalog_entities": len(catalog.entities),
+                "alias_entries": alias_index_stats["alias_entries"],
+                "ambiguous_aliases": alias_index_stats["ambiguous_aliases"],
+                "single_entity_aliases": alias_index_stats["single_entity_aliases"],
+                "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
+                "near_tie_mentions": disambiguation_trace["near_tie_count"],
+                "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
+                "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
+                "stage_summary": stage_summary,
+                "documents_with_mentions": len(mentions_by_doc),
+                "average_mentions_per_document": round(len(all_mentions) / len(documents), 4) if documents else 0.0,
+                "review_threshold": review_threshold,
+                "uncertain_mentions": disambiguation_review["uncertain_count"],
+                "source_dir": str(input_dir or RAW_SOURCE_DIR),
+                "output_dir": str(resolved_output_dir),
+            },
+        )
+        return {
+            "stage": stage,
+            "documents": len(documents),
+            "mentions": len(all_mentions),
+            "entities": len(entity_summary),
+            "uncertain_mentions": disambiguation_review["uncertain_count"],
+            "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
+            "near_tie_mentions": disambiguation_trace["near_tie_count"],
+            "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
+            "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
+            "uncovered_entity_candidates": len(uncovered_entity_candidate_report),
+            "review_threshold": review_threshold,
+            "scanned_source_files": source_manifest["scanned_files"],
+            "loaded_source_files": source_manifest["loaded_files"],
+            "skipped_source_files": source_manifest["skipped_files"],
+            "error_source_files": source_manifest.get("error_files", 0),
+            "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
+            "parse_error_count": source_manifest.get("parse_error_count", 0),
+            "format_stats": format_stats,
+            "stage_summary": stage_summary,
+            "output_dir": str(resolved_output_dir),
+        }
+
     _dump_json(
         resolved_output_dir / "entity_coverage.json",
         {
@@ -886,9 +943,9 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--stage",
-        choices=("collect", "full"),
+        choices=("collect", "extract", "full"),
         default="full",
-        help="预处理阶段，collect 只做原始数据收集，full 会继续完成实体抽取和消歧",
+        help="预处理阶段，collect 只做原始数据收集，extract 输出抽取与消歧结果，full 继续补齐覆盖统计",
     )
     return parser.parse_args()
 

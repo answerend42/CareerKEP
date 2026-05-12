@@ -75,6 +75,42 @@ class EntrypointTests(unittest.TestCase):
             self.assertFalse((output_dir / "entities.json").exists())
             self.assertEqual("", completed.stderr.strip())
 
+    def test_package_entrypoint_extract_stage(self) -> None:
+        """抽取阶段应输出实体和消歧结果，但暂不输出覆盖明细。"""
+
+        repo_root = Path(__file__).resolve().parents[2]
+        input_dir = repo_root / "preprocess" / "raw_sources"
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            output_dir = Path(tmp_dir) / "output"
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "preprocess",
+                    "--stage",
+                    "extract",
+                    "--input-dir",
+                    str(input_dir),
+                    "--output-dir",
+                    str(output_dir),
+                ],
+                cwd=repo_root,
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertIn("stage=extract", completed.stdout)
+            self.assertTrue((output_dir / "mentions.json").exists())
+            self.assertTrue((output_dir / "entities.json").exists())
+            self.assertTrue((output_dir / "disambiguation_review.json").exists())
+            self.assertTrue((output_dir / "disambiguation_trace.json").exists())
+            self.assertFalse((output_dir / "entity_coverage.json").exists())
+            self.assertFalse((output_dir / "uncovered_entities.json").exists())
+            self.assertFalse((output_dir / "uncovered_entity_candidates.json").exists())
+            self.assertEqual("", completed.stderr.strip())
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -22,7 +22,7 @@ python3 -m preprocess --input-dir preprocess/raw_sources --output-dir preprocess
 - `--input-dir`：原始数据目录，默认读取 `preprocess/raw_sources/`
 - `--output-dir`：输出目录，默认写入 `preprocess/output/`
 - `--review-threshold`：消歧复核阈值，低于该分数的命中会写入复核清单
-- `--stage`：运行阶段，`collect` 只做原始数据采集，`full` 会继续完成实体抽取和消歧
+- `--stage`：运行阶段，`collect` 只做原始数据采集，`extract` 输出实体抽取和消歧结果，`full` 会继续补齐覆盖统计
 
 ### Python 调用
 
@@ -112,3 +112,4 @@ result = run_pipeline()
 - 如果原始数据结构变化较大，优先统一升级解析逻辑，不要同时保留多套分叉入口
 - `summary.json` 偏向整体统计，`stage_summary.json` 偏向按阶段排查问题，二者一起看更容易定位覆盖缺口
 - 如果只想先检查原始数据是否能稳定收集，可以先跑 `python3 -m preprocess --stage collect`
+- 如果想先看实体抽取和消歧结果，可以先跑 `python3 -m preprocess --stage extract`
