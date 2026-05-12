@@ -396,6 +396,16 @@ class BackendSmokeTest(unittest.TestCase):
 
         self.assertIn("请求体过大", str(context.exception))
 
+    def test_read_json_body_rejects_negative_content_length(self) -> None:
+        handler = _RequestHandler.__new__(_RequestHandler)
+        handler.headers = {"Content-Length": "-1"}
+        handler.rfile = BytesIO(b"{}")
+
+        with self.assertRaises(ValueError) as context:
+            handler._read_json_body()
+
+        self.assertIn("Content-Length 不能是负数", str(context.exception))
+
     def test_do_post_separates_client_error_and_server_error(self) -> None:
         handler = _RequestHandler.__new__(_RequestHandler)
         handler.path = "/api/recommend"

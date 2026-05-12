@@ -46,6 +46,8 @@ class _RequestHandler(BaseHTTPRequestHandler):
         except (TypeError, ValueError) as exc:
             raise ValueError("Content-Length 不是合法整数") from exc
 
+        if length < 0:
+            raise ValueError("Content-Length 不能是负数")
         if length > _MAX_REQUEST_BODY_BYTES:
             raise _PayloadTooLargeError(f"请求体过大，最大允许 {_MAX_REQUEST_BODY_BYTES} 字节")
 
