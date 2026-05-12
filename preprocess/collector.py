@@ -185,6 +185,26 @@ def _collect_inline_metadata(item: dict, excluded_keys: set[str]) -> dict:
     return metadata
 
 
+def _normalize_tabular_row(row: dict) -> dict:
+    """标准化表格型输入的一行数据。
+
+    真实 CSV/TSV 经常会出现表头前后带空格、带 BOM，或者单元格值带多余空白。
+    这里统一做一次清洗，减少因为格式脏数据导致的字段对不上。
+    """
+
+    normalized: dict = {}
+    for key, value in row.items():
+        clean_key = str(key).lstrip("\ufeff").strip()
+        if not clean_key:
+            continue
+        if isinstance(value, str):
+            clean_value = value.strip()
+        else:
+            clean_value = value
+        normalized[clean_key] = clean_value
+    return normalized
+
+
 def _pick_first_text(item: dict, keys: tuple[str, ...]) -> str:
     """按优先级返回第一个非空文本字段。
 
@@ -454,7 +474,7 @@ def _load_tabular_documents(path: Path, source_path: str) -> List[RawDocument]:
         reader = csv.DictReader(handle, delimiter=delimiter)
         for row in reader:
             if row:
-                rows.append(row)
+                rows.append(_normalize_tabular_row(row))
 
     result: List[RawDocument] = []
     for index, row in enumerate(rows, 1):

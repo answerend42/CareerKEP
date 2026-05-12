@@ -56,6 +56,28 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(documents[1].metadata["source_type"], "json")
         self.assertEqual(documents[1].metadata["category"], "backend")
 
+    def test_tabular_headers_and_values_are_normalized(self) -> None:
+        """CSV/TSV 常见的表头空格和单元格空白应当被统一清洗。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "profile.csv").write_text(
+                " doc_id , title , content , source , channel \n"
+                " csv_doc ,  CSV 候选人  ,  我会 Python 和 SQL  ,  csv_source  ,  job_board  \n",
+                encoding="utf-8",
+            )
+
+            documents = load_raw_documents(root)
+
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(documents[0].doc_id, "csv_doc")
+        self.assertEqual(documents[0].title, "CSV 候选人")
+        self.assertEqual(documents[0].text, "我会 Python 和 SQL")
+        self.assertEqual(documents[0].source, "csv_source")
+        self.assertEqual(documents[0].metadata["channel"], "job_board")
+        self.assertEqual(documents[0].metadata["source_path"], "profile.csv")
+        self.assertEqual(documents[0].metadata["source_format"], "csv")
+
     def test_deeply_nested_json_wrappers_are_unpacked(self) -> None:
         """接口快照常见的多层包装结构也应能被采集器识别。"""
 
