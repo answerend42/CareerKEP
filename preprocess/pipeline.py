@@ -864,6 +864,7 @@ def run_pipeline(
     _dump_json(
         resolved_output_dir / "summary.json",
         {
+            "stage": stage,
             "documents": len(documents),
             "source_files": len({doc.metadata.get("source_path", doc.doc_id) for doc in documents}),
             "scanned_source_files": source_manifest["scanned_files"],
@@ -899,6 +900,7 @@ def run_pipeline(
     )
 
     return {
+        "stage": stage,
         "documents": len(documents),
         "mentions": len(all_mentions),
         "entities": len(entity_summary),

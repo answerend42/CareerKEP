@@ -40,6 +40,9 @@ class EntrypointTests(unittest.TestCase):
             self.assertEqual("", completed.stderr.strip())
             self.assertTrue((output_dir / "summary.json").exists())
 
+            summary = (output_dir / "summary.json").read_text(encoding="utf-8")
+            self.assertIn('"stage": "full"', summary)
+
     def test_package_entrypoint_collect_stage(self) -> None:
         """只做采集阶段时，应只落盘采集相关结果。"""
 
