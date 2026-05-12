@@ -91,6 +91,7 @@ result = run_pipeline()
 - `disambiguation_review.json`：低置信度复核清单
 - `disambiguation_trace.json`：歧义样本轨迹
 - `alias_ambiguity.json`：别名歧义统计
+- `stage_summary.json`：采集、抽取、消歧和覆盖的阶段摘要
 - `entity_coverage.json`：实体覆盖率统计
 - `uncovered_entities.json`：未覆盖实体明细
 - `uncovered_entity_candidates.json`：未覆盖实体的补词典候选
@@ -108,4 +109,4 @@ result = run_pipeline()
 - 新增数据格式时，优先补采集器，再补抽取器和测试
 - 消歧规则变更后，要同步检查输出清单是否还能解释结果
 - 如果原始数据结构变化较大，优先统一升级解析逻辑，不要同时保留多套分叉入口
-
+- `summary.json` 偏向整体统计，`stage_summary.json` 偏向按阶段排查问题，二者一起看更容易定位覆盖缺口

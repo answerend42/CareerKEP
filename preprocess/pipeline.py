@@ -555,6 +555,66 @@ def _build_alias_ambiguity_report(mentions: List[dict]) -> dict:
     }
 
 
+def _build_stage_summary(
+    source_manifest: dict,
+    document_count: int,
+    documents_with_mentions: int,
+    mention_count: int,
+    entity_count: int,
+    covered_entities: int,
+    disambiguation_review: dict,
+    disambiguation_trace: dict,
+    alias_ambiguity_report: dict,
+    uncovered_entity_report: List[dict],
+    uncovered_entity_candidate_report: List[dict],
+    review_threshold: float,
+) -> dict:
+    """把流水线拆成更清晰的阶段摘要，方便人工检查和后续联调。
+
+    summary.json 仍然保留整体统计；这里额外补一份 stage_summary.json，
+    让“采集 / 抽取 / 消歧 / 覆盖”各阶段的关键指标一眼可见。
+    """
+
+    return {
+        "collection": {
+            "input_dir": source_manifest.get("input_dir"),
+            "scanned_files": source_manifest.get("scanned_files", 0),
+            "loaded_files": source_manifest.get("loaded_files", 0),
+            "loaded_with_errors_files": source_manifest.get("loaded_with_errors_files", 0),
+            "skipped_files": source_manifest.get("skipped_files", 0),
+            "error_files": source_manifest.get("error_files", 0),
+            "parse_error_count": source_manifest.get("parse_error_count", 0),
+            "format_stats": {
+                "loaded_by_format": source_manifest.get("loaded_by_format", {}),
+                "skipped_by_format": source_manifest.get("skipped_by_format", {}),
+                "error_by_format": source_manifest.get("error_by_format", {}),
+                "loaded_with_errors_by_format": source_manifest.get("loaded_with_errors_by_format", {}),
+            },
+        },
+        "extraction": {
+            "documents": document_count,
+            "documents_with_mentions": documents_with_mentions,
+            "mentions": mention_count,
+            "entities": entity_count,
+            "coverage_rate": round(covered_entities / entity_count, 4) if entity_count else 0.0,
+        },
+        "disambiguation": {
+            "review_threshold": review_threshold,
+            "uncertain_mentions": disambiguation_review["uncertain_count"],
+            "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
+            "near_tie_mentions": disambiguation_trace["near_tie_count"],
+            "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
+            "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
+        },
+        "coverage": {
+            "covered_entities": covered_entities,
+            "uncovered_entities": entity_count - covered_entities,
+            "uncovered_entity_details": len(uncovered_entity_report),
+            "uncovered_entity_candidates": len(uncovered_entity_candidate_report),
+        },
+    }
+
+
 def _dump_json(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -597,6 +657,20 @@ def run_pipeline(
         "error_by_format": source_manifest.get("error_by_format", {}),
         "loaded_with_errors_by_format": source_manifest.get("loaded_with_errors_by_format", {}),
     }
+    stage_summary = _build_stage_summary(
+        source_manifest=source_manifest,
+        document_count=len(documents),
+        documents_with_mentions=len(mentions_by_doc),
+        mention_count=len(all_mentions),
+        entity_count=total_entities,
+        covered_entities=covered_entities,
+        disambiguation_review=disambiguation_review,
+        disambiguation_trace=disambiguation_trace,
+        alias_ambiguity_report=alias_ambiguity_report,
+        uncovered_entity_report=uncovered_entity_report,
+        uncovered_entity_candidate_report=uncovered_entity_candidate_report,
+        review_threshold=review_threshold,
+    )
 
     resolved_output_dir = output_dir or OUTPUT_DIR
     _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
@@ -616,6 +690,7 @@ def run_pipeline(
     _dump_json(resolved_output_dir / "disambiguation_review.json", disambiguation_review)
     _dump_json(resolved_output_dir / "disambiguation_trace.json", disambiguation_trace)
     _dump_json(resolved_output_dir / "alias_ambiguity.json", alias_ambiguity_report)
+    _dump_json(resolved_output_dir / "stage_summary.json", stage_summary)
     _dump_json(
         resolved_output_dir / "entity_coverage.json",
         {
@@ -649,6 +724,7 @@ def run_pipeline(
             "near_tie_mentions": disambiguation_trace["near_tie_count"],
             "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
             "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
+            "stage_summary": stage_summary,
             "hit_entities": covered_entities,
             "covered_entities": covered_entities,
             "uncovered_entities": total_entities - covered_entities,
@@ -673,6 +749,7 @@ def run_pipeline(
         "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
         "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
         "uncovered_entity_candidates": len(uncovered_entity_candidate_report),
+        "stage_summary": stage_summary,
         "review_threshold": review_threshold,
         "scanned_source_files": source_manifest["scanned_files"],
         "loaded_source_files": source_manifest["loaded_files"],
