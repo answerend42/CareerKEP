@@ -25,6 +25,14 @@
 
 采集器会递归扫描 `raw_sources/` 目录，自动把不同格式的数据统一成标准文档结构。
 
+在字段兼容上，采集器会优先识别这些常见别名：
+
+- 标题字段：`title`、`name`、`heading`、`headline`
+- 正文字段：`text`、`content`、`body`、`description`、`summary`、`abstract`、`snippet`、`excerpt`、`body_text`
+- 来源字段：`source`、`origin`
+
+这样做的目的是让不同爬虫、不同接口、不同人工整理表格之间的字段名差异尽量不影响实体抽取结果。
+
 ## 输出文件
 
 默认会写入 `preprocess/output/`，包含以下文件：

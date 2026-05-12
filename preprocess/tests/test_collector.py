@@ -179,6 +179,38 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(documents[0].text, "我熟悉前端项目，也会 Web 基础。")
         self.assertEqual(documents[0].metadata["source_format"], "md")
 
+    def test_headline_and_snippet_fields_are_supported(self) -> None:
+        """真实采集源常见的 `headline` / `snippet` 字段也应能被识别。"""
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "article.json").write_text(
+                """
+                {
+                  "items": [
+                    {
+                      "doc_id": "article_doc",
+                      "headline": "简历筛选文章",
+                      "snippet": "我更想做后端工程师，也熟悉 Python。",
+                      "origin": "news_feed",
+                      "category": "career"
+                    }
+                  ]
+                }
+                """.strip(),
+                encoding="utf-8",
+            )
+
+            documents = load_raw_documents(root)
+
+        self.assertEqual(len(documents), 1)
+        self.assertEqual(documents[0].title, "简历筛选文章")
+        self.assertEqual(documents[0].text, "我更想做后端工程师，也熟悉 Python。")
+        self.assertEqual(documents[0].source, "news_feed")
+        self.assertEqual(documents[0].metadata["category"], "career")
+        self.assertEqual(documents[0].metadata["source_path"], "article.json")
+        self.assertEqual(documents[0].metadata["source_format"], "json")
+
     def test_html_document_is_supported(self) -> None:
         """HTML 快照应当能抽出标题和可见正文。"""
 

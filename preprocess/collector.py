@@ -26,11 +26,16 @@ CORE_DOCUMENT_KEYS = {
     "title",
     "name",
     "heading",
+    "headline",
     "text",
     "content",
     "body",
     "description",
     "summary",
+    "abstract",
+    "snippet",
+    "excerpt",
+    "body_text",
     "url",
     "link",
     "metadata",
@@ -44,11 +49,16 @@ DOCUMENT_HINT_KEYS = {
     "title",
     "name",
     "heading",
+    "headline",
     "text",
     "content",
     "body",
     "description",
     "summary",
+    "abstract",
+    "snippet",
+    "excerpt",
+    "body_text",
     "url",
     "link",
 }
@@ -175,6 +185,21 @@ def _collect_inline_metadata(item: dict, excluded_keys: set[str]) -> dict:
     return metadata
 
 
+def _pick_first_text(item: dict, keys: tuple[str, ...]) -> str:
+    """按优先级返回第一个非空文本字段。
+
+    真实原始数据里同一个语义字段可能会以不同名字出现，比如 `title`、
+    `headline`、`heading` 都可能指代标题。这里统一做优先级选择，避免上游
+    采集源字段名变化后把标题或正文静默漏掉。
+    """
+
+    for key in keys:
+        value = _coerce_text(item.get(key)).strip()
+        if value:
+            return value
+    return ""
+
+
 def _looks_like_collection_container(payload: dict) -> bool:
     """判断一个字典是否更像“集合容器”而不是单条文档。"""
 
@@ -210,23 +235,10 @@ def _build_document(
     """从单条原始记录构造统一的文档对象。"""
 
     doc_id = _coerce_text(item.get("doc_id") or item.get("id") or fallback_id).strip() or fallback_id
-    source = _coerce_text(item.get("source") or item.get("origin") or fallback_source).strip() or fallback_source
-    title = (
-        _coerce_text(item.get("title") or item.get("name") or item.get("heading") or fallback_title)
-        .strip()
-        or fallback_title
-    )
+    source = _pick_first_text(item, ("source", "origin")) or fallback_source
+    title = _pick_first_text(item, ("title", "name", "heading", "headline")) or fallback_title
 
-    text = (
-        _coerce_text(
-            item.get("text")
-            or item.get("content")
-            or item.get("body")
-            or item.get("description")
-            or item.get("summary")
-        )
-        .strip()
-    )
+    text = _pick_first_text(item, ("text", "content", "body", "description", "summary", "abstract", "snippet", "excerpt", "body_text"))
 
     # 如果采集源只提供了 url 或 link，也保留到正文里，避免静默丢失。
     if not text:
