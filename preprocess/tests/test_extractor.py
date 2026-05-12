@@ -84,6 +84,7 @@ class ExtractorTests(unittest.TestCase):
         self.assertIn("disambiguation", stage_summary_payload)
         self.assertIn("coverage", stage_summary_payload)
         self.assertEqual(stage_summary_payload["collection"]["loaded_files"], 1)
+        self.assertEqual(stage_summary_payload["stage"], "full")
         self.assertEqual(stage_summary_payload["extraction"]["documents"], result["documents"])
         self.assertEqual(stage_summary_payload["disambiguation"]["uncertain_mentions"], result["uncertain_mentions"])
         self.assertTrue(all("alias_sources" in entity for entity in catalog_payload))

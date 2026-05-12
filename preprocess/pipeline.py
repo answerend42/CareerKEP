@@ -556,6 +556,7 @@ def _build_alias_ambiguity_report(mentions: List[dict]) -> dict:
 
 
 def _build_stage_summary(
+    stage: str,
     source_manifest: dict,
     document_count: int,
     documents_with_mentions: int,
@@ -576,6 +577,7 @@ def _build_stage_summary(
     """
 
     return {
+        "stage": stage,
         "collection": {
             "input_dir": source_manifest.get("input_dir"),
             "scanned_files": source_manifest.get("scanned_files", 0),
@@ -615,7 +617,7 @@ def _build_stage_summary(
     }
 
 
-def _build_collection_only_stage_summary(source_manifest: dict, document_count: int) -> dict:
+def _build_collection_only_stage_summary(stage: str, source_manifest: dict, document_count: int) -> dict:
     """只做原始数据收集时使用的阶段摘要。
 
     采集阶段只关心原始输入是否读进来、读进来多少、有没有错误，
@@ -623,7 +625,7 @@ def _build_collection_only_stage_summary(source_manifest: dict, document_count: 
     """
 
     return {
-        "mode": "collect",
+        "stage": stage,
         "collection": {
             "input_dir": source_manifest.get("input_dir"),
             "scanned_files": source_manifest.get("scanned_files", 0),
@@ -655,7 +657,7 @@ def run_pipeline(
     resolved_output_dir = output_dir or OUTPUT_DIR
 
     if stage == "collect":
-        stage_summary = _build_collection_only_stage_summary(source_manifest, len(documents))
+        stage_summary = _build_collection_only_stage_summary(stage, source_manifest, len(documents))
         _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
         _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
         _dump_json(resolved_output_dir / "stage_summary.json", stage_summary)
@@ -761,6 +763,7 @@ def run_pipeline(
         "loaded_with_errors_by_format": source_manifest.get("loaded_with_errors_by_format", {}),
     }
     stage_summary = _build_stage_summary(
+        stage=stage,
         source_manifest=source_manifest,
         document_count=len(documents),
         documents_with_mentions=len(mentions_by_doc),

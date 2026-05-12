@@ -111,5 +111,6 @@ result = run_pipeline()
 - 消歧规则变更后，要同步检查输出清单是否还能解释结果
 - 如果原始数据结构变化较大，优先统一升级解析逻辑，不要同时保留多套分叉入口
 - `summary.json` 偏向整体统计，`stage_summary.json` 偏向按阶段排查问题，二者一起看更容易定位覆盖缺口
+- `stage_summary.json` 顶层统一保留 `stage` 字段，便于下游脚本直接判断当前运行阶段
 - 如果只想先检查原始数据是否能稳定收集，可以先跑 `python3 -m preprocess --stage collect`
 - 如果想先看实体抽取和消歧结果，可以先跑 `python3 -m preprocess --stage extract`
