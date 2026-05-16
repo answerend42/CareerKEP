@@ -25,16 +25,53 @@ def _append_search_term(search_terms: list[str], value: str) -> None:
         search_terms.append(normalized)
 
 
-def collect_role_search_terms(graph: GraphData, alias_map: dict[str, list[str]], node_id: str) -> list[str]:
-    """收集岗位节点可用于搜索的所有词条。
+def _append_search_term_source(
+    term_sources: dict[str, list[dict[str, str]]],
+    term: str,
+    node_id: str,
+    kind: str,
+    value: str,
+) -> None:
+    """记录某个搜索词的来源，方便前端解释“为什么能搜到”。"""
 
-    这里不仅收集岗位本身的 ID 和标签，还会沿着图谱向上回溯，把所有
-    祖先节点的 ID、标签和别名一起纳入，避免前端只会搜到表层岗位名，
-    漏掉更贴近用户输入习惯的能力词、证据词和别名词。
+    normalized_term = normalize_lookup_term(term)
+    normalized_value = normalize_lookup_term(value)
+    if not normalized_term or not normalized_value:
+        return
+
+    sources = term_sources.setdefault(normalized_term, [])
+    record = {"node_id": node_id, "kind": kind, "value": normalized_value}
+    if record not in sources:
+        sources.append(record)
+
+
+def _collect_role_search_terms_and_sources(
+    graph: GraphData,
+    alias_map: dict[str, list[str]],
+    node_id: str,
+) -> tuple[list[str], dict[str, list[dict[str, str]]]]:
+    """收集岗位搜索词以及每个词条的来源。
+
+    `search_terms` 用于搜索和索引，`term_sources` 用于解释词条来自哪里。
+    两者分离后，前端既能直接做联想搜索，也能在调试面板里说明词条来源。
     """
 
     search_terms: list[str] = []
+    term_sources: dict[str, list[dict[str, str]]] = {}
     visited: set[str] = set()
+
+    def _record_node_terms(current_node_id: str, current_label: str) -> None:
+        _append_search_term(search_terms, current_node_id)
+        _append_search_term_source(term_sources, current_node_id, current_node_id, "node_id", current_node_id)
+
+        _append_search_term(search_terms, current_label)
+        _append_search_term_source(term_sources, current_label, current_node_id, "label", current_label)
+
+        # 别名列表也按归一化结果排序，避免 JSON 原始顺序变化时接口返回漂移。
+        aliases = sorted(alias_map.get(current_node_id, []), key=normalize_lookup_term)
+        for alias in aliases:
+            _append_search_term(search_terms, alias)
+            _append_search_term_source(term_sources, alias, current_node_id, "alias", alias)
 
     def _visit(current_node_id: str) -> None:
         if current_node_id in visited:
@@ -45,12 +82,7 @@ def collect_role_search_terms(graph: GraphData, alias_map: dict[str, list[str]],
         if current_node is None:
             return
 
-        _append_search_term(search_terms, current_node.id)
-        _append_search_term(search_terms, current_node.label)
-        # 别名列表也按归一化结果排序，避免 JSON 原始顺序变化时接口返回漂移。
-        aliases = sorted(alias_map.get(current_node.id, []), key=normalize_lookup_term)
-        for alias in aliases:
-            _append_search_term(search_terms, alias)
+        _record_node_terms(current_node.id, current_node.label)
 
         # 父节点按“标签优先、ID 次之”排序，保证祖先链收集结果稳定。
         incoming_edges = sorted(
@@ -67,6 +99,18 @@ def collect_role_search_terms(graph: GraphData, alias_map: dict[str, list[str]],
             _visit(source_node.id)
 
     _visit(node_id)
+    return search_terms, term_sources
+
+
+def collect_role_search_terms(graph: GraphData, alias_map: dict[str, list[str]], node_id: str) -> list[str]:
+    """收集岗位节点可用于搜索的所有词条。
+
+    这里不仅收集岗位本身的 ID 和标签，还会沿着图谱向上回溯，把所有
+    祖先节点的 ID、标签和别名一起纳入，避免前端只会搜到表层岗位名，
+    漏掉更贴近用户输入习惯的能力词、证据词和别名词。
+    """
+
+    search_terms, _term_sources = _collect_role_search_terms_and_sources(graph, alias_map, node_id)
     return search_terms
 
 
@@ -78,7 +122,7 @@ def build_role_options(graph: GraphData, alias_map: dict[str, list[str]]) -> lis
     for node in graph_summary.get("role_nodes", []):
         node_id = str(node.get("id") or "").strip()
         label = str(node.get("label") or node_id).strip()
-        search_terms = collect_role_search_terms(graph, alias_map, node_id)
+        search_terms, search_term_sources = _collect_role_search_terms_and_sources(graph, alias_map, node_id)
         if label:
             # 把展示标签挪到前面，便于前端调试时优先看到最直观的岗位名。
             search_terms = [term for term in search_terms if term != normalize_lookup_term(label)]
@@ -91,6 +135,7 @@ def build_role_options(graph: GraphData, alias_map: dict[str, list[str]]) -> lis
                 "node_id": node_id,
                 "label": label,
                 "search_terms": search_terms,
+                "search_term_sources": search_term_sources,
             }
         )
     return role_options

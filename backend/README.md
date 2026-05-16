@@ -134,7 +134,9 @@ python3 -m backend.app.main validate-graph
 `target_role_analysis` 里会附带目标岗位路径、覆盖度、准备度分级、当前聚焦提示、优先级分组、优势项和缺口项，`learning_path` 还会给出带 `rank`、`priority`、`gap`、`estimated_effort` 的行动计划，方便前端直接做“我离目标岗位还差什么、先做什么”的展示。
 `bridge_recommendations` 也会返回图路径，不再只是孤立节点名。
 
-`role_options` 里的每一项都包含 `node_id`、`label` 和 `search_terms`，其中 `search_terms` 会沿着岗位节点的祖先链收集节点 ID、岗位标签、相关别名、上游能力词和证据词，前端可以直接拿来做岗位选择器，不需要再自己处理空格、大小写或别名归一化。
+`role_options` 里的每一项都包含 `node_id`、`label`、`search_terms` 和 `search_term_sources`。
+其中 `search_terms` 会沿着岗位节点的祖先链收集节点 ID、岗位标签、相关别名、上游能力词和证据词，前端可以直接拿来做岗位选择器，不需要再自己处理空格、大小写或别名归一化。
+`search_term_sources` 会记录每个搜索词来自哪个节点，以及它是通过 `node_id`、`label` 还是 `alias` 进入词条池的，方便前端做“为什么会搜到这个岗位”的解释面板。
 
 `role_search_index` 是 `search_term -> role_node_id[]` 的倒排索引，适合直接驱动搜索框输入联想或岗位筛选，不需要前端再把 `role_options` 重新加工一遍。
 

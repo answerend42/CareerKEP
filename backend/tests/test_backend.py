@@ -393,6 +393,12 @@ class BackendSmokeTest(unittest.TestCase):
         self.assertEqual(index["alpha技能"], ["role_node"])
         self.assertEqual(index["角色"], ["role_node"])
         self.assertEqual(index["别名a"], ["role_node"])
+        self.assertIn("search_term_sources", role_options[0])
+        self.assertIn("alpha技能", role_options[0]["search_term_sources"])
+        alpha_sources = role_options[0]["search_term_sources"]["alpha技能"]
+        alias_sources = role_options[0]["search_term_sources"]["别名a"]
+        self.assertTrue(any(item["node_id"] == "alpha_skill" and item["kind"] == "label" for item in alpha_sources))
+        self.assertTrue(any(item["node_id"] == "alpha_skill" and item["kind"] == "alias" for item in alias_sources))
 
     def test_recommend_leaves_ambiguous_target_role_unresolved(self) -> None:
         # 如果输入过于宽泛，后端不应胡乱猜一个岗位。
@@ -569,6 +575,11 @@ class BackendSmokeTest(unittest.TestCase):
             self.assertIn("后端", backend_role["search_terms"])
             self.assertIn("会python", backend_role["search_terms"])
             self.assertIn("数据库", backend_role["search_terms"])
+            self.assertIn("search_term_sources", backend_role)
+            self.assertIn("后端", backend_role["search_term_sources"])
+            backend_sources = backend_role["search_term_sources"]["后端"]
+            self.assertTrue(backend_sources)
+            self.assertTrue(all({"node_id", "kind", "value"} <= set(item) for item in backend_sources))
             self.assertIn("backend_engineer", meta_json["role_search_index"]["后端"])
             self.assertIn("backend_engineer", meta_json["role_search_index"]["python"])
             conn.close()
