@@ -77,6 +77,13 @@ class GraphLoaderTest(unittest.TestCase):
                 "hard_gate": 4,
             },
         )
+        self.assertEqual(summary["connectivity"]["root_node_count"], 14)
+        self.assertEqual(summary["connectivity"]["leaf_node_count"], 4)
+        self.assertEqual(summary["connectivity"]["isolated_node_count"], 0)
+        self.assertEqual(
+            summary["connectivity"]["leaf_node_ids"],
+            ["backend_engineer", "data_engineer", "frontend_engineer", "ml_engineer"],
+        )
         self.assertEqual(summary["validation"], {"status": "ok", "warnings": []})
 
     def test_real_alias_map_matches_seed_graph(self) -> None:

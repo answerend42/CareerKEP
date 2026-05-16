@@ -561,6 +561,7 @@ class BackendSmokeTest(unittest.TestCase):
             self.assertEqual(meta_json["service"], "career-kg-backend")
             self.assertIn("graph", meta_json)
             self.assertIn("aggregators", meta_json["graph"])
+            self.assertIn("connectivity", meta_json["graph"])
             self.assertIn("validation", meta_json["graph"])
             self.assertIn("role_options", meta_json)
             self.assertIn("role_search_index", meta_json)
@@ -568,6 +569,9 @@ class BackendSmokeTest(unittest.TestCase):
             self.assertIn("alias_count", meta_json["graph"])
             self.assertIn("alias_node_count", meta_json["graph"])
             self.assertIn("warnings", meta_json["graph"]["validation"])
+            self.assertEqual(meta_json["graph"]["connectivity"]["root_node_count"], 14)
+            self.assertEqual(meta_json["graph"]["connectivity"]["leaf_node_count"], 4)
+            self.assertEqual(meta_json["graph"]["connectivity"]["isolated_node_count"], 0)
 
             backend_role = next(item for item in meta_json["role_options"] if item["node_id"] == "backend_engineer")
             self.assertIn("backend_engineer", backend_role["search_terms"])

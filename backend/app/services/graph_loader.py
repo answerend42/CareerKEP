@@ -114,12 +114,28 @@ class GraphData:
         ]
         role_nodes.sort(key=lambda item: item["label"])
 
+        indegree = {node_id: len(self.incoming.get(node_id, [])) for node_id in self.nodes}
+        outdegree = {node_id: len(self.outgoing.get(node_id, [])) for node_id in self.nodes}
+        root_node_ids = sorted(node_id for node_id in self.nodes if indegree[node_id] == 0)
+        leaf_node_ids = sorted(node_id for node_id in self.nodes if outdegree[node_id] == 0)
+        isolated_node_ids = sorted(
+            node_id for node_id in self.nodes if indegree[node_id] == 0 and outdegree[node_id] == 0
+        )
+
         return {
             "node_count": len(self.nodes),
             "edge_count": len(self.edges),
             "layers": layer_counts,
             "relations": relation_counts,
             "aggregators": aggregator_counts,
+            "connectivity": {
+                "root_node_count": len(root_node_ids),
+                "leaf_node_count": len(leaf_node_ids),
+                "isolated_node_count": len(isolated_node_ids),
+                "root_node_ids": root_node_ids,
+                "leaf_node_ids": leaf_node_ids,
+                "isolated_node_ids": isolated_node_ids,
+            },
             "validation": {
                 "status": "ok",
                 "warnings": [],
