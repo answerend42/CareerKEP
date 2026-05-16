@@ -394,12 +394,15 @@ def build_graph_diagnostics(
     """
 
     summary = graph.summary()
+    warning_count = len(alias_warnings)
     return {
         **summary,
         "alias_count": sum(len(aliases) for aliases in alias_map.values()),
         "alias_node_count": len(alias_map),
         "validation": {
-            "status": "ok",
+            # 只要存在 warning，就不要继续展示成完全健康，避免前端误判。
+            "status": "warn" if warning_count else "ok",
+            "warning_count": warning_count,
             "warnings": alias_warnings,
         },
     }

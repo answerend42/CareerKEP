@@ -4,7 +4,13 @@ from __future__ import annotations
 
 import unittest
 
-from backend.app.services.graph_loader import GraphValidationError, _build_graph, load_graph_data, load_graph_summary
+from backend.app.services.graph_loader import (
+    GraphValidationError,
+    _build_graph,
+    build_graph_diagnostics,
+    load_graph_data,
+    load_graph_summary,
+)
 from backend.app.services.input_normalizer import load_alias_map, normalize_alias_text, validate_alias_map
 
 
@@ -85,6 +91,16 @@ class GraphLoaderTest(unittest.TestCase):
             ["backend_engineer", "data_engineer", "frontend_engineer", "ml_engineer"],
         )
         self.assertEqual(summary["validation"], {"status": "ok", "warnings": []})
+
+    def test_build_graph_diagnostics_marks_warning_state(self) -> None:
+        graph = load_graph_data()
+        alias_map = load_alias_map()
+
+        diagnostics = build_graph_diagnostics(graph, alias_map, ["alias 冲突示例"])
+
+        self.assertEqual(diagnostics["validation"]["status"], "warn")
+        self.assertEqual(diagnostics["validation"]["warning_count"], 1)
+        self.assertEqual(diagnostics["validation"]["warnings"], ["alias 冲突示例"])
 
     def test_real_alias_map_matches_seed_graph(self) -> None:
         graph = load_graph_data()
