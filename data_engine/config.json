@@ -1,0 +1,80 @@
+{
+  "user_agent": "CareerKEP-DataEngine/0.1",
+  "timeout_seconds": 15,
+  "max_retries": 3,
+  "backoff_base_seconds": 1.5,
+  "global_qps": 1.0,
+  "output_root": "preprocess/raw_sources/web",
+  "cache_path": "data_engine/.cache/http_cache.sqlite",
+  "max_chars_per_doc": 8000,
+  "split_overlap": 200,
+  "sources": {
+    "wikipedia": {"enabled": true, "languages": ["en", "zh"], "qps": 1.0},
+    "github": {"enabled": true, "qps": 0.5, "token_env": "GITHUB_TOKEN"},
+    "roadmap": {"enabled": true, "qps": 0.5},
+    "onet": {"enabled": false, "qps": 0.5}
+  },
+  "query_expansion": {
+    "use_aliases": true,
+    "extra_terms": {
+      "python": ["Python (programming language)"],
+      "sql": ["SQL", "Structured Query Language"],
+      "frontend_project": ["Front-end web development"],
+      "team_collab": ["Teamwork"],
+      "weak_cpp": [],
+      "machine_learning_basics": ["Machine learning"],
+      "statistics": ["Statistics", "Probability"],
+      "linux": ["Linux", "Unix shell"],
+      "product_thinking": ["Product management"],
+      "communication": ["Communication"],
+      "algorithms": ["Algorithm", "Data structure"],
+      "data_cleaning": ["Data cleansing"],
+      "docker": ["Docker (software)"],
+      "api_design": ["API", "Representational state transfer"],
+      "programming_fundamentals": ["Computer programming"],
+      "database_practice": ["Database"],
+      "web_fundamentals": ["World Wide Web", "HTML"],
+      "backend_tech_stack": ["Back end (computing)", "Web server"],
+      "math_fundamentals": ["Mathematics"],
+      "communication_skill": ["Communication"],
+      "ml_basics": ["Machine learning"],
+      "data_tooling": ["Data engineering", "Extract, transform, load"],
+      "backend_engineering": ["Back end (computing)"],
+      "ml_engineering": ["MLOps"],
+      "data_engineering": ["Data engineering"],
+      "frontend_engineering": ["Front-end web development"],
+      "web_backend": ["Server-side scripting", "Web server"],
+      "machine_learning": ["Machine learning"],
+      "data_direction": ["Data engineering", "Data analysis"],
+      "frontend_direction": ["Front-end web development"],
+      "backend_engineer": ["Software engineer"],
+      "ml_engineer": ["Machine learning engineer"],
+      "data_engineer": ["Data engineer"],
+      "frontend_engineer": ["Front-end web development"]
+    }
+  },
+  "incremental": {
+    "uncovered_report": "preprocess/output/uncovered_entities.json",
+    "skip_if_recent_hours": 168
+  },
+  "proposers": {
+    "aliases": {
+      "auto_apply_confidence_min": 0.85,
+      "auto_apply_doc_count_min": 3,
+      "review_doc_count_min": 2
+    },
+    "edges_cooccurrence": {
+      "auto_apply_cooc_min": 30,
+      "review_cooc_min": 8,
+      "default_weight": 0.6
+    },
+    "edges_roadmap": {
+      "default_weight": 0.7
+    },
+    "nodes": {
+      "min_doc_count": 8,
+      "min_token_count": 30,
+      "top_k": 60
+    }
+  }
+}

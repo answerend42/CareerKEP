@@ -1,0 +1,6 @@
+.cache/
+output/
+__pycache__/
+*.py[cod]
+.env
+.env.local
