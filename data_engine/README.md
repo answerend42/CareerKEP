@@ -230,16 +230,21 @@ python3 -m data_engine rollback --to 20260518T080501Z
 
 阈值在 [`config.json`](config.json) 的 `proposers` 节统一调。降低阈值会扩大候选集但增加 review 成本。
 
-### V3 实测扩图（基于当前 34 节点起点）
+### V3-V5 实测扩图（基于当前 34 节点起点）
 
-| 阶段 | nodes | edges | alias keys | 总别名 |
-| --- | ---: | ---: | ---: | ---: |
-| V2 末尾（手工权威源） | 34 | 56 | 19 | 68 |
-| `apply --auto`（仅别名 + 共现边） | 34 | 98 (+42) | 34 (+15) | 129 (+61) |
-| V3 curated batch（10 evidence 节点 + supports 边） | 44 (+10) | 108 (+10) | 34 | 129 |
-| V4 curated batch（再 10 evidence 节点 + 边 + 别名） | **54** (+10) | **118** (+10) | **54** (+20) | **170** (+41) |
+| 阶段 | nodes | edges | alias keys | 总别名 | mentions |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| V2 末尾（手工权威源） | 34 | 56 | 19 | 68 | 91 |
+| `apply --auto`（仅别名 + 共现边） | 34 | 98 (+42) | 34 (+15) | 129 (+61) | — |
+| V3 curated batch（10 evidence 节点 + supports 边） | 44 (+10) | 108 (+10) | 34 | 129 | 15,449 |
+| V4 curated batch（再 10 evidence 节点 + 边 + 别名） | 54 (+10) | 118 (+10) | 54 (+20) | 170 (+41) | — |
+| **V5 五层平衡扩图**（97 节点跨 5 层 + 127 边 + 190 别名） | **151** (+97) | **328** (+210) | **151** (+97) | **361** (+191) | **126,907** |
 
-V3+V4 curated 批次走的是 `applier.apply_batch(node_cands, edge_cands, alias_cands)` —— 节点 / 边 / 别名一次性原子写入，绕开 NodeProposer 的 review 通道直接落地，适合"我已经知道这批要加什么"的场景（详见下面"批量扩图 (`apply_batch`)"小节）。
+V5 把图谱从只有 4 个 role（backend/data/ml/frontend engineer）扩到 10 个——新加了 DevOps engineer、SRE、移动开发、安全、全栈、AI engineer 6 条职业线，每条都从 evidence → ability → composite → direction → role 完整连通。layer 分布：evidence 109 / ability 15 / composite 8 / direction 9 / role 10（金字塔保持）。
+
+V3+V4+V5 curated 批次都走 `applier.apply_batch(node_cands, edge_cands, alias_cands)` —— 节点 / 边 / 别名一次性原子写入，**绕开 NodeProposer 的 review 通道直接落地**。适合"我已经知道这批要加什么"的场景，把 layer 归属判断前置到 plan / 脚本里完成。详见下面"批量扩图 (`apply_batch`)"。
+
+V5 的具体 ID 列表与边布线代码见 [`data_engine/scripts/v5_balanced_batch.py`](scripts/v5_balanced_batch.py)，可作为后续大批量扩图的模板。
 
 ### 批量扩图（`apply_batch`）
 
