@@ -400,5 +400,711 @@
     "layer": "evidence",
     "aggregator": "source",
     "cap": 1.0
+  },
+  {
+    "id": "javascript",
+    "label": "JavaScript",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "typescript",
+    "label": "TypeScript",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "go",
+    "label": "Go",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "rust",
+    "label": "Rust",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "scala",
+    "label": "Scala",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "kotlin",
+    "label": "Kotlin",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "swift",
+    "label": "Swift",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "ruby",
+    "label": "Ruby",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "php",
+    "label": "PHP",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "csharp",
+    "label": "C#",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "react",
+    "label": "React",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "vue",
+    "label": "Vue.js",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "angular",
+    "label": "Angular",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "nextjs",
+    "label": "Next.js",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "svelte",
+    "label": "Svelte",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "tailwindcss",
+    "label": "Tailwind CSS",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "webpack",
+    "label": "Webpack",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "nodejs",
+    "label": "Node.js",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "express",
+    "label": "Express.js",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "spring",
+    "label": "Spring",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "django",
+    "label": "Django",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "flask",
+    "label": "Flask",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "gin",
+    "label": "Gin",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "graphql",
+    "label": "GraphQL",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "grpc",
+    "label": "gRPC",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "openapi",
+    "label": "OpenAPI",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "aws",
+    "label": "AWS",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "gcp",
+    "label": "Google Cloud Platform",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "azure",
+    "label": "Azure",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "terraform",
+    "label": "Terraform",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "ansible",
+    "label": "Ansible",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "jenkins",
+    "label": "Jenkins",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "github_actions",
+    "label": "GitHub Actions",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "prometheus",
+    "label": "Prometheus",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "grafana",
+    "label": "Grafana",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "helm",
+    "label": "Helm",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "istio",
+    "label": "Istio",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "argocd",
+    "label": "Argo CD",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "packer",
+    "label": "Packer",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "postgresql",
+    "label": "PostgreSQL",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "mysql",
+    "label": "MySQL",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "elasticsearch",
+    "label": "Elasticsearch",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "cassandra",
+    "label": "Cassandra",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "sqlite",
+    "label": "SQLite",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "neo4j",
+    "label": "Neo4j",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "spark",
+    "label": "Apache Spark",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "kafka",
+    "label": "Apache Kafka",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "airflow",
+    "label": "Apache Airflow",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "snowflake",
+    "label": "Snowflake",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "dbt",
+    "label": "dbt",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "hadoop",
+    "label": "Hadoop",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "pandas",
+    "label": "pandas",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "numpy",
+    "label": "NumPy",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "scikit_learn",
+    "label": "scikit-learn",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "mlflow",
+    "label": "MLflow",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "xgboost",
+    "label": "XGBoost",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "jupyter",
+    "label": "Jupyter",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "cnn",
+    "label": "CNN",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "rnn",
+    "label": "RNN",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "transfer_learning",
+    "label": "迁移学习",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "embedding",
+    "label": "Embedding",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "ios",
+    "label": "iOS",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "android",
+    "label": "Android",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "react_native",
+    "label": "React Native",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "flutter",
+    "label": "Flutter",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "pytest",
+    "label": "pytest",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "jest",
+    "label": "Jest",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "selenium",
+    "label": "Selenium",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "owasp",
+    "label": "OWASP",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "oauth",
+    "label": "OAuth",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "jwt",
+    "label": "JWT",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "vector_database",
+    "label": "向量数据库",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "ollama",
+    "label": "Ollama",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "chain_of_thought",
+    "label": "Chain of Thought",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "microservices",
+    "label": "微服务",
+    "layer": "evidence",
+    "aggregator": "source",
+    "cap": 1.0
+  },
+  {
+    "id": "cloud_native_practice",
+    "label": "云原生实践",
+    "layer": "ability",
+    "aggregator": "weighted_sum_capped",
+    "cap": 1.0,
+    "min_support_count": 2
+  },
+  {
+    "id": "distributed_systems",
+    "label": "分布式系统知识",
+    "layer": "ability",
+    "aggregator": "weighted_sum_capped",
+    "cap": 1.0,
+    "min_support_count": 1
+  },
+  {
+    "id": "system_design",
+    "label": "系统设计能力",
+    "layer": "ability",
+    "aggregator": "weighted_sum_capped",
+    "cap": 1.0,
+    "min_support_count": 1
+  },
+  {
+    "id": "mobile_dev_practice",
+    "label": "移动开发实践",
+    "layer": "ability",
+    "aggregator": "weighted_sum_capped",
+    "cap": 1.0,
+    "min_support_count": 1
+  },
+  {
+    "id": "security_practice",
+    "label": "安全实践",
+    "layer": "ability",
+    "aggregator": "weighted_sum_capped",
+    "cap": 1.0,
+    "min_support_count": 1
+  },
+  {
+    "id": "testing_practice",
+    "label": "测试实践",
+    "layer": "ability",
+    "aggregator": "weighted_sum_capped",
+    "cap": 1.0,
+    "min_support_count": 1
+  },
+  {
+    "id": "llm_practice",
+    "label": "LLM 应用实践",
+    "layer": "ability",
+    "aggregator": "weighted_sum_capped",
+    "cap": 1.0,
+    "min_support_count": 1
+  },
+  {
+    "id": "devops_engineering",
+    "label": "DevOps 工程能力",
+    "layer": "composite",
+    "aggregator": "soft_and",
+    "cap": 1.0,
+    "min_support_count": 3
+  },
+  {
+    "id": "mobile_engineering",
+    "label": "移动工程能力",
+    "layer": "composite",
+    "aggregator": "soft_and",
+    "cap": 1.0,
+    "min_support_count": 2
+  },
+  {
+    "id": "security_engineering",
+    "label": "安全工程能力",
+    "layer": "composite",
+    "aggregator": "soft_and",
+    "cap": 1.0,
+    "min_support_count": 2
+  },
+  {
+    "id": "llm_engineering",
+    "label": "LLM 工程能力",
+    "layer": "composite",
+    "aggregator": "soft_and",
+    "cap": 1.0,
+    "min_support_count": 2
+  },
+  {
+    "id": "devops_direction",
+    "label": "DevOps 方向",
+    "layer": "direction",
+    "aggregator": "penalty_gate",
+    "cap": 1.0,
+    "required_threshold": 0.5,
+    "penalty_floor": 0.35
+  },
+  {
+    "id": "mobile_direction",
+    "label": "移动开发方向",
+    "layer": "direction",
+    "aggregator": "penalty_gate",
+    "cap": 1.0,
+    "required_threshold": 0.45,
+    "penalty_floor": 0.35
+  },
+  {
+    "id": "security_direction",
+    "label": "安全方向",
+    "layer": "direction",
+    "aggregator": "penalty_gate",
+    "cap": 1.0,
+    "required_threshold": 0.5,
+    "penalty_floor": 0.35
+  },
+  {
+    "id": "fullstack_direction",
+    "label": "全栈方向",
+    "layer": "direction",
+    "aggregator": "penalty_gate",
+    "cap": 1.0,
+    "required_threshold": 0.5,
+    "penalty_floor": 0.35
+  },
+  {
+    "id": "ai_engineering_direction",
+    "label": "AI 工程方向",
+    "layer": "direction",
+    "aggregator": "penalty_gate",
+    "cap": 1.0,
+    "required_threshold": 0.48,
+    "penalty_floor": 0.35
+  },
+  {
+    "id": "devops_engineer",
+    "label": "DevOps 工程师",
+    "layer": "role",
+    "aggregator": "hard_gate",
+    "cap": 1.0,
+    "required_threshold": 0.55
+  },
+  {
+    "id": "sre",
+    "label": "站点可靠性工程师 (SRE)",
+    "layer": "role",
+    "aggregator": "hard_gate",
+    "cap": 1.0,
+    "required_threshold": 0.55
+  },
+  {
+    "id": "mobile_engineer",
+    "label": "移动开发工程师",
+    "layer": "role",
+    "aggregator": "hard_gate",
+    "cap": 1.0,
+    "required_threshold": 0.5
+  },
+  {
+    "id": "security_engineer",
+    "label": "安全工程师",
+    "layer": "role",
+    "aggregator": "hard_gate",
+    "cap": 1.0,
+    "required_threshold": 0.55
+  },
+  {
+    "id": "fullstack_engineer",
+    "label": "全栈工程师",
+    "layer": "role",
+    "aggregator": "hard_gate",
+    "cap": 1.0,
+    "required_threshold": 0.55
+  },
+  {
+    "id": "ai_engineer",
+    "label": "AI 工程师",
+    "layer": "role",
+    "aggregator": "hard_gate",
+    "cap": 1.0,
+    "required_threshold": 0.52
   }
 ]

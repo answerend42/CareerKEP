@@ -706,5 +706,1265 @@
     "target": "programming_fundamentals",
     "relation": "supports",
     "weight": 0.7
+  },
+  {
+    "source": "nlp",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "transformer",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "bert",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "pytorch",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "gpt",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "llm",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "sql",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "java",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "docker",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "fine_tuning",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "web_fundamentals",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "tensorflow",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "nlp",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "spacy",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "transformer",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "huggingface",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "nlp",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "mongodb",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "llm",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "llm",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "nlp",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "prompt_engineering",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "gpt",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "transformer",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "bert",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "communication",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "java",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "gpt",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "llm",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "langchain",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "llama",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "prompt_engineering",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "fine_tuning",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "redis",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "api_design",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "mongodb",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "gpt",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "git",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "machine_learning",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "mongodb",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "fine_tuning",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "pytorch",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "transformer",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "redis",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "bert",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "nlp",
+    "target": "machine_learning",
+    "relation": "supports",
+    "weight": 0.85
+  },
+  {
+    "source": "prompt_engineering",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.84
+  },
+  {
+    "source": "fine_tuning",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.835
+  },
+  {
+    "source": "huggingface",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.83
+  },
+  {
+    "source": "langchain",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.825
+  },
+  {
+    "source": "llama",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.825
+  },
+  {
+    "source": "langchain",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.82
+  },
+  {
+    "source": "llama",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.82
+  },
+  {
+    "source": "math_fundamentals",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.805
+  },
+  {
+    "source": "nlp",
+    "target": "math_fundamentals",
+    "relation": "supports",
+    "weight": 0.795
+  },
+  {
+    "source": "prompt_engineering",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.795
+  },
+  {
+    "source": "java",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.785
+  },
+  {
+    "source": "tensorflow",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.785
+  },
+  {
+    "source": "redis",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.78
+  },
+  {
+    "source": "tensorflow",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.775
+  },
+  {
+    "source": "huggingface",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.77
+  },
+  {
+    "source": "llama",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.77
+  },
+  {
+    "source": "pytorch",
+    "target": "machine_learning",
+    "relation": "supports",
+    "weight": 0.77
+  },
+  {
+    "source": "team_collab",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.755
+  },
+  {
+    "source": "git",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.75
+  },
+  {
+    "source": "team_collab",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.745
+  },
+  {
+    "source": "data_engineering",
+    "target": "data_engineer",
+    "relation": "supports",
+    "weight": 0.735
+  },
+  {
+    "source": "statistics",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.735
+  },
+  {
+    "source": "tensorflow",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.73
+  },
+  {
+    "source": "team_collab",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.725
+  },
+  {
+    "source": "transformer",
+    "target": "math_fundamentals",
+    "relation": "supports",
+    "weight": 0.725
+  },
+  {
+    "source": "docker",
+    "target": "math_fundamentals",
+    "relation": "supports",
+    "weight": 0.72
+  },
+  {
+    "source": "gpt",
+    "target": "math_fundamentals",
+    "relation": "supports",
+    "weight": 0.72
+  },
+  {
+    "source": "huggingface",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.72
+  },
+  {
+    "source": "pytorch",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.72
+  },
+  {
+    "source": "spacy",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.72
+  },
+  {
+    "source": "spacy",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.72
+  },
+  {
+    "source": "fine_tuning",
+    "target": "math_fundamentals",
+    "relation": "supports",
+    "weight": 0.715
+  },
+  {
+    "source": "langchain",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.715
+  },
+  {
+    "source": "llm",
+    "target": "math_fundamentals",
+    "relation": "supports",
+    "weight": 0.715
+  },
+  {
+    "source": "spacy",
+    "target": "machine_learning",
+    "relation": "supports",
+    "weight": 0.715
+  },
+  {
+    "source": "bert",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.71
+  },
+  {
+    "source": "team_collab",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.71
+  },
+  {
+    "source": "javascript",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "typescript",
+    "target": "web_fundamentals",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "go",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "rust",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "scala",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "kotlin",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "swift",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "ruby",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "php",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "csharp",
+    "target": "programming_fundamentals",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "react",
+    "target": "frontend_engineering",
+    "relation": "supports",
+    "weight": 0.65
+  },
+  {
+    "source": "vue",
+    "target": "frontend_engineering",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "angular",
+    "target": "frontend_engineering",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "nextjs",
+    "target": "frontend_engineering",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "svelte",
+    "target": "frontend_engineering",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "tailwindcss",
+    "target": "frontend_engineering",
+    "relation": "supports",
+    "weight": 0.45
+  },
+  {
+    "source": "webpack",
+    "target": "frontend_engineering",
+    "relation": "supports",
+    "weight": 0.45
+  },
+  {
+    "source": "nodejs",
+    "target": "backend_tech_stack",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "express",
+    "target": "backend_tech_stack",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "spring",
+    "target": "backend_tech_stack",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "django",
+    "target": "backend_tech_stack",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "flask",
+    "target": "backend_tech_stack",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "gin",
+    "target": "backend_tech_stack",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "graphql",
+    "target": "backend_tech_stack",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "grpc",
+    "target": "backend_tech_stack",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "openapi",
+    "target": "backend_tech_stack",
+    "relation": "supports",
+    "weight": 0.45
+  },
+  {
+    "source": "aws",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "gcp",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "azure",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "terraform",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "ansible",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "jenkins",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "github_actions",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "prometheus",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "grafana",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.45
+  },
+  {
+    "source": "helm",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "istio",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.45
+  },
+  {
+    "source": "argocd",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.45
+  },
+  {
+    "source": "packer",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.4
+  },
+  {
+    "source": "postgresql",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.65
+  },
+  {
+    "source": "mysql",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.65
+  },
+  {
+    "source": "elasticsearch",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "cassandra",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "sqlite",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "neo4j",
+    "target": "database_practice",
+    "relation": "supports",
+    "weight": 0.45
+  },
+  {
+    "source": "spark",
+    "target": "data_tooling",
+    "relation": "supports",
+    "weight": 0.65
+  },
+  {
+    "source": "kafka",
+    "target": "data_tooling",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "airflow",
+    "target": "data_tooling",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "snowflake",
+    "target": "data_tooling",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "dbt",
+    "target": "data_tooling",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "hadoop",
+    "target": "data_tooling",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "pandas",
+    "target": "ml_basics",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "numpy",
+    "target": "ml_basics",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "scikit_learn",
+    "target": "ml_basics",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "xgboost",
+    "target": "ml_basics",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "jupyter",
+    "target": "ml_basics",
+    "relation": "supports",
+    "weight": 0.45
+  },
+  {
+    "source": "mlflow",
+    "target": "ml_engineering",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "cnn",
+    "target": "ml_basics",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "rnn",
+    "target": "ml_basics",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "transfer_learning",
+    "target": "ml_basics",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "embedding",
+    "target": "ml_basics",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "ios",
+    "target": "mobile_dev_practice",
+    "relation": "supports",
+    "weight": 0.65
+  },
+  {
+    "source": "android",
+    "target": "mobile_dev_practice",
+    "relation": "supports",
+    "weight": 0.65
+  },
+  {
+    "source": "react_native",
+    "target": "mobile_dev_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "flutter",
+    "target": "mobile_dev_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "pytest",
+    "target": "testing_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "jest",
+    "target": "testing_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "selenium",
+    "target": "testing_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "owasp",
+    "target": "security_practice",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "oauth",
+    "target": "security_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "jwt",
+    "target": "security_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "vector_database",
+    "target": "llm_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "ollama",
+    "target": "llm_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "chain_of_thought",
+    "target": "llm_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "microservices",
+    "target": "distributed_systems",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "microservices",
+    "target": "system_design",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "kubernetes",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.65
+  },
+  {
+    "source": "docker",
+    "target": "cloud_native_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "redis",
+    "target": "distributed_systems",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "swift",
+    "target": "mobile_dev_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "kotlin",
+    "target": "mobile_dev_practice",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "prompt_engineering",
+    "target": "llm_practice",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "rag",
+    "target": "llm_practice",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "fine_tuning",
+    "target": "llm_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "langchain",
+    "target": "llm_practice",
+    "relation": "supports",
+    "weight": 0.55
+  },
+  {
+    "source": "cloud_native_practice",
+    "target": "devops_engineering",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "distributed_systems",
+    "target": "devops_engineering",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "linux",
+    "target": "devops_engineering",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "programming_fundamentals",
+    "target": "devops_engineering",
+    "relation": "supports",
+    "weight": 0.4
+  },
+  {
+    "source": "mobile_dev_practice",
+    "target": "mobile_engineering",
+    "relation": "supports",
+    "weight": 0.7
+  },
+  {
+    "source": "programming_fundamentals",
+    "target": "mobile_engineering",
+    "relation": "supports",
+    "weight": 0.4
+  },
+  {
+    "source": "security_practice",
+    "target": "security_engineering",
+    "relation": "supports",
+    "weight": 0.7
+  },
+  {
+    "source": "programming_fundamentals",
+    "target": "security_engineering",
+    "relation": "supports",
+    "weight": 0.4
+  },
+  {
+    "source": "llm_practice",
+    "target": "llm_engineering",
+    "relation": "supports",
+    "weight": 0.7
+  },
+  {
+    "source": "ml_basics",
+    "target": "llm_engineering",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "devops_engineering",
+    "target": "devops_direction",
+    "relation": "supports",
+    "weight": 0.7
+  },
+  {
+    "source": "cloud_native_practice",
+    "target": "devops_direction",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "distributed_systems",
+    "target": "devops_direction",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "mobile_engineering",
+    "target": "mobile_direction",
+    "relation": "supports",
+    "weight": 0.7
+  },
+  {
+    "source": "mobile_dev_practice",
+    "target": "mobile_direction",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "security_engineering",
+    "target": "security_direction",
+    "relation": "supports",
+    "weight": 0.7
+  },
+  {
+    "source": "security_practice",
+    "target": "security_direction",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "backend_engineering",
+    "target": "fullstack_direction",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "frontend_engineering",
+    "target": "fullstack_direction",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "llm_engineering",
+    "target": "ai_engineering_direction",
+    "relation": "supports",
+    "weight": 0.7
+  },
+  {
+    "source": "llm_practice",
+    "target": "ai_engineering_direction",
+    "relation": "supports",
+    "weight": 0.6
+  },
+  {
+    "source": "ml_engineering",
+    "target": "ai_engineering_direction",
+    "relation": "supports",
+    "weight": 0.4
+  },
+  {
+    "source": "devops_engineering",
+    "target": "devops_engineer",
+    "relation": "requires",
+    "weight": 0.92
+  },
+  {
+    "source": "devops_direction",
+    "target": "devops_engineer",
+    "relation": "requires",
+    "weight": 0.95
+  },
+  {
+    "source": "cloud_native_practice",
+    "target": "devops_engineer",
+    "relation": "requires",
+    "weight": 0.7
+  },
+  {
+    "source": "devops_engineering",
+    "target": "sre",
+    "relation": "requires",
+    "weight": 0.85
+  },
+  {
+    "source": "distributed_systems",
+    "target": "sre",
+    "relation": "requires",
+    "weight": 0.7
+  },
+  {
+    "source": "system_design",
+    "target": "sre",
+    "relation": "requires",
+    "weight": 0.6
+  },
+  {
+    "source": "devops_direction",
+    "target": "sre",
+    "relation": "supports",
+    "weight": 0.5
+  },
+  {
+    "source": "mobile_engineering",
+    "target": "mobile_engineer",
+    "relation": "requires",
+    "weight": 0.92
+  },
+  {
+    "source": "mobile_direction",
+    "target": "mobile_engineer",
+    "relation": "requires",
+    "weight": 0.95
+  },
+  {
+    "source": "mobile_dev_practice",
+    "target": "mobile_engineer",
+    "relation": "requires",
+    "weight": 0.7
+  },
+  {
+    "source": "security_engineering",
+    "target": "security_engineer",
+    "relation": "requires",
+    "weight": 0.92
+  },
+  {
+    "source": "security_direction",
+    "target": "security_engineer",
+    "relation": "requires",
+    "weight": 0.95
+  },
+  {
+    "source": "security_practice",
+    "target": "security_engineer",
+    "relation": "requires",
+    "weight": 0.7
+  },
+  {
+    "source": "backend_engineering",
+    "target": "fullstack_engineer",
+    "relation": "requires",
+    "weight": 0.65
+  },
+  {
+    "source": "frontend_engineering",
+    "target": "fullstack_engineer",
+    "relation": "requires",
+    "weight": 0.65
+  },
+  {
+    "source": "fullstack_direction",
+    "target": "fullstack_engineer",
+    "relation": "requires",
+    "weight": 0.95
+  },
+  {
+    "source": "llm_engineering",
+    "target": "ai_engineer",
+    "relation": "requires",
+    "weight": 0.92
+  },
+  {
+    "source": "ai_engineering_direction",
+    "target": "ai_engineer",
+    "relation": "requires",
+    "weight": 0.95
+  },
+  {
+    "source": "llm_practice",
+    "target": "ai_engineer",
+    "relation": "requires",
+    "weight": 0.7
+  },
+  {
+    "source": "ml_basics",
+    "target": "ai_engineer",
+    "relation": "supports",
+    "weight": 0.5
   }
 ]

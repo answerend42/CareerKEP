@@ -54,7 +54,8 @@
     "linux",
     "shell",
     "命令行",
-    "终端"
+    "终端",
+    "Linux\n```shell"
   ],
   "product_thinking": [
     "产品思维",
@@ -276,5 +277,389 @@
   ],
   "java": [
     "java"
+  ],
+  "javascript": [
+    "javascript",
+    "js"
+  ],
+  "typescript": [
+    "typescript",
+    "ts"
+  ],
+  "go": [
+    "go",
+    "golang"
+  ],
+  "rust": [
+    "rust"
+  ],
+  "scala": [
+    "scala"
+  ],
+  "kotlin": [
+    "kotlin"
+  ],
+  "swift": [
+    "swift"
+  ],
+  "ruby": [
+    "ruby",
+    "ruby on rails",
+    "rails"
+  ],
+  "php": [
+    "php"
+  ],
+  "csharp": [
+    "c#",
+    "csharp",
+    ".net"
+  ],
+  "react": [
+    "react",
+    "reactjs",
+    "react.js"
+  ],
+  "vue": [
+    "vue",
+    "vuejs",
+    "vue.js"
+  ],
+  "angular": [
+    "angular",
+    "angularjs"
+  ],
+  "nextjs": [
+    "next.js",
+    "nextjs",
+    "next"
+  ],
+  "svelte": [
+    "svelte",
+    "sveltejs",
+    "sveltekit"
+  ],
+  "tailwindcss": [
+    "tailwind",
+    "tailwindcss",
+    "tailwind css"
+  ],
+  "webpack": [
+    "webpack"
+  ],
+  "nodejs": [
+    "node.js",
+    "nodejs",
+    "node"
+  ],
+  "express": [
+    "express",
+    "expressjs",
+    "express.js"
+  ],
+  "spring": [
+    "spring",
+    "spring boot",
+    "springboot"
+  ],
+  "django": [
+    "django"
+  ],
+  "flask": [
+    "flask"
+  ],
+  "gin": [
+    "gin"
+  ],
+  "graphql": [
+    "graphql",
+    "gql"
+  ],
+  "grpc": [
+    "grpc"
+  ],
+  "openapi": [
+    "openapi",
+    "swagger"
+  ],
+  "aws": [
+    "aws",
+    "amazon web services"
+  ],
+  "gcp": [
+    "gcp",
+    "google cloud",
+    "google cloud platform"
+  ],
+  "azure": [
+    "azure",
+    "microsoft azure"
+  ],
+  "terraform": [
+    "terraform",
+    "iac"
+  ],
+  "ansible": [
+    "ansible"
+  ],
+  "jenkins": [
+    "jenkins"
+  ],
+  "github_actions": [
+    "github actions",
+    "gh actions"
+  ],
+  "prometheus": [
+    "prometheus"
+  ],
+  "grafana": [
+    "grafana"
+  ],
+  "helm": [
+    "helm",
+    "helm chart"
+  ],
+  "istio": [
+    "istio",
+    "service mesh"
+  ],
+  "argocd": [
+    "argo cd",
+    "argocd"
+  ],
+  "packer": [
+    "packer"
+  ],
+  "postgresql": [
+    "postgresql",
+    "postgres",
+    "pgsql"
+  ],
+  "mysql": [
+    "mysql"
+  ],
+  "elasticsearch": [
+    "elasticsearch",
+    "elastic",
+    "es"
+  ],
+  "cassandra": [
+    "cassandra"
+  ],
+  "sqlite": [
+    "sqlite"
+  ],
+  "neo4j": [
+    "neo4j",
+    "图数据库"
+  ],
+  "spark": [
+    "spark",
+    "apache spark",
+    "pyspark"
+  ],
+  "kafka": [
+    "kafka",
+    "apache kafka"
+  ],
+  "airflow": [
+    "airflow",
+    "apache airflow"
+  ],
+  "snowflake": [
+    "snowflake"
+  ],
+  "dbt": [
+    "dbt",
+    "data build tool"
+  ],
+  "hadoop": [
+    "hadoop",
+    "hdfs"
+  ],
+  "pandas": [
+    "pandas"
+  ],
+  "numpy": [
+    "numpy"
+  ],
+  "scikit_learn": [
+    "scikit-learn",
+    "sklearn"
+  ],
+  "mlflow": [
+    "mlflow"
+  ],
+  "xgboost": [
+    "xgboost"
+  ],
+  "jupyter": [
+    "jupyter",
+    "jupyter notebook"
+  ],
+  "cnn": [
+    "cnn",
+    "卷积神经网络",
+    "convolutional neural network"
+  ],
+  "rnn": [
+    "rnn",
+    "循环神经网络"
+  ],
+  "transfer_learning": [
+    "迁移学习",
+    "transfer learning"
+  ],
+  "embedding": [
+    "embedding",
+    "向量表示",
+    "词嵌入"
+  ],
+  "ios": [
+    "ios",
+    "苹果"
+  ],
+  "android": [
+    "android",
+    "安卓"
+  ],
+  "react_native": [
+    "react native",
+    "rn"
+  ],
+  "flutter": [
+    "flutter"
+  ],
+  "pytest": [
+    "pytest"
+  ],
+  "jest": [
+    "jest"
+  ],
+  "selenium": [
+    "selenium"
+  ],
+  "owasp": [
+    "owasp"
+  ],
+  "oauth": [
+    "oauth",
+    "oauth2"
+  ],
+  "jwt": [
+    "jwt",
+    "json web token"
+  ],
+  "vector_database": [
+    "向量数据库",
+    "vector database",
+    "vector db"
+  ],
+  "ollama": [
+    "ollama"
+  ],
+  "chain_of_thought": [
+    "chain of thought",
+    "cot",
+    "思维链"
+  ],
+  "microservices": [
+    "microservices",
+    "微服务"
+  ],
+  "cloud_native_practice": [
+    "云原生",
+    "cloud native",
+    "云原生实践"
+  ],
+  "distributed_systems": [
+    "分布式系统",
+    "distributed systems"
+  ],
+  "system_design": [
+    "系统设计",
+    "system design"
+  ],
+  "mobile_dev_practice": [
+    "移动开发",
+    "mobile dev",
+    "mobile development"
+  ],
+  "security_practice": [
+    "安全实践",
+    "security practice"
+  ],
+  "testing_practice": [
+    "测试实践",
+    "testing",
+    "qa"
+  ],
+  "llm_practice": [
+    "llm 应用",
+    "llm practice",
+    "llm 工程"
+  ],
+  "devops_engineering": [
+    "devops 工程",
+    "devops engineering"
+  ],
+  "mobile_engineering": [
+    "移动工程",
+    "mobile engineering"
+  ],
+  "security_engineering": [
+    "安全工程",
+    "security engineering"
+  ],
+  "llm_engineering": [
+    "llm 工程",
+    "llm engineering",
+    "大模型工程"
+  ],
+  "devops_direction": [
+    "devops 方向",
+    "devops 路线"
+  ],
+  "mobile_direction": [
+    "移动方向",
+    "移动开发方向"
+  ],
+  "security_direction": [
+    "安全方向"
+  ],
+  "fullstack_direction": [
+    "全栈方向"
+  ],
+  "ai_engineering_direction": [
+    "ai 工程方向",
+    "ai engineering"
+  ],
+  "devops_engineer": [
+    "devops 工程师",
+    "devops engineer"
+  ],
+  "sre": [
+    "sre",
+    "站点可靠性工程师",
+    "site reliability engineer"
+  ],
+  "mobile_engineer": [
+    "移动开发工程师",
+    "mobile engineer",
+    "app 工程师"
+  ],
+  "security_engineer": [
+    "安全工程师",
+    "security engineer"
+  ],
+  "fullstack_engineer": [
+    "全栈工程师",
+    "full-stack engineer",
+    "fullstack"
+  ],
+  "ai_engineer": [
+    "ai 工程师",
+    "ai engineer",
+    "llm 工程师"
   ]
 }
