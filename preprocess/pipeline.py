@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import Counter, defaultdict
+from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List
 
-from .catalog import EntityCatalog, compact_text, load_entity_catalog
-from .collector import RAW_SOURCE_DIR, _load_directory_snapshot
+from .catalog import EntityCatalog, load_entity_catalog
+from .collector import RAW_SOURCE_DIR, load_raw_documents
 from .extractor import extract_mentions
 from .models import RawDocument, ResolvedEntity
 
@@ -26,7 +26,6 @@ def _build_entity_summary(catalog: EntityCatalog, mentions_by_doc: Dict[str, Lis
             label=entity.label,
             layer=entity.layer,
             aliases=list(entity.aliases),
-            alias_sources=dict(entity.alias_sources),
         )
 
     for doc_id, mentions in mentions_by_doc.items():
@@ -41,187 +40,6 @@ def _build_entity_summary(catalog: EntityCatalog, mentions_by_doc: Dict[str, Lis
 
     # 没有被命中的实体保留在结果中，方便后续做覆盖率检查。
     return sorted(summary.values(), key=lambda item: (item.layer, item.entity_id))
-
-
-def _build_entity_catalog_snapshot(catalog: EntityCatalog) -> List[dict]:
-    """导出完整实体目录快照。
-
-    这里直接保留实体定义原貌，方便后续调试别名覆盖、人工补词典，
-    也方便把预处理输出直接喂给别的离线任务。
-    """
-
-    entities = [entity.to_dict() for entity in catalog.iter_entities()]
-    return sorted(entities, key=lambda item: (item["layer"], item["entity_id"]))
-
-
-def _build_alias_index_snapshot(catalog: EntityCatalog) -> tuple[List[dict], dict]:
-    """导出反向别名索引，便于检查别名冲突和覆盖盲区。
-
-    这个视图直接把“一个别名会命中哪些实体”展开出来，适合人工排查：
-    - 哪些别名是单义词
-    - 哪些别名会撞多个实体
-    - 每个候选实体是通过什么来源进入索引的
-    """
-
-    alias_entries: List[dict] = []
-    total_candidates = 0
-    ambiguous_alias_count = 0
-
-    for compact_alias, items in sorted(catalog.alias_index.items(), key=lambda item: (len(item[1]), item[0])):
-        candidates: List[dict] = []
-        seen_candidates = set()
-        for entity_id, surface, source in items:
-            candidate_key = (entity_id, surface, source)
-            if candidate_key in seen_candidates:
-                continue
-            seen_candidates.add(candidate_key)
-            entity = catalog.entities[entity_id]
-            candidates.append(
-                {
-                    "entity_id": entity.entity_id,
-                    "label": entity.label,
-                    "layer": entity.layer,
-                    "surface": surface,
-                    "source": source,
-                }
-            )
-
-        candidate_entity_ids = {item["entity_id"] for item in candidates}
-        if len(candidate_entity_ids) > 1:
-            ambiguous_alias_count += 1
-        total_candidates += len(candidates)
-
-        alias_entries.append(
-            {
-                "compact_alias": compact_alias,
-                "candidate_count": len(candidates),
-                "entity_count": len(candidate_entity_ids),
-                "is_ambiguous": len(candidate_entity_ids) > 1,
-                "candidates": candidates,
-            }
-        )
-
-    alias_entries.sort(
-        key=lambda item: (
-            -item["candidate_count"],
-            -item["entity_count"],
-            item["compact_alias"],
-        )
-    )
-
-    stats = {
-        "alias_entries": len(alias_entries),
-        "candidate_links": total_candidates,
-        "ambiguous_aliases": ambiguous_alias_count,
-        "single_entity_aliases": len(alias_entries) - ambiguous_alias_count,
-    }
-    return alias_entries, stats
-
-
-def _build_document_entity_summary(
-    documents: List[RawDocument],
-    mentions_by_doc: Dict[str, List[dict]],
-) -> List[dict]:
-    """按文档汇总实体命中。
-
-    这个视图比原始 mentions 更适合人工抽查：
-    - 可以快速看到每篇文档抽到了哪些实体
-    - 可以直接定位一篇文档里的高频实体
-    - 也方便后续把实体统计喂给别的离线任务
-    """
-
-    entity_lookup: Dict[str, dict] = {}
-    for doc in documents:
-        mentions = mentions_by_doc.get(doc.doc_id, [])
-        entity_stats: Dict[str, dict] = {}
-
-        for mention in mentions:
-            entity_id = mention["entity_id"]
-            stats = entity_stats.setdefault(
-                entity_id,
-                {
-                    "entity_id": entity_id,
-                    "entity_label": mention["entity_label"],
-                    "layer": mention["layer"],
-                    "mention_count": 0,
-                    "sample_surfaces": [],
-                },
-            )
-            stats["mention_count"] += 1
-            if mention["surface"] not in stats["sample_surfaces"]:
-                stats["sample_surfaces"].append(mention["surface"])
-
-        entity_lookup[doc.doc_id] = {
-            "doc_id": doc.doc_id,
-            "source": doc.source,
-            "title": doc.title,
-            "mention_count": len(mentions),
-            "entity_count": len(entity_stats),
-            "entities": sorted(
-                entity_stats.values(),
-                key=lambda item: (-item["mention_count"], item["layer"], item["entity_id"]),
-            ),
-        }
-
-    return [entity_lookup[doc.doc_id] for doc in documents]
-
-
-def _build_entity_document_report(
-    catalog: EntityCatalog,
-    documents: List[RawDocument],
-    mentions_by_doc: Dict[str, List[dict]],
-) -> List[dict]:
-    """按实体展开到文档维度的关联报告。
-
-    这个报告比 `entities.json` 更细：
-    - 每个实体会列出命中的文档及各自的命中次数
-    - 每篇文档还会保留几条表面形式样例，方便人工快速定位
-    - 没有命中的实体也保留在结果里，便于检查覆盖率
-    """
-
-    report: Dict[str, dict] = {
-        entity.entity_id: {
-            "entity_id": entity.entity_id,
-            "label": entity.label,
-            "layer": entity.layer,
-            "mention_count": 0,
-            "doc_count": 0,
-            "documents": [],
-        }
-        for entity in catalog.iter_entities()
-    }
-
-    doc_lookup = {doc.doc_id: doc for doc in documents}
-    per_entity_doc_stats: Dict[str, Dict[str, dict]] = {entity_id: {} for entity_id in report}
-
-    for doc_id, mentions in mentions_by_doc.items():
-        if doc_id not in doc_lookup:
-            continue
-        doc = doc_lookup[doc_id]
-        for mention in mentions:
-            entity_id = mention["entity_id"]
-            entity_report = report[entity_id]
-            doc_stats = per_entity_doc_stats[entity_id].setdefault(
-                doc_id,
-                {
-                    "doc_id": doc_id,
-                    "title": doc.title,
-                    "mention_count": 0,
-                    "sample_surfaces": [],
-                },
-            )
-            doc_stats["mention_count"] += 1
-            if mention["surface"] not in doc_stats["sample_surfaces"]:
-                doc_stats["sample_surfaces"].append(mention["surface"])
-            entity_report["mention_count"] += 1
-
-    for entity_id, entity_report in report.items():
-        doc_items = list(per_entity_doc_stats[entity_id].values())
-        doc_items.sort(key=lambda item: (-item["mention_count"], item["doc_id"]))
-        entity_report["doc_count"] = len(doc_items)
-        entity_report["documents"] = doc_items
-
-    return sorted(report.values(), key=lambda item: (item["layer"], item["entity_id"]))
 
 
 def _build_entity_coverage_report(entity_summary: List[ResolvedEntity]) -> dict:
@@ -264,482 +82,16 @@ def _build_entity_coverage_report(entity_summary: List[ResolvedEntity]) -> dict:
     }
 
 
-def _build_uncovered_entity_report(catalog: EntityCatalog, entity_summary: List[ResolvedEntity]) -> List[dict]:
-    """导出未被覆盖的实体明细，方便后续补语料和补别名。"""
-
-    summary_lookup = {item.entity_id: item for item in entity_summary}
-    uncovered_entities: List[dict] = []
-
-    for entity in catalog.iter_entities():
-        summary = summary_lookup[entity.entity_id]
-        if summary.mention_count > 0:
-            continue
-
-        uncovered_entities.append(
-            {
-                "entity_id": entity.entity_id,
-                "label": entity.label,
-                "layer": entity.layer,
-                "aliases": list(entity.aliases),
-                "alias_sources": dict(entity.alias_sources),
-                "mention_count": summary.mention_count,
-                "doc_count": summary.doc_count,
-            }
-        )
-
-    return sorted(uncovered_entities, key=lambda item: (item["layer"], item["entity_id"]))
-
-
-def _build_uncovered_entity_candidate_report(
-    catalog: EntityCatalog,
-    entity_summary: List[ResolvedEntity],
-) -> List[dict]:
-    """导出未覆盖实体的别名候选优先级，方便补词典和补语料。
-
-    这里不是简单重复 `uncovered_entities.json`，而是把每个未覆盖实体的别名
-    按“更像人工会先补的词”重新排序，并给出一个粗略优先级分值。
-    """
-
-    summary_lookup = {item.entity_id: item for item in entity_summary}
-    source_priority = {
-        "explicit": 5,
-        "label": 4,
-        "id": 3,
-        "id_words": 2,
-        "generated": 1,
-    }
-
-    def _alias_key(alias: str, source: str) -> tuple[int, int, str]:
-        compact_alias = len(compact_text(alias))
-        return (-source_priority.get(source, 0), compact_alias, alias)
-
-    candidates: List[dict] = []
-    for entity in catalog.iter_entities():
-        summary = summary_lookup[entity.entity_id]
-        if summary.mention_count > 0:
-            continue
-
-        alias_items = [
-            {
-                "alias": alias,
-                "source": source,
-            }
-            for alias, source in sorted(entity.alias_sources.items(), key=lambda item: _alias_key(item[0], item[1]))
-        ]
-        explicit_alias_count = sum(1 for item in alias_items if item["source"] == "explicit")
-        generated_alias_count = sum(1 for item in alias_items if item["source"] == "generated")
-
-        candidates.append(
-            {
-                "entity_id": entity.entity_id,
-                "label": entity.label,
-                "layer": entity.layer,
-                "alias_count": len(alias_items),
-                "explicit_alias_count": explicit_alias_count,
-                "generated_alias_count": generated_alias_count,
-                "coverage_priority": round(
-                    explicit_alias_count * 3.0
-                    + (len(alias_items) - generated_alias_count) * 0.5
-                    + max(0, 8 - len(entity.label)) * 0.1,
-                    3,
-                ),
-                "recommended_aliases": alias_items[:8],
-            }
-        )
-
-    return sorted(
-        candidates,
-        key=lambda item: (
-            -item["coverage_priority"],
-            -item["alias_count"],
-            item["layer"],
-            item["entity_id"],
-        ),
-    )
-
-
-def _build_disambiguation_review(mentions: List[dict], threshold: float) -> dict:
-    """构建消歧复核清单。
-
-    这里不直接改写原始命中结果，而是把低置信度样本单独输出，
-    方便后续人工检查别名覆盖是否足够、消歧规则是否需要补强。
-    """
-
-    uncertain_mentions = [
-        mention
-        for mention in mentions
-        if float(mention.get("confidence", 0.0)) < threshold
-    ]
-    uncertain_mentions.sort(
-        key=lambda item: (
-            float(item.get("confidence", 0.0)),
-            item.get("doc_id", ""),
-            int(item.get("span_start", 0)),
-            int(item.get("span_end", 0)),
-        )
-    )
-
-    entity_counter = Counter(mention["entity_id"] for mention in uncertain_mentions)
-    doc_counter = Counter(mention["doc_id"] for mention in uncertain_mentions)
-
-    return {
-        "threshold": threshold,
-        "uncertain_count": len(uncertain_mentions),
-        "uncertain_document_count": len(doc_counter),
-        "uncertain_entity_count": len(entity_counter),
-        "top_uncertain_entities": [
-            {"entity_id": entity_id, "count": count}
-            for entity_id, count in entity_counter.most_common(10)
-        ],
-        "top_uncertain_documents": [
-            {"doc_id": doc_id, "count": count}
-            for doc_id, count in doc_counter.most_common(10)
-        ],
-        "uncertain_mentions": uncertain_mentions,
-    }
-
-
-def _build_disambiguation_trace(mentions: List[dict]) -> dict:
-    """构建消歧轨迹清单。
-
-    只保留发生歧义的命中，便于人工复核：
-    - 同一个别名会撞到哪些实体
-    - 最终实体与次优实体的分差是多少
-    - 候选排序是否符合直觉
-    """
-
-    ambiguous_mentions = [
-        mention
-        for mention in mentions
-        if int(mention.get("candidate_count", 0)) > 1
-    ]
-    ambiguous_mentions.sort(
-        key=lambda item: (
-            float(item.get("score_gap", 1.0) if item.get("score_gap") is not None else 1.0),
-            -int(item.get("candidate_count", 0)),
-            item.get("doc_id", ""),
-            int(item.get("span_start", 0)),
-            int(item.get("span_end", 0)),
-        )
-    )
-
-    near_tie_mentions = [
-        mention
-        for mention in ambiguous_mentions
-        if mention.get("score_gap") is not None and float(mention["score_gap"]) <= 0.05
-    ]
-
-    return {
-        "ambiguous_count": len(ambiguous_mentions),
-        "near_tie_count": len(near_tie_mentions),
-        "unique_document_count": len({item["doc_id"] for item in ambiguous_mentions}),
-        "unique_entity_count": len({item["entity_id"] for item in ambiguous_mentions}),
-        "top_ambiguous_mentions": ambiguous_mentions[:50],
-    }
-
-
-def _build_alias_ambiguity_report(mentions: List[dict]) -> dict:
-    """把歧义命中按别名和实体聚合，便于优先修词典。
-
-    只看总量不够定位问题，这里进一步输出：
-    - 哪些表面形式最容易撞多个候选实体
-    - 哪些实体最容易出现在歧义命中里
-    - 近似平局的歧义样本主要集中在哪些别名上
-    """
-
-    ambiguous_mentions = [
-        mention
-        for mention in mentions
-        if int(mention.get("candidate_count", 0)) > 1
-    ]
-
-    surface_buckets: Dict[str, dict] = {}
-    entity_buckets: Dict[str, dict] = {}
-
-    for mention in ambiguous_mentions:
-        surface = str(mention.get("surface", "")).strip() or "<empty>"
-        entity_id = str(mention.get("entity_id", "")).strip() or "<unknown>"
-        score_gap = mention.get("score_gap")
-        is_near_tie = score_gap is not None and float(score_gap) <= 0.05
-
-        surface_bucket = surface_buckets.setdefault(
-            surface,
-            {
-                "surface": surface,
-                "count": 0,
-                "near_tie_count": 0,
-                "entity_ids": set(),
-                "doc_ids": set(),
-                "max_candidate_count": 0,
-                "min_score_gap": None,
-            },
-        )
-        surface_bucket["count"] += 1
-        if is_near_tie:
-            surface_bucket["near_tie_count"] += 1
-        surface_bucket["entity_ids"].add(entity_id)
-        surface_bucket["doc_ids"].add(str(mention.get("doc_id", "")))
-        surface_bucket["max_candidate_count"] = max(
-            surface_bucket["max_candidate_count"],
-            int(mention.get("candidate_count", 0)),
-        )
-        current_gap = float(score_gap) if score_gap is not None else None
-        previous_gap = surface_bucket["min_score_gap"]
-        if current_gap is not None and (previous_gap is None or current_gap < previous_gap):
-            surface_bucket["min_score_gap"] = current_gap
-
-        entity_bucket = entity_buckets.setdefault(
-            entity_id,
-            {
-                "entity_id": entity_id,
-                "count": 0,
-                "near_tie_count": 0,
-                "surfaces": set(),
-                "doc_ids": set(),
-            },
-        )
-        entity_bucket["count"] += 1
-        if is_near_tie:
-            entity_bucket["near_tie_count"] += 1
-        entity_bucket["surfaces"].add(surface)
-        entity_bucket["doc_ids"].add(str(mention.get("doc_id", "")))
-
-    top_surfaces = []
-    for bucket in surface_buckets.values():
-        top_surfaces.append(
-            {
-                "surface": bucket["surface"],
-                "count": bucket["count"],
-                "near_tie_count": bucket["near_tie_count"],
-                "unique_entity_count": len(bucket["entity_ids"]),
-                "unique_document_count": len(bucket["doc_ids"]),
-                "max_candidate_count": bucket["max_candidate_count"],
-                "min_score_gap": bucket["min_score_gap"],
-            }
-        )
-    top_surfaces.sort(
-        key=lambda item: (
-            -item["count"],
-            -item["near_tie_count"],
-            -item["unique_entity_count"],
-            item["surface"],
-        )
-    )
-
-    top_entities = []
-    for bucket in entity_buckets.values():
-        top_entities.append(
-            {
-                "entity_id": bucket["entity_id"],
-                "count": bucket["count"],
-                "near_tie_count": bucket["near_tie_count"],
-                "unique_surface_count": len(bucket["surfaces"]),
-                "unique_document_count": len(bucket["doc_ids"]),
-            }
-        )
-    top_entities.sort(
-        key=lambda item: (
-            -item["count"],
-            -item["near_tie_count"],
-            -item["unique_surface_count"],
-            item["entity_id"],
-        )
-    )
-
-    return {
-        "ambiguous_mention_count": len(ambiguous_mentions),
-        "unique_surface_count": len(surface_buckets),
-        "unique_entity_count": len(entity_buckets),
-        "top_surfaces": top_surfaces[:20],
-        "top_entities": top_entities[:20],
-    }
-
-
-def _build_stage_summary(
-    stage: str,
-    source_manifest: dict,
-    document_count: int,
-    documents_with_mentions: int,
-    mention_count: int,
-    entity_count: int,
-    covered_entities: int,
-    disambiguation_review: dict,
-    disambiguation_trace: dict,
-    alias_ambiguity_report: dict,
-    uncovered_entity_report: List[dict],
-    uncovered_entity_candidate_report: List[dict],
-    review_threshold: float,
-) -> dict:
-    """把流水线拆成更清晰的阶段摘要，方便人工检查和后续联调。
-
-    summary.json 仍然保留整体统计；这里额外补一份 stage_summary.json，
-    让“采集 / 抽取 / 消歧 / 覆盖”各阶段的关键指标一眼可见。
-    """
-
-    return {
-        "stage": stage,
-        "collection": {
-            "input_dir": source_manifest.get("input_dir"),
-            "scanned_files": source_manifest.get("scanned_files", 0),
-            "loaded_files": source_manifest.get("loaded_files", 0),
-            "loaded_with_errors_files": source_manifest.get("loaded_with_errors_files", 0),
-            "skipped_files": source_manifest.get("skipped_files", 0),
-            "error_files": source_manifest.get("error_files", 0),
-            "parse_error_count": source_manifest.get("parse_error_count", 0),
-            "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
-            "format_stats": {
-                "loaded_by_format": source_manifest.get("loaded_by_format", {}),
-                "skipped_by_format": source_manifest.get("skipped_by_format", {}),
-                "error_by_format": source_manifest.get("error_by_format", {}),
-                "loaded_with_errors_by_format": source_manifest.get("loaded_with_errors_by_format", {}),
-            },
-        },
-        "extraction": {
-            "documents": document_count,
-            "documents_with_mentions": documents_with_mentions,
-            "mentions": mention_count,
-            "entities": entity_count,
-            "coverage_rate": round(covered_entities / entity_count, 4) if entity_count else 0.0,
-        },
-        "disambiguation": {
-            "review_threshold": review_threshold,
-            "uncertain_mentions": disambiguation_review["uncertain_count"],
-            "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
-            "near_tie_mentions": disambiguation_trace["near_tie_count"],
-            "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
-            "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
-        },
-        "coverage": {
-            "covered_entities": covered_entities,
-            "uncovered_entities": entity_count - covered_entities,
-            "uncovered_entity_details": len(uncovered_entity_report),
-            "uncovered_entity_candidates": len(uncovered_entity_candidate_report),
-        },
-    }
-
-
-def _build_collection_only_stage_summary(stage: str, source_manifest: dict, document_count: int) -> dict:
-    """只做原始数据收集时使用的阶段摘要。
-
-    采集阶段只关心原始输入是否读进来、读进来多少、有没有错误，
-    不引入后续抽取和消歧结果，避免对外释放不准确的统计。
-    """
-
-    return {
-        "stage": stage,
-        "collection": {
-            "input_dir": source_manifest.get("input_dir"),
-            "scanned_files": source_manifest.get("scanned_files", 0),
-            "loaded_files": source_manifest.get("loaded_files", 0),
-            "loaded_with_errors_files": source_manifest.get("loaded_with_errors_files", 0),
-            "skipped_files": source_manifest.get("skipped_files", 0),
-            "error_files": source_manifest.get("error_files", 0),
-            "parse_error_count": source_manifest.get("parse_error_count", 0),
-            "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
-        },
-        "documents": document_count,
-    }
-
-
 def _dump_json(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def run_pipeline(
-    input_dir: Path | None = None,
-    output_dir: Path | None = None,
-    review_threshold: float = 0.98,
-    stage: str = "full",
-) -> Dict[str, object]:
+def run_pipeline(input_dir: Path | None = None, output_dir: Path | None = None) -> Dict[str, object]:
     """执行完整预处理流程。"""
 
-    resolved_output_dir = output_dir or OUTPUT_DIR
-    directory = input_dir or RAW_SOURCE_DIR
-
-    source_manifest, documents = _load_directory_snapshot(directory, enforce_unique_doc_ids=True)
-
-    if stage == "collect":
-        stage_summary = _build_collection_only_stage_summary(stage, source_manifest, len(documents))
-        _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
-        _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
-        _dump_json(resolved_output_dir / "stage_summary.json", stage_summary)
-        _dump_json(
-            resolved_output_dir / "summary.json",
-            {
-                "stage": stage,
-                "documents": len(documents),
-                "source_files": len({doc.metadata.get("source_path", doc.doc_id) for doc in documents}),
-                "scanned_source_files": source_manifest["scanned_files"],
-                "loaded_source_files": source_manifest["loaded_files"],
-                "skipped_source_files": source_manifest["skipped_files"],
-                "error_source_files": source_manifest.get("error_files", 0),
-                "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
-                "parse_error_count": source_manifest.get("parse_error_count", 0),
-                "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
-                "mentions": 0,
-                "entities": 0,
-                "catalog_entities": 0,
-                "alias_entries": 0,
-                "ambiguous_aliases": 0,
-                "single_entity_aliases": 0,
-                "ambiguous_mentions": 0,
-                "near_tie_mentions": 0,
-                "ambiguous_surface_count": 0,
-                "ambiguous_entity_count": 0,
-                "hit_entities": 0,
-                "covered_entities": 0,
-                "uncovered_entities": 0,
-                "uncovered_entity_details": 0,
-                "uncovered_entity_candidates": 0,
-                "documents_with_mentions": 0,
-                "average_mentions_per_document": 0.0,
-                "review_threshold": review_threshold,
-                "uncertain_mentions": 0,
-                "source_dir": str(input_dir or RAW_SOURCE_DIR),
-                "output_dir": str(resolved_output_dir),
-                "format_stats": {
-                    "loaded_by_format": source_manifest.get("loaded_by_format", {}),
-                    "skipped_by_format": source_manifest.get("skipped_by_format", {}),
-                    "error_by_format": source_manifest.get("error_by_format", {}),
-                    "loaded_with_errors_by_format": source_manifest.get("loaded_with_errors_by_format", {}),
-                },
-                "stage_summary": stage_summary,
-            },
-        )
-        return {
-            "stage": stage,
-            "documents": len(documents),
-            "mentions": 0,
-            "entities": 0,
-            "uncertain_mentions": 0,
-            "ambiguous_mentions": 0,
-            "near_tie_mentions": 0,
-            "ambiguous_surface_count": 0,
-            "ambiguous_entity_count": 0,
-            "uncovered_entity_candidates": 0,
-            "review_threshold": review_threshold,
-            "scanned_source_files": source_manifest["scanned_files"],
-            "loaded_source_files": source_manifest["loaded_files"],
-            "skipped_source_files": source_manifest["skipped_files"],
-            "error_source_files": source_manifest.get("error_files", 0),
-            "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
-            "parse_error_count": source_manifest.get("parse_error_count", 0),
-            "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
-            "format_stats": {
-                "loaded_by_format": source_manifest.get("loaded_by_format", {}),
-                "skipped_by_format": source_manifest.get("skipped_by_format", {}),
-                "error_by_format": source_manifest.get("error_by_format", {}),
-                "loaded_with_errors_by_format": source_manifest.get("loaded_with_errors_by_format", {}),
-            },
-            "stage_summary": stage_summary,
-            "output_dir": str(resolved_output_dir),
-        }
-
-    if stage not in {"extract", "full"}:
-        raise ValueError(f"不支持的 stage: {stage}")
-
     catalog = load_entity_catalog()
+    documents = load_raw_documents(input_dir)
 
     all_mentions: List[dict] = []
     mentions_by_doc: Dict[str, List[dict]] = defaultdict(list)
@@ -755,111 +107,11 @@ def run_pipeline(
     covered_entities = sum(1 for item in entity_summary if item.mention_count > 0)
     total_entities = len(entity_summary)
     coverage_report = _build_entity_coverage_report(entity_summary)
-    uncovered_entity_report = _build_uncovered_entity_report(catalog, entity_summary)
-    uncovered_entity_candidate_report = _build_uncovered_entity_candidate_report(catalog, entity_summary)
-    disambiguation_review = _build_disambiguation_review(all_mentions, review_threshold)
-    disambiguation_trace = _build_disambiguation_trace(all_mentions)
-    alias_ambiguity_report = _build_alias_ambiguity_report(all_mentions)
-    alias_index_snapshot, alias_index_stats = _build_alias_index_snapshot(catalog)
-    format_stats = {
-        "loaded_by_format": source_manifest.get("loaded_by_format", {}),
-        "skipped_by_format": source_manifest.get("skipped_by_format", {}),
-        "error_by_format": source_manifest.get("error_by_format", {}),
-        "loaded_with_errors_by_format": source_manifest.get("loaded_with_errors_by_format", {}),
-    }
-    stage_summary = _build_stage_summary(
-        stage=stage,
-        source_manifest=source_manifest,
-        document_count=len(documents),
-        documents_with_mentions=len(mentions_by_doc),
-        mention_count=len(all_mentions),
-        entity_count=total_entities,
-        covered_entities=covered_entities,
-        disambiguation_review=disambiguation_review,
-        disambiguation_trace=disambiguation_trace,
-        alias_ambiguity_report=alias_ambiguity_report,
-        uncovered_entity_report=uncovered_entity_report,
-        uncovered_entity_candidate_report=uncovered_entity_candidate_report,
-        review_threshold=review_threshold,
-    )
 
+    resolved_output_dir = output_dir or OUTPUT_DIR
     _dump_json(resolved_output_dir / "documents.json", [doc.to_dict() for doc in documents])
-    _dump_json(resolved_output_dir / "source_manifest.json", source_manifest)
     _dump_json(resolved_output_dir / "mentions.json", all_mentions)
-    _dump_json(resolved_output_dir / "entity_catalog.json", _build_entity_catalog_snapshot(catalog))
-    _dump_json(resolved_output_dir / "alias_index.json", alias_index_snapshot)
-    _dump_json(
-        resolved_output_dir / "document_entities.json",
-        _build_document_entity_summary(documents, mentions_by_doc),
-    )
-    _dump_json(
-        resolved_output_dir / "entity_documents.json",
-        _build_entity_document_report(catalog, documents, mentions_by_doc),
-    )
     _dump_json(resolved_output_dir / "entities.json", [item.to_dict() for item in entity_summary])
-    _dump_json(resolved_output_dir / "disambiguation_review.json", disambiguation_review)
-    _dump_json(resolved_output_dir / "disambiguation_trace.json", disambiguation_trace)
-    _dump_json(resolved_output_dir / "alias_ambiguity.json", alias_ambiguity_report)
-    _dump_json(resolved_output_dir / "stage_summary.json", stage_summary)
-
-    if stage == "extract":
-        _dump_json(
-            resolved_output_dir / "summary.json",
-            {
-                "stage": stage,
-                "documents": len(documents),
-                "source_files": len({doc.metadata.get("source_path", doc.doc_id) for doc in documents}),
-                "scanned_source_files": source_manifest["scanned_files"],
-                "loaded_source_files": source_manifest["loaded_files"],
-                "skipped_source_files": source_manifest["skipped_files"],
-                "error_source_files": source_manifest.get("error_files", 0),
-                "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
-                "parse_error_count": source_manifest.get("parse_error_count", 0),
-                "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
-                "format_stats": format_stats,
-                "mentions": len(all_mentions),
-                "entities": total_entities,
-                "catalog_entities": len(catalog.entities),
-                "alias_entries": alias_index_stats["alias_entries"],
-                "ambiguous_aliases": alias_index_stats["ambiguous_aliases"],
-                "single_entity_aliases": alias_index_stats["single_entity_aliases"],
-                "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
-                "near_tie_mentions": disambiguation_trace["near_tie_count"],
-                "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
-                "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
-                "stage_summary": stage_summary,
-                "documents_with_mentions": len(mentions_by_doc),
-                "average_mentions_per_document": round(len(all_mentions) / len(documents), 4) if documents else 0.0,
-                "review_threshold": review_threshold,
-                "uncertain_mentions": disambiguation_review["uncertain_count"],
-                "source_dir": str(input_dir or RAW_SOURCE_DIR),
-                "output_dir": str(resolved_output_dir),
-            },
-        )
-        return {
-            "stage": stage,
-            "documents": len(documents),
-            "mentions": len(all_mentions),
-            "entities": len(entity_summary),
-            "uncertain_mentions": disambiguation_review["uncertain_count"],
-            "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
-            "near_tie_mentions": disambiguation_trace["near_tie_count"],
-            "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
-            "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
-            "uncovered_entity_candidates": len(uncovered_entity_candidate_report),
-            "review_threshold": review_threshold,
-            "scanned_source_files": source_manifest["scanned_files"],
-            "loaded_source_files": source_manifest["loaded_files"],
-            "skipped_source_files": source_manifest["skipped_files"],
-            "error_source_files": source_manifest.get("error_files", 0),
-            "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
-            "parse_error_count": source_manifest.get("parse_error_count", 0),
-            "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
-            "format_stats": format_stats,
-            "stage_summary": stage_summary,
-            "output_dir": str(resolved_output_dir),
-        }
-
     _dump_json(
         resolved_output_dir / "entity_coverage.json",
         {
@@ -869,68 +121,28 @@ def run_pipeline(
             **coverage_report,
         },
     )
-    _dump_json(resolved_output_dir / "uncovered_entities.json", uncovered_entity_report)
-    _dump_json(resolved_output_dir / "uncovered_entity_candidates.json", uncovered_entity_candidate_report)
     _dump_json(
         resolved_output_dir / "summary.json",
         {
-            "stage": stage,
             "documents": len(documents),
             "source_files": len({doc.metadata.get("source_path", doc.doc_id) for doc in documents}),
-            "scanned_source_files": source_manifest["scanned_files"],
-            "loaded_source_files": source_manifest["loaded_files"],
-            "skipped_source_files": source_manifest["skipped_files"],
-            "error_source_files": source_manifest.get("error_files", 0),
-            "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
-            "parse_error_count": source_manifest.get("parse_error_count", 0),
-            "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
-            "format_stats": format_stats,
             "mentions": len(all_mentions),
             "entities": total_entities,
             "catalog_entities": len(catalog.entities),
-            "alias_entries": alias_index_stats["alias_entries"],
-            "ambiguous_aliases": alias_index_stats["ambiguous_aliases"],
-            "single_entity_aliases": alias_index_stats["single_entity_aliases"],
-            "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
-            "near_tie_mentions": disambiguation_trace["near_tie_count"],
-            "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
-            "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
-            "stage_summary": stage_summary,
             "hit_entities": covered_entities,
             "covered_entities": covered_entities,
             "uncovered_entities": total_entities - covered_entities,
-            "uncovered_entity_details": len(uncovered_entity_report),
-            "uncovered_entity_candidates": len(uncovered_entity_candidate_report),
             "documents_with_mentions": len(mentions_by_doc),
             "average_mentions_per_document": round(len(all_mentions) / len(documents), 4) if documents else 0.0,
-            "review_threshold": review_threshold,
-            "uncertain_mentions": disambiguation_review["uncertain_count"],
             "source_dir": str(input_dir or RAW_SOURCE_DIR),
             "output_dir": str(resolved_output_dir),
         },
     )
 
     return {
-        "stage": stage,
         "documents": len(documents),
         "mentions": len(all_mentions),
         "entities": len(entity_summary),
-        "uncertain_mentions": disambiguation_review["uncertain_count"],
-        "ambiguous_mentions": disambiguation_trace["ambiguous_count"],
-        "near_tie_mentions": disambiguation_trace["near_tie_count"],
-        "ambiguous_surface_count": alias_ambiguity_report["unique_surface_count"],
-        "ambiguous_entity_count": alias_ambiguity_report["unique_entity_count"],
-        "uncovered_entity_candidates": len(uncovered_entity_candidate_report),
-        "stage_summary": stage_summary,
-        "review_threshold": review_threshold,
-        "scanned_source_files": source_manifest["scanned_files"],
-        "loaded_source_files": source_manifest["loaded_files"],
-        "skipped_source_files": source_manifest["skipped_files"],
-        "error_source_files": source_manifest.get("error_files", 0),
-        "loaded_with_errors_source_files": source_manifest.get("loaded_with_errors_files", 0),
-        "parse_error_count": source_manifest.get("parse_error_count", 0),
-        "duplicate_doc_id_count": source_manifest.get("duplicate_doc_id_count", 0),
-        "format_stats": format_stats,
         "output_dir": str(resolved_output_dir),
     }
 
@@ -949,36 +161,17 @@ def _parse_args() -> argparse.Namespace:
         default=OUTPUT_DIR,
         help="输出目录，默认写入 preprocess/output/",
     )
-    parser.add_argument(
-        "--review-threshold",
-        type=float,
-        default=0.98,
-        help="消歧复核阈值，低于该分数的命中会写入 disambiguation_review.json",
-    )
-    parser.add_argument(
-        "--stage",
-        choices=("collect", "extract", "full"),
-        default="full",
-        help="预处理阶段，collect 只做原始数据收集，extract 输出抽取与消歧结果，full 继续补齐覆盖统计",
-    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = _parse_args()
-    result = run_pipeline(
-        input_dir=args.input_dir,
-        output_dir=args.output_dir,
-        review_threshold=args.review_threshold,
-        stage=args.stage,
-    )
+    result = run_pipeline(input_dir=args.input_dir, output_dir=args.output_dir)
     print(
         "预处理完成: "
         f"documents={result['documents']}, "
         f"mentions={result['mentions']}, "
         f"entities={result['entities']}, "
-        f"stage={result.get('stage', 'full')}, "
-        f"review={result['uncertain_mentions']}, "
         f"output_dir={result['output_dir']}"
     )
 

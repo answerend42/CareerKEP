@@ -1,0 +1,413 @@
+:root {
+  --motion-fast: 140ms;
+  --motion-mid: 220ms;
+  --motion-slow: 360ms;
+  --motion-slower: 480ms;
+  --stagger-xs: 20ms;
+  --stagger-sm: 40ms;
+  --ease-productive: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-expressive: cubic-bezier(0.16, 1, 0.3, 1);
+  --graph-trace: color-mix(in oklch, var(--teal) 86%, white);
+  --graph-trace-muted: color-mix(in oklch, var(--ink-soft) 46%, white);
+}
+
+.motion-page {
+  transform-origin: 50% 22%;
+  will-change: opacity, transform, filter;
+}
+
+.page-tab,
+.ghost-button,
+.primary-button,
+.editor-select,
+.segment-button,
+.subtab-button,
+.tab-button,
+.button-chip,
+.path-node,
+.layer-pill {
+  transition:
+    background-color var(--motion-mid) var(--ease-productive),
+    border-color var(--motion-mid) var(--ease-productive),
+    box-shadow var(--motion-mid) var(--ease-productive),
+    color var(--motion-fast) var(--ease-productive),
+    opacity var(--motion-fast) var(--ease-productive),
+    transform var(--motion-fast) var(--ease-productive);
+}
+
+.page-tab:hover,
+.ghost-button:hover,
+.primary-button:hover,
+.segment-button:hover,
+.subtab-button:hover,
+.tab-button:hover,
+.button-chip:hover {
+  transform: translateY(-1px);
+}
+
+.page-tab:active,
+.ghost-button:active,
+.primary-button:active,
+.segment-button:active,
+.subtab-button:active,
+.tab-button:active,
+.button-chip:active {
+  transform: translateY(0) scale(0.99);
+}
+
+.page-tab.is-active {
+  box-shadow: inset 0 -2px 0 color-mix(in oklch, var(--teal) 70%, white);
+}
+
+.graph-stage-meta,
+.graph-frame,
+.graph-detail-card,
+.result-browser,
+.detail-panel,
+.stack-layout > .section-card {
+  animation: motion-panel-reveal var(--motion-slow) var(--ease-expressive) both;
+}
+
+.graph-frame {
+  animation-delay: var(--stagger-sm);
+}
+
+.graph-detail-card {
+  animation-delay: calc(var(--stagger-sm) * 2);
+}
+
+.graph-overlay-card {
+  animation: motion-overlay-settle var(--motion-slow) var(--ease-expressive) 120ms both;
+}
+
+.layer-pill {
+  overflow: hidden;
+}
+
+.layer-pill::after {
+  position: absolute;
+  inset: auto 8px 5px;
+  height: 1px;
+  content: "";
+  background: color-mix(in oklch, var(--teal) 56%, white);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--motion-mid) var(--ease-expressive);
+}
+
+.layer-pill.is-active {
+  transform: translateX(-50%) translateY(-1px);
+}
+
+.layer-pill.is-active::after,
+.layer-pill.is-complete::after {
+  transform: scaleX(1);
+}
+
+.layer-pill--0 {
+  animation-delay: 20ms;
+}
+
+.layer-pill--1 {
+  animation-delay: 60ms;
+}
+
+.layer-pill--2 {
+  animation-delay: 100ms;
+}
+
+.layer-pill--3 {
+  animation-delay: 140ms;
+}
+
+.layer-pill--4 {
+  animation-delay: 180ms;
+}
+
+.graph-layer-guide {
+  transition: opacity var(--motion-mid) var(--ease-productive);
+}
+
+.graph-layer-guide.is-active {
+  animation: motion-layer-arrive var(--motion-mid) var(--ease-expressive) both;
+}
+
+.graph-edge {
+  stroke-dasharray: 8 12;
+  stroke-dashoffset: 0;
+  transition:
+    opacity var(--motion-mid) var(--ease-productive),
+    stroke-width var(--motion-mid) var(--ease-productive);
+  animation: motion-edge-flow 1.9s linear infinite;
+}
+
+.graph-edge.is-dimmed {
+  animation-play-state: paused;
+}
+
+.graph-edge.is-highlighted {
+  stroke-dasharray: 14 8;
+  animation-duration: 1s;
+}
+
+.graph-flow-edge .react-flow__edge-path {
+  stroke-dasharray: 8 12;
+  stroke-dashoffset: 0;
+  transition:
+    opacity var(--motion-mid) var(--ease-productive),
+    stroke-width var(--motion-mid) var(--ease-productive);
+  animation: motion-edge-flow 2.8s linear infinite;
+}
+
+.graph-flow-edge.is-dimmed .react-flow__edge-path {
+  animation-play-state: paused;
+}
+
+.graph-flow-edge.is-highlighted .react-flow__edge-path {
+  stroke-dasharray: 14 8;
+  animation-duration: 1.7s;
+  filter: drop-shadow(0 0 5px color-mix(in oklch, var(--teal) 20%, transparent));
+}
+
+.path-tracer {
+  fill: none;
+  stroke: var(--graph-trace);
+  stroke-dasharray: 2 18;
+  stroke-linecap: round;
+  stroke-width: 7;
+  opacity: 0.9;
+  pointer-events: none;
+  animation: motion-path-trace 820ms linear infinite;
+  filter: drop-shadow(0 0 5px color-mix(in oklch, var(--teal) 22%, transparent));
+}
+
+.graph-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    opacity var(--motion-fast) var(--ease-productive),
+    transform var(--motion-mid) var(--ease-expressive),
+    filter var(--motion-mid) var(--ease-productive);
+}
+
+.graph-node.is-entering {
+  animation: motion-node-rise var(--motion-slow) var(--ease-expressive) both;
+}
+
+.graph-node.is-selected {
+  transform: translateY(-2px);
+}
+
+.graph-node.is-path-focused {
+  animation: motion-node-pulse 1.8s var(--ease-productive) infinite;
+}
+
+.knowledge-flow-node {
+  transform-origin: center;
+  transition:
+    opacity var(--motion-fast) var(--ease-productive),
+    transform var(--motion-mid) var(--ease-expressive),
+    filter var(--motion-mid) var(--ease-productive);
+  animation: motion-node-rise var(--motion-slow) var(--ease-expressive) both;
+}
+
+.knowledge-flow-node.is-selected {
+  transform: translateY(-2px);
+}
+
+.knowledge-flow-node.is-path-focused {
+  animation:
+    motion-node-rise var(--motion-slow) var(--ease-expressive) both,
+    motion-node-pulse 1.9s var(--ease-productive) 420ms infinite;
+}
+
+.has-selected-path .graph-node:not(.is-path-focused):not(.is-selected) {
+  opacity: 0.64;
+}
+
+.has-selected-path .knowledge-flow-node:not(.is-path-focused):not(.is-selected) {
+  opacity: 0.64;
+}
+
+.result-browser-head,
+.result-picker,
+.detail-panel,
+.detail-panel .path-node,
+.detail-panel .mini-panel,
+.stack-layout > .section-card,
+.timeline-card,
+.action-card {
+  animation: motion-result-reveal var(--motion-slow) var(--ease-expressive) both;
+}
+
+.result-picker {
+  animation-delay: var(--stagger-sm);
+}
+
+.detail-panel {
+  animation-delay: calc(var(--stagger-sm) * 2);
+}
+
+.detail-panel .path-node:nth-child(2n),
+.detail-panel .mini-panel:nth-child(2n),
+.timeline-card:nth-child(2n),
+.action-card:nth-child(2n) {
+  animation-delay: var(--stagger-xs);
+}
+
+.detail-panel .path-node:nth-child(3n),
+.detail-panel .mini-panel:nth-child(3n),
+.timeline-card:nth-child(3n),
+.action-card:nth-child(3n) {
+  animation-delay: var(--stagger-sm);
+}
+
+.path-track {
+  position: relative;
+}
+
+.path-node {
+  transform-origin: left center;
+}
+
+.path-node:hover {
+  transform: translateY(-1px);
+}
+
+@keyframes motion-panel-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motion-overlay-settle {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes motion-layer-arrive {
+  from {
+    opacity: 0.35;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes motion-edge-flow {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+@keyframes motion-path-trace {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+@keyframes motion-node-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes motion-node-pulse {
+  0%,
+  100% {
+    filter: saturate(1.02) brightness(1.02);
+  }
+
+  45% {
+    filter: saturate(1.12) brightness(1.06);
+  }
+}
+
+@keyframes motion-result-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 1ms;
+    --motion-mid: 1ms;
+    --motion-slow: 1ms;
+    --motion-slower: 1ms;
+    --stagger-xs: 0ms;
+    --stagger-sm: 0ms;
+  }
+
+  .motion-page,
+  .page-tab,
+  .ghost-button,
+  .primary-button,
+  .segment-button,
+  .subtab-button,
+  .tab-button,
+  .button-chip,
+  .graph-node,
+  .knowledge-flow-node,
+  .graph-node.is-selected,
+  .knowledge-flow-node.is-selected,
+  .path-node:hover {
+    transform: none !important;
+  }
+
+  .graph-stage-meta,
+  .graph-frame,
+  .graph-detail-card,
+  .graph-overlay-card,
+  .graph-layer-guide,
+  .graph-edge,
+  .graph-flow-edge .react-flow__edge-path,
+  .path-tracer,
+  .graph-node,
+  .knowledge-flow-node,
+  .graph-node.is-entering,
+  .graph-node.is-path-focused,
+  .knowledge-flow-node.is-path-focused,
+  .result-browser-head,
+  .result-picker,
+  .detail-panel,
+  .detail-panel .path-node,
+  .detail-panel .mini-panel,
+  .stack-layout > .section-card,
+  .timeline-card,
+  .action-card {
+    animation: none !important;
+  }
+
+  .path-tracer {
+    opacity: 0.32;
+  }
+}

@@ -1,0 +1,223 @@
+[
+  {
+    "profile_id": "roadmap_backend",
+    "source_type": "roadmap_sh",
+    "source_id": "backend",
+    "source_url": "https://roadmap.sh/backend",
+    "mapped_node_ids": [
+      "cap_backend_engineering",
+      "dir_web_backend",
+      "role_backend_engineer",
+      "role_python_backend_engineer",
+      "role_java_backend_engineer",
+      "role_go_backend_engineer",
+      "role_nodejs_backend_engineer",
+      "role_php_backend_engineer",
+      "role_rust_backend_engineer",
+      "role_microservice_engineer",
+      "role_api_platform_engineer",
+      "cap_microservice_engineer",
+      "cap_api_platform_engineer",
+      "cap_php_backend_engineer",
+      "cap_rust_backend_engineer"
+    ],
+    "profile_tags": ["backend", "api", "microservice"],
+    "sample_job_titles": ["Backend Developer", "API Engineer", "Microservice Engineer"],
+    "source_note": "Maps the roadmap.sh backend learning roadmap to backend and API platform roles."
+  },
+  {
+    "profile_id": "roadmap_frontend",
+    "source_type": "roadmap_sh",
+    "source_id": "frontend",
+    "source_url": "https://roadmap.sh/frontend",
+    "mapped_node_ids": [
+      "cap_frontend_engineering",
+      "dir_frontend",
+      "role_frontend_engineer",
+      "role_react_frontend_engineer",
+      "role_vue_frontend_engineer",
+      "role_frontend_interaction_engineer",
+      "cap_react_frontend_engineer",
+      "cap_vue_frontend_engineer",
+      "cap_frontend_interaction_engineer"
+    ],
+    "profile_tags": ["frontend", "web", "interaction"],
+    "sample_job_titles": ["Frontend Engineer", "React Engineer", "Vue Engineer"],
+    "source_note": "Maps the roadmap.sh frontend roadmap to frontend family roles."
+  },
+  {
+    "profile_id": "roadmap_full_stack",
+    "source_type": "roadmap_sh",
+    "source_id": "full-stack",
+    "source_url": "https://roadmap.sh/full-stack",
+    "mapped_node_ids": [
+      "cap_fullstack_engineering",
+      "dir_fullstack",
+      "role_fullstack_engineer"
+    ],
+    "profile_tags": ["fullstack", "web", "product_delivery"],
+    "sample_job_titles": ["Full Stack Engineer", "Web Application Engineer"],
+    "source_note": "Maps the roadmap.sh full-stack roadmap to the fullstack direction."
+  },
+  {
+    "profile_id": "roadmap_devops",
+    "source_type": "roadmap_sh",
+    "source_id": "devops",
+    "source_url": "https://roadmap.sh/devops",
+    "mapped_node_ids": [
+      "cap_devops_engineering",
+      "cap_platform_engineering",
+      "cap_sre_engineering",
+      "cap_observability_engineering",
+      "dir_devops",
+      "dir_site_reliability",
+      "dir_platform",
+      "role_devops_engineer",
+      "role_sre_engineer",
+      "role_platform_engineer",
+      "role_observability_engineer",
+      "role_cloud_platform_engineer",
+      "role_release_engineer",
+      "cap_observability_engineer",
+      "cap_cloud_platform_engineer",
+      "cap_release_engineer"
+    ],
+    "profile_tags": ["devops", "platform", "sre"],
+    "sample_job_titles": ["DevOps Engineer", "SRE", "Platform Engineer"],
+    "source_note": "Maps the roadmap.sh DevOps roadmap to platform, SRE and release roles."
+  },
+  {
+    "profile_id": "roadmap_data_analyst",
+    "source_type": "roadmap_sh",
+    "source_id": "data-analyst",
+    "source_url": "https://roadmap.sh/data-analyst",
+    "mapped_node_ids": [
+      "cap_data_analysis",
+      "dir_data",
+      "dir_data_analytics",
+      "role_data_analyst",
+      "role_analytics_engineer",
+      "role_bi_engineer",
+      "cap_analytics_engineer",
+      "cap_bi_engineer"
+    ],
+    "profile_tags": ["analytics", "bi", "data"],
+    "sample_job_titles": ["Data Analyst", "Analytics Engineer", "BI Engineer"],
+    "source_note": "Maps the roadmap.sh data analyst roadmap to analytics-oriented roles."
+  },
+  {
+    "profile_id": "roadmap_ai_engineer",
+    "source_type": "roadmap_sh",
+    "source_id": "ai-engineer",
+    "source_url": "https://roadmap.sh/ai-engineer",
+    "mapped_node_ids": [
+      "cap_ai_application_engineering",
+      "dir_ai_application",
+      "role_ai_application_engineer",
+      "role_llm_application_engineer",
+      "role_nlp_engineer",
+      "role_computer_vision_engineer",
+      "cap_llm_application_engineer",
+      "cap_nlp_engineer",
+      "cap_computer_vision_engineer"
+    ],
+    "profile_tags": ["ai", "llm", "application"],
+    "sample_job_titles": ["AI Engineer", "LLM Application Engineer", "NLP Engineer"],
+    "source_note": "Maps the roadmap.sh AI engineer roadmap to application-oriented AI roles."
+  },
+  {
+    "profile_id": "roadmap_mlops",
+    "source_type": "roadmap_sh",
+    "source_id": "mlops",
+    "source_url": "https://roadmap.sh/mlops",
+    "mapped_node_ids": [
+      "cap_ml_engineering",
+      "cap_ml_platform_engineering",
+      "dir_machine_learning",
+      "role_ml_engineer",
+      "role_ml_platform_engineer",
+      "role_mlops_engineer",
+      "cap_ml_platform_engineer",
+      "cap_mlops_engineer"
+    ],
+    "profile_tags": ["mlops", "ml_platform", "deployment"],
+    "sample_job_titles": ["MLOps Engineer", "ML Platform Engineer", "Machine Learning Engineer"],
+    "source_note": "Maps the roadmap.sh MLOps roadmap to ML platform and deployment roles."
+  },
+  {
+    "profile_id": "roadmap_android",
+    "source_type": "roadmap_sh",
+    "source_id": "android",
+    "source_url": "https://roadmap.sh/android",
+    "mapped_node_ids": [
+      "cap_mobile_engineering",
+      "cap_android_engineering",
+      "dir_mobile",
+      "role_mobile_engineer",
+      "role_android_engineer",
+      "cap_android_engineer"
+    ],
+    "profile_tags": ["mobile", "android", "client"],
+    "sample_job_titles": ["Android Engineer", "Mobile Engineer"],
+    "source_note": "Maps the roadmap.sh Android roadmap to mobile and Android roles."
+  },
+  {
+    "profile_id": "roadmap_ios",
+    "source_type": "roadmap_sh",
+    "source_id": "ios",
+    "source_url": "https://roadmap.sh/ios",
+    "mapped_node_ids": [
+      "cap_mobile_engineering",
+      "cap_ios_engineering",
+      "dir_mobile",
+      "role_mobile_engineer",
+      "role_ios_engineer",
+      "cap_ios_engineer"
+    ],
+    "profile_tags": ["mobile", "ios", "client"],
+    "sample_job_titles": ["iOS Engineer", "Mobile Engineer"],
+    "source_note": "Maps the roadmap.sh iOS roadmap to mobile and iOS roles."
+  },
+  {
+    "profile_id": "roadmap_qa",
+    "source_type": "roadmap_sh",
+    "source_id": "qa",
+    "source_url": "https://roadmap.sh/qa",
+    "mapped_node_ids": [
+      "cap_qa_engineering",
+      "dir_quality_assurance",
+      "role_test_development_engineer",
+      "role_qa_platform_engineer",
+      "role_performance_test_engineer",
+      "cap_qa_platform_engineer",
+      "cap_performance_test_engineer"
+    ],
+    "profile_tags": ["qa", "test", "quality"],
+    "sample_job_titles": ["QA Engineer", "Test Development Engineer"],
+    "source_note": "Maps the roadmap.sh QA roadmap to software testing and quality roles."
+  },
+  {
+    "profile_id": "roadmap_cyber_security",
+    "source_type": "roadmap_sh",
+    "source_id": "cyber-security",
+    "source_url": "https://roadmap.sh/cyber-security",
+    "mapped_node_ids": [
+      "cap_security_engineering",
+      "cap_application_security",
+      "cap_security_operations",
+      "dir_security",
+      "role_security_engineer",
+      "role_penetration_tester",
+      "role_appsec_engineer",
+      "role_cloud_security_engineer",
+      "role_soc_analyst",
+      "cap_penetration_tester",
+      "cap_appsec_engineer",
+      "cap_cloud_security_engineer",
+      "cap_soc_analyst"
+    ],
+    "profile_tags": ["security", "appsec", "soc"],
+    "sample_job_titles": ["Security Engineer", "AppSec Engineer", "SOC Analyst"],
+    "source_note": "Maps the roadmap.sh cybersecurity roadmap to security engineering roles."
+  }
+]

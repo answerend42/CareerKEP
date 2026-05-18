@@ -1,0 +1,1753 @@
+{
+  "standalone_roles": [
+    {
+      "id": "role_backend_engineer",
+      "name": "后端开发工程师",
+      "direction_id": "dir_web_backend",
+      "capability_id": "cap_backend_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [
+        "interest_backend"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "aliases": [
+        "后端工程师"
+      ],
+      "family": "backend",
+      "description": "后端开发工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_python_backend_engineer",
+      "name": "Python 后端工程师",
+      "direction_id": "dir_web_backend",
+      "capability_id": "cap_python_backend_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [
+        "interest_backend"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "aliases": [
+        "python后端"
+      ],
+      "family": "backend",
+      "description": "Python 后端工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_java_backend_engineer",
+      "name": "Java 后端工程师",
+      "direction_id": "dir_web_backend",
+      "capability_id": "cap_java_backend_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [
+        "interest_backend"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "aliases": [
+        "java后端"
+      ],
+      "family": "backend",
+      "description": "Java 后端工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_frontend_engineer",
+      "name": "前端工程师",
+      "direction_id": "dir_frontend",
+      "capability_id": "cap_frontend_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_ui_polish"
+      ],
+      "aliases": [
+        "web前端工程师"
+      ],
+      "family": "frontend",
+      "description": "前端工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_fullstack_engineer",
+      "name": "全栈工程师",
+      "direction_id": "dir_fullstack",
+      "capability_id": "cap_fullstack_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "aliases": [
+        "全栈开发工程师"
+      ],
+      "family": "fullstack",
+      "description": "全栈工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_data_engineer",
+      "name": "数据工程师",
+      "direction_id": "dir_data",
+      "capability_id": "cap_data_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [
+        "interest_data"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "aliases": [
+        "data engineer"
+      ],
+      "family": "data",
+      "description": "数据工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_data_analyst",
+      "name": "数据分析师",
+      "direction_id": "dir_data_analytics",
+      "capability_id": "cap_data_analysis",
+      "supports": [],
+      "requires": [],
+      "prefers": [
+        "interest_visualization"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "aliases": [
+        "data analyst"
+      ],
+      "family": "data",
+      "description": "数据分析师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_ml_engineer",
+      "name": "机器学习工程师",
+      "direction_id": "dir_machine_learning",
+      "capability_id": "cap_ml_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_math_theory"
+      ],
+      "aliases": [
+        "ml engineer"
+      ],
+      "family": "ml",
+      "description": "机器学习工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_ai_application_engineer",
+      "name": "AI 应用工程师",
+      "direction_id": "dir_ai_application",
+      "capability_id": "cap_ai_application_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_research_uncertainty"
+      ],
+      "aliases": [
+        "ai应用工程师"
+      ],
+      "family": "ml",
+      "description": "AI 应用工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_devops_engineer",
+      "name": "DevOps 工程师",
+      "direction_id": "dir_devops",
+      "capability_id": "cap_devops_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_oncall"
+      ],
+      "aliases": [
+        "devops engineer"
+      ],
+      "family": "devops",
+      "description": "DevOps 工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_sre_engineer",
+      "name": "SRE 工程师",
+      "direction_id": "dir_site_reliability",
+      "capability_id": "cap_sre_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_oncall"
+      ],
+      "aliases": [
+        "site reliability engineer",
+        "可靠性工程师"
+      ],
+      "family": "devops",
+      "description": "SRE 工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_test_development_engineer",
+      "name": "测试开发工程师",
+      "direction_id": "dir_quality_assurance",
+      "capability_id": "cap_qa_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "aliases": [
+        "测试工程师",
+        "qa engineer"
+      ],
+      "family": "qa",
+      "description": "测试开发工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_security_engineer",
+      "name": "安全工程师",
+      "direction_id": "dir_security",
+      "capability_id": "cap_security_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "aliases": [
+        "security engineer"
+      ],
+      "family": "security",
+      "description": "安全工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_platform_engineer",
+      "name": "平台工程师",
+      "direction_id": "dir_platform",
+      "capability_id": "cap_platform_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [
+        "interest_stable_delivery"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "aliases": [
+        "platform engineer"
+      ],
+      "family": "platform",
+      "description": "平台工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_mobile_engineer",
+      "name": "移动端工程师",
+      "direction_id": "dir_mobile",
+      "capability_id": "cap_mobile_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [
+        "interest_mobile"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "aliases": [
+        "mobile engineer"
+      ],
+      "family": "mobile",
+      "description": "移动端工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    },
+    {
+      "id": "role_embedded_engineer",
+      "name": "嵌入式工程师",
+      "direction_id": "dir_embedded",
+      "capability_id": "cap_embedded_engineering",
+      "supports": [],
+      "requires": [],
+      "prefers": [
+        "interest_low_level_systems"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_low_level_debugging"
+      ],
+      "aliases": [
+        "embedded engineer"
+      ],
+      "family": "embedded",
+      "description": "嵌入式工程师，最终推荐岗位节点。",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    }
+  ],
+  "specializations": [
+    {
+      "family": "backend",
+      "direction_id": "dir_web_backend",
+      "base_capability_id": "cap_go_backend_engineering",
+      "stack_ability_id": "ability_go_backend_engineer_stack",
+      "stack_ability_name": "Go 服务栈",
+      "stack_supports": [
+        "skill_golang",
+        "tool_gin",
+        "tool_echo",
+        "tool_kafka",
+        "project_microservice"
+      ],
+      "stack_requires": [
+        "ability_backend_basics"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_go_backend_engineer",
+      "capability_name": "Go 后端专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_go_backend_engineer",
+      "role_name": "Go 后端工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_backend"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "go后端"
+      ],
+      "description": "Go 后端工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "backend",
+      "direction_id": "dir_web_backend",
+      "base_capability_id": "cap_node_backend_engineering",
+      "stack_ability_id": "ability_nodejs_backend_engineer_stack",
+      "stack_ability_name": "Node 服务栈",
+      "stack_supports": [
+        "skill_typescript",
+        "tool_nodejs",
+        "tool_express",
+        "tool_nestjs",
+        "project_backend_api"
+      ],
+      "stack_requires": [
+        "ability_backend_basics"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_nodejs_backend_engineer",
+      "capability_name": "Node 后端专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_nodejs_backend_engineer",
+      "role_name": "Node.js 后端工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_backend"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "node后端",
+        "nodejs后端"
+      ],
+      "description": "Node.js 后端工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "backend",
+      "direction_id": "dir_web_backend",
+      "base_capability_id": "cap_php_backend_engineering",
+      "stack_ability_id": "ability_php_backend_engineer_stack",
+      "stack_ability_name": "PHP 服务栈",
+      "stack_supports": [
+        "skill_php",
+        "tool_laravel",
+        "tool_mysql",
+        "project_backend_api"
+      ],
+      "stack_requires": [
+        "ability_backend_basics"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_php_backend_engineer",
+      "capability_name": "PHP 后端专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_php_backend_engineer",
+      "role_name": "PHP 后端工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_backend"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "php后端"
+      ],
+      "description": "PHP 后端工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "backend",
+      "direction_id": "dir_web_backend",
+      "base_capability_id": "cap_backend_engineering",
+      "stack_ability_id": "ability_rust_backend_engineer_stack",
+      "stack_ability_name": "Rust 服务栈",
+      "stack_supports": [
+        "skill_rust",
+        "tool_linux",
+        "project_low_latency_service",
+        "knowledge_distributed_systems"
+      ],
+      "stack_requires": [
+        "ability_backend_basics",
+        "ability_system_programming"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_rust_backend_engineer",
+      "capability_name": "Rust 服务专项能力",
+      "capability_supports": [
+        "ability_low_level_engineering"
+      ],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_rust_backend_engineer",
+      "role_name": "Rust 服务工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_backend",
+        "interest_low_level_systems"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "rust后端"
+      ],
+      "description": "Rust 服务工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "backend",
+      "direction_id": "dir_web_backend",
+      "base_capability_id": "cap_backend_engineering",
+      "stack_ability_id": "ability_microservice_engineer_stack",
+      "stack_ability_name": "微服务治理栈",
+      "stack_supports": [
+        "project_microservice",
+        "project_api_gateway",
+        "tool_kafka",
+        "tool_nginx",
+        "knowledge_microservice_architecture"
+      ],
+      "stack_requires": [
+        "ability_service_governance"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_microservice_engineer",
+      "capability_name": "微服务专项能力",
+      "capability_supports": [
+        "ability_service_governance"
+      ],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_microservice_engineer",
+      "role_name": "微服务工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_backend"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "微服务开发工程师"
+      ],
+      "description": "微服务工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "backend",
+      "direction_id": "dir_web_backend",
+      "base_capability_id": "cap_backend_engineering",
+      "stack_ability_id": "ability_api_platform_engineer_stack",
+      "stack_ability_name": "接口平台栈",
+      "stack_supports": [
+        "project_api_gateway",
+        "project_backend_api",
+        "tool_nginx",
+        "tool_redis"
+      ],
+      "stack_requires": [
+        "ability_api_design"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_api_platform_engineer",
+      "capability_name": "接口平台专项能力",
+      "capability_supports": [
+        "ability_api_design",
+        "ability_product_delivery"
+      ],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_api_platform_engineer",
+      "role_name": "接口平台工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_backend",
+        "interest_product_delivery"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "接口平台开发"
+      ],
+      "description": "接口平台工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "frontend",
+      "direction_id": "dir_frontend",
+      "base_capability_id": "cap_react_frontend_engineering",
+      "stack_ability_id": "ability_react_frontend_engineer_stack",
+      "stack_ability_name": "React 前端栈",
+      "stack_supports": [
+        "tool_react",
+        "tool_nextjs",
+        "project_web_ui",
+        "project_component_library"
+      ],
+      "stack_requires": [
+        "ability_frontend_basics"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_react_frontend_engineer",
+      "capability_name": "React 前端专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_react_frontend_engineer",
+      "role_name": "React 前端工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_frontend"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [
+        "constraint_dislike_ui_polish"
+      ],
+      "aliases": [
+        "react开发"
+      ],
+      "description": "React 前端工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "frontend",
+      "direction_id": "dir_frontend",
+      "base_capability_id": "cap_vue_frontend_engineering",
+      "stack_ability_id": "ability_vue_frontend_engineer_stack",
+      "stack_ability_name": "Vue 前端栈",
+      "stack_supports": [
+        "tool_vue",
+        "project_web_ui",
+        "project_component_library"
+      ],
+      "stack_requires": [
+        "ability_frontend_basics"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_vue_frontend_engineer",
+      "capability_name": "Vue 前端专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_vue_frontend_engineer",
+      "role_name": "Vue 前端工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_frontend"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [
+        "constraint_dislike_ui_polish"
+      ],
+      "aliases": [
+        "vue开发"
+      ],
+      "description": "Vue 前端工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "frontend",
+      "direction_id": "dir_frontend",
+      "base_capability_id": "cap_frontend_engineering",
+      "stack_ability_id": "ability_frontend_interaction_engineer_stack",
+      "stack_ability_name": "交互体验栈",
+      "stack_supports": [
+        "project_component_library",
+        "project_web_ui",
+        "interest_client_experience",
+        "knowledge_ui_ux_basics"
+      ],
+      "stack_requires": [
+        "ability_ui_delivery"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_frontend_interaction_engineer",
+      "capability_name": "前端交互专项能力",
+      "capability_supports": [
+        "ability_product_delivery"
+      ],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_frontend_interaction_engineer",
+      "role_name": "前端交互工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_frontend",
+        "interest_client_experience"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [
+        "constraint_dislike_ui_polish"
+      ],
+      "aliases": [
+        "交互前端工程师"
+      ],
+      "description": "前端交互工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "mobile",
+      "direction_id": "dir_mobile",
+      "base_capability_id": "cap_android_engineering",
+      "stack_ability_id": "ability_android_engineer_stack",
+      "stack_ability_name": "Android 交付栈",
+      "stack_supports": [
+        "skill_kotlin",
+        "tool_android_studio",
+        "project_mobile_app"
+      ],
+      "stack_requires": [
+        "ability_mobile_foundations"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_android_engineer",
+      "capability_name": "Android 专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_android_engineer",
+      "role_name": "Android 工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_mobile"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "android开发"
+      ],
+      "description": "Android 工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "mobile",
+      "direction_id": "dir_mobile",
+      "base_capability_id": "cap_ios_engineering",
+      "stack_ability_id": "ability_ios_engineer_stack",
+      "stack_ability_name": "iOS 交付栈",
+      "stack_supports": [
+        "skill_swift",
+        "tool_xcode",
+        "project_mobile_app"
+      ],
+      "stack_requires": [
+        "ability_mobile_foundations"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_ios_engineer",
+      "capability_name": "iOS 专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_ios_engineer",
+      "role_name": "iOS 工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_mobile"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "ios开发"
+      ],
+      "description": "iOS 工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "mobile",
+      "direction_id": "dir_mobile",
+      "base_capability_id": "cap_cross_platform_mobile",
+      "stack_ability_id": "ability_cross_platform_engineer_stack",
+      "stack_ability_name": "跨端应用栈",
+      "stack_supports": [
+        "skill_dart",
+        "tool_flutter",
+        "project_cross_platform_app"
+      ],
+      "stack_requires": [
+        "ability_mobile_foundations"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_cross_platform_engineer",
+      "capability_name": "跨端专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_cross_platform_engineer",
+      "role_name": "跨端应用工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_mobile",
+        "interest_client_experience"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "flutter开发",
+        "跨平台开发"
+      ],
+      "description": "跨端应用工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "data",
+      "direction_id": "dir_data",
+      "base_capability_id": "cap_data_engineering",
+      "stack_ability_id": "ability_batch_data_engineer_stack",
+      "stack_ability_name": "离线数仓栈",
+      "stack_supports": [
+        "tool_spark",
+        "tool_airflow",
+        "tool_hive",
+        "project_data_pipeline",
+        "project_data_warehouse"
+      ],
+      "stack_requires": [
+        "ability_batch_compute"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_batch_data_engineer",
+      "capability_name": "离线数据专项能力",
+      "capability_supports": [
+        "ability_data_warehouse"
+      ],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_batch_data_engineer",
+      "role_name": "离线数据工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_data"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "离线数仓工程师"
+      ],
+      "description": "离线数据工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "data",
+      "direction_id": "dir_data",
+      "base_capability_id": "cap_realtime_data_engineering",
+      "stack_ability_id": "ability_realtime_data_engineer_stack",
+      "stack_ability_name": "实时数据栈",
+      "stack_supports": [
+        "tool_flink",
+        "tool_kafka",
+        "project_real_time_pipeline",
+        "project_low_latency_service"
+      ],
+      "stack_requires": [
+        "ability_realtime_compute"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_realtime_data_engineer",
+      "capability_name": "实时数据专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_realtime_data_engineer",
+      "role_name": "实时数据工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_data"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "流式数据工程师"
+      ],
+      "description": "实时数据工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "data",
+      "direction_id": "dir_data",
+      "base_capability_id": "cap_data_engineering",
+      "stack_ability_id": "ability_data_warehouse_engineer_stack",
+      "stack_ability_name": "数仓建模栈",
+      "stack_supports": [
+        "tool_dbt",
+        "tool_snowflake",
+        "tool_hive",
+        "project_data_warehouse",
+        "knowledge_data_warehouse_modeling"
+      ],
+      "stack_requires": [
+        "ability_data_warehouse"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_data_warehouse_engineer",
+      "capability_name": "数仓专项能力",
+      "capability_supports": [
+        "ability_data_warehouse"
+      ],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_data_warehouse_engineer",
+      "role_name": "数据仓库工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_data"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "数仓工程师"
+      ],
+      "description": "数据仓库工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "data",
+      "direction_id": "dir_data_analytics",
+      "base_capability_id": "cap_data_analysis",
+      "stack_ability_id": "ability_analytics_engineer_stack",
+      "stack_ability_name": "分析表达栈",
+      "stack_supports": [
+        "tool_superset",
+        "project_dashboard",
+        "project_ab_testing",
+        "knowledge_experimentation"
+      ],
+      "stack_requires": [
+        "ability_analytics_storytelling"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_analytics_engineer",
+      "capability_name": "分析工程专项能力",
+      "capability_supports": [
+        "ability_product_delivery"
+      ],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_analytics_engineer",
+      "role_name": "分析工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_data",
+        "interest_visualization"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "analytics engineer"
+      ],
+      "description": "分析工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "data",
+      "direction_id": "dir_data_analytics",
+      "base_capability_id": "cap_data_analysis",
+      "stack_ability_id": "ability_bi_engineer_stack",
+      "stack_ability_name": "BI 交付栈",
+      "stack_supports": [
+        "tool_superset",
+        "project_dashboard",
+        "project_platform_portal",
+        "skill_sql"
+      ],
+      "stack_requires": [
+        "ability_data_modeling"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_bi_engineer",
+      "capability_name": "BI 专项能力",
+      "capability_supports": [
+        "ability_product_delivery"
+      ],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_bi_engineer",
+      "role_name": "BI 工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_visualization",
+        "interest_product_delivery"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "商业智能工程师",
+        "bi engineer"
+      ],
+      "description": "BI 工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "ml",
+      "direction_id": "dir_machine_learning",
+      "base_capability_id": "cap_ml_platform_engineering",
+      "stack_ability_id": "ability_ml_platform_engineer_stack",
+      "stack_ability_name": "ML 平台栈",
+      "stack_supports": [
+        "tool_mlflow",
+        "tool_kubernetes",
+        "tool_docker",
+        "project_ml_deployment",
+        "project_ci_cd_platform"
+      ],
+      "stack_requires": [
+        "ability_mlops_basics"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_ml_platform_engineer",
+      "capability_name": "机器学习平台专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_ml_platform_engineer",
+      "role_name": "机器学习平台工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_ml",
+        "interest_infra_automation"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "ml平台工程师"
+      ],
+      "description": "机器学习平台工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "ml",
+      "direction_id": "dir_machine_learning",
+      "base_capability_id": "cap_ml_platform_engineering",
+      "stack_ability_id": "ability_mlops_engineer_stack",
+      "stack_ability_name": "MLOps 交付栈",
+      "stack_supports": [
+        "tool_mlflow",
+        "tool_github_actions",
+        "tool_terraform",
+        "project_ml_deployment",
+        "project_ci_cd_platform"
+      ],
+      "stack_requires": [
+        "ability_mlops_basics"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_mlops_engineer",
+      "capability_name": "MLOps 专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_mlops_engineer",
+      "role_name": "MLOps 工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_ml",
+        "interest_stable_delivery"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "mlops"
+      ],
+      "description": "MLOps 工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "ml",
+      "direction_id": "dir_machine_learning",
+      "base_capability_id": "cap_ml_engineering",
+      "stack_ability_id": "ability_recommendation_algorithm_engineer_stack",
+      "stack_ability_name": "推荐算法栈",
+      "stack_supports": [
+        "project_recommendation_system",
+        "tool_pytorch",
+        "tool_scikit_learn",
+        "ability_feature_engineering"
+      ],
+      "stack_requires": [
+        "ability_model_training",
+        "ability_ml_foundations"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_recommendation_algorithm_engineer",
+      "capability_name": "推荐算法专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_recommendation_algorithm_engineer",
+      "role_name": "推荐算法工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_ml",
+        "interest_research"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [
+        "constraint_dislike_math_theory"
+      ],
+      "aliases": [
+        "推荐算法工程师"
+      ],
+      "description": "推荐算法工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "ml",
+      "direction_id": "dir_machine_learning",
+      "base_capability_id": "cap_ml_engineering",
+      "stack_ability_id": "ability_nlp_engineer_stack",
+      "stack_ability_name": "NLP 建模栈",
+      "stack_supports": [
+        "tool_pytorch",
+        "tool_tensorflow",
+        "project_model_training",
+        "skill_python"
+      ],
+      "stack_requires": [
+        "ability_model_training",
+        "ability_ml_foundations"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_nlp_engineer",
+      "capability_name": "NLP 专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_nlp_engineer",
+      "role_name": "NLP 工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_ml",
+        "interest_research"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [
+        "constraint_dislike_math_theory"
+      ],
+      "aliases": [
+        "自然语言处理工程师"
+      ],
+      "description": "NLP 工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "ml",
+      "direction_id": "dir_machine_learning",
+      "base_capability_id": "cap_ml_engineering",
+      "stack_ability_id": "ability_computer_vision_engineer_stack",
+      "stack_ability_name": "视觉建模栈",
+      "stack_supports": [
+        "tool_opencv",
+        "tool_pytorch",
+        "tool_tensorflow",
+        "project_model_training"
+      ],
+      "stack_requires": [
+        "ability_model_training",
+        "ability_ml_foundations"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_computer_vision_engineer",
+      "capability_name": "视觉专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_computer_vision_engineer",
+      "role_name": "计算机视觉工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_ml",
+        "interest_research"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [
+        "constraint_dislike_math_theory"
+      ],
+      "aliases": [
+        "cv工程师"
+      ],
+      "description": "计算机视觉工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "ml",
+      "direction_id": "dir_ai_application",
+      "base_capability_id": "cap_ai_application_engineering",
+      "stack_ability_id": "ability_llm_application_engineer_stack",
+      "stack_ability_name": "AI 应用落地栈",
+      "stack_supports": [
+        "project_ml_deployment",
+        "project_platform_portal",
+        "ability_api_design",
+        "ability_product_delivery"
+      ],
+      "stack_requires": [
+        "ability_model_training",
+        "ability_product_delivery"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_llm_application_engineer",
+      "capability_name": "大模型应用专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_llm_application_engineer",
+      "role_name": "大模型应用工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_ml",
+        "interest_product_delivery"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "llm应用工程师",
+        "大模型工程师"
+      ],
+      "description": "大模型应用工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "platform",
+      "direction_id": "dir_platform",
+      "base_capability_id": "cap_platform_engineering",
+      "stack_ability_id": "ability_cloud_platform_engineer_stack",
+      "stack_ability_name": "云平台栈",
+      "stack_supports": [
+        "tool_aws",
+        "tool_aliyun",
+        "tool_gcp",
+        "tool_azure",
+        "tool_terraform",
+        "project_platform_portal"
+      ],
+      "stack_requires": [
+        "ability_cloud_native"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_cloud_platform_engineer",
+      "capability_name": "云平台专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_cloud_platform_engineer",
+      "role_name": "云平台工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_devops",
+        "interest_infra_automation"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "云平台开发工程师"
+      ],
+      "description": "云平台工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "platform",
+      "direction_id": "dir_platform",
+      "base_capability_id": "cap_platform_engineering",
+      "stack_ability_id": "ability_release_engineer_stack",
+      "stack_ability_name": "发布流水线栈",
+      "stack_supports": [
+        "tool_jenkins",
+        "tool_github_actions",
+        "project_ci_cd_platform",
+        "project_devops_automation"
+      ],
+      "stack_requires": [
+        "ability_devops_basics"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_release_engineer",
+      "capability_name": "发布工程专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_release_engineer",
+      "role_name": "发布工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_stable_delivery"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "release engineer",
+        "交付工程师"
+      ],
+      "description": "发布工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "platform",
+      "direction_id": "dir_site_reliability",
+      "base_capability_id": "cap_observability_engineering",
+      "stack_ability_id": "ability_observability_engineer_stack",
+      "stack_ability_name": "可观测平台栈",
+      "stack_supports": [
+        "tool_prometheus",
+        "tool_grafana",
+        "project_observability_platform",
+        "project_platform_portal"
+      ],
+      "stack_requires": [
+        "ability_observability_engineering"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_observability_engineer",
+      "capability_name": "可观测专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_observability_engineer",
+      "role_name": "可观测平台工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_reliability",
+        "interest_stable_delivery"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "可观测工程师"
+      ],
+      "description": "可观测平台工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "qa",
+      "direction_id": "dir_quality_assurance",
+      "base_capability_id": "cap_qa_engineering",
+      "stack_ability_id": "ability_performance_test_engineer_stack",
+      "stack_ability_name": "性能测试栈",
+      "stack_supports": [
+        "tool_jmeter",
+        "project_performance_testing",
+        "project_low_latency_service",
+        "ability_system_programming"
+      ],
+      "stack_requires": [
+        "ability_performance_engineering"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_performance_test_engineer",
+      "capability_name": "性能测试专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_performance_test_engineer",
+      "role_name": "性能测试工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_stable_delivery"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "性能工程师"
+      ],
+      "description": "性能测试工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "qa",
+      "direction_id": "dir_quality_assurance",
+      "base_capability_id": "cap_qa_engineering",
+      "stack_ability_id": "ability_qa_platform_engineer_stack",
+      "stack_ability_name": "质量平台栈",
+      "stack_supports": [
+        "tool_pytest",
+        "tool_github_actions",
+        "project_test_automation",
+        "project_ci_cd_platform"
+      ],
+      "stack_requires": [
+        "ability_test_automation"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_qa_platform_engineer",
+      "capability_name": "质量平台专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_qa_platform_engineer",
+      "role_name": "质量平台工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_stable_delivery",
+        "interest_infra_automation"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "qa平台工程师"
+      ],
+      "description": "质量平台工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "security",
+      "direction_id": "dir_security",
+      "base_capability_id": "cap_security_engineering",
+      "stack_ability_id": "ability_penetration_tester_stack",
+      "stack_ability_name": "渗透测试栈",
+      "stack_supports": [
+        "tool_burp_suite",
+        "tool_nmap",
+        "project_security_ctf",
+        "project_app_hardening"
+      ],
+      "stack_requires": [
+        "ability_security_basics",
+        "ability_network_analysis"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_penetration_tester",
+      "capability_name": "渗透测试专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_penetration_tester",
+      "role_name": "渗透测试工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_security"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "渗透测试"
+      ],
+      "description": "渗透测试工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "security",
+      "direction_id": "dir_security",
+      "base_capability_id": "cap_application_security",
+      "stack_ability_id": "ability_appsec_engineer_stack",
+      "stack_ability_name": "应用安全栈",
+      "stack_supports": [
+        "knowledge_secure_coding",
+        "tool_burp_suite",
+        "project_app_hardening",
+        "project_backend_api"
+      ],
+      "stack_requires": [
+        "ability_application_security"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_appsec_engineer",
+      "capability_name": "应用安全专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_appsec_engineer",
+      "role_name": "应用安全工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_security",
+        "interest_backend"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "appsec engineer"
+      ],
+      "description": "应用安全工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "security",
+      "direction_id": "dir_security",
+      "base_capability_id": "cap_security_operations",
+      "stack_ability_id": "ability_soc_analyst_stack",
+      "stack_ability_name": "安全运营栈",
+      "stack_supports": [
+        "project_blue_team_monitoring",
+        "tool_grafana",
+        "tool_prometheus",
+        "project_security_ctf"
+      ],
+      "stack_requires": [
+        "ability_security_operations"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_soc_analyst",
+      "capability_name": "安全运营专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_soc_analyst",
+      "role_name": "SOC 分析师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_security",
+        "interest_stable_delivery"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "soc analyst",
+        "安全运营分析师"
+      ],
+      "description": "SOC 分析师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "security",
+      "direction_id": "dir_security",
+      "base_capability_id": "cap_security_engineering",
+      "stack_ability_id": "ability_cloud_security_engineer_stack",
+      "stack_ability_name": "云安全栈",
+      "stack_supports": [
+        "tool_aws",
+        "tool_aliyun",
+        "tool_kubernetes",
+        "project_devops_automation",
+        "project_app_hardening"
+      ],
+      "stack_requires": [
+        "ability_cloud_native",
+        "ability_security_basics"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_cloud_security_engineer",
+      "capability_name": "云安全专项能力",
+      "capability_supports": [
+        "ability_application_security"
+      ],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_cloud_security_engineer",
+      "role_name": "云安全工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_security",
+        "interest_devops"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "cloud security engineer"
+      ],
+      "description": "云安全工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "embedded",
+      "direction_id": "dir_embedded",
+      "base_capability_id": "cap_embedded_engineering",
+      "stack_ability_id": "ability_iot_engineer_stack",
+      "stack_ability_name": "IoT 系统栈",
+      "stack_supports": [
+        "project_iot_gateway",
+        "knowledge_embedded_protocols",
+        "tool_linux",
+        "skill_c"
+      ],
+      "stack_requires": [
+        "ability_embedded_development"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_iot_engineer",
+      "capability_name": "IoT 专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_iot_engineer",
+      "role_name": "IoT 工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_low_level_systems"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [],
+      "aliases": [
+        "iot开发工程师"
+      ],
+      "description": "IoT 工程师，由细分技术栈能力生成的岗位节点。"
+    },
+    {
+      "family": "embedded",
+      "direction_id": "dir_embedded",
+      "base_capability_id": "cap_embedded_engineering",
+      "stack_ability_id": "ability_firmware_engineer_stack",
+      "stack_ability_name": "固件交付栈",
+      "stack_supports": [
+        "project_firmware_delivery",
+        "knowledge_hardware_debugging",
+        "skill_c",
+        "skill_cpp"
+      ],
+      "stack_requires": [
+        "ability_firmware_integration"
+      ],
+      "stack_prefers": [],
+      "stack_evidences": [],
+      "stack_inhibits": [],
+      "capability_id": "cap_firmware_engineer",
+      "capability_name": "固件专项能力",
+      "capability_supports": [],
+      "capability_requires": [],
+      "capability_prefers": [],
+      "capability_evidences": [],
+      "capability_inhibits": [],
+      "role_id": "role_firmware_engineer",
+      "role_name": "固件工程师",
+      "role_supports": [],
+      "role_requires": [],
+      "role_prefers": [
+        "interest_low_level_systems"
+      ],
+      "role_evidences": [],
+      "role_inhibits": [
+        "constraint_dislike_low_level_debugging"
+      ],
+      "aliases": [
+        "firmware engineer",
+        "固件开发工程师"
+      ],
+      "description": "固件工程师，由细分技术栈能力生成的岗位节点。"
+    }
+  ]
+}

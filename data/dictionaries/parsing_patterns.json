@@ -1,0 +1,300 @@
+{
+  "project_keywords": [
+    "项目",
+    "做过",
+    "实践",
+    "负责",
+    "写过",
+    "经历",
+    "开发",
+    "搭建",
+    "上线",
+    "部署",
+    "清洗",
+    "分析",
+    "排查",
+    "测试"
+  ],
+  "phrase_rules": [
+    {
+      "label": "英语约束",
+      "phrases": [
+        "不会英语",
+        "英语不好",
+        "英文不好",
+        "英语很差",
+        "看不懂英文",
+        "英文文档看不懂"
+      ],
+      "signals": [
+        {
+          "node_id": "language_english_reading",
+          "score": 0.34
+        },
+        {
+          "node_id": "knowledge_technical_documentation",
+          "score": 0.28
+        }
+      ],
+      "negative_signals": [
+        {
+          "node_id": "constraint_weak_english",
+          "score": 0.9
+        },
+        {
+          "node_id": "language_english_reading",
+          "score": 0.18
+        },
+        {
+          "node_id": "knowledge_technical_documentation",
+          "score": 0.16
+        }
+      ]
+    },
+    {
+      "label": "接口开发",
+      "phrases": [
+        "接口开发",
+        "服务端接口",
+        "服务端开发",
+        "做接口",
+        "写接口"
+      ],
+      "signals": [
+        {
+          "node_id": "interest_backend",
+          "score": 0.86
+        },
+        {
+          "node_id": "project_backend_api",
+          "score": 0.76
+        }
+      ]
+    },
+    {
+      "label": "数据清洗",
+      "phrases": [
+        "清洗数据",
+        "脚本清洗数据",
+        "数据清洗",
+        "处理数据"
+      ],
+      "signals": [
+        {
+          "node_id": "project_data_pipeline",
+          "score": 0.8
+        },
+        {
+          "node_id": "interest_data",
+          "score": 0.72
+        }
+      ]
+    },
+    {
+      "label": "Linux 环境",
+      "phrases": [
+        "linux 环境",
+        "linux 服务器",
+        "接受 linux 环境",
+        "能接受 linux"
+      ],
+      "signals": [
+        {
+          "node_id": "tool_linux",
+          "score": 0.64
+        }
+      ]
+    },
+    {
+      "label": "前端页面倾向",
+      "phrases": [
+        "纯前端页面",
+        "前端页面",
+        "做页面",
+        "写页面"
+      ],
+      "signals": [
+        {
+          "node_id": "interest_frontend",
+          "score": 0.78
+        }
+      ],
+      "negative_signals": [
+        {
+          "node_id": "constraint_dislike_ui_polish",
+          "score": 0.84
+        }
+      ]
+    },
+    {
+      "label": "模型训练",
+      "phrases": [
+        "模型训出来",
+        "训模型",
+        "训练模型",
+        "模型训练",
+        "训练项目",
+        "模型训练项目"
+      ],
+      "signals": [
+        {
+          "node_id": "project_model_training",
+          "score": 0.82
+        },
+        {
+          "node_id": "interest_ml",
+          "score": 0.74
+        }
+      ]
+    },
+    {
+      "label": "模型部署",
+      "phrases": [
+        "部署上线",
+        "模型部署",
+        "部署模型",
+        "上线模型"
+      ],
+      "signals": [
+        {
+          "node_id": "project_ml_deployment",
+          "score": 0.82
+        },
+        {
+          "node_id": "interest_ml",
+          "score": 0.72
+        }
+      ]
+    },
+    {
+      "label": "埋点分析",
+      "phrases": [
+        "埋点分析",
+        "指标分析",
+        "埋点"
+      ],
+      "signals": [
+        {
+          "node_id": "interest_data",
+          "score": 0.76
+        },
+        {
+          "node_id": "project_dashboard",
+          "score": 0.72
+        }
+      ]
+    },
+    {
+      "label": "可视化报表",
+      "phrases": [
+        "可视化报表",
+        "数据报表",
+        "分析报表",
+        "报表看板"
+      ],
+      "signals": [
+        {
+          "node_id": "project_dashboard",
+          "score": 0.8
+        },
+        {
+          "node_id": "interest_visualization",
+          "score": 0.84
+        }
+      ]
+    },
+    {
+      "label": "业务沟通",
+      "phrases": [
+        "业务沟通需求",
+        "跟业务沟通",
+        "沟通需求",
+        "对需求"
+      ],
+      "signals": [
+        {
+          "node_id": "soft_communication",
+          "score": 0.78
+        },
+        {
+          "node_id": "soft_business_understanding",
+          "score": 0.74
+        }
+      ]
+    },
+    {
+      "label": "稳定交付",
+      "phrases": [
+        "稳定交付",
+        "质量保障",
+        "保障质量",
+        "质量稳定"
+      ],
+      "signals": [
+        {
+          "node_id": "interest_stable_delivery",
+          "score": 0.86
+        }
+      ]
+    },
+    {
+      "label": "自动化测试",
+      "phrases": [
+        "自动化测试",
+        "写自动化测试",
+        "测试脚本"
+      ],
+      "signals": [
+        {
+          "node_id": "project_test_automation",
+          "score": 0.82
+        },
+        {
+          "node_id": "interest_stable_delivery",
+          "score": 0.72
+        }
+      ]
+    },
+    {
+      "label": "数据库表设计",
+      "phrases": [
+        "数据库表设计",
+        "表设计",
+        "数据库设计"
+      ],
+      "signals": [
+        {
+          "node_id": "knowledge_database_theory",
+          "score": 0.76
+        },
+        {
+          "node_id": "skill_sql",
+          "score": 0.74
+        }
+      ]
+    },
+    {
+      "label": "线上排障",
+      "phrases": [
+        "排查线上问题",
+        "线上排障",
+        "故障排查",
+        "排查问题"
+      ],
+      "signals": [
+        {
+          "node_id": "interest_reliability",
+          "score": 0.74
+        },
+        {
+          "node_id": "project_devops_automation",
+          "score": 0.7
+        },
+        {
+          "node_id": "tool_linux",
+          "score": 0.64
+        }
+      ]
+    }
+  ]
+}

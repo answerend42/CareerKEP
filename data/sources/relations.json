@@ -1,0 +1,139 @@
+{
+  "layer_defaults": {
+    "ability": {
+      "supports": 0.17,
+      "requires": 0.24,
+      "prefers": 0.12,
+      "evidences": 0.14,
+      "inhibits": 0.28
+    },
+    "composite": {
+      "supports": 0.22,
+      "requires": 0.3,
+      "prefers": 0.16,
+      "evidences": 0.22,
+      "inhibits": 0.3
+    },
+    "direction": {
+      "supports": 0.24,
+      "requires": 0.3,
+      "prefers": 0.18,
+      "evidences": 0.2,
+      "inhibits": 0.3
+    },
+    "role": {
+      "supports": 0.27,
+      "requires": 0.34,
+      "prefers": 0.16,
+      "evidences": 0.22,
+      "inhibits": 0.34
+    },
+    "stack_ability": {
+      "supports": 0.19,
+      "requires": 0.24,
+      "prefers": 0.12,
+      "evidences": 0.16,
+      "inhibits": 0.22
+    },
+    "stack_capability": {
+      "supports": 0.24,
+      "requires": 0.3,
+      "prefers": 0.16,
+      "evidences": 0.18,
+      "inhibits": 0.3
+    }
+  },
+  "specialization_defaults": {
+    "stack_ability": {
+      "aggregator": "weighted_sum_capped",
+      "params": {
+        "cap": 1.0
+      }
+    },
+    "stack_capability": {
+      "aggregator": "soft_and",
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      }
+    },
+    "role": {
+      "aggregator": "hard_gate",
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.025
+      }
+    }
+  },
+  "preference_patterns": {
+    "strong_positive": [
+      "精通",
+      "熟练",
+      "擅长",
+      "扎实",
+      "主攻"
+    ],
+    "medium_positive": [
+      "熟悉",
+      "做过",
+      "写过",
+      "使用过",
+      "实践过",
+      "经验",
+      "常用",
+      "用得多",
+      "比较多",
+      "平时会"
+    ],
+    "light_positive": [
+      "会",
+      "了解",
+      "接触过",
+      "用过",
+      "还行",
+      "能接受"
+    ],
+    "weak_positive": [
+      "一点",
+      "入门",
+      "略懂",
+      "会一点"
+    ],
+    "negative": [
+      "不擅长",
+      "不太擅长",
+      "薄弱",
+      "很弱",
+      "较弱",
+      "偏弱",
+      "不会",
+      "不喜欢",
+      "讨厌",
+      "抗拒",
+      "不想",
+      "不想做",
+      "不想写",
+      "不太想",
+      "不太想做",
+      "不太想写",
+      "不愿",
+      "没做过",
+      "没有做过",
+      "看不懂",
+      "没兴趣",
+      "不考虑"
+    ],
+    "preference": [
+      "喜欢",
+      "更喜欢",
+      "偏好",
+      "倾向",
+      "偏向",
+      "想做",
+      "想转",
+      "希望做",
+      "热爱",
+      "主攻"
+    ]
+  }
+}

@@ -1,0 +1,2015 @@
+{
+  "abilities": [
+    {
+      "id": "ability_programming_fundamentals",
+      "name": "编程基础",
+      "supports": [
+        "skill_python",
+        "skill_java",
+        "skill_cpp",
+        "skill_c",
+        "skill_javascript",
+        "skill_typescript",
+        "skill_golang",
+        "skill_rust",
+        "skill_csharp",
+        "skill_kotlin",
+        "skill_swift",
+        "skill_php",
+        "skill_bash",
+        "tool_git",
+        "knowledge_oop",
+        "knowledge_technical_documentation"
+      ],
+      "requires": [
+        "knowledge_data_structures",
+        "knowledge_algorithms"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "通用编程基础能力。"
+    },
+    {
+      "id": "ability_database_practice",
+      "name": "数据库实践",
+      "supports": [
+        "skill_sql",
+        "tool_mysql",
+        "tool_postgresql",
+        "tool_mongodb",
+        "tool_redis",
+        "tool_clickhouse",
+        "tool_elasticsearch"
+      ],
+      "requires": [
+        "knowledge_database_theory"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "数据库设计、查询与缓存实践能力。"
+    },
+    {
+      "id": "ability_backend_basics",
+      "name": "后端基础",
+      "supports": [
+        "tool_flask",
+        "tool_django",
+        "tool_fastapi",
+        "tool_spring_boot",
+        "tool_nodejs",
+        "tool_express",
+        "tool_nestjs",
+        "language_english_reading",
+        "project_backend_api",
+        "project_microservice"
+      ],
+      "requires": [
+        "ability_programming_fundamentals",
+        "ability_database_practice"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.12,
+        "required_floor": 0.55
+      },
+      "description": "服务端开发的基础能力。"
+    },
+    {
+      "id": "ability_api_design",
+      "name": "接口设计能力",
+      "supports": [
+        "project_backend_api",
+        "project_api_gateway",
+        "tool_nginx",
+        "knowledge_microservice_architecture"
+      ],
+      "requires": [
+        "ability_backend_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "面向服务接口与网关的设计能力。"
+    },
+    {
+      "id": "ability_service_governance",
+      "name": "服务治理能力",
+      "supports": [
+        "tool_kafka",
+        "tool_redis",
+        "tool_nginx",
+        "project_microservice",
+        "project_api_gateway"
+      ],
+      "requires": [
+        "ability_backend_basics",
+        "knowledge_distributed_systems"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "服务拆分、网关治理与中间件协同能力。"
+    },
+    {
+      "id": "ability_python_backend_stack",
+      "name": "Python 后端栈",
+      "supports": [
+        "skill_python",
+        "tool_flask",
+        "tool_django",
+        "tool_fastapi",
+        "tool_redis"
+      ],
+      "requires": [
+        "ability_backend_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "Python 服务开发技术栈能力。"
+    },
+    {
+      "id": "ability_java_backend_stack",
+      "name": "Java 后端栈",
+      "supports": [
+        "skill_java",
+        "tool_spring_boot",
+        "tool_mybatis",
+        "tool_mysql",
+        "tool_redis"
+      ],
+      "requires": [
+        "ability_backend_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "Java 服务开发技术栈能力。"
+    },
+    {
+      "id": "ability_go_backend_stack",
+      "name": "Go 后端栈",
+      "supports": [
+        "skill_golang",
+        "tool_gin",
+        "tool_echo",
+        "tool_kafka",
+        "tool_redis"
+      ],
+      "requires": [
+        "ability_backend_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "Go 服务开发技术栈能力。"
+    },
+    {
+      "id": "ability_node_backend_stack",
+      "name": "Node 后端栈",
+      "supports": [
+        "skill_javascript",
+        "skill_typescript",
+        "tool_nodejs",
+        "tool_express",
+        "tool_nestjs"
+      ],
+      "requires": [
+        "ability_backend_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "Node.js 服务开发技术栈能力。"
+    },
+    {
+      "id": "ability_php_backend_stack",
+      "name": "PHP 后端栈",
+      "supports": [
+        "skill_php",
+        "tool_laravel",
+        "tool_mysql",
+        "tool_redis"
+      ],
+      "requires": [
+        "ability_backend_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "PHP 服务开发技术栈能力。"
+    },
+    {
+      "id": "ability_system_programming",
+      "name": "系统编程基础",
+      "supports": [
+        "skill_cpp",
+        "skill_c",
+        "skill_rust",
+        "tool_linux",
+        "project_low_latency_service"
+      ],
+      "requires": [
+        "knowledge_operating_systems",
+        "ability_programming_fundamentals"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "面向系统级开发与性能优化的基础能力。"
+    },
+    {
+      "id": "ability_frontend_basics",
+      "name": "前端基础",
+      "supports": [
+        "skill_javascript",
+        "skill_typescript",
+        "tool_react",
+        "tool_vue",
+        "tool_nextjs",
+        "project_web_ui"
+      ],
+      "requires": [
+        "ability_programming_fundamentals",
+        "knowledge_ui_ux_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "Web 前端基础能力。"
+    },
+    {
+      "id": "ability_react_frontend_stack",
+      "name": "React 前端栈",
+      "supports": [
+        "tool_react",
+        "tool_nextjs",
+        "project_web_ui",
+        "project_component_library"
+      ],
+      "requires": [
+        "ability_frontend_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "React 生态交付能力。"
+    },
+    {
+      "id": "ability_vue_frontend_stack",
+      "name": "Vue 前端栈",
+      "supports": [
+        "tool_vue",
+        "project_web_ui",
+        "project_component_library"
+      ],
+      "requires": [
+        "ability_frontend_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "Vue 生态交付能力。"
+    },
+    {
+      "id": "ability_ui_delivery",
+      "name": "界面交付能力",
+      "supports": [
+        "project_web_ui",
+        "project_component_library",
+        "interest_visualization",
+        "soft_documentation",
+        "interest_client_experience"
+      ],
+      "requires": [],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_ui_polish"
+      ],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "面向界面体验与设计细节的交付能力。",
+      "aggregator": "max_pool"
+    },
+    {
+      "id": "ability_data_processing",
+      "name": "数据处理能力",
+      "supports": [
+        "skill_python",
+        "skill_sql",
+        "tool_pandas",
+        "tool_numpy",
+        "tool_spark",
+        "tool_hadoop",
+        "knowledge_technical_documentation",
+        "project_data_pipeline"
+      ],
+      "requires": [
+        "ability_programming_fundamentals"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "离线数据处理与脚本化处理能力。"
+    },
+    {
+      "id": "ability_data_modeling",
+      "name": "数据建模能力",
+      "supports": [
+        "skill_sql",
+        "knowledge_database_theory",
+        "knowledge_statistics",
+        "project_dashboard",
+        "knowledge_data_warehouse_modeling"
+      ],
+      "requires": [
+        "ability_database_practice"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "面向指标、维度与模型设计的数据建模能力。"
+    },
+    {
+      "id": "ability_batch_compute",
+      "name": "批处理能力",
+      "supports": [
+        "tool_spark",
+        "tool_hadoop",
+        "tool_airflow",
+        "project_data_pipeline",
+        "project_data_warehouse"
+      ],
+      "requires": [
+        "ability_data_processing",
+        "knowledge_etl_modeling"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "批处理与调度能力。"
+    },
+    {
+      "id": "ability_realtime_compute",
+      "name": "实时计算能力",
+      "supports": [
+        "tool_flink",
+        "tool_kafka",
+        "project_real_time_pipeline",
+        "project_low_latency_service"
+      ],
+      "requires": [
+        "ability_data_processing",
+        "knowledge_distributed_systems"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "实时链路与流处理能力。"
+    },
+    {
+      "id": "ability_data_warehouse",
+      "name": "数仓建设能力",
+      "supports": [
+        "tool_hive",
+        "tool_snowflake",
+        "tool_dbt",
+        "project_data_warehouse",
+        "knowledge_data_warehouse_modeling"
+      ],
+      "requires": [
+        "ability_data_modeling",
+        "ability_batch_compute"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "数仓建设与建模能力。"
+    },
+    {
+      "id": "ability_analytics_storytelling",
+      "name": "分析表达能力",
+      "supports": [
+        "tool_superset",
+        "project_dashboard",
+        "knowledge_experimentation",
+        "interest_visualization",
+        "soft_communication"
+      ],
+      "requires": [
+        "ability_data_modeling"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "将数据结论转化为可沟通结果的能力。"
+    },
+    {
+      "id": "ability_ml_foundations",
+      "name": "机器学习基础",
+      "supports": [
+        "skill_python",
+        "tool_numpy",
+        "tool_scikit_learn",
+        "language_english_reading",
+        "knowledge_statistics",
+        "knowledge_linear_algebra",
+        "knowledge_probability",
+        "knowledge_algorithms"
+      ],
+      "requires": [
+        "knowledge_math_foundation"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_math_theory",
+        "constraint_weak_english"
+      ],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.14,
+        "required_floor": 0.35
+      },
+      "description": "机器学习理论与基础建模能力。"
+    },
+    {
+      "id": "ability_model_training",
+      "name": "模型训练能力",
+      "supports": [
+        "tool_pytorch",
+        "tool_tensorflow",
+        "project_model_training",
+        "project_ml_deployment",
+        "tool_ray"
+      ],
+      "requires": [
+        "ability_ml_foundations"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "模型训练与实验调优能力。"
+    },
+    {
+      "id": "ability_feature_engineering",
+      "name": "特征工程能力",
+      "supports": [
+        "tool_pandas",
+        "tool_numpy",
+        "project_recommendation_system",
+        "project_data_pipeline"
+      ],
+      "requires": [
+        "ability_data_processing",
+        "ability_ml_foundations"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "特征构造与样本处理能力。"
+    },
+    {
+      "id": "ability_mlops_basics",
+      "name": "MLOps 基础",
+      "supports": [
+        "tool_mlflow",
+        "tool_docker",
+        "tool_kubernetes",
+        "project_ml_deployment",
+        "project_ci_cd_platform"
+      ],
+      "requires": [
+        "ability_model_training",
+        "ability_cloud_native"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "模型部署、实验管理与持续交付能力。"
+    },
+    {
+      "id": "ability_devops_basics",
+      "name": "运维开发基础",
+      "supports": [
+        "tool_linux",
+        "skill_bash",
+        "tool_docker",
+        "tool_git",
+        "project_devops_automation",
+        "tool_aws",
+        "tool_aliyun"
+      ],
+      "requires": [],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_oncall"
+      ],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "运维开发与自动化基础能力。"
+    },
+    {
+      "id": "ability_cloud_native",
+      "name": "云原生基础",
+      "supports": [
+        "tool_docker",
+        "tool_kubernetes",
+        "tool_aws",
+        "tool_aliyun",
+        "tool_gcp",
+        "tool_azure",
+        "tool_terraform"
+      ],
+      "requires": [
+        "ability_devops_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "容器化、编排与云平台能力。"
+    },
+    {
+      "id": "ability_observability_engineering",
+      "name": "可观测性能力",
+      "supports": [
+        "tool_prometheus",
+        "tool_grafana",
+        "project_observability_platform",
+        "project_ci_cd_platform"
+      ],
+      "requires": [
+        "ability_cloud_native",
+        "ability_engineering_collaboration"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "监控、日志和指标体系建设能力。"
+    },
+    {
+      "id": "ability_sre_basics",
+      "name": "可靠性工程基础",
+      "supports": [
+        "interest_reliability",
+        "project_observability_platform",
+        "project_devops_automation",
+        "soft_ownership"
+      ],
+      "requires": [
+        "ability_devops_basics",
+        "ability_system_design"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_oncall"
+      ],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "可靠性工程与故障恢复基础能力。"
+    },
+    {
+      "id": "ability_test_automation",
+      "name": "测试自动化能力",
+      "supports": [
+        "tool_selenium",
+        "tool_pytest",
+        "project_test_automation",
+        "skill_python",
+        "skill_javascript"
+      ],
+      "requires": [
+        "ability_programming_fundamentals"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "自动化测试脚本与平台能力。"
+    },
+    {
+      "id": "ability_performance_engineering",
+      "name": "性能工程能力",
+      "supports": [
+        "tool_jmeter",
+        "project_performance_testing",
+        "project_low_latency_service",
+        "knowledge_operating_systems"
+      ],
+      "requires": [
+        "ability_test_automation",
+        "ability_system_programming"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "性能压测与性能调优能力。"
+    },
+    {
+      "id": "ability_security_basics",
+      "name": "安全分析基础",
+      "supports": [
+        "tool_linux",
+        "knowledge_networks",
+        "tool_wireshark",
+        "tool_nmap",
+        "tool_burp_suite",
+        "project_security_ctf"
+      ],
+      "requires": [
+        "ability_programming_fundamentals"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "安全分析与攻防基础能力。"
+    },
+    {
+      "id": "ability_application_security",
+      "name": "应用安全能力",
+      "supports": [
+        "knowledge_secure_coding",
+        "tool_burp_suite",
+        "project_app_hardening",
+        "project_backend_api"
+      ],
+      "requires": [
+        "ability_security_basics",
+        "ability_backend_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "面向业务应用的安全能力。"
+    },
+    {
+      "id": "ability_security_operations",
+      "name": "安全运营能力",
+      "supports": [
+        "project_blue_team_monitoring",
+        "tool_prometheus",
+        "tool_grafana",
+        "project_security_ctf"
+      ],
+      "requires": [
+        "ability_security_basics",
+        "ability_observability_engineering"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "告警、联动与监测响应能力。"
+    },
+    {
+      "id": "ability_network_analysis",
+      "name": "网络分析能力",
+      "supports": [
+        "knowledge_networks",
+        "tool_wireshark",
+        "tool_nmap",
+        "tool_linux"
+      ],
+      "requires": [
+        "ability_security_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "网络侧分析与协议理解能力。"
+    },
+    {
+      "id": "ability_system_design",
+      "name": "系统设计能力",
+      "supports": [
+        "knowledge_system_design",
+        "knowledge_operating_systems",
+        "knowledge_networks",
+        "knowledge_distributed_systems",
+        "tool_redis",
+        "tool_kafka",
+        "project_microservice"
+      ],
+      "requires": [
+        "ability_backend_basics"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "系统设计与架构抽象能力。"
+    },
+    {
+      "id": "ability_engineering_collaboration",
+      "name": "工程协作能力",
+      "supports": [
+        "soft_communication",
+        "soft_teamwork",
+        "soft_self_learning",
+        "soft_documentation",
+        "language_english_reading",
+        "tool_git"
+      ],
+      "requires": [],
+      "prefers": [],
+      "evidences": [
+        "project_backend_api",
+        "project_web_ui",
+        "project_data_pipeline",
+        "project_test_automation",
+        "project_devops_automation",
+        "project_mobile_app"
+      ],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "跨团队协作与工程交付能力。"
+    },
+    {
+      "id": "ability_mobile_foundations",
+      "name": "移动端基础",
+      "supports": [
+        "skill_kotlin",
+        "skill_swift",
+        "project_mobile_app",
+        "knowledge_mobile_architecture"
+      ],
+      "requires": [
+        "ability_programming_fundamentals"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "移动端开发基础能力。"
+    },
+    {
+      "id": "ability_android_stack",
+      "name": "Android 技术栈",
+      "supports": [
+        "skill_kotlin",
+        "tool_android_studio",
+        "project_mobile_app"
+      ],
+      "requires": [
+        "ability_mobile_foundations"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "Android 开发技术栈能力。"
+    },
+    {
+      "id": "ability_ios_stack",
+      "name": "iOS 技术栈",
+      "supports": [
+        "skill_swift",
+        "tool_xcode",
+        "project_mobile_app"
+      ],
+      "requires": [
+        "ability_mobile_foundations"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "iOS 开发技术栈能力。"
+    },
+    {
+      "id": "ability_cross_platform_delivery",
+      "name": "跨端交付能力",
+      "supports": [
+        "skill_dart",
+        "tool_flutter",
+        "project_cross_platform_app"
+      ],
+      "requires": [
+        "ability_mobile_foundations"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "跨端应用交付能力。"
+    },
+    {
+      "id": "ability_embedded_development",
+      "name": "嵌入式开发能力",
+      "supports": [
+        "skill_c",
+        "skill_cpp",
+        "project_iot_gateway",
+        "knowledge_embedded_protocols"
+      ],
+      "requires": [
+        "ability_programming_fundamentals",
+        "interest_low_level_systems"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "嵌入式侧开发与协议适配能力。"
+    },
+    {
+      "id": "ability_firmware_integration",
+      "name": "固件集成能力",
+      "supports": [
+        "project_firmware_delivery",
+        "knowledge_hardware_debugging",
+        "knowledge_embedded_protocols",
+        "tool_linux"
+      ],
+      "requires": [
+        "ability_embedded_development"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "固件集成与联调能力。"
+    },
+    {
+      "id": "ability_low_level_engineering",
+      "name": "底层工程能力",
+      "supports": [
+        "skill_c",
+        "skill_cpp",
+        "skill_rust",
+        "knowledge_operating_systems",
+        "project_low_latency_service"
+      ],
+      "requires": [
+        "ability_system_programming"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_low_level_debugging"
+      ],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "面向性能与底层系统的工程能力。"
+    },
+    {
+      "id": "ability_product_delivery",
+      "name": "产品落地能力",
+      "supports": [
+        "soft_business_understanding",
+        "interest_product_delivery",
+        "project_platform_portal",
+        "project_dashboard"
+      ],
+      "requires": [
+        "ability_engineering_collaboration"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_customer_communication"
+      ],
+      "params": {
+        "cap": 1.0
+      },
+      "description": "理解业务并完成产品落地的能力。"
+    }
+  ],
+  "composites": [
+    {
+      "id": "cap_backend_engineering",
+      "name": "后端工程能力",
+      "supports": [
+        "ability_backend_basics",
+        "ability_database_practice",
+        "ability_api_design",
+        "ability_service_governance",
+        "ability_system_design",
+        "ability_engineering_collaboration"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_backend"
+      ],
+      "evidences": [
+        "project_backend_api"
+      ],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "通用后端工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_python_backend_engineering",
+      "name": "Python 后端工程能力",
+      "supports": [
+        "ability_python_backend_stack",
+        "cap_backend_engineering"
+      ],
+      "requires": [
+        "ability_python_backend_stack"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "Python 服务开发工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_java_backend_engineering",
+      "name": "Java 后端工程能力",
+      "supports": [
+        "ability_java_backend_stack",
+        "cap_backend_engineering"
+      ],
+      "requires": [
+        "ability_java_backend_stack"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "Java 服务开发工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_go_backend_engineering",
+      "name": "Go 后端工程能力",
+      "supports": [
+        "ability_go_backend_stack",
+        "cap_backend_engineering"
+      ],
+      "requires": [
+        "ability_go_backend_stack"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "Go 服务开发工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_node_backend_engineering",
+      "name": "Node 后端工程能力",
+      "supports": [
+        "ability_node_backend_stack",
+        "cap_backend_engineering"
+      ],
+      "requires": [
+        "ability_node_backend_stack"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "Node 服务开发工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_php_backend_engineering",
+      "name": "PHP 后端工程能力",
+      "supports": [
+        "ability_php_backend_stack",
+        "cap_backend_engineering"
+      ],
+      "requires": [
+        "ability_php_backend_stack"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "PHP 服务开发工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_frontend_engineering",
+      "name": "前端工程能力",
+      "supports": [
+        "ability_frontend_basics",
+        "ability_ui_delivery",
+        "ability_engineering_collaboration"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_frontend"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_ui_polish"
+      ],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "通用前端工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_react_frontend_engineering",
+      "name": "React 前端工程能力",
+      "supports": [
+        "ability_react_frontend_stack",
+        "cap_frontend_engineering"
+      ],
+      "requires": [
+        "ability_react_frontend_stack"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "React 方向前端工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_vue_frontend_engineering",
+      "name": "Vue 前端工程能力",
+      "supports": [
+        "ability_vue_frontend_stack",
+        "cap_frontend_engineering"
+      ],
+      "requires": [
+        "ability_vue_frontend_stack"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "Vue 方向前端工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_fullstack_engineering",
+      "name": "全栈工程能力",
+      "supports": [
+        "cap_backend_engineering",
+        "cap_frontend_engineering",
+        "ability_system_design"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_backend",
+        "interest_frontend"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "前后端协同的全栈工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_data_engineering",
+      "name": "数据工程能力",
+      "supports": [
+        "ability_data_processing",
+        "ability_database_practice",
+        "ability_cloud_native",
+        "ability_batch_compute",
+        "ability_engineering_collaboration"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_data"
+      ],
+      "evidences": [
+        "project_data_pipeline"
+      ],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "数据工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_realtime_data_engineering",
+      "name": "实时数据工程能力",
+      "supports": [
+        "cap_data_engineering",
+        "ability_realtime_compute",
+        "ability_observability_engineering"
+      ],
+      "requires": [
+        "ability_realtime_compute"
+      ],
+      "prefers": [
+        "interest_data"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "实时链路与数据流工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_data_analysis",
+      "name": "数据分析能力",
+      "supports": [
+        "ability_data_processing",
+        "ability_data_modeling",
+        "ability_analytics_storytelling",
+        "ability_product_delivery"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_data",
+        "interest_visualization"
+      ],
+      "evidences": [
+        "project_dashboard",
+        "project_ab_testing"
+      ],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "数据分析与业务表达能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_ml_engineering",
+      "name": "机器学习工程能力",
+      "supports": [
+        "ability_ml_foundations",
+        "ability_model_training",
+        "ability_feature_engineering",
+        "ability_data_processing",
+        "ability_cloud_native"
+      ],
+      "requires": [
+        "ability_ml_foundations"
+      ],
+      "prefers": [
+        "interest_ml"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_math_theory"
+      ],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "机器学习工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_ml_platform_engineering",
+      "name": "机器学习平台能力",
+      "supports": [
+        "cap_ml_engineering",
+        "ability_mlops_basics",
+        "ability_observability_engineering"
+      ],
+      "requires": [
+        "ability_mlops_basics"
+      ],
+      "prefers": [
+        "interest_ml",
+        "interest_infra_automation"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "机器学习平台与工程化能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_ai_application_engineering",
+      "name": "AI 应用工程能力",
+      "supports": [
+        "cap_ml_engineering",
+        "ability_api_design",
+        "ability_product_delivery"
+      ],
+      "requires": [
+        "ability_model_training"
+      ],
+      "prefers": [
+        "interest_ml",
+        "interest_product_delivery"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_research_uncertainty"
+      ],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "将模型能力落地到业务应用的能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_devops_engineering",
+      "name": "DevOps 工程能力",
+      "supports": [
+        "ability_devops_basics",
+        "ability_cloud_native",
+        "ability_system_design",
+        "ability_engineering_collaboration"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_devops",
+        "interest_stable_delivery"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_oncall"
+      ],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "DevOps 工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_sre_engineering",
+      "name": "可靠性工程能力",
+      "supports": [
+        "cap_devops_engineering",
+        "ability_sre_basics",
+        "ability_observability_engineering"
+      ],
+      "requires": [
+        "ability_sre_basics"
+      ],
+      "prefers": [
+        "interest_reliability",
+        "interest_stable_delivery"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_oncall"
+      ],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "SRE 可靠性工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_qa_engineering",
+      "name": "测试开发能力",
+      "supports": [
+        "ability_test_automation",
+        "ability_performance_engineering",
+        "ability_programming_fundamentals",
+        "ability_engineering_collaboration"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_stable_delivery"
+      ],
+      "evidences": [
+        "project_test_automation",
+        "project_performance_testing"
+      ],
+      "inhibits": [
+        "constraint_dislike_manual_testing"
+      ],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "测试开发与质量工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_security_engineering",
+      "name": "安全工程能力",
+      "supports": [
+        "ability_security_basics",
+        "ability_network_analysis",
+        "ability_programming_fundamentals"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_security"
+      ],
+      "evidences": [
+        "project_security_ctf"
+      ],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "安全工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_application_security",
+      "name": "应用安全能力",
+      "supports": [
+        "cap_security_engineering",
+        "ability_application_security",
+        "ability_backend_basics"
+      ],
+      "requires": [
+        "ability_application_security"
+      ],
+      "prefers": [
+        "interest_security"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "应用安全工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_security_operations",
+      "name": "安全运营能力",
+      "supports": [
+        "cap_security_engineering",
+        "ability_security_operations",
+        "ability_observability_engineering"
+      ],
+      "requires": [
+        "ability_security_operations"
+      ],
+      "prefers": [
+        "interest_security",
+        "interest_stable_delivery"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "安全运营与监测能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_platform_engineering",
+      "name": "平台工程能力",
+      "supports": [
+        "cap_backend_engineering",
+        "cap_devops_engineering",
+        "ability_cloud_native",
+        "ability_system_design",
+        "ability_product_delivery"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_stable_delivery",
+        "interest_infra_automation"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "平台工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_mobile_engineering",
+      "name": "移动端工程能力",
+      "supports": [
+        "ability_mobile_foundations",
+        "ability_engineering_collaboration",
+        "ability_product_delivery"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_mobile",
+        "interest_client_experience"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "移动端工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_android_engineering",
+      "name": "Android 工程能力",
+      "supports": [
+        "cap_mobile_engineering",
+        "ability_android_stack"
+      ],
+      "requires": [
+        "ability_android_stack"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "Android 工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_ios_engineering",
+      "name": "iOS 工程能力",
+      "supports": [
+        "cap_mobile_engineering",
+        "ability_ios_stack"
+      ],
+      "requires": [
+        "ability_ios_stack"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "iOS 工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_cross_platform_mobile",
+      "name": "跨端移动能力",
+      "supports": [
+        "cap_mobile_engineering",
+        "ability_cross_platform_delivery"
+      ],
+      "requires": [
+        "ability_cross_platform_delivery"
+      ],
+      "prefers": [],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "跨端移动应用工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_embedded_engineering",
+      "name": "嵌入式工程能力",
+      "supports": [
+        "ability_embedded_development",
+        "ability_firmware_integration",
+        "ability_low_level_engineering"
+      ],
+      "requires": [],
+      "prefers": [
+        "interest_low_level_systems"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_low_level_debugging"
+      ],
+      "params": {
+        "min_support_count": 3,
+        "required_threshold": 0.08
+      },
+      "description": "嵌入式与固件工程能力。",
+      "aggregator": "soft_and"
+    },
+    {
+      "id": "cap_observability_engineering",
+      "name": "可观测平台能力",
+      "supports": [
+        "ability_observability_engineering",
+        "ability_sre_basics",
+        "ability_engineering_collaboration"
+      ],
+      "requires": [
+        "ability_observability_engineering"
+      ],
+      "prefers": [
+        "interest_reliability"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "min_support_count": 2,
+        "required_threshold": 0.06
+      },
+      "description": "可观测平台建设能力。",
+      "aggregator": "soft_and"
+    }
+  ],
+  "directions": [
+    {
+      "id": "dir_web_backend",
+      "name": "Web 后端方向",
+      "supports": [
+        "cap_backend_engineering",
+        "cap_python_backend_engineering",
+        "cap_java_backend_engineering",
+        "cap_go_backend_engineering",
+        "cap_node_backend_engineering",
+        "cap_php_backend_engineering"
+      ],
+      "requires": [
+        "cap_backend_engineering"
+      ],
+      "prefers": [
+        "interest_backend"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_weak_english"
+      ],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "服务端研发方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_frontend",
+      "name": "前端方向",
+      "supports": [
+        "cap_frontend_engineering",
+        "cap_react_frontend_engineering",
+        "cap_vue_frontend_engineering"
+      ],
+      "requires": [
+        "cap_frontend_engineering"
+      ],
+      "prefers": [
+        "interest_frontend"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_ui_polish"
+      ],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "Web 前端方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_fullstack",
+      "name": "全栈方向",
+      "supports": [
+        "cap_fullstack_engineering",
+        "cap_backend_engineering",
+        "cap_frontend_engineering"
+      ],
+      "requires": [
+        "cap_fullstack_engineering"
+      ],
+      "prefers": [
+        "interest_backend",
+        "interest_frontend"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_weak_english"
+      ],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "全栈交付方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_data",
+      "name": "数据工程方向",
+      "supports": [
+        "cap_data_engineering",
+        "cap_realtime_data_engineering"
+      ],
+      "requires": [
+        "cap_data_engineering"
+      ],
+      "prefers": [
+        "interest_data"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "数据工程方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_data_analytics",
+      "name": "数据分析方向",
+      "supports": [
+        "cap_data_analysis"
+      ],
+      "requires": [
+        "cap_data_analysis"
+      ],
+      "prefers": [
+        "interest_data",
+        "interest_visualization"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "数据分析与 BI 方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_machine_learning",
+      "name": "机器学习方向",
+      "supports": [
+        "cap_ml_engineering",
+        "cap_ml_platform_engineering"
+      ],
+      "requires": [
+        "cap_ml_engineering"
+      ],
+      "prefers": [
+        "interest_ml"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_math_theory",
+        "constraint_weak_english"
+      ],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "机器学习工程方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_ai_application",
+      "name": "AI 应用方向",
+      "supports": [
+        "cap_ai_application_engineering",
+        "cap_ml_engineering"
+      ],
+      "requires": [
+        "cap_ai_application_engineering"
+      ],
+      "prefers": [
+        "interest_ml",
+        "interest_product_delivery"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_research_uncertainty"
+      ],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "AI 应用工程方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_devops",
+      "name": "运维平台方向",
+      "supports": [
+        "cap_devops_engineering",
+        "cap_platform_engineering"
+      ],
+      "requires": [
+        "cap_devops_engineering"
+      ],
+      "prefers": [
+        "interest_devops",
+        "interest_infra_automation"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_oncall"
+      ],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "DevOps 与运维平台方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_site_reliability",
+      "name": "可靠性工程方向",
+      "supports": [
+        "cap_sre_engineering",
+        "cap_observability_engineering"
+      ],
+      "requires": [
+        "cap_sre_engineering"
+      ],
+      "prefers": [
+        "interest_reliability",
+        "interest_stable_delivery"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_oncall"
+      ],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "SRE 与可靠性工程方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_quality_assurance",
+      "name": "测试开发方向",
+      "supports": [
+        "cap_qa_engineering"
+      ],
+      "requires": [
+        "cap_qa_engineering"
+      ],
+      "prefers": [
+        "interest_stable_delivery"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_manual_testing"
+      ],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "测试开发与质量保障方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_security",
+      "name": "安全方向",
+      "supports": [
+        "cap_security_engineering",
+        "cap_application_security",
+        "cap_security_operations"
+      ],
+      "requires": [
+        "cap_security_engineering"
+      ],
+      "prefers": [
+        "interest_security"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "安全工程方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_platform",
+      "name": "平台工程方向",
+      "supports": [
+        "cap_platform_engineering",
+        "cap_devops_engineering",
+        "cap_backend_engineering"
+      ],
+      "requires": [
+        "cap_platform_engineering"
+      ],
+      "prefers": [
+        "interest_stable_delivery",
+        "interest_infra_automation"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "平台工程方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_mobile",
+      "name": "移动端方向",
+      "supports": [
+        "cap_mobile_engineering",
+        "cap_android_engineering",
+        "cap_ios_engineering",
+        "cap_cross_platform_mobile"
+      ],
+      "requires": [
+        "cap_mobile_engineering"
+      ],
+      "prefers": [
+        "interest_mobile",
+        "interest_client_experience"
+      ],
+      "evidences": [],
+      "inhibits": [],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "移动端工程方向。",
+      "aggregator": "penalty_gate"
+    },
+    {
+      "id": "dir_embedded",
+      "name": "嵌入式方向",
+      "supports": [
+        "cap_embedded_engineering"
+      ],
+      "requires": [
+        "cap_embedded_engineering"
+      ],
+      "prefers": [
+        "interest_low_level_systems"
+      ],
+      "evidences": [],
+      "inhibits": [
+        "constraint_dislike_low_level_debugging"
+      ],
+      "params": {
+        "cap": 1.0,
+        "required_threshold": 0.03,
+        "penalty_floor": 0.45
+      },
+      "description": "嵌入式与固件方向。",
+      "aggregator": "penalty_gate"
+    }
+  ]
+}

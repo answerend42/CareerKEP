@@ -1,0 +1,1390 @@
+{
+  "ability_analytics_engineer_stack": [
+    "分析表达栈"
+  ],
+  "ability_analytics_storytelling": [
+    "分析表达能力"
+  ],
+  "ability_android_engineer_stack": [
+    "android 交付栈"
+  ],
+  "ability_android_stack": [
+    "android 技术栈"
+  ],
+  "ability_api_design": [
+    "接口设计能力"
+  ],
+  "ability_api_platform_engineer_stack": [
+    "接口平台栈"
+  ],
+  "ability_application_security": [
+    "应用安全能力"
+  ],
+  "ability_appsec_engineer_stack": [
+    "应用安全栈"
+  ],
+  "ability_backend_basics": [
+    "后端基础"
+  ],
+  "ability_batch_compute": [
+    "批处理能力"
+  ],
+  "ability_batch_data_engineer_stack": [
+    "离线数仓栈"
+  ],
+  "ability_bi_engineer_stack": [
+    "bi 交付栈"
+  ],
+  "ability_cloud_native": [
+    "云原生基础"
+  ],
+  "ability_cloud_platform_engineer_stack": [
+    "云平台栈"
+  ],
+  "ability_cloud_security_engineer_stack": [
+    "云安全栈"
+  ],
+  "ability_computer_vision_engineer_stack": [
+    "视觉建模栈"
+  ],
+  "ability_cross_platform_delivery": [
+    "跨端交付能力"
+  ],
+  "ability_cross_platform_engineer_stack": [
+    "跨端应用栈"
+  ],
+  "ability_data_modeling": [
+    "数据建模能力"
+  ],
+  "ability_data_processing": [
+    "数据处理能力"
+  ],
+  "ability_data_warehouse": [
+    "数仓建设能力"
+  ],
+  "ability_data_warehouse_engineer_stack": [
+    "数仓建模栈"
+  ],
+  "ability_database_practice": [
+    "数据库实践"
+  ],
+  "ability_devops_basics": [
+    "运维开发基础"
+  ],
+  "ability_embedded_development": [
+    "嵌入式开发能力"
+  ],
+  "ability_engineering_collaboration": [
+    "工程协作能力"
+  ],
+  "ability_feature_engineering": [
+    "特征工程能力"
+  ],
+  "ability_firmware_engineer_stack": [
+    "固件交付栈"
+  ],
+  "ability_firmware_integration": [
+    "固件集成能力"
+  ],
+  "ability_frontend_basics": [
+    "前端基础"
+  ],
+  "ability_frontend_interaction_engineer_stack": [
+    "交互体验栈"
+  ],
+  "ability_go_backend_engineer_stack": [
+    "go 服务栈"
+  ],
+  "ability_go_backend_stack": [
+    "go 后端栈"
+  ],
+  "ability_ios_engineer_stack": [
+    "ios 交付栈"
+  ],
+  "ability_ios_stack": [
+    "ios 技术栈"
+  ],
+  "ability_iot_engineer_stack": [
+    "iot 系统栈"
+  ],
+  "ability_java_backend_stack": [
+    "java 后端栈"
+  ],
+  "ability_llm_application_engineer_stack": [
+    "ai 应用落地栈"
+  ],
+  "ability_low_level_engineering": [
+    "底层工程能力"
+  ],
+  "ability_microservice_engineer_stack": [
+    "微服务治理栈"
+  ],
+  "ability_ml_foundations": [
+    "机器学习基础"
+  ],
+  "ability_ml_platform_engineer_stack": [
+    "ml 平台栈"
+  ],
+  "ability_mlops_basics": [
+    "mlops 基础"
+  ],
+  "ability_mlops_engineer_stack": [
+    "mlops 交付栈"
+  ],
+  "ability_mobile_foundations": [
+    "移动端基础"
+  ],
+  "ability_model_training": [
+    "模型训练能力"
+  ],
+  "ability_network_analysis": [
+    "网络分析能力"
+  ],
+  "ability_nlp_engineer_stack": [
+    "nlp 建模栈"
+  ],
+  "ability_node_backend_stack": [
+    "node 后端栈"
+  ],
+  "ability_nodejs_backend_engineer_stack": [
+    "node 服务栈"
+  ],
+  "ability_observability_engineer_stack": [
+    "可观测平台栈"
+  ],
+  "ability_observability_engineering": [
+    "可观测性能力"
+  ],
+  "ability_penetration_tester_stack": [
+    "渗透测试栈"
+  ],
+  "ability_performance_engineering": [
+    "性能工程能力"
+  ],
+  "ability_performance_test_engineer_stack": [
+    "性能测试栈"
+  ],
+  "ability_php_backend_engineer_stack": [
+    "php 服务栈"
+  ],
+  "ability_php_backend_stack": [
+    "php 后端栈"
+  ],
+  "ability_product_delivery": [
+    "产品落地能力"
+  ],
+  "ability_programming_fundamentals": [
+    "编程基础"
+  ],
+  "ability_python_backend_stack": [
+    "python 后端栈"
+  ],
+  "ability_qa_platform_engineer_stack": [
+    "质量平台栈"
+  ],
+  "ability_react_frontend_engineer_stack": [
+    "react 前端栈"
+  ],
+  "ability_react_frontend_stack": [
+    "react 前端栈"
+  ],
+  "ability_realtime_compute": [
+    "实时计算能力"
+  ],
+  "ability_realtime_data_engineer_stack": [
+    "实时数据栈"
+  ],
+  "ability_recommendation_algorithm_engineer_stack": [
+    "推荐算法栈"
+  ],
+  "ability_release_engineer_stack": [
+    "发布流水线栈"
+  ],
+  "ability_rust_backend_engineer_stack": [
+    "rust 服务栈"
+  ],
+  "ability_security_basics": [
+    "安全分析基础"
+  ],
+  "ability_security_operations": [
+    "安全运营能力"
+  ],
+  "ability_service_governance": [
+    "服务治理能力"
+  ],
+  "ability_soc_analyst_stack": [
+    "安全运营栈"
+  ],
+  "ability_sre_basics": [
+    "可靠性工程基础"
+  ],
+  "ability_system_design": [
+    "系统设计能力"
+  ],
+  "ability_system_programming": [
+    "系统编程基础"
+  ],
+  "ability_test_automation": [
+    "测试自动化能力"
+  ],
+  "ability_ui_delivery": [
+    "界面交付能力"
+  ],
+  "ability_vue_frontend_engineer_stack": [
+    "vue 前端栈"
+  ],
+  "ability_vue_frontend_stack": [
+    "vue 前端栈"
+  ],
+  "cap_ai_application_engineering": [
+    "ai 应用工程能力"
+  ],
+  "cap_analytics_engineer": [
+    "分析工程专项能力"
+  ],
+  "cap_android_engineer": [
+    "android 专项能力"
+  ],
+  "cap_android_engineering": [
+    "android 工程能力"
+  ],
+  "cap_api_platform_engineer": [
+    "接口平台专项能力"
+  ],
+  "cap_application_security": [
+    "应用安全能力"
+  ],
+  "cap_appsec_engineer": [
+    "应用安全专项能力"
+  ],
+  "cap_backend_engineering": [
+    "后端工程能力"
+  ],
+  "cap_batch_data_engineer": [
+    "离线数据专项能力"
+  ],
+  "cap_bi_engineer": [
+    "bi 专项能力"
+  ],
+  "cap_cloud_platform_engineer": [
+    "云平台专项能力"
+  ],
+  "cap_cloud_security_engineer": [
+    "云安全专项能力"
+  ],
+  "cap_computer_vision_engineer": [
+    "视觉专项能力"
+  ],
+  "cap_cross_platform_engineer": [
+    "跨端专项能力"
+  ],
+  "cap_cross_platform_mobile": [
+    "跨端移动能力"
+  ],
+  "cap_data_analysis": [
+    "数据分析能力"
+  ],
+  "cap_data_engineering": [
+    "数据工程能力"
+  ],
+  "cap_data_warehouse_engineer": [
+    "数仓专项能力"
+  ],
+  "cap_devops_engineering": [
+    "devops 工程能力"
+  ],
+  "cap_embedded_engineering": [
+    "嵌入式工程能力"
+  ],
+  "cap_firmware_engineer": [
+    "固件专项能力"
+  ],
+  "cap_frontend_engineering": [
+    "前端工程能力"
+  ],
+  "cap_frontend_interaction_engineer": [
+    "前端交互专项能力"
+  ],
+  "cap_fullstack_engineering": [
+    "全栈工程能力"
+  ],
+  "cap_go_backend_engineer": [
+    "go 后端专项能力"
+  ],
+  "cap_go_backend_engineering": [
+    "go 后端工程能力"
+  ],
+  "cap_ios_engineer": [
+    "ios 专项能力"
+  ],
+  "cap_ios_engineering": [
+    "ios 工程能力"
+  ],
+  "cap_iot_engineer": [
+    "iot 专项能力"
+  ],
+  "cap_java_backend_engineering": [
+    "java 后端工程能力"
+  ],
+  "cap_llm_application_engineer": [
+    "大模型应用专项能力"
+  ],
+  "cap_microservice_engineer": [
+    "微服务专项能力"
+  ],
+  "cap_ml_engineering": [
+    "机器学习工程能力"
+  ],
+  "cap_ml_platform_engineer": [
+    "机器学习平台专项能力"
+  ],
+  "cap_ml_platform_engineering": [
+    "机器学习平台能力"
+  ],
+  "cap_mlops_engineer": [
+    "mlops 专项能力"
+  ],
+  "cap_mobile_engineering": [
+    "移动端工程能力"
+  ],
+  "cap_nlp_engineer": [
+    "nlp 专项能力"
+  ],
+  "cap_node_backend_engineering": [
+    "node 后端工程能力"
+  ],
+  "cap_nodejs_backend_engineer": [
+    "node 后端专项能力"
+  ],
+  "cap_observability_engineer": [
+    "可观测专项能力"
+  ],
+  "cap_observability_engineering": [
+    "可观测平台能力"
+  ],
+  "cap_penetration_tester": [
+    "渗透测试专项能力"
+  ],
+  "cap_performance_test_engineer": [
+    "性能测试专项能力"
+  ],
+  "cap_php_backend_engineer": [
+    "php 后端专项能力"
+  ],
+  "cap_php_backend_engineering": [
+    "php 后端工程能力"
+  ],
+  "cap_platform_engineering": [
+    "平台工程能力"
+  ],
+  "cap_python_backend_engineering": [
+    "python 后端工程能力"
+  ],
+  "cap_qa_engineering": [
+    "测试开发能力"
+  ],
+  "cap_qa_platform_engineer": [
+    "质量平台专项能力"
+  ],
+  "cap_react_frontend_engineer": [
+    "react 前端专项能力"
+  ],
+  "cap_react_frontend_engineering": [
+    "react 前端工程能力"
+  ],
+  "cap_realtime_data_engineer": [
+    "实时数据专项能力"
+  ],
+  "cap_realtime_data_engineering": [
+    "实时数据工程能力"
+  ],
+  "cap_recommendation_algorithm_engineer": [
+    "推荐算法专项能力"
+  ],
+  "cap_release_engineer": [
+    "发布工程专项能力"
+  ],
+  "cap_rust_backend_engineer": [
+    "rust 服务专项能力"
+  ],
+  "cap_security_engineering": [
+    "安全工程能力"
+  ],
+  "cap_security_operations": [
+    "安全运营能力"
+  ],
+  "cap_soc_analyst": [
+    "安全运营专项能力"
+  ],
+  "cap_sre_engineering": [
+    "可靠性工程能力"
+  ],
+  "cap_vue_frontend_engineer": [
+    "vue 前端专项能力"
+  ],
+  "cap_vue_frontend_engineering": [
+    "vue 前端工程能力"
+  ],
+  "constraint_dislike_customer_communication": [
+    "不喜欢频繁沟通",
+    "不喜欢高频业务沟通",
+    "抗拒业务沟通"
+  ],
+  "constraint_dislike_low_level_debugging": [
+    "不喜欢底层调试",
+    "抗拒驱动调试"
+  ],
+  "constraint_dislike_manual_testing": [
+    "不喜欢重复性测试",
+    "不喜欢重复测试",
+    "抗拒手工测试"
+  ],
+  "constraint_dislike_math_theory": [
+    "不喜欢数学",
+    "不喜欢高数学理论",
+    "不太擅长数学",
+    "怕数学",
+    "数学一般",
+    "数学不太行",
+    "数学薄弱"
+  ],
+  "constraint_dislike_oncall": [
+    "不喜欢 oncall",
+    "不喜欢值班运维",
+    "不喜欢运维值班",
+    "不想值班",
+    "不想夜间值班",
+    "抗拒 oncall"
+  ],
+  "constraint_dislike_research_uncertainty": [
+    "不喜欢研究探索",
+    "不喜欢高不确定性研究",
+    "抗拒高不确定性"
+  ],
+  "constraint_dislike_ui_polish": [
+    "不喜欢 ui",
+    "不喜欢前端细节",
+    "不喜欢界面",
+    "不喜欢界面打磨",
+    "不爱做样式",
+    "不爱抠样式"
+  ],
+  "constraint_weak_english": [
+    "不会英语",
+    "看不懂英文",
+    "英文不好",
+    "英文文档看不懂",
+    "英语不好",
+    "英语很差",
+    "英语薄弱"
+  ],
+  "dir_ai_application": [
+    "ai 应用方向"
+  ],
+  "dir_data": [
+    "数据工程方向"
+  ],
+  "dir_data_analytics": [
+    "数据分析方向"
+  ],
+  "dir_devops": [
+    "运维平台方向"
+  ],
+  "dir_embedded": [
+    "嵌入式方向"
+  ],
+  "dir_frontend": [
+    "前端方向"
+  ],
+  "dir_fullstack": [
+    "全栈方向"
+  ],
+  "dir_machine_learning": [
+    "机器学习方向"
+  ],
+  "dir_mobile": [
+    "移动端方向"
+  ],
+  "dir_platform": [
+    "平台工程方向"
+  ],
+  "dir_quality_assurance": [
+    "测试开发方向"
+  ],
+  "dir_security": [
+    "安全方向"
+  ],
+  "dir_site_reliability": [
+    "可靠性工程方向"
+  ],
+  "dir_web_backend": [
+    "web 后端方向"
+  ],
+  "interest_backend": [
+    "backend",
+    "偏好后端",
+    "写后端接口",
+    "后端",
+    "后端接口",
+    "后端服务",
+    "服务端"
+  ],
+  "interest_client_experience": [
+    "交互体验",
+    "偏好客户端体验",
+    "客户端体验",
+    "用户体验"
+  ],
+  "interest_data": [
+    "data",
+    "偏好数据",
+    "做数据",
+    "数据分析",
+    "数据处理",
+    "数据工程",
+    "数据方向"
+  ],
+  "interest_devops": [
+    "devops",
+    "偏好运维平台",
+    "平台工程",
+    "运维"
+  ],
+  "interest_frontend": [
+    "frontend",
+    "偏好前端",
+    "做界面",
+    "写前端",
+    "前端",
+    "界面"
+  ],
+  "interest_infra_automation": [
+    "infra automation",
+    "偏好基础设施自动化",
+    "基础设施自动化"
+  ],
+  "interest_low_level_systems": [
+    "low level",
+    "偏好底层系统",
+    "底层系统",
+    "系统编程"
+  ],
+  "interest_ml": [
+    "ai",
+    "ml",
+    "偏好机器学习",
+    "做机器学习",
+    "做算法",
+    "机器学习",
+    "算法方向"
+  ],
+  "interest_mobile": [
+    "app开发",
+    "mobile",
+    "偏好移动端",
+    "移动端"
+  ],
+  "interest_product_delivery": [
+    "业务交付",
+    "业务落地",
+    "产品交付",
+    "产品落地",
+    "偏好产品落地"
+  ],
+  "interest_reliability": [
+    "reliability",
+    "sre",
+    "偏好可靠性工程",
+    "可靠性"
+  ],
+  "interest_research": [
+    "research",
+    "偏好研究探索",
+    "探索",
+    "研究"
+  ],
+  "interest_security": [
+    "security",
+    "偏好安全",
+    "安全"
+  ],
+  "interest_stable_delivery": [
+    "偏好稳定交付",
+    "可靠性",
+    "稳定交付",
+    "质量保障"
+  ],
+  "interest_visualization": [
+    "dashboard",
+    "偏好可视化表达",
+    "可视化",
+    "图表"
+  ],
+  "knowledge_algorithms": [
+    "algorithms",
+    "算法"
+  ],
+  "knowledge_cryptography": [
+    "cryptography",
+    "密码学",
+    "密码学基础"
+  ],
+  "knowledge_data_structures": [
+    "data structures",
+    "数据结构"
+  ],
+  "knowledge_data_warehouse_modeling": [
+    "data warehouse modeling",
+    "数仓建模"
+  ],
+  "knowledge_database_theory": [
+    "database theory",
+    "数据库原理"
+  ],
+  "knowledge_distributed_systems": [
+    "distributed systems",
+    "分布式",
+    "分布式系统"
+  ],
+  "knowledge_embedded_protocols": [
+    "can",
+    "embedded protocols",
+    "modbus",
+    "串口协议",
+    "嵌入式通信协议"
+  ],
+  "knowledge_etl_modeling": [
+    "etl",
+    "etl modeling",
+    "etl 建模"
+  ],
+  "knowledge_experimentation": [
+    "ab test",
+    "experimentation",
+    "实验设计"
+  ],
+  "knowledge_hardware_debugging": [
+    "hardware debugging",
+    "硬件调试"
+  ],
+  "knowledge_linear_algebra": [
+    "linear algebra",
+    "线性代数"
+  ],
+  "knowledge_math_foundation": [
+    "math",
+    "数学",
+    "数学基础"
+  ],
+  "knowledge_microservice_architecture": [
+    "microservice architecture",
+    "微服务架构"
+  ],
+  "knowledge_mobile_architecture": [
+    "mobile architecture",
+    "移动端架构"
+  ],
+  "knowledge_networks": [
+    "computer networks",
+    "networking",
+    "计算机网络"
+  ],
+  "knowledge_oop": [
+    "oop",
+    "面向对象"
+  ],
+  "knowledge_operating_systems": [
+    "os",
+    "操作系统"
+  ],
+  "knowledge_probability": [
+    "probability",
+    "概率论"
+  ],
+  "knowledge_secure_coding": [
+    "secure coding",
+    "安全编码"
+  ],
+  "knowledge_statistics": [
+    "statistics",
+    "统计基础",
+    "统计学"
+  ],
+  "knowledge_system_design": [
+    "system design",
+    "架构设计",
+    "系统设计"
+  ],
+  "knowledge_technical_documentation": [
+    "technical docs",
+    "technical documentation",
+    "技术文档",
+    "技术文档阅读",
+    "英文技术文档",
+    "英文文档"
+  ],
+  "knowledge_ui_ux_basics": [
+    "ui ux",
+    "交互设计",
+    "界面交互",
+    "界面交互基础"
+  ],
+  "language_english_reading": [
+    "english",
+    "technical english",
+    "英文",
+    "英文阅读",
+    "英语",
+    "英语阅读"
+  ],
+  "project_ab_testing": [
+    "a/b test",
+    "ab testing",
+    "实验平台",
+    "实验平台项目"
+  ],
+  "project_api_gateway": [
+    "api gateway",
+    "网关治理项目",
+    "网关项目"
+  ],
+  "project_app_hardening": [
+    "app hardening",
+    "应用加固",
+    "应用加固项目"
+  ],
+  "project_backend_api": [
+    "api项目",
+    "backend api",
+    "后端接口",
+    "后端接口项目"
+  ],
+  "project_blue_team_monitoring": [
+    "blue team monitoring",
+    "安全监测",
+    "安全监测项目"
+  ],
+  "project_ci_cd_platform": [
+    "ci cd platform",
+    "ci/cd 平台项目",
+    "流水线平台"
+  ],
+  "project_component_library": [
+    "component library",
+    "组件库",
+    "组件库项目"
+  ],
+  "project_cross_platform_app": [
+    "cross platform app",
+    "跨端应用项目",
+    "跨端项目"
+  ],
+  "project_dashboard": [
+    "dashboard",
+    "分析看板项目",
+    "可视化项目",
+    "数据看板"
+  ],
+  "project_data_pipeline": [
+    "data pipeline",
+    "数据管道",
+    "数据管道项目"
+  ],
+  "project_data_warehouse": [
+    "data warehouse",
+    "数仓项目",
+    "数据仓库项目"
+  ],
+  "project_devops_automation": [
+    "devops automation",
+    "运维自动化",
+    "运维自动化项目"
+  ],
+  "project_firmware_delivery": [
+    "firmware delivery",
+    "固件交付项目",
+    "固件项目"
+  ],
+  "project_iot_gateway": [
+    "iot gateway",
+    "iot 网关项目",
+    "iot网关"
+  ],
+  "project_low_latency_service": [
+    "low latency service",
+    "低延迟服务",
+    "低延迟服务项目"
+  ],
+  "project_microservice": [
+    "microservice",
+    "微服务",
+    "微服务项目"
+  ],
+  "project_ml_deployment": [
+    "ml deployment",
+    "模型部署",
+    "模型部署项目"
+  ],
+  "project_mobile_app": [
+    "app项目",
+    "mobile app",
+    "移动应用项目",
+    "移动端项目"
+  ],
+  "project_model_training": [
+    "model training",
+    "模型训练",
+    "模型训练项目"
+  ],
+  "project_observability_platform": [
+    "observability platform",
+    "可观测平台",
+    "可观测平台项目"
+  ],
+  "project_performance_testing": [
+    "performance testing",
+    "性能压测",
+    "性能压测项目"
+  ],
+  "project_platform_portal": [
+    "platform portal",
+    "内部平台",
+    "内部平台门户项目"
+  ],
+  "project_real_time_pipeline": [
+    "real time pipeline",
+    "实时数据链路项目",
+    "实时链路"
+  ],
+  "project_recommendation_system": [
+    "recommendation system",
+    "推荐系统",
+    "推荐系统项目"
+  ],
+  "project_security_ctf": [
+    "ctf",
+    "安全实战项目",
+    "安全项目",
+    "渗透"
+  ],
+  "project_test_automation": [
+    "test automation",
+    "测试自动化",
+    "测试自动化项目"
+  ],
+  "project_web_ui": [
+    "web ui",
+    "web 前端项目",
+    "前端项目",
+    "网页项目"
+  ],
+  "role_ai_application_engineer": [
+    "ai 应用工程师",
+    "ai应用工程师"
+  ],
+  "role_analytics_engineer": [
+    "analytics engineer",
+    "分析工程师"
+  ],
+  "role_android_engineer": [
+    "android 工程师",
+    "android开发"
+  ],
+  "role_api_platform_engineer": [
+    "接口平台工程师",
+    "接口平台开发"
+  ],
+  "role_appsec_engineer": [
+    "appsec engineer",
+    "应用安全工程师"
+  ],
+  "role_backend_engineer": [
+    "后端工程师",
+    "后端开发工程师",
+    "通用后端工程师"
+  ],
+  "role_batch_data_engineer": [
+    "离线数仓工程师",
+    "离线数据工程师"
+  ],
+  "role_bi_engineer": [
+    "bi engineer",
+    "bi 工程师",
+    "商业智能工程师"
+  ],
+  "role_cloud_platform_engineer": [
+    "云平台工程师",
+    "云平台开发工程师"
+  ],
+  "role_cloud_security_engineer": [
+    "cloud security engineer",
+    "云安全工程师"
+  ],
+  "role_computer_vision_engineer": [
+    "cv工程师",
+    "计算机视觉工程师"
+  ],
+  "role_cross_platform_engineer": [
+    "flutter开发",
+    "跨平台开发",
+    "跨端应用工程师"
+  ],
+  "role_data_analyst": [
+    "data analyst",
+    "数据分析师"
+  ],
+  "role_data_engineer": [
+    "data engineer",
+    "数据工程师"
+  ],
+  "role_data_warehouse_engineer": [
+    "数仓工程师",
+    "数据仓库工程师"
+  ],
+  "role_devops_engineer": [
+    "devops engineer",
+    "devops 工程师"
+  ],
+  "role_embedded_engineer": [
+    "embedded engineer",
+    "嵌入式工程师"
+  ],
+  "role_firmware_engineer": [
+    "firmware engineer",
+    "固件工程师",
+    "固件开发工程师"
+  ],
+  "role_frontend_engineer": [
+    "web前端工程师",
+    "前端工程师"
+  ],
+  "role_frontend_interaction_engineer": [
+    "交互前端工程师",
+    "前端交互工程师"
+  ],
+  "role_fullstack_engineer": [
+    "全栈工程师",
+    "全栈开发工程师"
+  ],
+  "role_go_backend_engineer": [
+    "go 后端工程师",
+    "go后端"
+  ],
+  "role_ios_engineer": [
+    "ios 工程师",
+    "ios开发"
+  ],
+  "role_iot_engineer": [
+    "iot 工程师",
+    "iot开发工程师"
+  ],
+  "role_java_backend_engineer": [
+    "java 后端工程师",
+    "java后端"
+  ],
+  "role_llm_application_engineer": [
+    "llm应用工程师",
+    "大模型工程师",
+    "大模型应用工程师"
+  ],
+  "role_microservice_engineer": [
+    "微服务工程师",
+    "微服务开发工程师"
+  ],
+  "role_ml_engineer": [
+    "ml engineer",
+    "机器学习工程师",
+    "算法工程师"
+  ],
+  "role_ml_platform_engineer": [
+    "ml平台工程师",
+    "机器学习平台工程师"
+  ],
+  "role_mlops_engineer": [
+    "mlops",
+    "mlops 工程师"
+  ],
+  "role_mobile_engineer": [
+    "mobile engineer",
+    "移动端工程师"
+  ],
+  "role_nlp_engineer": [
+    "nlp 工程师",
+    "自然语言处理工程师"
+  ],
+  "role_nodejs_backend_engineer": [
+    "node.js 后端工程师",
+    "nodejs后端",
+    "node后端"
+  ],
+  "role_observability_engineer": [
+    "可观测工程师",
+    "可观测平台工程师"
+  ],
+  "role_penetration_tester": [
+    "渗透测试",
+    "渗透测试工程师"
+  ],
+  "role_performance_test_engineer": [
+    "性能工程师",
+    "性能测试工程师"
+  ],
+  "role_php_backend_engineer": [
+    "php 后端工程师",
+    "php后端"
+  ],
+  "role_platform_engineer": [
+    "platform engineer",
+    "平台工程师"
+  ],
+  "role_python_backend_engineer": [
+    "python 后端工程师",
+    "python后端"
+  ],
+  "role_qa_platform_engineer": [
+    "qa平台工程师",
+    "质量平台工程师"
+  ],
+  "role_react_frontend_engineer": [
+    "react 前端工程师",
+    "react开发"
+  ],
+  "role_realtime_data_engineer": [
+    "实时数据工程师",
+    "流式数据工程师"
+  ],
+  "role_recommendation_algorithm_engineer": [
+    "推荐算法工程师"
+  ],
+  "role_release_engineer": [
+    "release engineer",
+    "交付工程师",
+    "发布工程师"
+  ],
+  "role_rust_backend_engineer": [
+    "rust 服务工程师",
+    "rust后端"
+  ],
+  "role_security_engineer": [
+    "security engineer",
+    "安全工程师"
+  ],
+  "role_soc_analyst": [
+    "soc analyst",
+    "soc 分析师",
+    "安全运营分析师"
+  ],
+  "role_sre_engineer": [
+    "site reliability engineer",
+    "sre 工程师",
+    "可靠性工程师"
+  ],
+  "role_test_development_engineer": [
+    "qa engineer",
+    "测试工程师",
+    "测试开发工程师"
+  ],
+  "role_vue_frontend_engineer": [
+    "vue 前端工程师",
+    "vue开发"
+  ],
+  "skill_bash": [
+    "bash",
+    "shell",
+    "shell script"
+  ],
+  "skill_c": [
+    "c",
+    "c language",
+    "c语言"
+  ],
+  "skill_cpp": [
+    "c++",
+    "cpp"
+  ],
+  "skill_csharp": [
+    "c#",
+    "csharp"
+  ],
+  "skill_dart": [
+    "dart"
+  ],
+  "skill_golang": [
+    "go",
+    "golang"
+  ],
+  "skill_java": [
+    "java"
+  ],
+  "skill_javascript": [
+    "javascript",
+    "js"
+  ],
+  "skill_kotlin": [
+    "kotlin"
+  ],
+  "skill_php": [
+    "php"
+  ],
+  "skill_python": [
+    "py",
+    "python"
+  ],
+  "skill_rust": [
+    "rust"
+  ],
+  "skill_scala": [
+    "scala"
+  ],
+  "skill_sql": [
+    "sql"
+  ],
+  "skill_swift": [
+    "swift"
+  ],
+  "skill_typescript": [
+    "ts",
+    "typescript"
+  ],
+  "soft_business_understanding": [
+    "business understanding",
+    "业务理解"
+  ],
+  "soft_communication": [
+    "communication",
+    "沟通",
+    "沟通表达"
+  ],
+  "soft_documentation": [
+    "documentation",
+    "文档",
+    "文档习惯"
+  ],
+  "soft_mentoring": [
+    "mentoring",
+    "知识分享"
+  ],
+  "soft_ownership": [
+    "ownership",
+    "责任心"
+  ],
+  "soft_problem_solving": [
+    "problem solving",
+    "问题拆解"
+  ],
+  "soft_self_learning": [
+    "self learning",
+    "自主学习",
+    "自学",
+    "自驱"
+  ],
+  "soft_teamwork": [
+    "teamwork",
+    "协作",
+    "团队协作"
+  ],
+  "tool_airflow": [
+    "airflow"
+  ],
+  "tool_aliyun": [
+    "aliyun",
+    "阿里云"
+  ],
+  "tool_android_studio": [
+    "android studio"
+  ],
+  "tool_aws": [
+    "aws"
+  ],
+  "tool_azure": [
+    "azure"
+  ],
+  "tool_burp_suite": [
+    "burp",
+    "burp suite"
+  ],
+  "tool_clickhouse": [
+    "clickhouse"
+  ],
+  "tool_dbt": [
+    "dbt"
+  ],
+  "tool_django": [
+    "django"
+  ],
+  "tool_docker": [
+    "docker"
+  ],
+  "tool_dotnet": [
+    ".net",
+    "dotnet"
+  ],
+  "tool_echo": [
+    "echo",
+    "echo framework"
+  ],
+  "tool_elasticsearch": [
+    "elasticsearch",
+    "es"
+  ],
+  "tool_express": [
+    "express"
+  ],
+  "tool_fastapi": [
+    "fastapi"
+  ],
+  "tool_flask": [
+    "flask"
+  ],
+  "tool_flink": [
+    "apache flink",
+    "flink"
+  ],
+  "tool_flutter": [
+    "flutter"
+  ],
+  "tool_gcp": [
+    "gcp",
+    "google cloud"
+  ],
+  "tool_gin": [
+    "gin"
+  ],
+  "tool_git": [
+    "git"
+  ],
+  "tool_github_actions": [
+    "gha",
+    "github actions"
+  ],
+  "tool_grafana": [
+    "grafana"
+  ],
+  "tool_hadoop": [
+    "hadoop"
+  ],
+  "tool_hive": [
+    "hive"
+  ],
+  "tool_jenkins": [
+    "jenkins"
+  ],
+  "tool_jmeter": [
+    "jmeter"
+  ],
+  "tool_kafka": [
+    "kafka"
+  ],
+  "tool_kubernetes": [
+    "k8s",
+    "kubernetes"
+  ],
+  "tool_laravel": [
+    "laravel"
+  ],
+  "tool_linux": [
+    "linux"
+  ],
+  "tool_mlflow": [
+    "mlflow"
+  ],
+  "tool_mongodb": [
+    "mongo",
+    "mongodb"
+  ],
+  "tool_mybatis": [
+    "mybatis"
+  ],
+  "tool_mysql": [
+    "mysql"
+  ],
+  "tool_nestjs": [
+    "nest",
+    "nestjs"
+  ],
+  "tool_nextjs": [
+    "next.js",
+    "nextjs"
+  ],
+  "tool_nginx": [
+    "nginx"
+  ],
+  "tool_nmap": [
+    "nmap"
+  ],
+  "tool_nodejs": [
+    "node",
+    "node.js",
+    "nodejs"
+  ],
+  "tool_numpy": [
+    "numpy"
+  ],
+  "tool_opencv": [
+    "opencv"
+  ],
+  "tool_pandas": [
+    "pandas"
+  ],
+  "tool_postgresql": [
+    "postgres",
+    "postgresql"
+  ],
+  "tool_prometheus": [
+    "prometheus"
+  ],
+  "tool_pytest": [
+    "pytest"
+  ],
+  "tool_pytorch": [
+    "pytorch",
+    "torch"
+  ],
+  "tool_ray": [
+    "ray"
+  ],
+  "tool_react": [
+    "react"
+  ],
+  "tool_redis": [
+    "redis"
+  ],
+  "tool_scikit_learn": [
+    "scikit-learn",
+    "sklearn"
+  ],
+  "tool_selenium": [
+    "selenium"
+  ],
+  "tool_snowflake": [
+    "snowflake"
+  ],
+  "tool_spark": [
+    "apache spark",
+    "spark"
+  ],
+  "tool_spring_boot": [
+    "spring",
+    "spring boot"
+  ],
+  "tool_superset": [
+    "superset"
+  ],
+  "tool_tensorflow": [
+    "tensorflow",
+    "tf"
+  ],
+  "tool_terraform": [
+    "terraform"
+  ],
+  "tool_vue": [
+    "vue",
+    "vue.js"
+  ],
+  "tool_wireshark": [
+    "wireshark"
+  ],
+  "tool_xcode": [
+    "xcode"
+  ]
+}

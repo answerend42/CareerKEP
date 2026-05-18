@@ -1,0 +1,240 @@
+[
+  {
+    "id": "backend_bundle_nl",
+    "text": "我熟悉 Python 和 MySQL，做过一点 Flask 接口，会 Linux，也更喜欢后端开发。",
+    "target_role_id": "role_backend_engineer",
+    "expected_missing_requirements_any": [
+      "后端工程能力"
+    ],
+    "expected_priority_nodes_any": [
+      "cap_backend_engineering",
+      "dir_web_backend"
+    ],
+    "expected_focus_nodes_any": [
+      "cap_backend_engineering"
+    ],
+    "expected_first_step_relation": "requires",
+    "expected_action_template_ids_any": [
+      "backend_gateway_hardening_project"
+    ],
+    "expected_simulation_boost_nodes_any": [
+      "project_api_gateway",
+      "project_ci_cd_platform",
+      "tool_docker"
+    ],
+    "simulation": {
+      "selectors": [
+        {
+          "step": 1,
+          "action": 1
+        },
+        {
+          "step": 2,
+          "action": 1
+        }
+      ],
+      "expected_bundle_size": 2,
+      "require_positive_delta": true
+    }
+  },
+  {
+    "id": "data_engineer_structured",
+    "text": "",
+    "signals": [
+      {
+        "entity": "skill_sql",
+        "score": 0.9
+      },
+      {
+        "entity": "tool_linux",
+        "score": 0.7
+      },
+      {
+        "entity": "interest_data",
+        "score": 0.8
+      }
+    ],
+    "target_role_id": "role_data_engineer",
+    "expected_missing_requirements_any": [
+      "数据工程能力"
+    ],
+    "expected_priority_nodes_any": [
+      "cap_data_engineering",
+      "dir_data"
+    ],
+    "expected_focus_nodes_any": [
+      "cap_data_engineering"
+    ],
+    "expected_first_step_relation": "requires",
+    "expected_action_template_ids_any": [
+      "data_pipeline_project"
+    ],
+    "expected_simulation_boost_nodes_any": [
+      "project_data_pipeline",
+      "tool_airflow"
+    ],
+    "simulation": {
+      "selectors": [
+        {
+          "step": 1,
+          "action": 1
+        }
+      ],
+      "expected_bundle_size": 1,
+      "require_positive_delta": true
+    }
+  },
+  {
+    "id": "frontend_structured",
+    "text": "",
+    "signals": [
+      {
+        "entity": "tool_react",
+        "score": 0.85
+      },
+      {
+        "entity": "interest_frontend",
+        "score": 0.9
+      }
+    ],
+    "target_role_id": "role_frontend_engineer",
+    "expected_missing_requirements_any": [
+      "前端工程能力"
+    ],
+    "expected_priority_nodes_any": [
+      "cap_frontend_engineering",
+      "dir_frontend"
+    ],
+    "expected_focus_nodes_any": [
+      "cap_frontend_engineering"
+    ],
+    "expected_first_step_relation": "requires",
+    "expected_action_template_ids_any": [
+      "frontend_component_library_portfolio"
+    ],
+    "expected_simulation_boost_nodes_any": [
+      "project_component_library",
+      "knowledge_ui_ux_basics"
+    ],
+    "simulation": {
+      "selectors": [
+        {
+          "step": 1,
+          "action": 1
+        }
+      ],
+      "expected_bundle_size": 1,
+      "require_positive_delta": true
+    }
+  },
+  {
+    "id": "qa_nl",
+    "text": "我会一点 Python，也做过自动化测试，但还没有完整搭过质量平台。",
+    "target_role_id": "role_test_development_engineer",
+    "expected_priority_nodes_any": [
+      "cap_qa_engineering",
+      "dir_quality_assurance"
+    ],
+    "expected_focus_nodes_any": [
+      "cap_qa_engineering"
+    ],
+    "expected_first_step_relation": "requires",
+    "expected_action_template_ids_any": [
+      "qa_automation_project"
+    ],
+    "expected_simulation_boost_nodes_any": [
+      "project_test_automation",
+      "tool_pytest"
+    ],
+    "simulation": {
+      "selectors": [
+        {
+          "step": 1,
+          "action": 1
+        }
+      ],
+      "expected_bundle_size": 1,
+      "require_positive_delta": true
+    }
+  },
+  {
+    "id": "appsec_structured",
+    "text": "",
+    "signals": [
+      {
+        "entity": "interest_security",
+        "score": 0.9
+      },
+      {
+        "entity": "tool_linux",
+        "score": 0.8
+      },
+      {
+        "entity": "knowledge_secure_coding",
+        "score": 0.7
+      }
+    ],
+    "target_role_id": "role_appsec_engineer",
+    "expected_missing_requirements_any": [
+      "应用安全专项能力"
+    ],
+    "expected_priority_nodes_any": [
+      "cap_appsec_engineer",
+      "dir_security"
+    ],
+    "expected_focus_nodes_any": [
+      "cap_appsec_engineer"
+    ],
+    "expected_first_step_relation": "requires",
+    "expected_action_template_ids_any": [
+      "appsec_review_project"
+    ],
+    "expected_simulation_boost_nodes_any": [
+      "project_app_hardening",
+      "tool_burp_suite"
+    ],
+    "simulation": {
+      "selectors": [
+        {
+          "step": 1,
+          "action": 1
+        }
+      ],
+      "expected_bundle_size": 1,
+      "require_positive_delta": true
+    }
+  },
+  {
+    "id": "devops_nl",
+    "text": "我会 Docker、Linux，也写过一点 CI/CD 脚本，喜欢自动化部署和排查线上问题。",
+    "target_role_id": "role_devops_engineer",
+    "expected_missing_requirements_any": [
+      "DevOps 工程能力"
+    ],
+    "expected_priority_nodes_any": [
+      "cap_devops_engineering",
+      "dir_devops"
+    ],
+    "expected_focus_nodes_any": [
+      "cap_devops_engineering"
+    ],
+    "expected_first_step_relation": "requires",
+    "expected_action_template_ids_any": [
+      "devops_release_pipeline_project"
+    ],
+    "expected_simulation_boost_nodes_any": [
+      "project_ci_cd_platform",
+      "tool_kubernetes"
+    ],
+    "simulation": {
+      "selectors": [
+        {
+          "step": 1,
+          "action": 1
+        }
+      ],
+      "expected_bundle_size": 1,
+      "require_positive_delta": true
+    }
+  }
+]

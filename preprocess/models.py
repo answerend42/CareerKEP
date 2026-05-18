@@ -49,9 +49,6 @@ class EntityMention:
     matched_by: str
     reason: str
     context: str
-    candidate_count: int = 0
-    score_gap: float | None = None
-    top_candidates: List[Dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -65,7 +62,6 @@ class ResolvedEntity:
     label: str
     layer: str
     aliases: List[str] = field(default_factory=list)
-    alias_sources: Dict[str, str] = field(default_factory=dict)
     mention_count: int = 0
     doc_count: int = 0
     sample_surfaces: List[str] = field(default_factory=list)

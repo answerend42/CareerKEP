@@ -9,7 +9,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from .catalog import EntityCatalog, EntityDefinition, load_entity_catalog
-from .collector import RawDocument, collect_source_manifest, load_raw_documents
+from .collector import RawDocument, load_raw_documents
 from .extractor import EntityMention, extract_mentions
 
 if TYPE_CHECKING:
@@ -22,7 +22,6 @@ __all__ = [
     "RawDocument",
     "EntityMention",
     "extract_mentions",
-    "collect_source_manifest",
     "load_entity_catalog",
     "load_raw_documents",
     "run_pipeline",

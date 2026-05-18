@@ -1,0 +1,220 @@
+[
+  {
+    "profile_id": "onet_software_developers",
+    "source_type": "onet_online",
+    "source_id": "15-1252.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1252.00",
+    "source_title": "15-1252.00 - Software Developers",
+    "snapshot_date": "2026-04-17",
+    "summary_excerpt": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team.",
+    "sample_job_titles": [
+      "Application Developer",
+      "Application Integration Engineer",
+      "Developer",
+      "DevOps Engineer (Development Operations Engineer)",
+      "Infrastructure Engineer",
+      "Software Architect"
+    ],
+    "mapped_node_ids": [
+      "cap_backend_engineering",
+      "dir_web_backend",
+      "dir_fullstack",
+      "role_backend_engineer",
+      "role_python_backend_engineer",
+      "role_java_backend_engineer",
+      "role_go_backend_engineer",
+      "role_nodejs_backend_engineer",
+      "role_fullstack_engineer"
+    ],
+    "profile_tags": [
+      "backend",
+      "fullstack",
+      "software"
+    ],
+    "source_note": "Maps O*NET software developer profile to general backend and fullstack roles."
+  },
+  {
+    "profile_id": "onet_software_quality_assurance",
+    "source_type": "onet_online",
+    "source_id": "15-1253.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1253.00",
+    "source_title": "15-1253.00 - Software Quality Assurance Analysts and Testers",
+    "snapshot_date": "2026-04-17",
+    "summary_excerpt": "Develop and execute software tests to identify software problems and their causes. Test system modifications to prepare for implementation. Document software and application defects using a bug tracking system and report defects to software or web developers. Create and maintain databases of known defects. May participate in software design reviews to provide input on functional requirements, operational characteristics, product designs, and schedules.",
+    "sample_job_titles": [
+      "Automation Tester",
+      "Information Technology Analyst (IT Analyst)",
+      "Quality Assurance Analyst (QA Analyst)",
+      "Quality Assurance Engineer (QA Engineer)",
+      "Quality Engineer",
+      "Software Quality Assurance Analyst (SQA Analyst)"
+    ],
+    "mapped_node_ids": [
+      "cap_qa_engineering",
+      "dir_quality_assurance",
+      "role_test_development_engineer",
+      "role_qa_platform_engineer",
+      "role_performance_test_engineer"
+    ],
+    "profile_tags": [
+      "qa",
+      "testing",
+      "quality"
+    ],
+    "source_note": "Maps O*NET QA analyst/tester profile to quality engineering roles."
+  },
+  {
+    "profile_id": "onet_data_scientists",
+    "source_type": "onet_online",
+    "source_id": "15-2051.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-2051.00",
+    "source_title": "15-2051.00 - Data Scientists",
+    "snapshot_date": "2026-04-17",
+    "summary_excerpt": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports.",
+    "sample_job_titles": [],
+    "mapped_node_ids": [
+      "cap_ml_engineering",
+      "cap_data_analysis",
+      "dir_machine_learning",
+      "dir_data_analytics",
+      "role_ml_engineer",
+      "role_data_analyst",
+      "role_recommendation_algorithm_engineer",
+      "role_nlp_engineer",
+      "role_computer_vision_engineer"
+    ],
+    "profile_tags": [
+      "ml",
+      "analytics",
+      "data_science"
+    ],
+    "source_note": "Maps O*NET data scientist profile to machine learning and analytics roles."
+  },
+  {
+    "profile_id": "onet_information_security_analysts",
+    "source_type": "onet_online",
+    "source_id": "15-1212.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1212.00",
+    "source_title": "15-1212.00 - Information Security Analysts",
+    "snapshot_date": "2026-04-17",
+    "summary_excerpt": "Plan, implement, upgrade, or monitor security measures for the protection of computer networks and information. Assess system vulnerabilities for security risks and propose and implement risk mitigation strategies. May ensure appropriate security controls are in place that will safeguard digital files and vital electronic infrastructure. May respond to computer security breaches and viruses.",
+    "sample_job_titles": [
+      "Information Security Officer",
+      "Information Security Specialist",
+      "Information Systems Security Analyst",
+      "Information Systems Security Officer (ISSO)",
+      "Information Technology Security Analyst (IT Security Analyst)",
+      "Network Security Analyst"
+    ],
+    "mapped_node_ids": [
+      "cap_security_engineering",
+      "dir_security",
+      "role_security_engineer",
+      "role_penetration_tester",
+      "role_appsec_engineer",
+      "role_cloud_security_engineer",
+      "role_soc_analyst"
+    ],
+    "profile_tags": [
+      "security",
+      "appsec",
+      "soc"
+    ],
+    "source_note": "Maps O*NET information security analyst profile to security-oriented roles."
+  },
+  {
+    "profile_id": "onet_database_administrators",
+    "source_type": "onet_online",
+    "source_id": "15-1242.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1242.00",
+    "source_title": "15-1242.00 - Database Administrators",
+    "snapshot_date": "2026-04-17",
+    "summary_excerpt": "Administer, test, and implement computer databases, applying knowledge of database management systems. Coordinate changes to computer databases. Identify, investigate, and resolve database performance issues, database capacity, and database scalability. May plan, coordinate, and implement security measures to safeguard computer databases.",
+    "sample_job_titles": [
+      "Database Administration Manager",
+      "Database Administrator (DBA)",
+      "Database Analyst",
+      "Database Coordinator",
+      "Database Engineer",
+      "Database Manager"
+    ],
+    "mapped_node_ids": [
+      "cap_data_engineering",
+      "dir_data",
+      "role_data_engineer",
+      "role_batch_data_engineer",
+      "role_data_warehouse_engineer"
+    ],
+    "profile_tags": [
+      "database",
+      "data_engineering",
+      "warehouse"
+    ],
+    "source_note": "Maps O*NET database administrator profile to storage and warehouse oriented data roles."
+  },
+  {
+    "profile_id": "onet_web_developers",
+    "source_type": "onet_online",
+    "source_id": "15-1254.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1254.00",
+    "source_title": "15-1254.00 - Web Developers",
+    "snapshot_date": "2026-04-17",
+    "summary_excerpt": "Develop and implement websites, web applications, application databases, and interactive web interfaces. Evaluate code to ensure that it is properly structured, meets industry standards, and is compatible with browsers and devices. Optimize website performance, scalability, and server-side code and processes. May develop website infrastructure and integrate websites with other computer applications.",
+    "sample_job_titles": [
+      "Technology Applications Engineer",
+      "Web Architect",
+      "Web Design Specialist",
+      "Web Developer",
+      "Webmaster"
+    ],
+    "mapped_node_ids": [
+      "cap_frontend_engineering",
+      "dir_frontend",
+      "role_frontend_engineer",
+      "role_react_frontend_engineer",
+      "role_vue_frontend_engineer",
+      "role_frontend_interaction_engineer"
+    ],
+    "profile_tags": [
+      "frontend",
+      "web",
+      "interaction"
+    ],
+    "source_note": "Maps O*NET web developer profile to frontend-focused roles."
+  },
+  {
+    "profile_id": "onet_network_system_administrators",
+    "source_type": "onet_online",
+    "source_id": "15-1244.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1244.00",
+    "source_title": "15-1244.00 - Network and Computer Systems Administrators",
+    "snapshot_date": "2026-04-17",
+    "summary_excerpt": "Install, configure, and maintain an organization's local area network (LAN), wide area network (WAN), data communications network, operating systems, and physical and virtual servers. Perform system monitoring and verify the integrity and availability of hardware, network, and server resources and systems. Review system and application logs and verify completion of scheduled jobs, including system backups. Analyze network and server resource consumption and control user access. Install and upgrade software and maintain software licenses. May assist in network modeling, analysis, planning, and coordination between network and data communications hardware and software.",
+    "sample_job_titles": [
+      "Information Analyst",
+      "Information Technology Specialist (IT Specialist)",
+      "LAN Specialist (Local Area Network Specialist)",
+      "Local Area Network Administrator (LAN Administrator)",
+      "Network Administrator",
+      "Network Coordinator"
+    ],
+    "mapped_node_ids": [
+      "cap_devops_engineering",
+      "cap_platform_engineering",
+      "dir_devops",
+      "dir_site_reliability",
+      "dir_platform",
+      "role_devops_engineer",
+      "role_sre_engineer",
+      "role_platform_engineer",
+      "role_observability_engineer",
+      "role_cloud_platform_engineer"
+    ],
+    "profile_tags": [
+      "devops",
+      "platform",
+      "sre"
+    ],
+    "source_note": "Maps O*NET network/system administrator profile to platform and reliability roles."
+  }
+]

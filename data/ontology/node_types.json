@@ -1,0 +1,68 @@
+[
+  {
+    "id": "skill",
+    "layer": "evidence",
+    "default_aggregator": "source",
+    "description": "技能或工具证据，直接由用户输入或解析得到。"
+  },
+  {
+    "id": "knowledge",
+    "layer": "evidence",
+    "default_aggregator": "source",
+    "description": "课程、理论基础或通用知识证据。"
+  },
+  {
+    "id": "language",
+    "layer": "evidence",
+    "default_aggregator": "source",
+    "description": "语言能力证据，例如英语阅读与技术文档理解。"
+  },
+  {
+    "id": "project",
+    "layer": "evidence",
+    "default_aggregator": "source",
+    "description": "项目经历、实践场景或工作方式证据。"
+  },
+  {
+    "id": "interest",
+    "layer": "evidence",
+    "default_aggregator": "source",
+    "description": "兴趣偏好、工作倾向或主观选择。"
+  },
+  {
+    "id": "constraint",
+    "layer": "evidence",
+    "default_aggregator": "source",
+    "description": "明确短板或负向偏好，用于抑制相关方向。"
+  },
+  {
+    "id": "soft_skill",
+    "layer": "evidence",
+    "default_aggregator": "source",
+    "description": "沟通、协作、文档等软技能证据。"
+  },
+  {
+    "id": "ability_unit",
+    "layer": "ability",
+    "default_aggregator": "weighted_sum_capped",
+    "description": "由原子证据聚合得到的基础能力单元。"
+  },
+  {
+    "id": "compound_capability",
+    "layer": "composite",
+    "default_aggregator": "soft_and",
+    "description": "由多个能力单元共同组成的复合能力。"
+  },
+  {
+    "id": "career_direction",
+    "layer": "direction",
+    "default_aggregator": "penalty_gate",
+    "description": "岗位方向或能力簇，连接复合能力与具体职业。"
+  },
+  {
+    "id": "career_role",
+    "layer": "role",
+    "default_aggregator": "hard_gate",
+    "description": "最终推荐的具体职业节点。"
+  }
+]

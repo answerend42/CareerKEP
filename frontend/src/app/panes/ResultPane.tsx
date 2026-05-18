@@ -1,337 +1,253 @@
-import type { RecommendationResponse, RobustnessReport, StageEdge, StageNode } from '../types';
+import { useEffect } from "react";
 
-interface ResultPaneProps {
-  response: RecommendationResponse;
-  robustnessReport: RobustnessReport;
-  selectedNodeId: string | null;
-  onSelectNode: (nodeId: string) => void;
-  onExportSnapshot: () => void;
-  onCopySnapshot: () => void;
+import { SourceProfileList } from "../components/SourceProfileList";
+import { formatPercent } from "../lib/scoring";
+import { useRecommendationFlow } from "../hooks/useRecommendationFlow";
+import type { GapSuggestion, ResultCard, SourceRef } from "../types/api";
+
+function scoreForCard(card: ResultCard): number {
+  if (card.kind === "recommendation") {
+    return card.score;
+  }
+  if (card.kind === "near_miss") {
+    return card.near_miss_score;
+  }
+  return card.bridge_score;
 }
 
-const formatPercent = (value: number) => `${Math.round(value * 100)}%`;
-const formatDelta = (value: number) => {
-  const rounded = Math.round(value * 100);
-  return rounded > 0 ? `+${rounded}%` : `${rounded}%`;
-};
+function titleForCard(card: ResultCard): string {
+  if (card.kind === "bridge") {
+    return card.anchor_name;
+  }
+  return card.job_name;
+}
 
-const flattenNodes = (response: RecommendationResponse): StageNode[] =>
-  response.propagationSnapshot.layers.flatMap((layer) => layer.nodes);
+function summaryForCard(card: ResultCard): string {
+  if (card.kind === "recommendation") {
+    return card.reason;
+  }
+  if (card.kind === "near_miss") {
+    return card.gap_summary;
+  }
+  return card.summary;
+}
 
-const buildOutgoingMap = (edges: StageEdge[]): Map<string, StageEdge[]> => {
-  const map = new Map<string, StageEdge[]>();
+function recommendationDegreeForCard(card: ResultCard): string {
+  const score = formatPercent(scoreForCard(card));
+  if (card.kind === "recommendation") {
+    return `正式推荐（${score} 分）`;
+  }
+  if (card.kind === "near_miss") {
+    return `临门一脚（${score} 分）`;
+  }
+  return `桥接方向（${score} 分）`;
+}
 
-  for (const edge of edges) {
-    const bucket = map.get(edge.source) ?? [];
-    bucket.push(edge);
-    map.set(edge.source, bucket);
+function sourceRefsForCard(card: ResultCard): SourceRef[] {
+  return card.source_refs || [];
+}
+
+function selectCard(flow: ReturnType<typeof useRecommendationFlow>, card: ResultCard) {
+  if (card.kind === "recommendation") {
+    flow.selectResult({ kind: "recommendation", id: card.job_id });
+    return;
+  }
+  if (card.kind === "near_miss") {
+    flow.selectResult({ kind: "near_miss", id: card.job_id });
+    return;
+  }
+  flow.selectResult({ kind: "bridge", id: card.anchor_id });
+}
+
+function renderSuggestionChips(suggestions: GapSuggestion[]) {
+  if (!suggestions.length) {
+    return <div className="empty-slot compact">当前没有稳定的下一步建议。</div>;
+  }
+  return (
+    <div className="chip-row">
+      {suggestions.map((suggestion) => (
+        <span key={`${suggestion.node_id}-${suggestion.tip}`} className="soft-chip accent-chip">
+          {suggestion.tip} · {suggestion.node_name}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function SelectedResultDetail({
+  card,
+}: {
+  card: ResultCard | null;
+}) {
+  if (!card) {
+    return <div className="empty-slot">先生成推荐，再查看路径、限制与来源。</div>;
   }
 
-  return map;
-};
-
-const collectReachableNodes = (
-  startNodeId: string | null,
-  nodes: StageNode[],
-  edges: StageEdge[]
-): StageNode[] => {
-  if (!startNodeId) {
-    return [];
-  }
-
-  const nodeMap = new Map(nodes.map((node) => [node.id, node]));
-  const outgoingMap = buildOutgoingMap(edges);
-  const visited = new Set<string>([startNodeId]);
-  const queue = [startNodeId];
-  const reachable: StageNode[] = [];
-
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (!current) {
-      continue;
-    }
-
-    for (const edge of outgoingMap.get(current) ?? []) {
-      if (visited.has(edge.target)) {
-        continue;
-      }
-
-      visited.add(edge.target);
-      queue.push(edge.target);
-
-      const node = nodeMap.get(edge.target);
-      if (node) {
-        reachable.push(node);
-      }
-    }
-  }
-
-  return reachable;
-};
-
-export function ResultPane({
-  response,
-  robustnessReport,
-  selectedNodeId,
-  onSelectNode,
-  onExportSnapshot,
-  onCopySnapshot
-}: ResultPaneProps) {
-  const allNodes = flattenNodes(response);
-  const selectedNode = allNodes.find((node) => node.id === selectedNodeId) ?? null;
-  const incomingEdges = selectedNodeId
-    ? response.propagationSnapshot.edges.filter((edge) => edge.target === selectedNodeId)
-    : [];
-  const outgoingEdges = selectedNodeId
-    ? response.propagationSnapshot.edges.filter((edge) => edge.source === selectedNodeId)
-    : [];
-  const reachableNodes = collectReachableNodes(selectedNodeId, allNodes, response.propagationSnapshot.edges);
-  const reachableRoles = reachableNodes.filter((node) => node.layer === 'role');
-
-  const selectedLayerLabel =
-    response.propagationSnapshot.layers.find((layer) => layer.nodes.some((node) => node.id === selectedNodeId))?.label ?? '未选择';
-  const selectableResults = response.recommendations.length
-    ? response.recommendations
-    : response.nearMissRoles.length
-      ? response.nearMissRoles
-      : [];
-  const activeResult = selectableResults.find((item) => item.nodeId === selectedNodeId) ?? selectableResults[0] ?? null;
+  const topPaths = [...(card.paths || [])].sort((a, b) => b.score - a.score).slice(0, 5);
+  const suggestions =
+    card.kind === "bridge" ? card.next_steps : card.kind === "near_miss" ? card.suggestions : ([] as GapSuggestion[]);
 
   return (
-    <div className="pane-stack result-workflow">
-      <div className="result-browser">
-        <div className="result-browser-head">
-          <h3>结果解释</h3>
-          <label className="field-block result-picker result-select-field">
-            <select
-              className="editor-select result-select-control"
-              value={activeResult?.nodeId ?? ''}
-              onChange={(event) => onSelectNode(event.target.value)}
-            >
-              {selectableResults.map((item) => (
-                <option key={item.nodeId} value={item.nodeId}>
-                  {item.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          {activeResult ? <strong className="result-degree">推荐分 {formatPercent(activeResult.score)}</strong> : null}
+    <section key={card.key} className="section-card detail-panel result-reveal">
+      <div className="section-head result-detail-head">
+        <div>
+          <h3>{titleForCard(card)}</h3>
+          <p>{summaryForCard(card)}</p>
         </div>
-
-        <section className="section-card detail-panel result-reveal">
-          <div className="section-head result-detail-head">
-            <div>
-              <h3>{activeResult?.label ?? ''}</h3>
-            </div>
-          </div>
-
-          {activeResult ? (
-            <ol className="path-cluster result-path-list">
-              <li className="result-path-row">
-                <span className="score-badge path-score-badge">{formatPercent(activeResult.score)}</span>
-                <div className="path-track">
-                  {(activeResult.path.length ? activeResult.path : [activeResult.label]).map((label, labelIndex) => (
-                    <div key={`${activeResult.nodeId}-${label}-${labelIndex}`} className="path-node">
-                      <span>{label}</span>
-                      {labelIndex < activeResult.path.length - 1 ? <i>→</i> : null}
-                    </div>
-                  ))}
-                </div>
-              </li>
-            </ol>
-          ) : null}
-
-          <div className="detail-grid">
-            <div className="mini-panel">
-              <h4>目标岗位分析</h4>
-              <div className="tag-row">
-                {response.targetRoleAnalysis.strengths.map((item) => (
-                  <span key={item} className="soft-chip accent-chip">
-                    {item}
-                  </span>
-                ))}
-                {response.targetRoleAnalysis.gaps.map((item) => (
-                  <span key={item} className="soft-chip warning-chip">
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="mini-panel">
-              <h4>图谱锚点</h4>
-              {selectedNode ? (
-                <ul className="list-stack compact-list">
-                  <li>
-                    <span>节点</span>
-                    <strong>{selectedNode.label}</strong>
-                  </li>
-                  <li>
-                    <span>层级</span>
-                    <strong>{selectedLayerLabel}</strong>
-                  </li>
-                  <li>
-                    <span>关联边</span>
-                    <strong>{incomingEdges.length} 入 / {outgoingEdges.length} 出</strong>
-                  </li>
-                  <li>
-                    <span>可达岗位</span>
-                    <strong>{reachableRoles.length} 个</strong>
-                  </li>
-                </ul>
-              ) : null}
-            </div>
-          </div>
-
-          <div className="detail-grid">
-            <div className="mini-panel">
-              <h4>正式推荐</h4>
-              <div className="result-card-list">
-                {response.recommendations.map((item) => (
-                  <button
-                    key={item.nodeId}
-                    type="button"
-                    className={`result-card result-card-button ${item.nodeId === selectedNodeId ? 'is-selected' : ''}`}
-                    onClick={() => onSelectNode(item.nodeId)}
-                  >
-                    <div className="node-row">
-                      <strong>{item.label}</strong>
-                      <span>{formatPercent(item.score)}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="mini-panel">
-              <h4>Near Miss / Bridge</h4>
-              <div className="result-card-list">
-                {response.nearMissRoles.map((item) => (
-                  <button key={item.nodeId} type="button" className="result-card result-card-button" onClick={() => onSelectNode(item.nodeId)}>
-                    <div className="node-row">
-                      <strong>{item.label}</strong>
-                      <span>{formatPercent(item.score)}</span>
-                    </div>
-                    <div className="tag-row">
-                      {item.missing.map((missingItem) => (
-                        <span key={missingItem} className="soft-chip warning-chip">{missingItem}</span>
-                      ))}
-                    </div>
-                  </button>
-                ))}
-                {response.bridgeRecommendations.map((item) => (
-                  <button key={item.nodeId} type="button" className="result-card result-card-button" onClick={() => onSelectNode(item.nodeId)}>
-                    <div className="node-row">
-                      <strong>{item.label}</strong>
-                      <span>{formatPercent(item.score)}</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
       </div>
 
-      <section className="section-card robustness-card">
-        <div className="section-head">
-          <h3>鲁棒性测试</h3>
-          <div className="section-actions">
-            <span>{formatPercent(robustnessReport.averageTopScore)}</span>
-            <button className="button-chip" type="button" onClick={onExportSnapshot}>
-              导出快照
-            </button>
-            <button className="button-chip" type="button" onClick={onCopySnapshot}>
-              复制快照
-            </button>
-          </div>
-        </div>
-        <div className="result-summary-row">
-          <div className="result-summary-card">
-            <span>平均变化</span>
-            <strong className={robustnessReport.averageDelta >= 0 ? 'summary-positive' : 'summary-negative'}>
-              {formatDelta(robustnessReport.averageDelta)}
-            </strong>
-          </div>
-          <div className="result-summary-card">
-            <span>改善场景</span>
-            <strong>{robustnessReport.improvedCount} 个</strong>
-          </div>
-          <div className="result-summary-card">
-            <span>脆弱场景</span>
-            <strong>{robustnessReport.fragileCount} 个</strong>
-          </div>
-        </div>
-        <div className="result-summary-row">
-          <div className="result-summary-card">
-            <span>最佳提升</span>
-            <strong>{robustnessReport.bestImprovementLabel}</strong>
-            <span className="summary-note-inline">{formatDelta(robustnessReport.bestImprovementDelta)}</span>
-          </div>
-          <div className="result-summary-card">
-            <span>最差回落</span>
-            <strong>{robustnessReport.worstRegressionLabel}</strong>
-            <span className="summary-note-inline">{formatDelta(robustnessReport.worstRegressionDelta)}</span>
-          </div>
-          <div className="result-summary-card">
-            <span>改善率</span>
-            <strong>{formatPercent(robustnessReport.cases.length ? robustnessReport.improvedCount / robustnessReport.cases.length : 0)}</strong>
-          </div>
-        </div>
-        <div className="result-list compact">
-          {robustnessReport.cases.map((item) => (
-            <article key={item.id} className="result-card">
-              <div className="node-row">
-                <strong>{item.label}</strong>
-                <span>{formatPercent(item.topScore)}</span>
+      {topPaths.length ? (
+        <ol className="path-cluster result-path-list">
+          {topPaths.map((path, pathIndex) => (
+            <li key={`${titleForCard(card)}-${path.score}-${pathIndex}`} className="result-path-row">
+              <span className="score-badge path-score-badge">{formatPercent(path.score)}</span>
+              <div className="path-track">
+                {path.labels.map((label, labelIndex) => (
+                  <div key={`${label}-${labelIndex}`} className="path-node">
+                    <span>{label}</span>
+                    {labelIndex < path.labels.length - 1 ? <i>→</i> : null}
+                  </div>
+                ))}
               </div>
-              <div className="tag-row">
-                <span className="soft-chip">基线 {formatPercent(item.baselineTopScore)}</span>
-                <span className="soft-chip">变化 {formatDelta(item.scoreDelta)}</span>
-                <span className="soft-chip">推荐 {item.recommendationCount}</span>
-                <span className="soft-chip">near miss {item.nearMissCount}</span>
-                <span className="soft-chip">覆盖率 {formatPercent(item.coverage)}</span>
-                <span className={`soft-chip ${item.scoreDelta >= 0 ? 'accent-chip' : 'warning-chip'}`}>
-                  {item.scoreDelta >= 0 ? '调参提升' : '调参回落'}
-                </span>
-              </div>
-            </article>
+            </li>
           ))}
-        </div>
-      </section>
+        </ol>
+      ) : (
+        <div className="empty-slot compact">当前卡片没有稳定路径，属于更稀疏的桥接结果。</div>
+      )}
 
-      <section className="section-card trace-panel">
-        <div className="section-head">
-          <h3>输入追踪</h3>
-          <span>{response.inputTrace.resolvedTargetRole}</span>
+      <div className="detail-grid">
+        <div className="mini-panel">
+          <h4>限制与缺口</h4>
+          {card.kind === "near_miss" && card.missing_requirements.length ? (
+            <ul className="list-stack">
+              {card.missing_requirements.map((item) => (
+                <li key={item}>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          ) : card.limitations.length ? (
+            <ul className="list-stack">
+              {card.limitations.map((item) => (
+                <li key={item}>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="empty-slot compact">当前没有额外限制说明。</div>
+          )}
         </div>
-        <div className="trace-metrics">
-          <div className="trace-metric">
-            <strong>{response.inputTrace.signalTrace.clauses.length}</strong>
-            <span>句子片段</span>
-          </div>
-          <div className="trace-metric">
-            <strong>{response.inputTrace.signalTrace.matchedSignals.length}</strong>
-            <span>命中信号</span>
-          </div>
-          <div className="trace-metric">
-            <strong>{response.inputTrace.signalTrace.negatedSignals.length}</strong>
-            <span>否定信号</span>
-          </div>
+        <div className="mini-panel">
+          <h4>下一步建议</h4>
+          {renderSuggestionChips(suggestions)}
+          {card.kind === "bridge" && card.related_roles.length ? (
+            <div className="chip-row top-gap">
+              {card.related_roles.map((role) => (
+                <span key={role.job_id} className="soft-chip">
+                  {role.job_name}
+                </span>
+              ))}
+            </div>
+          ) : null}
         </div>
-        <div className="trace-summary compact">
-          <div className="trace-box">
-            <span>图谱节点</span>
-            <strong>{response.graphSnapshot.nodeCount} 个</strong>
+      </div>
+
+      <div className="mini-panel">
+        <h4>来源锚点</h4>
+        <SourceProfileList sources={sourceRefsForCard(card)} emptyText="这个结果卡片当前没有来源锚点。" />
+      </div>
+    </section>
+  );
+}
+
+export function ResultPane({ flow }: { flow: ReturnType<typeof useRecommendationFlow> }) {
+  const resultGroups = [
+    {
+      key: "recommendation" as const,
+      label: "推荐",
+      title: "Strong Match",
+      description: "直接穿透岗位门槛的正式推荐。",
+      empty: flow.recommendation?.empty_result_reason || "当前还没有正式推荐。",
+      cards: flow.cards.recommendations,
+    },
+    {
+      key: "near_miss" as const,
+      label: "临门一脚",
+      title: "Near Miss",
+      description: "已经被激活，但还差关键前置或核心支撑。",
+      empty: "当前没有需要重点补缺口的岗位。",
+      cards: flow.cards.nearMisses,
+    },
+    {
+      key: "bridge" as const,
+      label: "桥接",
+      title: "Bridge",
+      description: "给稀疏输入准备的桥接方向，避免空白结果页。",
+      empty: "当前没有桥接方向。",
+      cards: flow.cards.bridges,
+    },
+  ];
+  const roleResultCards: ResultCard[] = [
+    ...flow.cards.recommendations,
+    ...flow.cards.nearMisses,
+  ];
+  const allResultCards: ResultCard[] = [
+    ...roleResultCards,
+    ...flow.cards.bridges,
+  ];
+  const selectableResultCards = roleResultCards.length ? roleResultCards : allResultCards;
+  const activeResultCard = flow.selectedCard && selectableResultCards.some((card) => card.key === flow.selectedCard?.key)
+    ? flow.selectedCard
+    : selectableResultCards[0] || null;
+  const emptyResultText = resultGroups.find((group) => !group.cards.length)?.empty || "当前还没有可解释的推荐结果。";
+
+  useEffect(() => {
+    if (!selectableResultCards.length) {
+      return;
+    }
+
+    if (!activeResultCard || !selectableResultCards.some((card) => card.key === activeResultCard.key)) {
+      selectCard(flow, selectableResultCards[0]);
+    }
+  }, [activeResultCard, flow, selectableResultCards]);
+
+  return (
+    <section className="pane pane-results">
+      <div className="pane-scroll">
+          <div className="result-browser">
+            <div className="result-browser-head">
+              <h3>结果解释</h3>
+              <label className="field-block result-picker result-select-field" htmlFor="result-card-select">
+                <select
+                  id="result-card-select"
+                  className="editor-select result-select-control"
+                  value={activeResultCard?.key || ""}
+                  onChange={(event) => {
+                    const nextCard = selectableResultCards.find((card) => card.key === event.target.value);
+                    if (nextCard) {
+                      selectCard(flow, nextCard);
+                    }
+                  }}
+                >
+                  {selectableResultCards.map((card) => (
+                    <option key={card.key} value={card.key}>
+                      {titleForCard(card)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <strong className="result-degree">{activeResultCard ? recommendationDegreeForCard(activeResultCard) : "暂无推荐"}</strong>
+            </div>
+
+            {selectableResultCards.length ? (
+              <SelectedResultDetail card={activeResultCard} />
+            ) : (
+              <div className="empty-slot compact">{emptyResultText}</div>
+            )}
           </div>
-          <div className="trace-box">
-            <span>图谱边</span>
-            <strong>{response.graphSnapshot.edgeCount} 条</strong>
-          </div>
-          <div className="trace-box">
-            <span>目标覆盖</span>
-            <strong>{formatPercent(response.targetRoleAnalysis.coverage)}</strong>
-          </div>
-        </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 }

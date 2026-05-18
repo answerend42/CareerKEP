@@ -4,16 +4,15 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any, List, Tuple
+from typing import List, Tuple
 
-from .catalog import ALIAS_SOURCE_PRIORITY, EntityCatalog, compact_text
-from .disambiguator import rank_entity_candidates
+from .catalog import EntityCatalog, compact_text
+from .disambiguator import resolve_entity
 from .models import EntityMention, RawDocument
 
 
 ASCII_ALIAS_RE = re.compile(r"^[a-z0-9+#./-]+$")
 WINDOW_SIZE = 16
-METADATA_SKIP_KEYS = {"source_path", "source_format", "record_index"}
 
 
 @dataclass(frozen=True)
@@ -31,57 +30,6 @@ class AliasCandidate:
 
     surface: str
     source: str
-
-
-def _flatten_text_values(value: Any) -> List[str]:
-    """把元数据里可能嵌套的文本值压平，作为补充搜索语料。
-
-    这里会保留字符串、数字和布尔值对应的文本，但会跳过预处理自身写入的
-    `source_path` / `source_format` / `record_index` 这类技术字段，避免把噪声
-    当成实体上下文。
-    """
-
-    flattened: List[str] = []
-    if value is None:
-        return flattened
-    if isinstance(value, str):
-        text = value.strip()
-        if text:
-            flattened.append(text)
-        return flattened
-    if isinstance(value, (int, float, bool)):
-        flattened.append(str(value))
-        return flattened
-    if isinstance(value, dict):
-        for key, item in value.items():
-            if key in METADATA_SKIP_KEYS:
-                continue
-            flattened.extend(_flatten_text_values(item))
-        return flattened
-    if isinstance(value, (list, tuple, set)):
-        for item in value:
-            flattened.extend(_flatten_text_values(item))
-        return flattened
-    text = str(value).strip()
-    if text:
-        flattened.append(text)
-    return flattened
-
-
-def _build_search_corpus(document: RawDocument) -> str:
-    """构建统一的搜索语料。
-
-    实际抽取时不只看正文，还要把标题和结构化元数据一起纳入搜索范围，
-    这样原始数据里常见的“标题带关键信息、正文只有补充说明”的情况也能命中。
-    """
-
-    parts: List[str] = []
-    if document.title.strip():
-        parts.append(document.title.strip())
-    if document.text.strip():
-        parts.append(document.text.strip())
-    parts.extend(_flatten_text_values(document.metadata))
-    return "\n\n".join(part for part in parts if part)
 
 
 def _build_compact_text_index(document_text: str) -> Tuple[str, List[int]]:
@@ -123,9 +71,7 @@ def _find_compact_occurrences(surface: str, document_text: str) -> List[Tuple[in
     """
 
     compact_surface = compact_text(surface)
-    # 过短的压缩别名很容易退化成单字符噪声，比如 `C++` 会被压成 `c`。
-    # 这类片段不适合做模糊匹配，否则会把正文里普通的 `C` 误判成职业画像。
-    if len(compact_surface) < 2:
+    if not compact_surface:
         return []
 
     compact_document, positions = _build_compact_text_index(document_text)
@@ -159,14 +105,9 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
     """收集所有命中的别名，后续再统一消歧。"""
 
     hits: List[AliasHit] = []
-    doc_text = _build_search_corpus(document)
+    doc_text = document.text
 
-    def _source_priority(source: str) -> int:
-        return ALIAS_SOURCE_PRIORITY.get(source, 0)
-
-    # 同一个 surface 可能来自多个实体或多个来源，这里保留所有 source 变体，
-    # 但把更可信的来源排在前面。这样可以让 `matched_by` 更稳定，
-    # 同时不影响后续“更短词干作为兜底命中”的能力。
+    # 长别名优先，能减少短词抢占长词的问题。
     alias_candidates: List[AliasCandidate] = []
     seen_candidates = set()
     for _compact_alias, items in catalog.alias_index.items():
@@ -181,14 +122,7 @@ def _collect_alias_hits(catalog: EntityCatalog, document: RawDocument) -> List[A
             seen_candidates.add(candidate_key)
             alias_candidates.append(AliasCandidate(surface=surface, source=source))
 
-    alias_candidates.sort(
-        key=lambda item: (
-            len(item.surface),
-            _source_priority(item.source),
-            item.surface,
-        ),
-        reverse=True,
-    )
+    alias_candidates.sort(key=lambda item: len(item.surface), reverse=True)
 
     occupied_spans: List[Tuple[int, int]] = []
     seen_spans = set()
@@ -250,7 +184,6 @@ def extract_mentions(document: RawDocument, catalog: EntityCatalog) -> List[Enti
     """从单篇文档里抽取实体命中。"""
 
     mentions: List[EntityMention] = []
-    search_corpus = _build_search_corpus(document)
 
     for hit in _collect_alias_hits(catalog, document):
         candidates = catalog.alias_index.get(hit.compact_alias, [])
@@ -262,23 +195,11 @@ def extract_mentions(document: RawDocument, catalog: EntityCatalog) -> List[Enti
             entity = catalog.entities[entity_id]
             candidate_entities.append((entity, source))
 
-        scored_candidates = rank_entity_candidates(
+        resolved = resolve_entity(
             candidate_entities,
             document=document,
             matched_alias=hit.alias,
         )
-        resolved = scored_candidates[0]
-        runner_up = scored_candidates[1] if len(scored_candidates) > 1 else None
-        top_candidates = [
-            {
-                "entity_id": item.entity.entity_id,
-                "entity_label": item.entity.label,
-                "layer": item.entity.layer,
-                "score": round(item.score, 4),
-                "reason": item.reason,
-            }
-            for item in scored_candidates[:3]
-        ]
 
         mentions.append(
             EntityMention(
@@ -292,12 +213,7 @@ def extract_mentions(document: RawDocument, catalog: EntityCatalog) -> List[Enti
                 confidence=round(resolved.score, 4),
                 matched_by=hit.matched_by,
                 reason=resolved.reason,
-                context=_slice_context(search_corpus, hit.start, hit.end),
-                candidate_count=len(scored_candidates),
-                score_gap=(
-                    round(resolved.score - runner_up.score, 4) if runner_up is not None else None
-                ),
-                top_candidates=top_candidates,
+                context=_slice_context(document.text, hit.start, hit.end),
             )
         )
 

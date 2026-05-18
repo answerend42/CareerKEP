@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, List, Tuple
+from typing import List, Tuple
 
 from .catalog import compact_text
 from .models import EntityDefinition, RawDocument
@@ -17,16 +17,6 @@ LAYER_HINTS = {
     "role": ["工程师", "开发", "岗位", "职位", "招聘", "应聘", "目标"],
 }
 
-# 不同别名来源的可信度不同。
-# 实体 ID 命中通常意味着上游数据已经显式标注过目标实体，因此权重应高于普通生成别名。
-SOURCE_BASE_SCORES = {
-    "explicit": (0.92, "显式别名"),
-    "label": (0.86, "标签命中"),
-    "id": (0.9, "实体ID命中"),
-    "id_words": (0.8, "实体ID分词命中"),
-    "generated": (0.72, "生成别名命中"),
-}
-
 
 @dataclass(frozen=True)
 class CandidateScore:
@@ -34,80 +24,6 @@ class CandidateScore:
     score: float
     reason: str
     title_rank: int
-
-
-def _flatten_text_values(value: Any) -> List[str]:
-    """把元数据中的文本压平，供消歧阶段一起参考。"""
-
-    flattened: List[str] = []
-    if value is None:
-        return flattened
-    if isinstance(value, str):
-        text = value.strip()
-        if text:
-            flattened.append(text)
-        return flattened
-    if isinstance(value, (int, float, bool)):
-        flattened.append(str(value))
-        return flattened
-    if isinstance(value, dict):
-        for key, item in value.items():
-            if key in {"source_path", "source_format", "record_index"}:
-                continue
-            flattened.extend(_flatten_text_values(item))
-        return flattened
-    if isinstance(value, (list, tuple, set)):
-        for item in value:
-            flattened.extend(_flatten_text_values(item))
-        return flattened
-    text = str(value).strip()
-    if text:
-        flattened.append(text)
-    return flattened
-
-
-def _build_search_text(document: RawDocument) -> str:
-    """构建与抽取阶段一致的上下文文本。"""
-
-    parts: List[str] = []
-    if document.title.strip():
-        parts.append(document.title.strip())
-    if document.text.strip():
-        parts.append(document.text.strip())
-    parts.extend(_flatten_text_values(document.metadata))
-    return "\n\n".join(part for part in parts if part)
-
-
-def _source_priority(source: str) -> int:
-    """给别名来源一个稳定优先级。
-
-    同一个实体如果被多种别名来源同时命中，优先保留更可信的来源，
-    这样 `candidate_count` 和 `score_gap` 不会被重复候选污染。
-    """
-
-    return SOURCE_BASE_SCORES.get(source, (0.0, ""))[0]  # 只取基础分数作为来源优先级
-
-
-def _normalize_candidates(candidates: List[Tuple[EntityDefinition, str]]) -> List[Tuple[EntityDefinition, str]]:
-    """去重候选实体，避免同一实体因为多个别名来源重复进入排序。
-
-    这里保留每个 `entity_id` 的最佳来源即可：
-    - 显式别名优先于标签别名
-    - 标签别名优先于实体 ID 和生成别名
-    - 相同来源下只保留第一条
-    """
-
-    best_candidates: dict[str, Tuple[EntityDefinition, str]] = {}
-    best_scores: dict[str, float] = {}
-
-    for entity, source in candidates:
-        current_score = _source_priority(source)
-        previous_score = best_scores.get(entity.entity_id)
-        if previous_score is None or current_score > previous_score:
-            best_candidates[entity.entity_id] = (entity, source)
-            best_scores[entity.entity_id] = current_score
-
-    return list(best_candidates.values())
 
 
 def _layer_priority(layer: str) -> int:
@@ -129,7 +45,7 @@ def _score_entity(
 ) -> CandidateScore:
     """根据文档上下文给候选实体打分。"""
 
-    text = compact_text(_build_search_text(document))
+    text = compact_text(document.text)
     title = compact_text(document.title)
     label = compact_text(entity.label)
     alias = compact_text(matched_alias)
@@ -138,9 +54,18 @@ def _score_entity(
     reasons: List[str] = []
     title_rank = 0
 
-    base_score, base_reason = SOURCE_BASE_SCORES.get(candidate_source, (0.68, "通用别名命中"))
-    score += base_score
-    reasons.append(base_reason)
+    if candidate_source == "explicit":
+        score += 0.92
+        reasons.append("显式别名")
+    elif candidate_source == "label":
+        score += 0.86
+        reasons.append("标签命中")
+    elif candidate_source == "generated":
+        score += 0.72
+        reasons.append("生成别名命中")
+    else:
+        score += 0.68
+        reasons.append("通用别名命中")
 
     if label and label in text:
         score += 0.16
@@ -177,30 +102,6 @@ def _score_entity(
     )
 
 
-def rank_entity_candidates(
-    candidates: List[Tuple[EntityDefinition, str]],
-    document: RawDocument,
-    matched_alias: str,
-) -> List[CandidateScore]:
-    """对候选实体进行排序，并保留完整打分结果。
-
-    这个结果用于后续输出消歧轨迹，方便人工复核为什么会选择当前实体。
-    """
-
-    normalized_candidates = _normalize_candidates(candidates)
-    scored = [_score_entity(entity, document, matched_alias, source) for entity, source in normalized_candidates]
-    return sorted(
-        scored,
-        key=lambda item: (
-            -item.score,
-            -item.title_rank,
-            -_layer_priority(item.entity.layer),
-            -len(item.entity.label),
-            item.entity.entity_id,
-        ),
-    )
-
-
 def resolve_entity(
     candidates: List[Tuple[EntityDefinition, str]],
     document: RawDocument,
@@ -208,5 +109,14 @@ def resolve_entity(
 ) -> CandidateScore:
     """在多个候选实体之间做消歧。"""
 
-    scored = rank_entity_candidates(candidates, document, matched_alias)
+    scored = [_score_entity(entity, document, matched_alias, source) for entity, source in candidates]
+    scored.sort(
+        key=lambda item: (
+            item.score,
+            item.title_rank,
+            _layer_priority(item.entity.layer),
+            len(item.entity.label),
+        ),
+        reverse=True,
+    )
     return scored[0]

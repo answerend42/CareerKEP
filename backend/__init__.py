@@ -1,2 +1,1 @@
-"""Career KG 后端根包。"""
-
+"""Backend package for the career knowledge graph project."""

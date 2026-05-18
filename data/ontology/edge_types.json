@@ -1,0 +1,32 @@
+[
+  {
+    "id": "supports",
+    "sign": "positive",
+    "description": "常规正向支持，边权表示对目标节点的贡献力度。",
+    "explainable": true
+  },
+  {
+    "id": "requires",
+    "sign": "positive",
+    "description": "关键前置关系，会触发门槛或惩罚机制。",
+    "explainable": true
+  },
+  {
+    "id": "prefers",
+    "sign": "positive",
+    "description": "兴趣或偏好的软加成关系，不单独构成硬门槛。",
+    "explainable": true
+  },
+  {
+    "id": "inhibits",
+    "sign": "negative",
+    "description": "抑制关系，表示明显短板或负向偏好会压低目标节点。",
+    "explainable": true
+  },
+  {
+    "id": "evidences",
+    "sign": "positive",
+    "description": "项目、课程等实践性证据，为目标节点提供额外可信度。",
+    "explainable": true
+  }
+]

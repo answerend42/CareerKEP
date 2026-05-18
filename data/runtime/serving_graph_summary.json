@@ -1,0 +1,10 @@
+{
+  "aligned_nodes": 31,
+  "canonical_supported_nodes": 360,
+  "edge_count": 1053,
+  "node_count": 365,
+  "pipeline_date": "2026-04-21",
+  "pipeline_version": "20260421",
+  "runtime_edges": "data/runtime/serving_edges.json",
+  "runtime_nodes": "data/runtime/serving_nodes.json"
+}

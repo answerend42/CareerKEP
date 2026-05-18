@@ -1,0 +1,14 @@
+{
+  "text": "我熟悉 Python 和 MySQL，做过 Flask 项目，会一点 Linux，不太擅长数学，更喜欢写后端接口。",
+  "signals": [
+    {
+      "entity": "SQL",
+      "score": 0.72
+    },
+    {
+      "entity": "沟通表达",
+      "score": 0.55
+    }
+  ],
+  "top_k": 5
+}

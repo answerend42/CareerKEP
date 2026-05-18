@@ -1,0 +1,20 @@
+{
+  "accepted_top1_count": 31,
+  "average_accepted_confidence": 0.9137,
+  "coverage": 0.62,
+  "high_confidence_rate": 0.62,
+  "mapping_type_counts": {
+    "closeMatch": 25,
+    "exactMatch": 6
+  },
+  "needs_review_count": 0,
+  "pipeline_date": "2026-04-21",
+  "pipeline_version": "20260421",
+  "review_queue_sample": [],
+  "reviewed_coverage": 0.62,
+  "risk_flags": [
+    "coverage_below_80_percent"
+  ],
+  "role_count": 50,
+  "top1_count": 50
+}

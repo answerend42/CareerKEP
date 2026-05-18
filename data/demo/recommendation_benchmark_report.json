@@ -1,0 +1,923 @@
+{
+  "generated_at": "2026-04-21T15:28:40",
+  "summary": {
+    "total_cases": 13,
+    "hit_at_3": 1.0,
+    "hit_at_5": 1.0,
+    "forbidden_role_violations": 0,
+    "explanation_coverage": 1.0,
+    "provenance_coverage": 1.0,
+    "fallback_coverage": 1.0,
+    "pass_rate": 1.0,
+    "pass_count": 13
+  },
+  "thresholds": {
+    "hit_at_3": 0.75,
+    "hit_at_5": 0.9,
+    "forbidden_role_violations": 0,
+    "explanation_coverage": 0.8,
+    "provenance_coverage": 0.8,
+    "fallback_coverage": 1.0
+  },
+  "results": [
+    {
+      "id": "backend_nl",
+      "payload": {
+        "text": "我主攻接口开发，平时会写脚本清洗数据，也能接受 Linux 环境，不想做纯前端页面。",
+        "signals": [],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [
+        {
+          "job_id": "role_backend_engineer",
+          "job_name": "后端开发工程师",
+          "score": 0.2254
+        },
+        {
+          "job_id": "role_data_engineer",
+          "job_name": "数据工程师",
+          "score": 0.1963
+        },
+        {
+          "job_id": "role_api_platform_engineer",
+          "job_name": "接口平台工程师",
+          "score": 0.1724
+        },
+        {
+          "job_id": "role_rust_backend_engineer",
+          "job_name": "Rust 服务工程师",
+          "score": 0.172
+        },
+        {
+          "job_id": "role_php_backend_engineer",
+          "job_name": "PHP 后端工程师",
+          "score": 0.1658
+        },
+        {
+          "job_id": "role_nodejs_backend_engineer",
+          "job_name": "Node.js 后端工程师",
+          "score": 0.1658
+        }
+      ],
+      "top_role_ids": [
+        "role_backend_engineer",
+        "role_data_engineer",
+        "role_api_platform_engineer",
+        "role_rust_backend_engineer",
+        "role_php_backend_engineer",
+        "role_nodejs_backend_engineer"
+      ],
+      "near_miss_ids": [
+        "role_batch_data_engineer",
+        "role_appsec_engineer",
+        "role_microservice_engineer",
+        "role_python_backend_engineer"
+      ],
+      "bridge_anchor_ids": [
+        "dir_web_backend",
+        "cap_data_engineering",
+        "cap_api_platform_engineer",
+        "cap_appsec_engineer"
+      ],
+      "bridge_role_ids": [
+        "role_backend_engineer",
+        "role_api_platform_engineer",
+        "role_rust_backend_engineer",
+        "role_data_engineer",
+        "role_batch_data_engineer",
+        "role_data_warehouse_engineer",
+        "role_api_platform_engineer",
+        "role_appsec_engineer"
+      ],
+      "matched_role_id": "role_backend_engineer",
+      "matched_role_name": "后端开发工程师",
+      "matched_source_types": [
+        "onet_online",
+        "roadmap_sh"
+      ],
+      "matched_provenance_count": 2,
+      "matched_explanation_nodes": [
+        "cap_backend_engineering",
+        "project_backend_api"
+      ],
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": false,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "data_engineering_structured",
+      "payload": {
+        "text": "",
+        "signals": [
+          {
+            "entity": "skill_sql",
+            "score": 0.9
+          },
+          {
+            "entity": "project_data_pipeline",
+            "score": 0.85
+          },
+          {
+            "entity": "tool_airflow",
+            "score": 0.8
+          },
+          {
+            "entity": "tool_linux",
+            "score": 0.7
+          }
+        ],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [
+        {
+          "job_id": "role_data_engineer",
+          "job_name": "数据工程师",
+          "score": 0.1583
+        },
+        {
+          "job_id": "role_batch_data_engineer",
+          "job_name": "离线数据工程师",
+          "score": 0.1365
+        }
+      ],
+      "top_role_ids": [
+        "role_data_engineer",
+        "role_batch_data_engineer"
+      ],
+      "near_miss_ids": [
+        "role_data_warehouse_engineer",
+        "role_realtime_data_engineer"
+      ],
+      "bridge_anchor_ids": [
+        "cap_data_engineering",
+        "cap_batch_data_engineer",
+        "cap_bi_engineer",
+        "cap_data_analysis"
+      ],
+      "bridge_role_ids": [
+        "role_data_engineer",
+        "role_batch_data_engineer",
+        "role_data_warehouse_engineer",
+        "role_batch_data_engineer",
+        "role_bi_engineer",
+        "role_bi_engineer",
+        "role_data_analyst",
+        "role_analytics_engineer"
+      ],
+      "matched_role_id": "role_data_engineer",
+      "matched_role_name": "数据工程师",
+      "matched_source_types": [
+        "onet_online"
+      ],
+      "matched_provenance_count": 1,
+      "matched_explanation_nodes": [
+        "cap_data_engineering",
+        "project_data_pipeline"
+      ],
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": false,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "analytics_nl",
+      "payload": {
+        "text": "我做过埋点分析和可视化报表，SQL 用得多，也常跟业务沟通需求。",
+        "signals": [],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [
+        {
+          "job_id": "role_data_analyst",
+          "job_name": "数据分析师",
+          "score": 0.3792
+        },
+        {
+          "job_id": "role_analytics_engineer",
+          "job_name": "分析工程师",
+          "score": 0.3361
+        },
+        {
+          "job_id": "role_bi_engineer",
+          "job_name": "BI 工程师",
+          "score": 0.3061
+        }
+      ],
+      "top_role_ids": [
+        "role_data_analyst",
+        "role_analytics_engineer",
+        "role_bi_engineer"
+      ],
+      "near_miss_ids": [
+        "role_batch_data_engineer",
+        "role_data_engineer",
+        "role_data_warehouse_engineer",
+        "role_realtime_data_engineer"
+      ],
+      "bridge_anchor_ids": [
+        "cap_data_analysis",
+        "cap_bi_engineer",
+        "cap_analytics_engineer",
+        "cap_mobile_engineering"
+      ],
+      "bridge_role_ids": [
+        "role_data_analyst",
+        "role_analytics_engineer",
+        "role_bi_engineer",
+        "role_bi_engineer",
+        "role_analytics_engineer",
+        "role_mobile_engineer",
+        "role_cross_platform_engineer",
+        "role_ios_engineer"
+      ],
+      "matched_role_id": "role_data_analyst",
+      "matched_role_name": "数据分析师",
+      "matched_source_types": [
+        "onet_online",
+        "roadmap_sh"
+      ],
+      "matched_provenance_count": 2,
+      "matched_explanation_nodes": [
+        "cap_data_analysis",
+        "dir_data_analytics",
+        "project_dashboard"
+      ],
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": false,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "ml_nl",
+      "payload": {
+        "text": "我更喜欢把模型训出来再部署上线，数学还行，平时用 PyTorch 比较多。",
+        "signals": [],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [
+        {
+          "job_id": "role_computer_vision_engineer",
+          "job_name": "计算机视觉工程师",
+          "score": 0.192
+        },
+        {
+          "job_id": "role_nlp_engineer",
+          "job_name": "NLP 工程师",
+          "score": 0.192
+        },
+        {
+          "job_id": "role_llm_application_engineer",
+          "job_name": "大模型应用工程师",
+          "score": 0.1572
+        },
+        {
+          "job_id": "role_recommendation_algorithm_engineer",
+          "job_name": "推荐算法工程师",
+          "score": 0.1563
+        },
+        {
+          "job_id": "role_ml_platform_engineer",
+          "job_name": "机器学习平台工程师",
+          "score": 0.1368
+        },
+        {
+          "job_id": "role_mlops_engineer",
+          "job_name": "MLOps 工程师",
+          "score": 0.1368
+        }
+      ],
+      "top_role_ids": [
+        "role_computer_vision_engineer",
+        "role_nlp_engineer",
+        "role_llm_application_engineer",
+        "role_recommendation_algorithm_engineer",
+        "role_ml_platform_engineer",
+        "role_mlops_engineer"
+      ],
+      "near_miss_ids": [
+        "role_ai_application_engineer",
+        "role_ml_engineer"
+      ],
+      "bridge_anchor_ids": [
+        "cap_computer_vision_engineer",
+        "cap_nlp_engineer",
+        "dir_ai_application",
+        "cap_recommendation_algorithm_engineer"
+      ],
+      "bridge_role_ids": [
+        "role_computer_vision_engineer",
+        "role_nlp_engineer",
+        "role_llm_application_engineer",
+        "role_ai_application_engineer",
+        "role_recommendation_algorithm_engineer"
+      ],
+      "matched_role_id": "role_computer_vision_engineer",
+      "matched_role_name": "计算机视觉工程师",
+      "matched_source_types": [
+        "onet_online",
+        "roadmap_sh"
+      ],
+      "matched_provenance_count": 2,
+      "matched_explanation_nodes": [
+        "cap_computer_vision_engineer",
+        "project_model_training"
+      ],
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": false,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "qa_nl",
+      "payload": {
+        "text": "我偏向稳定交付和质量保障，写过自动化测试，也会一点 Python。",
+        "signals": [],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [
+        {
+          "job_id": "role_qa_platform_engineer",
+          "job_name": "质量平台工程师",
+          "score": 0.1899
+        },
+        {
+          "job_id": "role_test_development_engineer",
+          "job_name": "测试开发工程师",
+          "score": 0.1619
+        }
+      ],
+      "top_role_ids": [
+        "role_qa_platform_engineer",
+        "role_test_development_engineer"
+      ],
+      "near_miss_ids": [
+        "role_performance_test_engineer",
+        "role_platform_engineer",
+        "role_observability_engineer",
+        "role_release_engineer"
+      ],
+      "bridge_anchor_ids": [
+        "cap_qa_engineering",
+        "cap_qa_platform_engineer",
+        "dir_platform",
+        "dir_site_reliability"
+      ],
+      "bridge_role_ids": [
+        "role_qa_platform_engineer",
+        "role_test_development_engineer",
+        "role_performance_test_engineer",
+        "role_qa_platform_engineer",
+        "role_platform_engineer",
+        "role_release_engineer",
+        "role_cloud_platform_engineer",
+        "role_observability_engineer",
+        "role_sre_engineer"
+      ],
+      "matched_role_id": "role_qa_platform_engineer",
+      "matched_role_name": "质量平台工程师",
+      "matched_source_types": [
+        "onet_online",
+        "roadmap_sh"
+      ],
+      "matched_provenance_count": 2,
+      "matched_explanation_nodes": [
+        "cap_qa_platform_engineer",
+        "dir_quality_assurance",
+        "project_test_automation"
+      ],
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": false,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "platform_nl",
+      "payload": {
+        "text": "我比较擅长做服务端接口、数据库表设计和排查线上问题，也熟悉 Docker 和 Redis。",
+        "signals": [],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [
+        {
+          "job_id": "role_backend_engineer",
+          "job_name": "后端开发工程师",
+          "score": 0.364
+        },
+        {
+          "job_id": "role_rust_backend_engineer",
+          "job_name": "Rust 服务工程师",
+          "score": 0.2718
+        },
+        {
+          "job_id": "role_api_platform_engineer",
+          "job_name": "接口平台工程师",
+          "score": 0.2689
+        },
+        {
+          "job_id": "role_python_backend_engineer",
+          "job_name": "Python 后端工程师",
+          "score": 0.2349
+        },
+        {
+          "job_id": "role_java_backend_engineer",
+          "job_name": "Java 后端工程师",
+          "score": 0.2349
+        },
+        {
+          "job_id": "role_php_backend_engineer",
+          "job_name": "PHP 后端工程师",
+          "score": 0.2024
+        }
+      ],
+      "top_role_ids": [
+        "role_backend_engineer",
+        "role_rust_backend_engineer",
+        "role_api_platform_engineer",
+        "role_python_backend_engineer",
+        "role_java_backend_engineer",
+        "role_php_backend_engineer"
+      ],
+      "near_miss_ids": [
+        "role_nodejs_backend_engineer",
+        "role_microservice_engineer",
+        "role_go_backend_engineer",
+        "role_sre_engineer"
+      ],
+      "bridge_anchor_ids": [
+        "cap_backend_engineering",
+        "cap_api_platform_engineer",
+        "cap_rust_backend_engineer",
+        "dir_fullstack"
+      ],
+      "bridge_role_ids": [
+        "role_backend_engineer",
+        "role_rust_backend_engineer",
+        "role_api_platform_engineer",
+        "role_api_platform_engineer",
+        "role_rust_backend_engineer",
+        "role_fullstack_engineer"
+      ],
+      "matched_role_id": "role_backend_engineer",
+      "matched_role_name": "后端开发工程师",
+      "matched_source_types": [
+        "onet_online",
+        "roadmap_sh"
+      ],
+      "matched_provenance_count": 2,
+      "matched_explanation_nodes": [
+        "cap_backend_engineering",
+        "project_backend_api"
+      ],
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": false,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "security_structured",
+      "payload": {
+        "text": "",
+        "signals": [
+          {
+            "entity": "interest_security",
+            "score": 0.9
+          },
+          {
+            "entity": "project_app_hardening",
+            "score": 0.85
+          },
+          {
+            "entity": "knowledge_secure_coding",
+            "score": 0.8
+          },
+          {
+            "entity": "tool_linux",
+            "score": 0.7
+          }
+        ],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [
+        {
+          "job_id": "role_appsec_engineer",
+          "job_name": "应用安全工程师",
+          "score": 0.1863
+        },
+        {
+          "job_id": "role_cloud_security_engineer",
+          "job_name": "云安全工程师",
+          "score": 0.1723
+        },
+        {
+          "job_id": "role_penetration_tester",
+          "job_name": "渗透测试工程师",
+          "score": 0.1401
+        }
+      ],
+      "top_role_ids": [
+        "role_appsec_engineer",
+        "role_cloud_security_engineer",
+        "role_penetration_tester"
+      ],
+      "near_miss_ids": [
+        "role_soc_analyst"
+      ],
+      "bridge_anchor_ids": [
+        "cap_appsec_engineer",
+        "cap_application_security",
+        "cap_cloud_security_engineer",
+        "cap_penetration_tester"
+      ],
+      "bridge_role_ids": [
+        "role_appsec_engineer",
+        "role_appsec_engineer",
+        "role_cloud_security_engineer",
+        "role_penetration_tester",
+        "role_cloud_security_engineer",
+        "role_penetration_tester"
+      ],
+      "matched_role_id": "role_appsec_engineer",
+      "matched_role_name": "应用安全工程师",
+      "matched_source_types": [
+        "onet_online",
+        "roadmap_sh"
+      ],
+      "matched_provenance_count": 2,
+      "matched_explanation_nodes": [
+        "cap_appsec_engineer",
+        "knowledge_secure_coding",
+        "project_app_hardening"
+      ],
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": false,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "frontend_structured",
+      "payload": {
+        "text": "",
+        "signals": [
+          {
+            "entity": "tool_react",
+            "score": 0.9
+          },
+          {
+            "entity": "interest_frontend",
+            "score": 0.9
+          },
+          {
+            "entity": "project_web_ui",
+            "score": 0.8
+          }
+        ],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [
+        {
+          "job_id": "role_react_frontend_engineer",
+          "job_name": "React 前端工程师",
+          "score": 0.2034
+        },
+        {
+          "job_id": "role_vue_frontend_engineer",
+          "job_name": "Vue 前端工程师",
+          "score": 0.1636
+        },
+        {
+          "job_id": "role_frontend_engineer",
+          "job_name": "前端工程师",
+          "score": 0.0718
+        }
+      ],
+      "top_role_ids": [
+        "role_react_frontend_engineer",
+        "role_vue_frontend_engineer",
+        "role_frontend_engineer"
+      ],
+      "near_miss_ids": [
+        "role_frontend_interaction_engineer"
+      ],
+      "bridge_anchor_ids": [
+        "cap_react_frontend_engineer",
+        "dir_frontend",
+        "cap_vue_frontend_engineer",
+        "cap_frontend_interaction_engineer"
+      ],
+      "bridge_role_ids": [
+        "role_react_frontend_engineer",
+        "role_react_frontend_engineer",
+        "role_vue_frontend_engineer",
+        "role_frontend_interaction_engineer",
+        "role_vue_frontend_engineer",
+        "role_frontend_interaction_engineer"
+      ],
+      "matched_role_id": "role_react_frontend_engineer",
+      "matched_role_name": "React 前端工程师",
+      "matched_source_types": [
+        "onet_online",
+        "roadmap_sh"
+      ],
+      "matched_provenance_count": 2,
+      "matched_explanation_nodes": [
+        "cap_react_frontend_engineer",
+        "project_web_ui",
+        "tool_react"
+      ],
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": false,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "android_structured",
+      "payload": {
+        "text": "",
+        "signals": [
+          {
+            "entity": "tool_android_studio",
+            "score": 0.9
+          },
+          {
+            "entity": "project_mobile_app",
+            "score": 0.85
+          },
+          {
+            "entity": "interest_mobile",
+            "score": 0.9
+          }
+        ],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [
+        {
+          "job_id": "role_android_engineer",
+          "job_name": "Android 工程师",
+          "score": 0.1797
+        },
+        {
+          "job_id": "role_ios_engineer",
+          "job_name": "iOS 工程师",
+          "score": 0.1381
+        }
+      ],
+      "top_role_ids": [
+        "role_android_engineer",
+        "role_ios_engineer"
+      ],
+      "near_miss_ids": [
+        "role_cross_platform_engineer",
+        "role_mobile_engineer"
+      ],
+      "bridge_anchor_ids": [
+        "cap_android_engineer",
+        "cap_android_engineering",
+        "cap_ios_engineer",
+        "cap_observability_engineering"
+      ],
+      "bridge_role_ids": [
+        "role_android_engineer",
+        "role_android_engineer",
+        "role_ios_engineer",
+        "role_cross_platform_engineer",
+        "role_ios_engineer",
+        "role_observability_engineer",
+        "role_sre_engineer"
+      ],
+      "matched_role_id": "role_android_engineer",
+      "matched_role_name": "Android 工程师",
+      "matched_source_types": [
+        "roadmap_sh"
+      ],
+      "matched_provenance_count": 1,
+      "matched_explanation_nodes": [
+        "cap_android_engineer",
+        "project_mobile_app",
+        "tool_android_studio"
+      ],
+      "hit_at_3": true,
+      "hit_at_5": true,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": false,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "no_english_bridge",
+      "payload": {
+        "text": "我不会英语",
+        "signals": [],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [],
+      "top_role_ids": [],
+      "near_miss_ids": [],
+      "bridge_anchor_ids": [
+        "dir_quality_assurance",
+        "dir_data_analytics",
+        "dir_web_backend"
+      ],
+      "bridge_role_ids": [
+        "role_test_development_engineer",
+        "role_qa_platform_engineer",
+        "role_data_analyst",
+        "role_bi_engineer",
+        "role_backend_engineer",
+        "role_python_backend_engineer"
+      ],
+      "matched_role_id": null,
+      "matched_role_name": null,
+      "matched_source_types": [],
+      "matched_provenance_count": 0,
+      "matched_explanation_nodes": [],
+      "hit_at_3": false,
+      "hit_at_5": false,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": true,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "math_only_bridge",
+      "payload": {
+        "text": "我只会数学",
+        "signals": [],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [],
+      "top_role_ids": [],
+      "near_miss_ids": [],
+      "bridge_anchor_ids": [
+        "cap_ml_engineering",
+        "cap_recommendation_algorithm_engineer"
+      ],
+      "bridge_role_ids": [
+        "role_computer_vision_engineer",
+        "role_ml_platform_engineer",
+        "role_ml_engineer",
+        "role_recommendation_algorithm_engineer"
+      ],
+      "matched_role_id": null,
+      "matched_role_name": null,
+      "matched_source_types": [],
+      "matched_provenance_count": 0,
+      "matched_explanation_nodes": [],
+      "hit_at_3": false,
+      "hit_at_5": false,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": true,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "python_sql_sparse",
+      "payload": {
+        "text": "Python SQL",
+        "signals": [],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [],
+      "top_role_ids": [],
+      "near_miss_ids": [],
+      "bridge_anchor_ids": [
+        "cap_data_analysis",
+        "cap_data_engineering",
+        "cap_ml_engineering",
+        "cap_bi_engineer"
+      ],
+      "bridge_role_ids": [
+        "role_data_analyst",
+        "role_analytics_engineer",
+        "role_bi_engineer",
+        "role_data_engineer",
+        "role_batch_data_engineer",
+        "role_data_warehouse_engineer",
+        "role_computer_vision_engineer",
+        "role_ml_platform_engineer",
+        "role_ml_engineer",
+        "role_bi_engineer"
+      ],
+      "matched_role_id": null,
+      "matched_role_name": null,
+      "matched_source_types": [],
+      "matched_provenance_count": 0,
+      "matched_explanation_nodes": [],
+      "hit_at_3": false,
+      "hit_at_5": false,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": true,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "backend_preference_sparse",
+      "payload": {
+        "text": "偏好后端",
+        "signals": [],
+        "top_k": 6,
+        "include_snapshot": false
+      },
+      "top_roles": [],
+      "top_role_ids": [],
+      "near_miss_ids": [
+        "role_api_platform_engineer",
+        "role_microservice_engineer",
+        "role_backend_engineer",
+        "role_rust_backend_engineer"
+      ],
+      "bridge_anchor_ids": [
+        "dir_fullstack",
+        "dir_web_backend",
+        "role_python_backend_engineer",
+        "role_php_backend_engineer"
+      ],
+      "bridge_role_ids": [
+        "role_fullstack_engineer",
+        "role_api_platform_engineer",
+        "role_microservice_engineer",
+        "role_backend_engineer",
+        "role_python_backend_engineer",
+        "role_php_backend_engineer"
+      ],
+      "matched_role_id": null,
+      "matched_role_name": null,
+      "matched_source_types": [],
+      "matched_provenance_count": 0,
+      "matched_explanation_nodes": [],
+      "hit_at_3": false,
+      "hit_at_5": false,
+      "forbidden_hits": [],
+      "explanation_ok": true,
+      "provenance_ok": true,
+      "fallback_expected": true,
+      "fallback_ok": true,
+      "case_pass": true,
+      "failure_reasons": []
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+[
+  {
+    "id": "backend_data_mix",
+    "text": "我主攻接口开发，平时会写脚本清洗数据，也能接受 Linux 环境，不想做纯前端页面。",
+    "expected_nodes": [
+      "interest_backend",
+      "project_data_pipeline",
+      "tool_linux",
+      "constraint_dislike_ui_polish"
+    ],
+    "expected_roles_any": [
+      "role_backend_engineer",
+      "role_python_backend_engineer",
+      "role_data_engineer"
+    ],
+    "min_signal_count": 4
+  },
+  {
+    "id": "ml_train_deploy",
+    "text": "我更喜欢把模型训出来再部署上线，数学还行，平时用 PyTorch 比较多。",
+    "expected_nodes": [
+      "interest_ml",
+      "project_model_training",
+      "project_ml_deployment",
+      "tool_pytorch",
+      "knowledge_math_foundation"
+    ],
+    "expected_roles_any": [
+      "role_ml_engineer",
+      "role_ai_application_engineer",
+      "role_ml_platform_engineer"
+    ],
+    "min_signal_count": 5
+  },
+  {
+    "id": "analytics_reporting",
+    "text": "我做过埋点分析和可视化报表，SQL 用得多，也常跟业务沟通需求。",
+    "expected_nodes": [
+      "interest_data",
+      "project_dashboard",
+      "interest_visualization",
+      "skill_sql",
+      "soft_communication"
+    ],
+    "expected_roles_any": [
+      "role_data_analyst",
+      "role_analytics_engineer",
+      "role_bi_engineer"
+    ],
+    "min_signal_count": 5
+  },
+  {
+    "id": "quality_delivery",
+    "text": "我偏向稳定交付和质量保障，写过自动化测试，也会一点 Python。",
+    "expected_nodes": [
+      "interest_stable_delivery",
+      "project_test_automation",
+      "skill_python"
+    ],
+    "unexpected_nodes": [
+      "interest_product_delivery"
+    ],
+    "expected_roles_any": [
+      "role_test_development_engineer",
+      "role_qa_platform_engineer",
+      "role_performance_test_engineer"
+    ],
+    "min_signal_count": 3
+  },
+  {
+    "id": "negative_ui_preference",
+    "text": "我不太想写页面，但会一点 React。",
+    "expected_nodes": [
+      "constraint_dislike_ui_polish",
+      "tool_react"
+    ],
+    "unexpected_nodes": [
+      "interest_frontend"
+    ],
+    "min_signal_count": 2
+  },
+  {
+    "id": "english_constraint",
+    "text": "我不会英语，英文文档基本看不懂。",
+    "expected_nodes": [
+      "constraint_weak_english",
+      "language_english_reading",
+      "knowledge_technical_documentation"
+    ],
+    "min_signal_count": 3
+  },
+  {
+    "id": "backend_ops_design",
+    "text": "我比较擅长做服务端接口、数据库表设计和排查线上问题，也熟悉 Docker 和 Redis。",
+    "expected_nodes": [
+      "interest_backend",
+      "knowledge_database_theory",
+      "project_devops_automation",
+      "tool_docker",
+      "tool_redis"
+    ],
+    "expected_roles_any": [
+      "role_backend_engineer",
+      "role_api_platform_engineer",
+      "role_platform_engineer"
+    ],
+    "min_signal_count": 5
+  }
+]

@@ -1,0 +1,288 @@
+{
+  "generated_at": "2026-04-21T15:28:40",
+  "summary": {
+    "total_cases": 6,
+    "gap_coverage": 1.0,
+    "learning_path_coverage": 1.0,
+    "action_template_coverage": 1.0,
+    "simulation_positive_rate": 1.0,
+    "adopt_non_regression_rate": 1.0,
+    "focus_match_rate": 1.0,
+    "pass_rate": 1.0,
+    "pass_count": 6
+  },
+  "thresholds": {
+    "gap_coverage": 1.0,
+    "learning_path_coverage": 0.85,
+    "action_template_coverage": 1.0,
+    "simulation_positive_rate": 0.85,
+    "adopt_non_regression_rate": 1.0,
+    "focus_match_rate": 0.85
+  },
+  "results": [
+    {
+      "id": "backend_bundle_nl",
+      "target_role_id": "role_backend_engineer",
+      "target_role_name": "后端开发工程师",
+      "current_score": 0.0,
+      "gap_ok": true,
+      "learning_path_ok": true,
+      "action_template_ok": true,
+      "simulation_positive": true,
+      "adopt_non_regression": true,
+      "focus_ok": true,
+      "priority_ok": true,
+      "missing_ok": true,
+      "first_step_relation_ok": true,
+      "first_step_delta_positive": true,
+      "selected_action_keys": [
+        "step-1:backend_gateway_hardening_project",
+        "step-2:devops_release_pipeline_project"
+      ],
+      "selected_template_ids": [
+        "backend_gateway_hardening_project",
+        "devops_release_pipeline_project"
+      ],
+      "simulation_bundle_size": 2,
+      "simulation_delta_score": 0.2541,
+      "simulation_rank_before": 25,
+      "simulation_rank_after": 2,
+      "adopted_score": 0.2541,
+      "adopted_score_delta": 0.2541,
+      "adopted_rank_before": 2,
+      "adopted_rank_after": 2,
+      "adopt_basis": "score+rank",
+      "focus_node_ids": [
+        "cap_backend_engineering",
+        "cap_backend_engineering"
+      ],
+      "priority_node_ids": [
+        "cap_backend_engineering",
+        "dir_web_backend"
+      ],
+      "missing_requirements": [
+        "后端工程能力"
+      ],
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "data_engineer_structured",
+      "target_role_id": "role_data_engineer",
+      "target_role_name": "数据工程师",
+      "current_score": 0.0,
+      "gap_ok": true,
+      "learning_path_ok": true,
+      "action_template_ok": true,
+      "simulation_positive": true,
+      "adopt_non_regression": true,
+      "focus_ok": true,
+      "priority_ok": true,
+      "missing_ok": true,
+      "first_step_relation_ok": true,
+      "first_step_delta_positive": true,
+      "selected_action_keys": [
+        "step-1:data_pipeline_project"
+      ],
+      "selected_template_ids": [
+        "data_pipeline_project"
+      ],
+      "simulation_bundle_size": 1,
+      "simulation_delta_score": 0.307,
+      "simulation_rank_before": 11,
+      "simulation_rank_after": 1,
+      "adopted_score": 0.307,
+      "adopted_score_delta": 0.307,
+      "adopted_rank_before": 2,
+      "adopted_rank_after": 1,
+      "adopt_basis": "score+rank",
+      "focus_node_ids": [
+        "cap_data_engineering",
+        "cap_data_engineering"
+      ],
+      "priority_node_ids": [
+        "cap_data_engineering",
+        "dir_data"
+      ],
+      "missing_requirements": [
+        "数据工程能力"
+      ],
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "frontend_structured",
+      "target_role_id": "role_frontend_engineer",
+      "target_role_name": "前端工程师",
+      "current_score": 0.0,
+      "gap_ok": true,
+      "learning_path_ok": true,
+      "action_template_ok": true,
+      "simulation_positive": true,
+      "adopt_non_regression": true,
+      "focus_ok": true,
+      "priority_ok": true,
+      "missing_ok": true,
+      "first_step_relation_ok": true,
+      "first_step_delta_positive": true,
+      "selected_action_keys": [
+        "step-1:frontend_component_library_portfolio"
+      ],
+      "selected_template_ids": [
+        "frontend_component_library_portfolio"
+      ],
+      "simulation_bundle_size": 1,
+      "simulation_delta_score": 0.0903,
+      "simulation_rank_before": 28,
+      "simulation_rank_after": 4,
+      "adopted_score": 0.0903,
+      "adopted_score_delta": 0.0903,
+      "adopted_rank_before": 2,
+      "adopted_rank_after": 4,
+      "adopt_basis": "score_only",
+      "focus_node_ids": [
+        "cap_frontend_engineering",
+        "cap_frontend_engineering"
+      ],
+      "priority_node_ids": [
+        "cap_frontend_engineering",
+        "dir_frontend"
+      ],
+      "missing_requirements": [
+        "前端工程能力"
+      ],
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "qa_nl",
+      "target_role_id": "role_test_development_engineer",
+      "target_role_name": "测试开发工程师",
+      "current_score": 0.1568,
+      "gap_ok": true,
+      "learning_path_ok": true,
+      "action_template_ok": true,
+      "simulation_positive": true,
+      "adopt_non_regression": true,
+      "focus_ok": true,
+      "priority_ok": true,
+      "missing_ok": true,
+      "first_step_relation_ok": true,
+      "first_step_delta_positive": true,
+      "selected_action_keys": [
+        "step-1:qa_automation_project"
+      ],
+      "selected_template_ids": [
+        "qa_automation_project"
+      ],
+      "simulation_bundle_size": 1,
+      "simulation_delta_score": 0.1786,
+      "simulation_rank_before": 2,
+      "simulation_rank_after": 1,
+      "adopted_score": 0.3354,
+      "adopted_score_delta": 0.1786,
+      "adopted_rank_before": 2,
+      "adopted_rank_after": 1,
+      "adopt_basis": "score+rank",
+      "focus_node_ids": [
+        "cap_qa_engineering",
+        "cap_qa_engineering"
+      ],
+      "priority_node_ids": [
+        "cap_qa_engineering",
+        "dir_quality_assurance"
+      ],
+      "missing_requirements": [],
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "appsec_structured",
+      "target_role_id": "role_appsec_engineer",
+      "target_role_name": "应用安全工程师",
+      "current_score": 0.0,
+      "gap_ok": true,
+      "learning_path_ok": true,
+      "action_template_ok": true,
+      "simulation_positive": true,
+      "adopt_non_regression": true,
+      "focus_ok": true,
+      "priority_ok": true,
+      "missing_ok": true,
+      "first_step_relation_ok": true,
+      "first_step_delta_positive": true,
+      "selected_action_keys": [
+        "step-1:appsec_review_project"
+      ],
+      "selected_template_ids": [
+        "appsec_review_project"
+      ],
+      "simulation_bundle_size": 1,
+      "simulation_delta_score": 0.2931,
+      "simulation_rank_before": 17,
+      "simulation_rank_after": 1,
+      "adopted_score": 0.2931,
+      "adopted_score_delta": 0.2931,
+      "adopted_rank_before": 1,
+      "adopted_rank_after": 1,
+      "adopt_basis": "score+rank",
+      "focus_node_ids": [
+        "cap_appsec_engineer",
+        "cap_appsec_engineer"
+      ],
+      "priority_node_ids": [
+        "cap_appsec_engineer",
+        "dir_security"
+      ],
+      "missing_requirements": [
+        "应用安全专项能力"
+      ],
+      "case_pass": true,
+      "failure_reasons": []
+    },
+    {
+      "id": "devops_nl",
+      "target_role_id": "role_devops_engineer",
+      "target_role_name": "DevOps 工程师",
+      "current_score": 0.0,
+      "gap_ok": true,
+      "learning_path_ok": true,
+      "action_template_ok": true,
+      "simulation_positive": true,
+      "adopt_non_regression": true,
+      "focus_ok": true,
+      "priority_ok": true,
+      "missing_ok": true,
+      "first_step_relation_ok": true,
+      "first_step_delta_positive": true,
+      "selected_action_keys": [
+        "step-1:devops_release_pipeline_project"
+      ],
+      "selected_template_ids": [
+        "devops_release_pipeline_project"
+      ],
+      "simulation_bundle_size": 1,
+      "simulation_delta_score": 0.0628,
+      "simulation_rank_before": 47,
+      "simulation_rank_after": 5,
+      "adopted_score": 0.0628,
+      "adopted_score_delta": 0.0628,
+      "adopted_rank_before": 3,
+      "adopted_rank_after": 5,
+      "adopt_basis": "score_only",
+      "focus_node_ids": [
+        "cap_devops_engineering",
+        "cap_devops_engineering"
+      ],
+      "priority_node_ids": [
+        "cap_devops_engineering",
+        "dir_devops"
+      ],
+      "missing_requirements": [
+        "DevOps 工程能力"
+      ],
+      "case_pass": true,
+      "failure_reasons": []
+    }
+  ]
+}

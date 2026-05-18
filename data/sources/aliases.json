@@ -1,0 +1,36 @@
+{
+  "extra_aliases": {
+    "interest_backend": [
+      "写后端接口",
+      "后端服务"
+    ],
+    "interest_frontend": [
+      "写前端",
+      "做界面"
+    ],
+    "interest_data": [
+      "做数据",
+      "数据处理"
+    ],
+    "interest_ml": [
+      "做算法",
+      "做机器学习"
+    ],
+    "constraint_dislike_math_theory": [
+      "数学一般",
+      "数学不太行"
+    ],
+    "constraint_dislike_oncall": [
+      "不想夜间值班"
+    ],
+    "constraint_dislike_ui_polish": [
+      "不爱抠样式"
+    ],
+    "role_backend_engineer": [
+      "通用后端工程师"
+    ],
+    "role_ml_engineer": [
+      "算法工程师"
+    ]
+  }
+}

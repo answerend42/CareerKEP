@@ -1,184 +1,67 @@
-"""结构化输入归一化。"""
-
 from __future__ import annotations
 
-from functools import lru_cache
-from pathlib import Path
-import json
-from typing import Any
+from collections import defaultdict
 
-from ..schemas import EvidenceInput, clamp01
-from .graph_loader import GraphData, GraphValidationError
+from ..schemas import NormalizedSignal, SignalInput, clamp_score
+from .graph_loader import GraphData
 
 
-def _base_dir() -> Path:
-    return Path(__file__).resolve().parents[2]
+class InputNormalizer:
+    def __init__(self, graph: GraphData, aliases: dict[str, list[str]]) -> None:
+        self.graph = graph
+        self.aliases = aliases
+        self.alias_index = self._build_alias_index()
 
+    def _build_alias_index(self) -> dict[str, str]:
+        alias_index: dict[str, str] = {}
+        for node_id, node in self.graph.nodes.items():
+            alias_index[node_id.lower()] = node_id
+            alias_index[node.name.lower()] = node_id
+        for node_id, values in self.aliases.items():
+            for value in values:
+                alias_index[value.lower()] = node_id
+        return alias_index
 
-def _load_json(path: Path) -> Any:
-    with path.open("r", encoding="utf-8") as handle:
-        return json.load(handle)
+    def resolve_entity(self, entity: str) -> str | None:
+        return self.alias_index.get(entity.strip().lower())
 
-
-def normalize_alias_text(value: str) -> str:
-    """别名查找统一使用紧凑形式，避免空格和大小写造成不同入口行为分叉。"""
-
-    return "".join(str(value).strip().casefold().split())
-
-
-def _coerce_score(value: Any) -> float | None:
-    """把外部输入的分值尽量安全地转成 0 到 1 之间的数。
-
-    `None` 视为默认值 0；明显非法的字符串、对象或布尔值则直接返回 `None`，
-    让上层调用者跳过这条脏输入，避免整条推荐链路被打断。
-    """
-
-    if value is None:
-        return 0.0
-    if isinstance(value, bool):
-        return None
-    try:
-        return clamp01(value)
-    except (TypeError, ValueError):
-        return None
-
-
-def _record_score_warning(warnings: list[str], location: str, reason: str, value: Any) -> None:
-    """把被跳过的脏分值记录成可读 warning。"""
-
-    warnings.append(f"{location}: {reason} {value!r}")
-
-
-@lru_cache(maxsize=1)
-def load_alias_map() -> dict[str, list[str]]:
-    """加载别名词典，供自然语言解析使用。"""
-
-    path = _base_dir() / "data" / "dictionaries" / "aliases.json"
-    payload = _load_json(path)
-    return {str(key): [str(item) for item in value] for key, value in payload.items()}
-
-
-def validate_alias_map(graph: GraphData, alias_map: dict[str, list[str]]) -> list[str]:
-    """校验别名词典是否能安全挂到当前运行时图谱。
-
-    role 别名冲突会直接影响目标岗位解析，因此失败；普通节点同义词冲突先作为
-    warning 暴露，方便后续扩展词典时逐步收敛。
-    """
-
-    errors: list[str] = []
-    warnings: list[str] = []
-    normalized_alias_owners: dict[str, list[str]] = {}
-
-    for node_id, aliases in alias_map.items():
-        if node_id not in graph.nodes:
-            errors.append(f"aliases[{node_id!r}]: 指向不存在的节点")
-            continue
-        if not isinstance(aliases, list):
-            errors.append(f"aliases[{node_id!r}]: 必须是字符串数组")
-            continue
-
-        for index, alias in enumerate(aliases):
-            normalized = normalize_alias_text(str(alias))
-            if not normalized:
-                errors.append(f"aliases[{node_id!r}][{index}]: alias 不能为空")
+    def normalize_signals(self, signals: list[SignalInput]) -> tuple[list[NormalizedSignal], list[str]]:
+        normalized: dict[str, NormalizedSignal] = {}
+        unresolved: list[str] = []
+        for signal in signals:
+            if not signal.entity:
                 continue
-            owners = normalized_alias_owners.setdefault(normalized, [])
-            if node_id not in owners:
-                owners.append(node_id)
-
-    for normalized, owners in sorted(normalized_alias_owners.items()):
-        if len(owners) <= 1:
-            continue
-        role_owners = [node_id for node_id in owners if graph.nodes[node_id].layer == "role"]
-        owner_text = ", ".join(sorted(owners))
-        if len(role_owners) >= 2:
-            errors.append(f"alias {normalized!r}: role 别名冲突，命中 {owner_text}")
-        else:
-            warnings.append(f"alias {normalized!r}: 普通别名冲突，命中 {owner_text}")
-
-    if errors:
-        raise GraphValidationError("别名词典校验失败:\n- " + "\n- ".join(errors))
-    return warnings
-
-
-def normalize_structured_input(payload: Any) -> dict[str, float]:
-    """把结构化输入统一成 node_id -> score。"""
-
-    result, _warnings = normalize_structured_input_with_warnings(payload)
-    return result
-
-
-def normalize_structured_input_with_warnings(payload: Any) -> tuple[dict[str, float], list[str]]:
-    """把结构化输入统一成 node_id -> score，并返回被跳过项的说明。
-
-    这里保留 `normalize_structured_input()` 的兼容入口，同时给推荐流程补一层
-    可见化 diagnostics，方便前端和命令行调试“为什么某条证据没生效”。
-    """
-
-    result: dict[str, float] = {}
-    warnings: list[str] = []
-
-    if payload is None:
-        return result, warnings
-
-    if isinstance(payload, dict):
-        for node_id, score in payload.items():
-            normalized_node_id = str(node_id or "").strip()
-            if not normalized_node_id:
-                _record_score_warning(warnings, "structured_input.<key>", "空节点 ID 已跳过", node_id)
+            node_id = self.resolve_entity(signal.entity)
+            if not node_id:
+                unresolved.append(signal.entity)
                 continue
-            normalized_score = _coerce_score(score)
-            if normalized_score is None:
-                _record_score_warning(warnings, f"structured_input.{normalized_node_id}.score", "非法分值已跳过", score)
-                continue
-            result[normalized_node_id] = normalized_score
-        return result, warnings
+            node = self.graph.nodes[node_id]
+            score = clamp_score(signal.score, default=0.7)
+            current = normalized.get(node_id)
+            if current is None or score > current.score:
+                normalized[node_id] = NormalizedSignal(
+                    node_id=node_id,
+                    node_name=node.name,
+                    score=score,
+                    source="structured",
+                )
+        return sorted(normalized.values(), key=lambda item: (-item.score, item.node_id)), unresolved
 
-    if not isinstance(payload, list):
-        raise TypeError("结构化输入必须是 dict 或 list")
+    def merge_signals(
+        self,
+        parsed_signals: list[NormalizedSignal],
+        structured_signals: list[NormalizedSignal],
+    ) -> list[NormalizedSignal]:
+        by_node: dict[str, NormalizedSignal] = {}
+        for item in parsed_signals:
+            by_node[item.node_id] = item
+        for item in structured_signals:
+            by_node[item.node_id] = item
+        return sorted(by_node.values(), key=lambda item: (-item.score, item.node_id))
 
-    for index, item in enumerate(payload):
-        if isinstance(item, EvidenceInput):
-            # 布尔值是最常见的脏数据之一，不能在这里悄悄被当成 0/1 分。
-            if isinstance(item.score, bool):
-                _record_score_warning(warnings, f"structured_input[{index}].score", "布尔值不是合法分值，已跳过", item.score)
-                continue
-            try:
-                normalized = item.normalized()
-            except (TypeError, ValueError):
-                _record_score_warning(warnings, f"structured_input[{index}].score", "非法分值已跳过", item.score)
-                continue
-            if not normalized.node_id:
-                _record_score_warning(warnings, f"structured_input[{index}].node_id", "空节点 ID 已跳过", item.node_id)
-                continue
-            normalized_score = _coerce_score(normalized.score)
-            if normalized_score is None:
-                _record_score_warning(warnings, f"structured_input[{index}].score", "非法分值已跳过", normalized.score)
-                continue
-            result[normalized.node_id] = normalized_score
-            continue
-
-        if not isinstance(item, dict):
-            raise TypeError("证据列表中的元素必须是 dict 或 EvidenceInput")
-
-        node_id = str(item.get("node_id") or item.get("id") or "").strip()
-        if not node_id:
-            _record_score_warning(warnings, f"structured_input[{index}].node_id", "空节点 ID 已跳过", item.get("node_id") or item.get("id"))
-            continue
-        normalized_score = _coerce_score(item.get("score", 1.0))
-        if normalized_score is None:
-            _record_score_warning(warnings, f"structured_input[{index}].score", "非法分值已跳过", item.get("score", 1.0))
-            continue
-        result[node_id] = normalized_score
-
-    return result, warnings
-
-
-def merge_evidence_maps(*maps: dict[str, float]) -> dict[str, float]:
-    """合并多个证据映射，保留更强的信号。"""
-
-    merged: dict[str, float] = {}
-    for evidence_map in maps:
-        for node_id, score in evidence_map.items():
-            merged[node_id] = max(merged.get(node_id, 0.0), clamp01(score))
-    return merged
+    @staticmethod
+    def to_score_map(signals: list[NormalizedSignal]) -> dict[str, float]:
+        score_map = defaultdict(float)
+        for item in signals:
+            score_map[item.node_id] = max(score_map[item.node_id], item.score)
+        return dict(score_map)

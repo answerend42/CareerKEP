@@ -1,0 +1,848 @@
+[
+  {
+    "template_id": "backend_rest_service_project",
+    "title": "做一个带鉴权、缓存和文档的 REST API 服务",
+    "action_type": "project",
+    "summary": "围绕真实业务实体实现 CRUD、鉴权、缓存与部署，把后端接口项目做成可展示作品集。",
+    "focus_node_ids": [
+      "cap_backend_engineering",
+      "dir_web_backend",
+      "ability_api_design"
+    ],
+    "evidence_node_ids": [
+      "project_backend_api",
+      "knowledge_database_theory",
+      "tool_fastapi",
+      "tool_flask",
+      "tool_mysql",
+      "tool_redis"
+    ],
+    "target_role_ids": [
+      "role_backend_engineer",
+      "role_python_backend_engineer",
+      "role_api_platform_engineer"
+    ],
+    "direction_ids": [
+      "dir_web_backend"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "接口文档",
+      "数据库表设计",
+      "鉴权与缓存实现",
+      "README 与部署说明"
+    ],
+    "tags": [
+      "backend",
+      "api",
+      "portfolio"
+    ]
+  },
+  {
+    "template_id": "backend_gateway_hardening_project",
+    "title": "做一个网关治理与服务治理改造项目",
+    "action_type": "project",
+    "summary": "把路由、限流、日志追踪和网关策略串起来，补齐网络、服务治理和平台化意识。",
+    "focus_node_ids": [
+      "cap_backend_engineering",
+      "cap_platform_engineering",
+      "ability_service_governance"
+    ],
+    "evidence_node_ids": [
+      "project_api_gateway",
+      "knowledge_networks",
+      "knowledge_distributed_systems",
+      "tool_nginx"
+    ],
+    "target_role_ids": [
+      "role_backend_engineer",
+      "role_microservice_engineer",
+      "role_api_platform_engineer",
+      "role_platform_engineer"
+    ],
+    "direction_ids": [
+      "dir_web_backend",
+      "dir_platform"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "流量治理方案",
+      "网关配置与日志",
+      "压测记录",
+      "异常链路说明"
+    ],
+    "tags": [
+      "gateway",
+      "network",
+      "microservice"
+    ]
+  },
+  {
+    "template_id": "backend_foundation_practice_pack",
+    "title": "补一组数据库、网络和系统设计基础练习",
+    "action_type": "practice",
+    "summary": "针对数据库原理、计算机网络和系统设计各做一轮专项练习，夯实后端第二阶段补强所需的基础。",
+    "focus_node_ids": [
+      "cap_backend_engineering",
+      "ability_database_practice",
+      "ability_system_design"
+    ],
+    "evidence_node_ids": [
+      "knowledge_database_theory",
+      "knowledge_networks",
+      "knowledge_system_design",
+      "soft_self_learning"
+    ],
+    "target_role_ids": [
+      "role_backend_engineer",
+      "role_java_backend_engineer",
+      "role_go_backend_engineer",
+      "role_microservice_engineer"
+    ],
+    "direction_ids": [
+      "dir_web_backend"
+    ],
+    "effort_level": "low",
+    "deliverables": [
+      "ER 图与 SQL 题解",
+      "网络排障笔记",
+      "服务拆分设计稿"
+    ],
+    "tags": [
+      "foundation",
+      "backend",
+      "practice"
+    ]
+  },
+  {
+    "template_id": "frontend_dashboard_project",
+    "title": "做一个含数据请求、状态管理和交互细节的前端看板",
+    "action_type": "project",
+    "summary": "以真实业务面板为主题，覆盖页面搭建、接口联调、状态管理和可视化表达。",
+    "focus_node_ids": [
+      "cap_frontend_engineering",
+      "dir_frontend",
+      "ability_ui_delivery"
+    ],
+    "evidence_node_ids": [
+      "project_web_ui",
+      "project_dashboard",
+      "knowledge_ui_ux_basics",
+      "tool_react",
+      "tool_vue"
+    ],
+    "target_role_ids": [
+      "role_frontend_engineer",
+      "role_react_frontend_engineer",
+      "role_vue_frontend_engineer",
+      "role_frontend_interaction_engineer"
+    ],
+    "direction_ids": [
+      "dir_frontend"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "多页面界面",
+      "接口联调说明",
+      "交互状态设计",
+      "线上演示地址"
+    ],
+    "tags": [
+      "frontend",
+      "dashboard",
+      "ui"
+    ]
+  },
+  {
+    "template_id": "frontend_component_library_portfolio",
+    "title": "搭一个组件库并补齐文档与示例页",
+    "action_type": "portfolio",
+    "summary": "把按钮、表单、表格和弹层等组件抽出来，沉淀成组件库和可复用文档。",
+    "focus_node_ids": [
+      "cap_frontend_engineering",
+      "cap_react_frontend_engineering",
+      "cap_vue_frontend_engineering"
+    ],
+    "evidence_node_ids": [
+      "project_component_library",
+      "knowledge_ui_ux_basics",
+      "soft_documentation"
+    ],
+    "target_role_ids": [
+      "role_frontend_engineer",
+      "role_react_frontend_engineer",
+      "role_vue_frontend_engineer"
+    ],
+    "direction_ids": [
+      "dir_frontend"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "组件清单",
+      "Storybook 或示例页",
+      "设计约束文档"
+    ],
+    "tags": [
+      "frontend",
+      "component-library",
+      "portfolio"
+    ]
+  },
+  {
+    "template_id": "data_pipeline_project",
+    "title": "做一个离线 ETL + 调度的数据管道项目",
+    "action_type": "project",
+    "summary": "从采集、清洗、建模到调度串起完整离线数据链路，补齐数据工程的核心动作。",
+    "focus_node_ids": [
+      "cap_data_engineering",
+      "dir_data",
+      "ability_data_processing"
+    ],
+    "evidence_node_ids": [
+      "project_data_pipeline",
+      "knowledge_database_theory",
+      "knowledge_etl_modeling",
+      "tool_airflow",
+      "tool_spark"
+    ],
+    "target_role_ids": [
+      "role_data_engineer",
+      "role_batch_data_engineer"
+    ],
+    "direction_ids": [
+      "dir_data"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "调度 DAG",
+      "清洗脚本",
+      "分层模型说明",
+      "数据质量检查"
+    ],
+    "tags": [
+      "data",
+      "etl",
+      "pipeline"
+    ]
+  },
+  {
+    "template_id": "data_warehouse_bi_project",
+    "title": "做一个数仓建模 + 看板交付的小型 BI 项目",
+    "action_type": "project",
+    "summary": "补齐数仓建模、指标口径和可视化交付，适合数据工程与分析方向共用。",
+    "focus_node_ids": [
+      "cap_data_engineering",
+      "cap_data_analysis",
+      "dir_data_analytics"
+    ],
+    "evidence_node_ids": [
+      "project_data_warehouse",
+      "knowledge_data_warehouse_modeling",
+      "project_dashboard",
+      "soft_communication"
+    ],
+    "target_role_ids": [
+      "role_data_warehouse_engineer",
+      "role_bi_engineer",
+      "role_data_analyst",
+      "role_analytics_engineer"
+    ],
+    "direction_ids": [
+      "dir_data",
+      "dir_data_analytics"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "星型模型",
+      "指标字典",
+      "看板截图",
+      "业务复盘文档"
+    ],
+    "tags": [
+      "warehouse",
+      "bi",
+      "analytics"
+    ]
+  },
+  {
+    "template_id": "data_platform_storytelling_practice",
+    "title": "做一次链路设计评审并把技术方案讲清楚",
+    "action_type": "practice",
+    "summary": "围绕分布式链路和沟通表达，做一次数据平台设计评审，把方向层的支撑动作补齐。",
+    "focus_node_ids": [
+      "dir_data"
+    ],
+    "evidence_node_ids": [
+      "knowledge_distributed_systems",
+      "soft_communication"
+    ],
+    "target_role_ids": [
+      "role_data_engineer",
+      "role_realtime_data_engineer",
+      "role_batch_data_engineer"
+    ],
+    "direction_ids": [
+      "dir_data"
+    ],
+    "effort_level": "low",
+    "deliverables": [
+      "链路架构图",
+      "设计评审纪要",
+      "容量与风险说明"
+    ],
+    "tags": [
+      "data",
+      "design-review",
+      "communication"
+    ]
+  },
+  {
+    "template_id": "realtime_data_practice_pack",
+    "title": "做一轮 Kafka/Flink 实时链路练习",
+    "action_type": "practice",
+    "summary": "用消息队列和流处理把实时链路跑通，补齐数据工程第二阶段经常缺的实时能力。",
+    "focus_node_ids": [
+      "cap_data_engineering",
+      "cap_realtime_data_engineering",
+      "dir_data"
+    ],
+    "evidence_node_ids": [
+      "project_real_time_pipeline",
+      "knowledge_distributed_systems",
+      "tool_kafka",
+      "tool_flink"
+    ],
+    "target_role_ids": [
+      "role_realtime_data_engineer",
+      "role_data_engineer"
+    ],
+    "direction_ids": [
+      "dir_data"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "事件流拓扑图",
+      "流任务代码",
+      "延迟与吞吐记录"
+    ],
+    "tags": [
+      "streaming",
+      "data",
+      "practice"
+    ]
+  },
+  {
+    "template_id": "ml_training_project",
+    "title": "从特征工程到训练评估做一个完整模型训练项目",
+    "action_type": "project",
+    "summary": "围绕一个分类或排序任务，把数据处理、训练、评估和误差分析串起来。",
+    "focus_node_ids": [
+      "cap_ml_engineering",
+      "dir_machine_learning",
+      "ability_model_training"
+    ],
+    "evidence_node_ids": [
+      "project_model_training",
+      "knowledge_math_foundation",
+      "knowledge_probability",
+      "tool_pytorch",
+      "tool_scikit_learn"
+    ],
+    "target_role_ids": [
+      "role_ml_engineer",
+      "role_recommendation_algorithm_engineer",
+      "role_nlp_engineer",
+      "role_computer_vision_engineer"
+    ],
+    "direction_ids": [
+      "dir_machine_learning"
+    ],
+    "effort_level": "high",
+    "deliverables": [
+      "训练脚本",
+      "评估指标表",
+      "误差分析报告",
+      "实验记录"
+    ],
+    "tags": [
+      "ml",
+      "training",
+      "model"
+    ]
+  },
+  {
+    "template_id": "mlops_deployment_project",
+    "title": "把模型包装成可部署服务并补实验追踪",
+    "action_type": "project",
+    "summary": "把模型部署、容器化和实验管理整合起来，适合 ML 平台和 AI 应用方向。",
+    "focus_node_ids": [
+      "cap_ml_platform_engineering",
+      "cap_ml_engineering",
+      "cap_ai_application_engineering"
+    ],
+    "evidence_node_ids": [
+      "project_ml_deployment",
+      "tool_mlflow",
+      "tool_docker",
+      "soft_documentation"
+    ],
+    "target_role_ids": [
+      "role_ml_platform_engineer",
+      "role_mlops_engineer",
+      "role_ai_application_engineer",
+      "role_llm_application_engineer"
+    ],
+    "direction_ids": [
+      "dir_machine_learning",
+      "dir_ai_application"
+    ],
+    "effort_level": "high",
+    "deliverables": [
+      "推理服务",
+      "模型版本记录",
+      "部署脚本",
+      "回滚与监控说明"
+    ],
+    "tags": [
+      "mlops",
+      "deployment",
+      "ai"
+    ]
+  },
+  {
+    "template_id": "qa_automation_project",
+    "title": "搭一套接口自动化 + 性能测试回归链路",
+    "action_type": "project",
+    "summary": "把接口回归、UI 自动化和性能压测串起来，形成完整的质量保障动作。",
+    "focus_node_ids": [
+      "cap_qa_engineering",
+      "dir_quality_assurance",
+      "ability_test_automation"
+    ],
+    "evidence_node_ids": [
+      "project_test_automation",
+      "project_performance_testing",
+      "tool_pytest",
+      "tool_selenium",
+      "tool_jmeter"
+    ],
+    "target_role_ids": [
+      "role_test_development_engineer",
+      "role_performance_test_engineer",
+      "role_qa_platform_engineer"
+    ],
+    "direction_ids": [
+      "dir_quality_assurance"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "自动化测试集",
+      "压测报告",
+      "失败样例归档",
+      "CI 集成说明"
+    ],
+    "tags": [
+      "qa",
+      "automation",
+      "performance"
+    ]
+  },
+  {
+    "template_id": "qa_debugging_practice_pack",
+    "title": "补一组系统排障与基础能力专项练习",
+    "action_type": "practice",
+    "summary": "通过数据结构、操作系统和排障记录，补齐测试开发第二阶段常缺的底层理解。",
+    "focus_node_ids": [
+      "cap_qa_engineering"
+    ],
+    "evidence_node_ids": [
+      "knowledge_data_structures",
+      "knowledge_operating_systems",
+      "soft_self_learning"
+    ],
+    "target_role_ids": [
+      "role_test_development_engineer",
+      "role_qa_platform_engineer",
+      "role_performance_test_engineer"
+    ],
+    "direction_ids": [
+      "dir_quality_assurance"
+    ],
+    "effort_level": "low",
+    "deliverables": [
+      "排障 checklist",
+      "基础题解",
+      "性能与系统调用笔记"
+    ],
+    "tags": [
+      "qa",
+      "debugging",
+      "foundation"
+    ]
+  },
+  {
+    "template_id": "qa_foundation_practice_pack",
+    "title": "补一组数据结构、算法和操作系统专项练习",
+    "action_type": "practice",
+    "summary": "把测试开发容易薄弱的基础知识补上，支撑后续平台化与性能定位能力。",
+    "focus_node_ids": [
+      "cap_qa_engineering"
+    ],
+    "evidence_node_ids": [
+      "knowledge_algorithms",
+      "knowledge_data_structures",
+      "knowledge_operating_systems",
+      "soft_self_learning"
+    ],
+    "target_role_ids": [
+      "role_test_development_engineer",
+      "role_qa_platform_engineer"
+    ],
+    "direction_ids": [
+      "dir_quality_assurance"
+    ],
+    "effort_level": "low",
+    "deliverables": [
+      "题解笔记",
+      "性能瓶颈分析记录",
+      "基础知识卡片"
+    ],
+    "tags": [
+      "qa",
+      "foundation",
+      "practice"
+    ]
+  },
+  {
+    "template_id": "security_ctf_lab",
+    "title": "做一次 Web 安全靶场 / CTF 实战并复盘攻击链",
+    "action_type": "project",
+    "summary": "通过漏洞利用、流量分析和复盘报告，补齐安全工程的第一阶段证据。",
+    "focus_node_ids": [
+      "cap_security_engineering",
+      "dir_security",
+      "ability_security_basics"
+    ],
+    "evidence_node_ids": [
+      "project_security_ctf",
+      "knowledge_networks",
+      "knowledge_algorithms",
+      "tool_wireshark",
+      "tool_nmap"
+    ],
+    "target_role_ids": [
+      "role_security_engineer",
+      "role_penetration_tester",
+      "role_cloud_security_engineer"
+    ],
+    "direction_ids": [
+      "dir_security"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "攻击路径记录",
+      "漏洞复现视频",
+      "流量分析截图",
+      "复盘报告"
+    ],
+    "tags": [
+      "security",
+      "ctf",
+      "attack-lab"
+    ]
+  },
+  {
+    "template_id": "security_foundation_practice_pack",
+    "title": "补一组协议分析与安全基础专项练习",
+    "action_type": "practice",
+    "summary": "围绕协议理解、抓包分析和基础题练，把安全工程第二阶段的基础补强动作固定下来。",
+    "focus_node_ids": [
+      "cap_security_engineering"
+    ],
+    "evidence_node_ids": [
+      "knowledge_data_structures",
+      "knowledge_networks",
+      "tool_wireshark"
+    ],
+    "target_role_ids": [
+      "role_security_engineer",
+      "role_penetration_tester",
+      "role_cloud_security_engineer"
+    ],
+    "direction_ids": [
+      "dir_security"
+    ],
+    "effort_level": "low",
+    "deliverables": [
+      "抓包分析记录",
+      "协议笔记",
+      "基础题解与复盘"
+    ],
+    "tags": [
+      "security",
+      "foundation",
+      "practice"
+    ]
+  },
+  {
+    "template_id": "appsec_review_project",
+    "title": "做一次代码审计与应用加固专项",
+    "action_type": "project",
+    "summary": "围绕安全编码、依赖治理和接口审计做一次应用安全改造，形成 AppSec 作品。",
+    "focus_node_ids": [
+      "cap_application_security",
+      "cap_security_engineering"
+    ],
+    "evidence_node_ids": [
+      "project_app_hardening",
+      "knowledge_secure_coding",
+      "tool_burp_suite",
+      "soft_documentation"
+    ],
+    "target_role_ids": [
+      "role_appsec_engineer",
+      "role_security_engineer"
+    ],
+    "direction_ids": [
+      "dir_security"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "审计清单",
+      "风险修复记录",
+      "加固策略文档",
+      "验证脚本"
+    ],
+    "tags": [
+      "appsec",
+      "code-review",
+      "hardening"
+    ]
+  },
+  {
+    "template_id": "devops_release_pipeline_project",
+    "title": "做一个容器化 CI/CD 发布流水线",
+    "action_type": "project",
+    "summary": "把构建、测试、镜像发布和集群部署串起来，形成可复用发布模板。",
+    "focus_node_ids": [
+      "cap_devops_engineering",
+      "cap_platform_engineering",
+      "dir_devops"
+    ],
+    "evidence_node_ids": [
+      "project_ci_cd_platform",
+      "project_devops_automation",
+      "tool_docker",
+      "tool_kubernetes",
+      "tool_github_actions",
+      "tool_jenkins"
+    ],
+    "target_role_ids": [
+      "role_devops_engineer",
+      "role_release_engineer",
+      "role_cloud_platform_engineer",
+      "role_platform_engineer"
+    ],
+    "direction_ids": [
+      "dir_devops",
+      "dir_platform"
+    ],
+    "effort_level": "high",
+    "deliverables": [
+      "流水线配置",
+      "容器镜像与部署脚本",
+      "回滚方案",
+      "发布演示"
+    ],
+    "tags": [
+      "devops",
+      "cicd",
+      "release"
+    ]
+  },
+  {
+    "template_id": "observability_sre_drill",
+    "title": "搭一套指标、日志和告警联动的可观测演练",
+    "action_type": "project",
+    "summary": "围绕监控指标、日志检索和告警响应做一次可靠性演练，补齐 SRE 与平台观测能力。",
+    "focus_node_ids": [
+      "cap_sre_engineering",
+      "cap_observability_engineering",
+      "dir_site_reliability"
+    ],
+    "evidence_node_ids": [
+      "project_observability_platform",
+      "tool_prometheus",
+      "tool_grafana",
+      "interest_reliability"
+    ],
+    "target_role_ids": [
+      "role_sre_engineer",
+      "role_observability_engineer",
+      "role_platform_engineer"
+    ],
+    "direction_ids": [
+      "dir_site_reliability",
+      "dir_platform"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "监控面板",
+      "告警策略",
+      "故障演练记录",
+      "SLO 草案"
+    ],
+    "tags": [
+      "sre",
+      "observability",
+      "reliability"
+    ]
+  },
+  {
+    "template_id": "mobile_app_release_project",
+    "title": "做一个可发布的移动端应用并补架构说明",
+    "action_type": "project",
+    "summary": "从页面、数据请求到打包发布跑通一次完整移动端交付，适合 Android/iOS 通用场景。",
+    "focus_node_ids": [
+      "cap_mobile_engineering",
+      "dir_mobile",
+      "ability_mobile_foundations"
+    ],
+    "evidence_node_ids": [
+      "project_mobile_app",
+      "knowledge_mobile_architecture",
+      "tool_android_studio",
+      "tool_xcode"
+    ],
+    "target_role_ids": [
+      "role_mobile_engineer",
+      "role_android_engineer",
+      "role_ios_engineer"
+    ],
+    "direction_ids": [
+      "dir_mobile"
+    ],
+    "effort_level": "high",
+    "deliverables": [
+      "可安装应用",
+      "页面结构图",
+      "网络层设计",
+      "发布记录"
+    ],
+    "tags": [
+      "mobile",
+      "release",
+      "app"
+    ]
+  },
+  {
+    "template_id": "cross_platform_flutter_project",
+    "title": "做一个跨端 Flutter 应用并沉淀状态管理模板",
+    "action_type": "project",
+    "summary": "围绕跨端交付、状态管理和组件复用，做一个可演示的 Flutter 项目。",
+    "focus_node_ids": [
+      "cap_cross_platform_mobile",
+      "cap_mobile_engineering",
+      "dir_mobile"
+    ],
+    "evidence_node_ids": [
+      "project_cross_platform_app",
+      "tool_flutter",
+      "soft_documentation"
+    ],
+    "target_role_ids": [
+      "role_cross_platform_engineer",
+      "role_mobile_engineer"
+    ],
+    "direction_ids": [
+      "dir_mobile"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "跨端演示应用",
+      "状态管理说明",
+      "组件复用记录"
+    ],
+    "tags": [
+      "flutter",
+      "cross-platform",
+      "mobile"
+    ]
+  },
+  {
+    "template_id": "embedded_firmware_debug_project",
+    "title": "做一个固件烧录与硬件联调项目",
+    "action_type": "project",
+    "summary": "围绕固件烧录、驱动联调和问题定位做一次完整闭环，补齐嵌入式与固件方向的核心证据。",
+    "focus_node_ids": [
+      "cap_embedded_engineering",
+      "cap_firmware_engineer",
+      "dir_embedded"
+    ],
+    "evidence_node_ids": [
+      "project_firmware_delivery",
+      "knowledge_hardware_debugging",
+      "skill_c",
+      "skill_cpp",
+      "knowledge_operating_systems"
+    ],
+    "target_role_ids": [
+      "role_embedded_engineer",
+      "role_firmware_engineer",
+      "role_iot_engineer"
+    ],
+    "direction_ids": [
+      "dir_embedded"
+    ],
+    "effort_level": "high",
+    "deliverables": [
+      "固件烧录记录",
+      "硬件联调日志",
+      "故障定位报告",
+      "README 与接线说明"
+    ],
+    "tags": [
+      "embedded",
+      "firmware",
+      "debugging"
+    ]
+  },
+  {
+    "template_id": "iot_gateway_integration_practice",
+    "title": "做一轮设备接入、协议解析和网关联调练习",
+    "action_type": "practice",
+    "summary": "把协议解析、Linux 环境排障和 IoT 网关接入串起来，作为嵌入式第二阶段的补强动作。",
+    "focus_node_ids": [
+      "cap_iot_engineer",
+      "cap_embedded_engineering",
+      "dir_embedded"
+    ],
+    "evidence_node_ids": [
+      "project_iot_gateway",
+      "knowledge_embedded_protocols",
+      "tool_linux",
+      "knowledge_operating_systems",
+      "interest_low_level_systems"
+    ],
+    "target_role_ids": [
+      "role_iot_engineer",
+      "role_embedded_engineer",
+      "role_firmware_engineer"
+    ],
+    "direction_ids": [
+      "dir_embedded"
+    ],
+    "effort_level": "medium",
+    "deliverables": [
+      "协议解析笔记",
+      "设备接入脚本",
+      "网关联调记录",
+      "问题排查清单"
+    ],
+    "tags": [
+      "iot",
+      "embedded",
+      "gateway"
+    ]
+  }
+]

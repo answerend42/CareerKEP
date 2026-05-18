@@ -7,7 +7,6 @@
 from __future__ import annotations
 
 import csv
-from html.parser import HTMLParser
 import json
 import re
 from pathlib import Path
@@ -26,90 +25,16 @@ CORE_DOCUMENT_KEYS = {
     "title",
     "name",
     "heading",
-    "headline",
     "text",
     "content",
     "body",
     "description",
     "summary",
-    "abstract",
-    "snippet",
-    "excerpt",
-    "body_text",
     "url",
     "link",
     "metadata",
     "extra",
 }
-DOCUMENT_HINT_KEYS = {
-    "doc_id",
-    "id",
-    "source",
-    "origin",
-    "title",
-    "name",
-    "heading",
-    "headline",
-    "text",
-    "content",
-    "body",
-    "description",
-    "summary",
-    "abstract",
-    "snippet",
-    "excerpt",
-    "body_text",
-    "url",
-    "link",
-}
-SUPPORTED_SOURCE_SUFFIXES = {".json", ".jsonl", ".csv", ".tsv", ".txt", ".md", ".html", ".htm"}
-
-
-class _HTMLContentExtractor(HTMLParser):
-    """把 HTML 里的可见文本和标题提取出来。
-
-    这里只做轻量级解析，不依赖第三方库：
-    - 忽略 `script` / `style`
-    - 优先读取 `<title>`
-    - 其余可见文本按顺序拼接
-    """
-
-    def __init__(self) -> None:
-        super().__init__()
-        self._in_title = False
-        self._skip_depth = 0
-        self.title_parts: List[str] = []
-        self.text_parts: List[str] = []
-
-    def handle_starttag(self, tag: str, attrs) -> None:  # noqa: ANN001
-        if tag in {"script", "style"}:
-            self._skip_depth += 1
-            return
-        if tag == "title":
-            self._in_title = True
-
-    def handle_endtag(self, tag: str) -> None:
-        if tag in {"script", "style"} and self._skip_depth > 0:
-            self._skip_depth -= 1
-            return
-        if tag == "title":
-            self._in_title = False
-
-    def handle_data(self, data: str) -> None:
-        if self._skip_depth > 0:
-            return
-        text = data.strip()
-        if not text:
-            return
-        if self._in_title:
-            self.title_parts.append(text)
-        else:
-            self.text_parts.append(text)
-
-    def extract(self) -> tuple[str, str]:
-        title = " ".join(self.title_parts).strip()
-        text = " ".join(self.text_parts).strip()
-        return title, text
 
 
 def _build_fallback_doc_id(source_path: str, record_index: int | None = None) -> str:
@@ -124,32 +49,6 @@ def _build_fallback_doc_id(source_path: str, record_index: int | None = None) ->
     if record_index is not None:
         path_key = f"{path_key}_{record_index}"
     return path_key or (f"document_{record_index}" if record_index is not None else "document")
-
-
-def _extract_doc_id_from_record(item: dict, fallback_id: str) -> str:
-    """从原始记录里提取文档编号。
-
-    采集阶段和正式加载阶段都需要同一套 doc_id 规则，否则清单里看到的重复
-    风险可能和最终落盘的结果不一致。
-    """
-
-    doc_id = _coerce_text(item.get("doc_id") or item.get("id") or fallback_id).strip()
-    return doc_id or fallback_id
-
-
-def _scan_source_files(directory: Path) -> List[Path]:
-    """扫描目录下所有文件，统一供采集和清单生成复用。"""
-
-    return [path for path in sorted(directory.rglob("*")) if path.is_file()]
-
-
-def _classify_source_file(path: Path) -> tuple[bool, str]:
-    """判断文件是否属于当前预处理阶段支持的数据源。"""
-
-    suffix = path.suffix.lower()
-    if suffix in SUPPORTED_SOURCE_SUFFIXES:
-        return True, suffix.lstrip(".")
-    return False, suffix.lstrip(".") or "unknown"
 
 
 def _coerce_text(value: object) -> str:
@@ -196,67 +95,6 @@ def _collect_inline_metadata(item: dict, excluded_keys: set[str]) -> dict:
     return metadata
 
 
-def _normalize_tabular_row(row: dict) -> dict:
-    """标准化表格型输入的一行数据。
-
-    真实 CSV/TSV 经常会出现表头前后带空格、带 BOM，或者单元格值带多余空白。
-    这里统一做一次清洗，减少因为格式脏数据导致的字段对不上。
-    """
-
-    normalized: dict = {}
-    for key, value in row.items():
-        clean_key = str(key).lstrip("\ufeff").strip()
-        if not clean_key:
-            continue
-        if isinstance(value, str):
-            clean_value = value.strip()
-        else:
-            clean_value = value
-        normalized[clean_key] = clean_value
-    return normalized
-
-
-def _pick_first_text(item: dict, keys: tuple[str, ...]) -> str:
-    """按优先级返回第一个非空文本字段。
-
-    真实原始数据里同一个语义字段可能会以不同名字出现，比如 `title`、
-    `headline`、`heading` 都可能指代标题。这里统一做优先级选择，避免上游
-    采集源字段名变化后把标题或正文静默漏掉。
-    """
-
-    for key in keys:
-        value = _coerce_text(item.get(key)).strip()
-        if value:
-            return value
-    return ""
-
-
-def _pick_first_text_from_sources(item: dict, keys: tuple[str, ...], shared_metadata: object | None = None) -> str:
-    """从多个常见来源里按顺序挑选文本字段。
-
-    真实原始数据里，标题和正文有时不直接放在顶层，而是藏在 `metadata` 或
-    `extra` 里。这里统一补一层查找，避免这些内容被静默漏掉。
-    """
-
-    sources: List[object] = [item]
-    metadata = item.get("metadata")
-    extra = item.get("extra")
-    if isinstance(metadata, dict):
-        sources.append(metadata)
-    if isinstance(extra, dict):
-        sources.append(extra)
-    if isinstance(shared_metadata, dict):
-        sources.append(shared_metadata)
-
-    for source in sources:
-        if not isinstance(source, dict):
-            continue
-        value = _pick_first_text(source, keys)
-        if value:
-            return value
-    return ""
-
-
 def _looks_like_collection_container(payload: dict) -> bool:
     """判断一个字典是否更像“集合容器”而不是单条文档。"""
 
@@ -265,32 +103,6 @@ def _looks_like_collection_container(payload: dict) -> bool:
         if isinstance(value, list) and any(isinstance(item, dict) for item in value):
             return True
         if isinstance(value, dict) and _looks_like_collection_container(value):
-            return True
-    return False
-
-
-def _looks_like_document_record(payload: dict) -> bool:
-    """判断一个字典是否更像单条文档记录。
-
-    如果一个字典本身已经具备标题、正文或文档编号，就优先把它当成文档，
-    避免把文档内部的评论、标签或其他列表误判成新的文档集合。
-    """
-
-    return any(key in payload and payload.get(key) not in (None, "") for key in DOCUMENT_HINT_KEYS)
-
-
-def _looks_like_nested_document_record(payload: dict) -> bool:
-    """判断一个字典或其常见嵌套字段是否包含文档信息。
-
-    有些快照会把 `title` / `text` / `source` 放在 `metadata` 或 `extra` 里，
-    这类记录本质上仍然是一条文档，但外层还保留了其它补充字段。
-    """
-
-    if _looks_like_document_record(payload):
-        return True
-    for key in ("metadata", "extra"):
-        value = payload.get(key)
-        if isinstance(value, dict) and _looks_like_document_record(value):
             return True
     return False
 
@@ -307,14 +119,23 @@ def _build_document(
 ) -> RawDocument:
     """从单条原始记录构造统一的文档对象。"""
 
-    doc_id = _extract_doc_id_from_record(item, fallback_id)
-    source = _pick_first_text_from_sources(item, ("source", "origin"), shared_metadata) or fallback_source
-    title = _pick_first_text_from_sources(item, ("title", "name", "heading", "headline"), shared_metadata) or fallback_title
+    doc_id = _coerce_text(item.get("doc_id") or item.get("id") or fallback_id).strip() or fallback_id
+    source = _coerce_text(item.get("source") or item.get("origin") or fallback_source).strip() or fallback_source
+    title = (
+        _coerce_text(item.get("title") or item.get("name") or item.get("heading") or fallback_title)
+        .strip()
+        or fallback_title
+    )
 
-    text = _pick_first_text_from_sources(
-        item,
-        ("text", "content", "body", "description", "summary", "abstract", "snippet", "excerpt", "body_text"),
-        shared_metadata,
+    text = (
+        _coerce_text(
+            item.get("text")
+            or item.get("content")
+            or item.get("body")
+            or item.get("description")
+            or item.get("summary")
+        )
+        .strip()
     )
 
     # 如果采集源只提供了 url 或 link，也保留到正文里，避免静默丢失。
@@ -363,106 +184,40 @@ def _extract_document_items(payload: object) -> List[dict]:
     """
 
     if isinstance(payload, list):
-        records: List[dict] = []
-        for item in payload:
-            if isinstance(item, dict):
-                if _looks_like_document_record(item):
-                    records.append(item)
-                else:
-                    records.extend(_extract_document_items(item))
-            elif isinstance(item, list):
-                records.extend(_extract_document_items(item))
-        return records
+        return [item for item in payload if isinstance(item, dict)]
 
     if not isinstance(payload, dict):
         return []
 
-    if _looks_like_document_record(payload):
-        return [payload]
-
-    # 如果文档信息藏在 `metadata` / `extra` 里，保留外层记录，不要只返回嵌套字典。
-    # 这样可以同时拿到嵌套字段中的标题/正文，也不会丢失外层补充列。
-    if not _looks_like_collection_container(payload) and _looks_like_nested_document_record(payload):
-        return [payload]
-
-    records: List[dict] = []
     for key in COMMON_COLLECTION_KEYS:
         value = payload.get(key)
-        if isinstance(value, (dict, list)):
-            records.extend(_extract_document_items(value))
+        if isinstance(value, list):
+            records = [item for item in value if isinstance(item, dict)]
+            if records:
+                return records
+        elif isinstance(value, dict) and _looks_like_collection_container(value):
+            nested_records = _extract_document_items(value)
+            if nested_records:
+                return nested_records
 
-    # 这里不要在常见容器字段命中后提前返回。
-    # 同一份 JSON 快照里经常会同时存在 `data` / `results` / `extras` 等并列分支，
-    # 只要其中某一个分支有记录，就会把其它同级分支漏掉，影响原始数据覆盖率。
-    for key, value in payload.items():
-        if key in COMMON_COLLECTION_KEYS:
-            continue
-        if isinstance(value, (dict, list)):
-            records.extend(_extract_document_items(value))
-
-    return records
+    return [payload]
 
 
-def _load_jsonl_records(path: Path) -> tuple[List[dict], List[dict]]:
-    """加载 JSONL 记录，并容忍单行坏数据。
-
-    真实采集场景里，JSONL 文件经常会因为某一行截断、拼接错误或编码问题
-    出现局部损坏。这里选择“能读多少算多少”，同时把错误行单独记录下来，
-    避免一条坏行把整份文件都丢掉。
-    """
-
-    records: List[dict] = []
-    errors: List[dict] = []
-
-    for line_number, raw_line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
-        line = raw_line.strip()
-        if not line:
-            continue
-        try:
-            item = json.loads(line)
-        except json.JSONDecodeError as exc:
-            errors.append(
-                {
-                    "line_number": line_number,
-                    "error": exc.msg,
-                }
-            )
-            continue
-
-        if isinstance(item, dict):
-            records.append(item)
-        else:
-            errors.append(
-                {
-                    "line_number": line_number,
-                    "error": "JSONL 行内容不是对象",
-                }
-            )
-
-    return records, errors
-
-
-def _load_json_documents_with_errors(path: Path, source_path: str) -> tuple[List[RawDocument], List[dict]]:
-    """加载 JSON / JSONL 文档，并返回解析阶段的错误信息。
-
-    这样采集清单和文档加载可以共享同一套解析结果，避免同一个文件被重复读两次。
-    """
-
+def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
     shared_metadata: dict = {}
-    parse_errors: List[dict] = []
     if path.suffix.lower() == ".jsonl":
-        documents, parse_errors = _load_jsonl_records(path)
+        documents: List[dict] = []
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            documents.append(json.loads(line))
         payload: object = documents
     else:
         payload = json.loads(path.read_text(encoding="utf-8"))
         shared_metadata = _extract_shared_metadata(payload)
     documents = _extract_document_items(payload)
     if not documents:
-        if path.suffix.lower() == ".jsonl" and parse_errors:
-            error_detail = "; ".join(
-                f"第{item['line_number']}行: {item['error']}" for item in parse_errors[:5]
-            )
-            raise ValueError(f"原始文档文件中没有可用的 JSONL 记录: {path}，{error_detail}")
         raise ValueError(f"原始文档文件格式不支持: {path}")
 
     result: List[RawDocument] = []
@@ -479,12 +234,7 @@ def _load_json_documents_with_errors(path: Path, source_path: str) -> tuple[List
                 shared_metadata=shared_metadata,
             )
         )
-    return result, parse_errors
-
-
-def _load_json_documents(path: Path, source_path: str) -> List[RawDocument]:
-    documents, _parse_errors = _load_json_documents_with_errors(path, source_path)
-    return documents
+    return result
 
 
 def _load_tabular_documents(path: Path, source_path: str) -> List[RawDocument]:
@@ -496,7 +246,7 @@ def _load_tabular_documents(path: Path, source_path: str) -> List[RawDocument]:
         reader = csv.DictReader(handle, delimiter=delimiter)
         for row in reader:
             if row:
-                rows.append(_normalize_tabular_row(row))
+                rows.append(row)
 
     result: List[RawDocument] = []
     for index, row in enumerate(rows, 1):
@@ -548,188 +298,6 @@ def _load_text_document(path: Path, source_path: str) -> List[RawDocument]:
     ]
 
 
-def _load_html_document(path: Path, source_path: str) -> List[RawDocument]:
-    """加载 HTML/HTM 文档。
-
-    这个分支主要用于真实爬虫导出的网页快照，先抽出标题和可见正文，
-    再交给后续实体抽取与消歧阶段处理。
-    """
-
-    html_text = path.read_text(encoding="utf-8").strip()
-    if not html_text:
-        return []
-
-    parser = _HTMLContentExtractor()
-    parser.feed(html_text)
-    parser.close()
-    title, text = parser.extract()
-
-    return [
-        RawDocument(
-            doc_id=_build_fallback_doc_id(source_path),
-            source=path.stem,
-            title=title or path.stem,
-            text=text,
-            metadata={
-                "source_path": source_path,
-                "source_format": path.suffix.lower().lstrip("."),
-            },
-        )
-    ]
-
-
-def _load_supported_source_documents_with_errors(path: Path, source_path: str) -> tuple[List[RawDocument], List[dict]]:
-    """按文件后缀加载单个原始文件，供预览、正式采集和清单统计复用。"""
-
-    suffix = path.suffix.lower()
-    if suffix in {".json", ".jsonl"}:
-        return _load_json_documents_with_errors(path, source_path)
-    if suffix in {".csv", ".tsv"}:
-        return _load_tabular_documents(path, source_path), []
-    if suffix in {".txt", ".md"}:
-        return _load_text_document(path, source_path), []
-    if suffix in {".html", ".htm"}:
-        return _load_html_document(path, source_path), []
-    return [], []
-
-
-def _load_supported_source_documents(path: Path, source_path: str) -> List[RawDocument]:
-    """按文件后缀加载单个原始文件，供预览和正式采集复用。"""
-
-    documents, _parse_errors = _load_supported_source_documents_with_errors(path, source_path)
-    return documents
-
-
-def _ensure_unique_doc_ids(documents: List[RawDocument]) -> None:
-    """校验文档 ID 是否重复。
-
-    预处理阶段后面要按 `doc_id` 聚合实体命中，如果这里存在重复 ID，
-    很容易把不同来源的文档统计到一起，导致实体覆盖率和命中次数失真。
-    """
-
-    seen: dict[str, str] = {}
-    duplicates: dict[str, List[str]] = {}
-
-    for document in documents:
-        source_path = str(document.metadata.get("source_path", document.doc_id))
-        previous_source = seen.get(document.doc_id)
-        if previous_source is None:
-            seen[document.doc_id] = source_path
-            continue
-
-        duplicate_sources = duplicates.setdefault(document.doc_id, [previous_source])
-        if source_path not in duplicate_sources:
-            duplicate_sources.append(source_path)
-
-    if duplicates:
-        detail = "; ".join(
-            f"{doc_id}: {', '.join(source_paths)}" for doc_id, source_paths in sorted(duplicates.items())
-        )
-        raise ValueError(f"发现重复的文档 ID，请先清理原始数据: {detail}")
-
-
-def _load_directory_snapshot(directory: Path, enforce_unique_doc_ids: bool = False) -> tuple[dict, List[RawDocument]]:
-    """一次性加载目录的清单和文档快照。
-
-    这个内部入口会统一完成扫描、解析、清单统计和文档构建，避免调用方
-    分别调用采集和加载时把同一批文件读两遍。
-    """
-
-    files = _scan_source_files(directory)
-    manifest_entries: List[dict] = []
-    loaded_by_format: dict[str, int] = {}
-    skipped_by_format: dict[str, int] = {}
-    error_by_format: dict[str, int] = {}
-    loaded_with_errors_by_format: dict[str, int] = {}
-    parse_error_count = 0
-    doc_id_sources: dict[str, List[str]] = {}
-    documents: List[RawDocument] = []
-
-    for path in files:
-        source_path = str(path.relative_to(directory))
-        is_supported, source_format = _classify_source_file(path)
-        entry = {
-            "source_path": source_path,
-            "source_format": source_format,
-            "status": "loaded" if is_supported else "skipped",
-            "record_count": 0,
-        }
-        if is_supported:
-            try:
-                preview_documents, parse_errors = _load_supported_source_documents_with_errors(path, source_path)
-                entry["record_count"] = len(preview_documents)
-                documents.extend(preview_documents)
-                for document in preview_documents:
-                    doc_id_sources.setdefault(document.doc_id, []).append(source_path)
-                if parse_errors:
-                    entry["error_count"] = len(parse_errors)
-                    entry["errors"] = parse_errors[:5]
-                    parse_error_count += len(parse_errors)
-                if preview_documents:
-                    entry["status"] = "loaded_with_errors" if parse_errors else "loaded"
-                    loaded_by_format[source_format] = loaded_by_format.get(source_format, 0) + 1
-                    if parse_errors:
-                        loaded_with_errors_by_format[source_format] = loaded_with_errors_by_format.get(source_format, 0) + 1
-                else:
-                    entry["status"] = "error"
-                    entry["error"] = "JSONL 文件中没有可用记录" if path.suffix.lower() == ".jsonl" and parse_errors else "原始文件中没有可用文档"
-                    error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
-                    if not parse_errors:
-                        parse_error_count += 1
-            except Exception as exc:  # noqa: BLE001
-                entry["status"] = "error"
-                entry["error"] = str(exc)
-                error_by_format[source_format] = error_by_format.get(source_format, 0) + 1
-                parse_error_count += 1
-        else:
-            skipped_by_format[source_format] = skipped_by_format.get(source_format, 0) + 1
-            entry["reason"] = "不支持的文件类型"
-        manifest_entries.append(entry)
-
-    manifest = {
-        "input_dir": str(directory),
-        "scanned_files": len(files),
-        "loaded_files": sum(loaded_by_format.values()),
-        "skipped_files": sum(skipped_by_format.values()),
-        "error_files": sum(error_by_format.values()),
-        "loaded_with_errors_files": sum(loaded_with_errors_by_format.values()),
-        "parse_error_count": parse_error_count,
-        "loaded_by_format": loaded_by_format,
-        "skipped_by_format": skipped_by_format,
-        "error_by_format": error_by_format,
-        "loaded_with_errors_by_format": loaded_with_errors_by_format,
-        "duplicate_doc_id_count": sum(1 for sources in doc_id_sources.values() if len(sources) > 1),
-        "duplicate_doc_ids": [
-            {
-                "doc_id": doc_id,
-                "count": len(sources),
-                "source_paths": sources,
-            }
-            for doc_id, sources in sorted(doc_id_sources.items())
-            if len(sources) > 1
-        ],
-        "files": manifest_entries,
-    }
-    if enforce_unique_doc_ids:
-        _ensure_unique_doc_ids(documents)
-    return manifest, documents
-
-
-def collect_source_manifest(input_dir: Path | None = None) -> dict:
-    """收集原始数据清单。
-
-    这个清单会把扫描到但未纳入预处理的文件也记录下来，避免数据源里有
-    新文件却没有被流水线感知到。
-    """
-
-    directory = input_dir or RAW_SOURCE_DIR
-    if not directory.exists():
-        raise FileNotFoundError(f"原始数据目录不存在: {directory}")
-
-    manifest, _documents = _load_directory_snapshot(directory)
-    return manifest
-
-
 def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
     """加载原始文档快照。"""
 
@@ -737,9 +305,22 @@ def load_raw_documents(input_dir: Path | None = None) -> List[RawDocument]:
     if not directory.exists():
         raise FileNotFoundError(f"原始数据目录不存在: {directory}")
 
-    manifest, documents = _load_directory_snapshot(directory, enforce_unique_doc_ids=True)
-    if manifest["scanned_files"] == 0:
-        return []
+    documents: List[RawDocument] = []
+    # 递归读取子目录，方便把爬虫、人工整理和导出数据按主题分层存放。
+    paths = [path for path in sorted(directory.rglob("*")) if path.is_file()]
+    for path in paths:
+        if path.is_dir():
+            continue
+        source_path = str(path.relative_to(directory))
+        suffix = path.suffix.lower()
+        if suffix in {".json", ".jsonl"}:
+            documents.extend(_load_json_documents(path, source_path))
+        elif suffix in {".csv", ".tsv"}:
+            documents.extend(_load_tabular_documents(path, source_path))
+        elif suffix in {".txt", ".md"}:
+            documents.extend(_load_text_document(path, source_path))
+
     if not documents:
         raise ValueError(f"在目录 {directory} 中没有找到可用的原始数据文件")
+
     return documents

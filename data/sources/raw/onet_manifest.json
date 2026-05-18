@@ -1,0 +1,123 @@
+[
+  {
+    "profile_id": "onet_software_developers",
+    "source_type": "onet_online",
+    "source_id": "15-1252.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1252.00",
+    "mapped_node_ids": [
+      "cap_backend_engineering",
+      "dir_web_backend",
+      "dir_fullstack",
+      "role_backend_engineer",
+      "role_python_backend_engineer",
+      "role_java_backend_engineer",
+      "role_go_backend_engineer",
+      "role_nodejs_backend_engineer",
+      "role_fullstack_engineer"
+    ],
+    "profile_tags": ["backend", "fullstack", "software"],
+    "source_note": "Maps O*NET software developer profile to general backend and fullstack roles."
+  },
+  {
+    "profile_id": "onet_software_quality_assurance",
+    "source_type": "onet_online",
+    "source_id": "15-1253.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1253.00",
+    "mapped_node_ids": [
+      "cap_qa_engineering",
+      "dir_quality_assurance",
+      "role_test_development_engineer",
+      "role_qa_platform_engineer",
+      "role_performance_test_engineer"
+    ],
+    "profile_tags": ["qa", "testing", "quality"],
+    "source_note": "Maps O*NET QA analyst/tester profile to quality engineering roles."
+  },
+  {
+    "profile_id": "onet_data_scientists",
+    "source_type": "onet_online",
+    "source_id": "15-2051.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-2051.00",
+    "mapped_node_ids": [
+      "cap_ml_engineering",
+      "cap_data_analysis",
+      "dir_machine_learning",
+      "dir_data_analytics",
+      "role_ml_engineer",
+      "role_data_analyst",
+      "role_recommendation_algorithm_engineer",
+      "role_nlp_engineer",
+      "role_computer_vision_engineer"
+    ],
+    "profile_tags": ["ml", "analytics", "data_science"],
+    "source_note": "Maps O*NET data scientist profile to machine learning and analytics roles."
+  },
+  {
+    "profile_id": "onet_information_security_analysts",
+    "source_type": "onet_online",
+    "source_id": "15-1212.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1212.00",
+    "mapped_node_ids": [
+      "cap_security_engineering",
+      "dir_security",
+      "role_security_engineer",
+      "role_penetration_tester",
+      "role_appsec_engineer",
+      "role_cloud_security_engineer",
+      "role_soc_analyst"
+    ],
+    "profile_tags": ["security", "appsec", "soc"],
+    "source_note": "Maps O*NET information security analyst profile to security-oriented roles."
+  },
+  {
+    "profile_id": "onet_database_administrators",
+    "source_type": "onet_online",
+    "source_id": "15-1242.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1242.00",
+    "mapped_node_ids": [
+      "cap_data_engineering",
+      "dir_data",
+      "role_data_engineer",
+      "role_batch_data_engineer",
+      "role_data_warehouse_engineer"
+    ],
+    "profile_tags": ["database", "data_engineering", "warehouse"],
+    "source_note": "Maps O*NET database administrator profile to storage and warehouse oriented data roles."
+  },
+  {
+    "profile_id": "onet_web_developers",
+    "source_type": "onet_online",
+    "source_id": "15-1254.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1254.00",
+    "mapped_node_ids": [
+      "cap_frontend_engineering",
+      "dir_frontend",
+      "role_frontend_engineer",
+      "role_react_frontend_engineer",
+      "role_vue_frontend_engineer",
+      "role_frontend_interaction_engineer"
+    ],
+    "profile_tags": ["frontend", "web", "interaction"],
+    "source_note": "Maps O*NET web developer profile to frontend-focused roles."
+  },
+  {
+    "profile_id": "onet_network_system_administrators",
+    "source_type": "onet_online",
+    "source_id": "15-1244.00",
+    "source_url": "https://www.onetonline.org/link/summary/15-1244.00",
+    "mapped_node_ids": [
+      "cap_devops_engineering",
+      "cap_platform_engineering",
+      "dir_devops",
+      "dir_site_reliability",
+      "dir_platform",
+      "role_devops_engineer",
+      "role_sre_engineer",
+      "role_platform_engineer",
+      "role_observability_engineer",
+      "role_cloud_platform_engineer"
+    ],
+    "profile_tags": ["devops", "platform", "sre"],
+    "source_note": "Maps O*NET network/system administrator profile to platform and reliability roles."
+  }
+]

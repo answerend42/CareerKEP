@@ -1,0 +1,246 @@
+[
+  {
+    "id": "backend_nl",
+    "text": "我主攻接口开发，平时会写脚本清洗数据，也能接受 Linux 环境，不想做纯前端页面。",
+    "top_k": 6,
+    "expected_roles_any": [
+      "role_backend_engineer",
+      "role_python_backend_engineer",
+      "role_api_platform_engineer",
+      "role_data_engineer"
+    ],
+    "forbidden_roles": ["role_frontend_engineer"],
+    "expected_explanation_nodes_any": [
+      "project_backend_api",
+      "cap_backend_engineering",
+      "dir_web_backend"
+    ],
+    "expected_source_types_any": ["onet_online", "roadmap_sh"],
+    "min_provenance_count": 2
+  },
+  {
+    "id": "data_engineering_structured",
+    "text": "",
+    "signals": [
+      {"entity": "skill_sql", "score": 0.9},
+      {"entity": "project_data_pipeline", "score": 0.85},
+      {"entity": "tool_airflow", "score": 0.8},
+      {"entity": "tool_linux", "score": 0.7}
+    ],
+    "top_k": 6,
+    "expected_roles_any": [
+      "role_data_engineer",
+      "role_batch_data_engineer",
+      "role_data_warehouse_engineer"
+    ],
+    "forbidden_roles": ["role_frontend_engineer"],
+    "expected_explanation_nodes_any": [
+      "project_data_pipeline",
+      "cap_data_engineering",
+      "tool_airflow"
+    ],
+    "expected_source_types_any": ["onet_online"],
+    "min_provenance_count": 1
+  },
+  {
+    "id": "analytics_nl",
+    "text": "我做过埋点分析和可视化报表，SQL 用得多，也常跟业务沟通需求。",
+    "top_k": 6,
+    "expected_roles_any": [
+      "role_data_analyst",
+      "role_analytics_engineer",
+      "role_bi_engineer"
+    ],
+    "forbidden_roles": ["role_backend_engineer"],
+    "expected_explanation_nodes_any": [
+      "project_dashboard",
+      "cap_data_analysis",
+      "dir_data_analytics"
+    ],
+    "expected_source_types_any": ["onet_online", "roadmap_sh"],
+    "min_provenance_count": 1
+  },
+  {
+    "id": "ml_nl",
+    "text": "我更喜欢把模型训出来再部署上线，数学还行，平时用 PyTorch 比较多。",
+    "top_k": 6,
+    "expected_roles_any": [
+      "role_ml_engineer",
+      "role_ml_platform_engineer",
+      "role_ai_application_engineer",
+      "role_computer_vision_engineer",
+      "role_nlp_engineer",
+      "role_llm_application_engineer"
+    ],
+    "forbidden_roles": ["role_frontend_engineer"],
+    "expected_explanation_nodes_any": [
+      "project_model_training",
+      "project_ml_deployment",
+      "cap_computer_vision_engineer",
+      "cap_nlp_engineer",
+      "dir_machine_learning"
+    ],
+    "expected_source_types_any": ["onet_online", "roadmap_sh"],
+    "min_provenance_count": 1
+  },
+  {
+    "id": "qa_nl",
+    "text": "我偏向稳定交付和质量保障，写过自动化测试，也会一点 Python。",
+    "top_k": 6,
+    "expected_roles_any": [
+      "role_test_development_engineer",
+      "role_qa_platform_engineer",
+      "role_performance_test_engineer"
+    ],
+    "forbidden_roles": ["role_frontend_engineer"],
+    "expected_explanation_nodes_any": [
+      "project_test_automation",
+      "dir_quality_assurance",
+      "cap_qa_engineering",
+      "cap_qa_platform_engineer"
+    ],
+    "expected_source_types_any": ["onet_online", "roadmap_sh"],
+    "min_provenance_count": 2
+  },
+  {
+    "id": "platform_nl",
+    "text": "我比较擅长做服务端接口、数据库表设计和排查线上问题，也熟悉 Docker 和 Redis。",
+    "top_k": 6,
+    "expected_roles_any": [
+      "role_backend_engineer",
+      "role_api_platform_engineer",
+      "role_platform_engineer",
+      "role_rust_backend_engineer"
+    ],
+    "forbidden_roles": ["role_frontend_engineer"],
+    "expected_explanation_nodes_any": [
+      "project_backend_api",
+      "tool_linux",
+      "cap_api_platform_engineer",
+      "cap_backend_engineering"
+    ],
+    "expected_source_types_any": ["onet_online", "roadmap_sh"],
+    "min_provenance_count": 1
+  },
+  {
+    "id": "security_structured",
+    "text": "",
+    "signals": [
+      {"entity": "interest_security", "score": 0.9},
+      {"entity": "project_app_hardening", "score": 0.85},
+      {"entity": "knowledge_secure_coding", "score": 0.8},
+      {"entity": "tool_linux", "score": 0.7}
+    ],
+    "top_k": 6,
+    "expected_roles_any": [
+      "role_appsec_engineer",
+      "role_cloud_security_engineer",
+      "role_penetration_tester",
+      "role_security_engineer"
+    ],
+    "forbidden_roles": ["role_frontend_engineer"],
+    "expected_explanation_nodes_any": [
+      "project_app_hardening",
+      "knowledge_secure_coding",
+      "cap_appsec_engineer"
+    ],
+    "expected_source_types_any": ["onet_online", "roadmap_sh"],
+    "min_provenance_count": 2
+  },
+  {
+    "id": "frontend_structured",
+    "text": "",
+    "signals": [
+      {"entity": "tool_react", "score": 0.9},
+      {"entity": "interest_frontend", "score": 0.9},
+      {"entity": "project_web_ui", "score": 0.8}
+    ],
+    "top_k": 6,
+    "expected_roles_any": [
+      "role_react_frontend_engineer",
+      "role_vue_frontend_engineer",
+      "role_frontend_engineer"
+    ],
+    "forbidden_roles": ["role_backend_engineer"],
+    "expected_explanation_nodes_any": [
+      "tool_react",
+      "project_web_ui",
+      "cap_react_frontend_engineer",
+      "dir_frontend"
+    ],
+    "expected_source_types_any": ["onet_online", "roadmap_sh"],
+    "min_provenance_count": 2
+  },
+  {
+    "id": "android_structured",
+    "text": "",
+    "signals": [
+      {"entity": "tool_android_studio", "score": 0.9},
+      {"entity": "project_mobile_app", "score": 0.85},
+      {"entity": "interest_mobile", "score": 0.9}
+    ],
+    "top_k": 6,
+    "expected_roles_any": [
+      "role_android_engineer",
+      "role_mobile_engineer"
+    ],
+    "forbidden_roles": ["role_backend_engineer"],
+    "expected_explanation_nodes_any": [
+      "tool_android_studio",
+      "project_mobile_app",
+      "cap_android_engineer"
+    ],
+    "expected_source_types_any": ["roadmap_sh"],
+    "min_provenance_count": 1
+  },
+  {
+    "id": "no_english_bridge",
+    "text": "我不会英语",
+    "top_k": 6,
+    "expected_bridge_anchor_ids_any": [
+      "dir_quality_assurance",
+      "dir_data_analytics",
+      "dir_web_backend"
+    ],
+    "expected_bridge_roles_any": [
+      "role_test_development_engineer",
+      "role_data_analyst",
+      "role_backend_engineer"
+    ]
+  },
+  {
+    "id": "math_only_bridge",
+    "text": "我只会数学",
+    "top_k": 6,
+    "expected_bridge_anchor_ids_any": [
+      "cap_ml_engineering"
+    ],
+    "expected_bridge_roles_any": [
+      "role_ml_engineer",
+      "role_ai_application_engineer"
+    ]
+  },
+  {
+    "id": "python_sql_sparse",
+    "text": "Python SQL",
+    "top_k": 6,
+    "expected_bridge_anchor_ids_any": [
+      "cap_data_engineering",
+      "cap_data_analysis"
+    ],
+    "expected_bridge_roles_any": [
+      "role_data_engineer",
+      "role_data_analyst"
+    ]
+  },
+  {
+    "id": "backend_preference_sparse",
+    "text": "偏好后端",
+    "top_k": 6,
+    "expected_near_miss_roles_any": [
+      "role_backend_engineer",
+      "role_api_platform_engineer"
+    ],
+    "forbidden_roles": ["role_frontend_engineer"]
+  }
+]

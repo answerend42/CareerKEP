@@ -1,0 +1,1628 @@
+{
+  "document_count": 18,
+  "documents": [
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "onet_data_scientists",
+      "external_id": "15-2051.00",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_data_analysis",
+        "cap_ml_engineering",
+        "dir_data_analytics",
+        "dir_machine_learning",
+        "role_computer_vision_engineer",
+        "role_data_analyst",
+        "role_ml_engineer",
+        "role_nlp_engineer",
+        "role_recommendation_algorithm_engineer"
+      ],
+      "profile_id": "onet_data_scientists",
+      "profile_tags": [
+        "ml",
+        "analytics",
+        "data_science"
+      ],
+      "raw_path": "data/sources/raw/onet_profiles.json",
+      "sample_job_titles": [],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "onet_data_scientists_title",
+          "section_type": "title",
+          "sentences": [
+            "15-2051.00 - Data Scientists"
+          ],
+          "text": "15-2051.00 - Data Scientists"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "onet_data_scientists_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software.",
+            "Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets.",
+            "Visualize, interpret, and report data findings.",
+            "May create dynamic data reports."
+          ],
+          "text": "Develop and implement a set of techniques or analytics applications to transform raw data into meaningful information using data-oriented programming languages and visualization software. Apply data mining, data modeling, natural language processing, and machine learning to extract and analyze information from large structured and unstructured datasets. Visualize, interpret, and report data findings. May create dynamic data reports."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "onet_data_scientists_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps O*NET data scientist profile to machine learning and analytics roles."
+          ],
+          "text": "Maps O*NET data scientist profile to machine learning and analytics roles."
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "onet_data_scientists_tags",
+          "section_type": "tags",
+          "sentences": [
+            "ml, analytics, data_science"
+          ],
+          "text": "ml, analytics, data_science"
+        }
+      ],
+      "sha256": "3e3171dd5cd5b61faebbcef59bd060855299aab0973ef45b89e4e6932795e239",
+      "snapshot_time": "2026-04-17",
+      "source_name": "onet_online",
+      "source_url": "https://www.onetonline.org/link/summary/15-2051.00",
+      "title": "15-2051.00 - Data Scientists"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "onet_database_administrators",
+      "external_id": "15-1242.00",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_data_engineering",
+        "dir_data",
+        "role_batch_data_engineer",
+        "role_data_engineer",
+        "role_data_warehouse_engineer"
+      ],
+      "profile_id": "onet_database_administrators",
+      "profile_tags": [
+        "database",
+        "data_engineering",
+        "warehouse"
+      ],
+      "raw_path": "data/sources/raw/onet_profiles.json",
+      "sample_job_titles": [
+        "Database Administration Manager",
+        "Database Administrator (DBA)",
+        "Database Analyst",
+        "Database Coordinator",
+        "Database Engineer",
+        "Database Manager"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "onet_database_administrators_title",
+          "section_type": "title",
+          "sentences": [
+            "15-1242.00 - Database Administrators"
+          ],
+          "text": "15-1242.00 - Database Administrators"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "onet_database_administrators_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Administer, test, and implement computer databases, applying knowledge of database management systems.",
+            "Coordinate changes to computer databases.",
+            "Identify, investigate, and resolve database performance issues, database capacity, and database scalability.",
+            "May plan, coordinate, and implement security measures to safeguard computer databases."
+          ],
+          "text": "Administer, test, and implement computer databases, applying knowledge of database management systems. Coordinate changes to computer databases. Identify, investigate, and resolve database performance issues, database capacity, and database scalability. May plan, coordinate, and implement security measures to safeguard computer databases."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "onet_database_administrators_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps O*NET database administrator profile to storage and warehouse oriented data roles."
+          ],
+          "text": "Maps O*NET database administrator profile to storage and warehouse oriented data roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "onet_database_administrators_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Database Administration Manager; Database Administrator (DBA); Database Analyst; Database Coordinator; Database Engineer; Database Manager"
+          ],
+          "text": "Database Administration Manager; Database Administrator (DBA); Database Analyst; Database Coordinator; Database Engineer; Database Manager"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "onet_database_administrators_tags",
+          "section_type": "tags",
+          "sentences": [
+            "database, data_engineering, warehouse"
+          ],
+          "text": "database, data_engineering, warehouse"
+        }
+      ],
+      "sha256": "45c15ede50bda76fafe15a6b4e4f4bef28b22d6771135446ee64d9830d902540",
+      "snapshot_time": "2026-04-17",
+      "source_name": "onet_online",
+      "source_url": "https://www.onetonline.org/link/summary/15-1242.00",
+      "title": "15-1242.00 - Database Administrators"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "onet_information_security_analysts",
+      "external_id": "15-1212.00",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_security_engineering",
+        "dir_security",
+        "role_appsec_engineer",
+        "role_cloud_security_engineer",
+        "role_penetration_tester",
+        "role_security_engineer",
+        "role_soc_analyst"
+      ],
+      "profile_id": "onet_information_security_analysts",
+      "profile_tags": [
+        "security",
+        "appsec",
+        "soc"
+      ],
+      "raw_path": "data/sources/raw/onet_profiles.json",
+      "sample_job_titles": [
+        "Information Security Officer",
+        "Information Security Specialist",
+        "Information Systems Security Analyst",
+        "Information Systems Security Officer (ISSO)",
+        "Information Technology Security Analyst (IT Security Analyst)",
+        "Network Security Analyst"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "onet_information_security_analysts_title",
+          "section_type": "title",
+          "sentences": [
+            "15-1212.00 - Information Security Analysts"
+          ],
+          "text": "15-1212.00 - Information Security Analysts"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "onet_information_security_analysts_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Plan, implement, upgrade, or monitor security measures for the protection of computer networks and information.",
+            "Assess system vulnerabilities for security risks and propose and implement risk mitigation strategies.",
+            "May ensure appropriate security controls are in place that will safeguard digital files and vital electronic infrastructure.",
+            "May respond to computer security breaches and viruses."
+          ],
+          "text": "Plan, implement, upgrade, or monitor security measures for the protection of computer networks and information. Assess system vulnerabilities for security risks and propose and implement risk mitigation strategies. May ensure appropriate security controls are in place that will safeguard digital files and vital electronic infrastructure. May respond to computer security breaches and viruses."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "onet_information_security_analysts_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps O*NET information security analyst profile to security-oriented roles."
+          ],
+          "text": "Maps O*NET information security analyst profile to security-oriented roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "onet_information_security_analysts_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Information Security Officer; Information Security Specialist; Information Systems Security Analyst; Information Systems Security Officer (ISSO); Information Technology Security Analyst (IT Security Analyst); Network Security Analyst"
+          ],
+          "text": "Information Security Officer; Information Security Specialist; Information Systems Security Analyst; Information Systems Security Officer (ISSO); Information Technology Security Analyst (IT Security Analyst); Network Security Analyst"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "onet_information_security_analysts_tags",
+          "section_type": "tags",
+          "sentences": [
+            "security, appsec, soc"
+          ],
+          "text": "security, appsec, soc"
+        }
+      ],
+      "sha256": "092a8fa221ce1821d1eea2e5b11d44c76ea4c4a552a188cc237c21d4482e09b3",
+      "snapshot_time": "2026-04-17",
+      "source_name": "onet_online",
+      "source_url": "https://www.onetonline.org/link/summary/15-1212.00",
+      "title": "15-1212.00 - Information Security Analysts"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "onet_network_system_administrators",
+      "external_id": "15-1244.00",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_devops_engineering",
+        "cap_platform_engineering",
+        "dir_devops",
+        "dir_platform",
+        "dir_site_reliability",
+        "role_cloud_platform_engineer",
+        "role_devops_engineer",
+        "role_observability_engineer",
+        "role_platform_engineer",
+        "role_sre_engineer"
+      ],
+      "profile_id": "onet_network_system_administrators",
+      "profile_tags": [
+        "devops",
+        "platform",
+        "sre"
+      ],
+      "raw_path": "data/sources/raw/onet_profiles.json",
+      "sample_job_titles": [
+        "Information Analyst",
+        "Information Technology Specialist (IT Specialist)",
+        "LAN Specialist (Local Area Network Specialist)",
+        "Local Area Network Administrator (LAN Administrator)",
+        "Network Administrator",
+        "Network Coordinator"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "onet_network_system_administrators_title",
+          "section_type": "title",
+          "sentences": [
+            "15-1244.00 - Network and Computer Systems Administrators"
+          ],
+          "text": "15-1244.00 - Network and Computer Systems Administrators"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "onet_network_system_administrators_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Install, configure, and maintain an organization's local area network (LAN), wide area network (WAN), data communications network, operating systems, and physical and virtual servers.",
+            "Perform system monitoring and verify the integrity and availability of hardware, network, and server resources and systems.",
+            "Review system and application logs and verify completion of scheduled jobs, including system backups.",
+            "Analyze network and server resource consumption and control user access.",
+            "Install and upgrade software and maintain software licenses.",
+            "May assist in network modeling, analysis, planning, and coordination between network and data communications hardware and software."
+          ],
+          "text": "Install, configure, and maintain an organization's local area network (LAN), wide area network (WAN), data communications network, operating systems, and physical and virtual servers. Perform system monitoring and verify the integrity and availability of hardware, network, and server resources and systems. Review system and application logs and verify completion of scheduled jobs, including system backups. Analyze network and server resource consumption and control user access. Install and upgrade software and maintain software licenses. May assist in network modeling, analysis, planning, and coordination between network and data communications hardware and software."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "onet_network_system_administrators_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps O*NET network/system administrator profile to platform and reliability roles."
+          ],
+          "text": "Maps O*NET network/system administrator profile to platform and reliability roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "onet_network_system_administrators_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Information Analyst; Information Technology Specialist (IT Specialist); LAN Specialist (Local Area Network Specialist); Local Area Network Administrator (LAN Administrator); Network Administrator; Network Coordinator"
+          ],
+          "text": "Information Analyst; Information Technology Specialist (IT Specialist); LAN Specialist (Local Area Network Specialist); Local Area Network Administrator (LAN Administrator); Network Administrator; Network Coordinator"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "onet_network_system_administrators_tags",
+          "section_type": "tags",
+          "sentences": [
+            "devops, platform, sre"
+          ],
+          "text": "devops, platform, sre"
+        }
+      ],
+      "sha256": "ddaea3265ae4398582da0988675f8b59b07c87cfc3a2f5be67f0504f47c721b3",
+      "snapshot_time": "2026-04-17",
+      "source_name": "onet_online",
+      "source_url": "https://www.onetonline.org/link/summary/15-1244.00",
+      "title": "15-1244.00 - Network and Computer Systems Administrators"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "onet_software_developers",
+      "external_id": "15-1252.00",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_backend_engineering",
+        "dir_fullstack",
+        "dir_web_backend",
+        "role_backend_engineer",
+        "role_fullstack_engineer",
+        "role_go_backend_engineer",
+        "role_java_backend_engineer",
+        "role_nodejs_backend_engineer",
+        "role_python_backend_engineer"
+      ],
+      "profile_id": "onet_software_developers",
+      "profile_tags": [
+        "backend",
+        "fullstack",
+        "software"
+      ],
+      "raw_path": "data/sources/raw/onet_profiles.json",
+      "sample_job_titles": [
+        "Application Developer",
+        "Application Integration Engineer",
+        "Developer",
+        "DevOps Engineer (Development Operations Engineer)",
+        "Infrastructure Engineer",
+        "Software Architect"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "onet_software_developers_title",
+          "section_type": "title",
+          "sentences": [
+            "15-1252.00 - Software Developers"
+          ],
+          "text": "15-1252.00 - Software Developers"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "onet_software_developers_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Research, design, and develop computer and network software or specialized utility programs.",
+            "Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis.",
+            "Update software or enhance existing software capabilities.",
+            "May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements.",
+            "May maintain databases within an application area, working individually or coordinating database development as part of a team."
+          ],
+          "text": "Research, design, and develop computer and network software or specialized utility programs. Analyze user needs and develop software solutions, applying principles and techniques of computer science, engineering, and mathematical analysis. Update software or enhance existing software capabilities. May work with computer hardware engineers to integrate hardware and software systems, and develop specifications and performance requirements. May maintain databases within an application area, working individually or coordinating database development as part of a team."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "onet_software_developers_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps O*NET software developer profile to general backend and fullstack roles."
+          ],
+          "text": "Maps O*NET software developer profile to general backend and fullstack roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "onet_software_developers_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Application Developer; Application Integration Engineer; Developer; DevOps Engineer (Development Operations Engineer); Infrastructure Engineer; Software Architect"
+          ],
+          "text": "Application Developer; Application Integration Engineer; Developer; DevOps Engineer (Development Operations Engineer); Infrastructure Engineer; Software Architect"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "onet_software_developers_tags",
+          "section_type": "tags",
+          "sentences": [
+            "backend, fullstack, software"
+          ],
+          "text": "backend, fullstack, software"
+        }
+      ],
+      "sha256": "8d958707c4b812ffc0a3d17fa7f1a68d93f688b7ecf5063dd10f2d280ac0e598",
+      "snapshot_time": "2026-04-17",
+      "source_name": "onet_online",
+      "source_url": "https://www.onetonline.org/link/summary/15-1252.00",
+      "title": "15-1252.00 - Software Developers"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "onet_software_quality_assurance",
+      "external_id": "15-1253.00",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_qa_engineering",
+        "dir_quality_assurance",
+        "role_performance_test_engineer",
+        "role_qa_platform_engineer",
+        "role_test_development_engineer"
+      ],
+      "profile_id": "onet_software_quality_assurance",
+      "profile_tags": [
+        "qa",
+        "testing",
+        "quality"
+      ],
+      "raw_path": "data/sources/raw/onet_profiles.json",
+      "sample_job_titles": [
+        "Automation Tester",
+        "Information Technology Analyst (IT Analyst)",
+        "Quality Assurance Analyst (QA Analyst)",
+        "Quality Assurance Engineer (QA Engineer)",
+        "Quality Engineer",
+        "Software Quality Assurance Analyst (SQA Analyst)"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "onet_software_quality_assurance_title",
+          "section_type": "title",
+          "sentences": [
+            "15-1253.00 - Software Quality Assurance Analysts and Testers"
+          ],
+          "text": "15-1253.00 - Software Quality Assurance Analysts and Testers"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "onet_software_quality_assurance_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Develop and execute software tests to identify software problems and their causes.",
+            "Test system modifications to prepare for implementation.",
+            "Document software and application defects using a bug tracking system and report defects to software or web developers.",
+            "Create and maintain databases of known defects.",
+            "May participate in software design reviews to provide input on functional requirements, operational characteristics, product designs, and schedules."
+          ],
+          "text": "Develop and execute software tests to identify software problems and their causes. Test system modifications to prepare for implementation. Document software and application defects using a bug tracking system and report defects to software or web developers. Create and maintain databases of known defects. May participate in software design reviews to provide input on functional requirements, operational characteristics, product designs, and schedules."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "onet_software_quality_assurance_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps O*NET QA analyst/tester profile to quality engineering roles."
+          ],
+          "text": "Maps O*NET QA analyst/tester profile to quality engineering roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "onet_software_quality_assurance_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Automation Tester; Information Technology Analyst (IT Analyst); Quality Assurance Analyst (QA Analyst); Quality Assurance Engineer (QA Engineer); Quality Engineer; Software Quality Assurance Analyst (SQA Analyst)"
+          ],
+          "text": "Automation Tester; Information Technology Analyst (IT Analyst); Quality Assurance Analyst (QA Analyst); Quality Assurance Engineer (QA Engineer); Quality Engineer; Software Quality Assurance Analyst (SQA Analyst)"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "onet_software_quality_assurance_tags",
+          "section_type": "tags",
+          "sentences": [
+            "qa, testing, quality"
+          ],
+          "text": "qa, testing, quality"
+        }
+      ],
+      "sha256": "e12b50bdf36bd67b197491eefd14bdd6a3b0e0019172d1bcd0c6c7ab801ad907",
+      "snapshot_time": "2026-04-17",
+      "source_name": "onet_online",
+      "source_url": "https://www.onetonline.org/link/summary/15-1253.00",
+      "title": "15-1253.00 - Software Quality Assurance Analysts and Testers"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "onet_web_developers",
+      "external_id": "15-1254.00",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_frontend_engineering",
+        "dir_frontend",
+        "role_frontend_engineer",
+        "role_frontend_interaction_engineer",
+        "role_react_frontend_engineer",
+        "role_vue_frontend_engineer"
+      ],
+      "profile_id": "onet_web_developers",
+      "profile_tags": [
+        "frontend",
+        "web",
+        "interaction"
+      ],
+      "raw_path": "data/sources/raw/onet_profiles.json",
+      "sample_job_titles": [
+        "Technology Applications Engineer",
+        "Web Architect",
+        "Web Design Specialist",
+        "Web Developer",
+        "Webmaster"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "onet_web_developers_title",
+          "section_type": "title",
+          "sentences": [
+            "15-1254.00 - Web Developers"
+          ],
+          "text": "15-1254.00 - Web Developers"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "onet_web_developers_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Develop and implement websites, web applications, application databases, and interactive web interfaces.",
+            "Evaluate code to ensure that it is properly structured, meets industry standards, and is compatible with browsers and devices.",
+            "Optimize website performance, scalability, and server-side code and processes.",
+            "May develop website infrastructure and integrate websites with other computer applications."
+          ],
+          "text": "Develop and implement websites, web applications, application databases, and interactive web interfaces. Evaluate code to ensure that it is properly structured, meets industry standards, and is compatible with browsers and devices. Optimize website performance, scalability, and server-side code and processes. May develop website infrastructure and integrate websites with other computer applications."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "onet_web_developers_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps O*NET web developer profile to frontend-focused roles."
+          ],
+          "text": "Maps O*NET web developer profile to frontend-focused roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "onet_web_developers_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Technology Applications Engineer; Web Architect; Web Design Specialist; Web Developer; Webmaster"
+          ],
+          "text": "Technology Applications Engineer; Web Architect; Web Design Specialist; Web Developer; Webmaster"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "onet_web_developers_tags",
+          "section_type": "tags",
+          "sentences": [
+            "frontend, web, interaction"
+          ],
+          "text": "frontend, web, interaction"
+        }
+      ],
+      "sha256": "8be8f6a17bb0eddb4c1a29a0f549983e52e19b16f2bbc98aee76e92ab4d0af32",
+      "snapshot_time": "2026-04-17",
+      "source_name": "onet_online",
+      "source_url": "https://www.onetonline.org/link/summary/15-1254.00",
+      "title": "15-1254.00 - Web Developers"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_ai_engineer",
+      "external_id": "ai-engineer",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_ai_application_engineering",
+        "cap_computer_vision_engineer",
+        "cap_llm_application_engineer",
+        "cap_nlp_engineer",
+        "dir_ai_application",
+        "role_ai_application_engineer",
+        "role_computer_vision_engineer",
+        "role_llm_application_engineer",
+        "role_nlp_engineer"
+      ],
+      "profile_id": "roadmap_ai_engineer",
+      "profile_tags": [
+        "ai",
+        "llm",
+        "application"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "AI Engineer",
+        "LLM Application Engineer",
+        "NLP Engineer"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_ai_engineer_title",
+          "section_type": "title",
+          "sentences": [
+            "AI Engineer Roadmap"
+          ],
+          "text": "AI Engineer Roadmap"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_ai_engineer_description",
+          "section_type": "description",
+          "sentences": [
+            "Step by step guide to becoming an AI Engineer in 2026"
+          ],
+          "text": "Step by step guide to becoming an AI Engineer in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_ai_engineer_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Yes, becoming an AI engineer is a great career choice.",
+            "AI is transforming nearly every industry, from healthcare and finance to transportation and entertainment.",
+            "As companies increasingly adopt AI-driven solutions, the demand for skilled AI engineers continues to grow.",
+            "This role offers opportunities to work on cutting-edge technologies like machine learning, natural language processing, and computer vision, making it a highly innovative field"
+          ],
+          "text": "Yes, becoming an AI engineer is a great career choice. AI is transforming nearly every industry, from healthcare and finance to transportation and entertainment. As companies increasingly adopt AI-driven solutions, the demand for skilled AI engineers continues to grow. This role offers opportunities to work on cutting-edge technologies like machine learning, natural language processing, and computer vision, making it a highly innovative field"
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_ai_engineer_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh AI engineer roadmap to application-oriented AI roles."
+          ],
+          "text": "Maps the roadmap.sh AI engineer roadmap to application-oriented AI roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_ai_engineer_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "AI Engineer; LLM Application Engineer; NLP Engineer"
+          ],
+          "text": "AI Engineer; LLM Application Engineer; NLP Engineer"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_ai_engineer_tags",
+          "section_type": "tags",
+          "sentences": [
+            "ai, llm, application"
+          ],
+          "text": "ai, llm, application"
+        }
+      ],
+      "sha256": "7564e1e4348c2a14efae3f493e35e2d28858044706118db72c4071cb80db08e4",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/ai-engineer",
+      "title": "AI Engineer Roadmap"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_android",
+      "external_id": "android",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_android_engineer",
+        "cap_android_engineering",
+        "cap_mobile_engineering",
+        "dir_mobile",
+        "role_android_engineer",
+        "role_mobile_engineer"
+      ],
+      "profile_id": "roadmap_android",
+      "profile_tags": [
+        "mobile",
+        "android",
+        "client"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "Android Engineer",
+        "Mobile Engineer"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_android_title",
+          "section_type": "title",
+          "sentences": [
+            "Android Developer Roadmap: Learn to become an Android developer"
+          ],
+          "text": "Android Developer Roadmap: Learn to become an Android developer"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_android_description",
+          "section_type": "description",
+          "sentences": [
+            "Step by step guide to becoming an Android developer in 2026"
+          ],
+          "text": "Step by step guide to becoming an Android developer in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_android_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Step by step guide to becoming an Android developer in 2026"
+          ],
+          "text": "Step by step guide to becoming an Android developer in 2026"
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_android_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh Android roadmap to mobile and Android roles."
+          ],
+          "text": "Maps the roadmap.sh Android roadmap to mobile and Android roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_android_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Android Engineer; Mobile Engineer"
+          ],
+          "text": "Android Engineer; Mobile Engineer"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_android_tags",
+          "section_type": "tags",
+          "sentences": [
+            "mobile, android, client"
+          ],
+          "text": "mobile, android, client"
+        }
+      ],
+      "sha256": "a09aa1ab33056e804a3286aae1855b37503467e93e05366cb421ff28e2cecd06",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/android",
+      "title": "Android Developer Roadmap: Learn to become an Android developer"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_backend",
+      "external_id": "backend",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_api_platform_engineer",
+        "cap_backend_engineering",
+        "cap_microservice_engineer",
+        "cap_php_backend_engineer",
+        "cap_rust_backend_engineer",
+        "dir_web_backend",
+        "role_api_platform_engineer",
+        "role_backend_engineer",
+        "role_go_backend_engineer",
+        "role_java_backend_engineer",
+        "role_microservice_engineer",
+        "role_nodejs_backend_engineer",
+        "role_php_backend_engineer",
+        "role_python_backend_engineer",
+        "role_rust_backend_engineer"
+      ],
+      "profile_id": "roadmap_backend",
+      "profile_tags": [
+        "backend",
+        "api",
+        "microservice"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "Backend Developer",
+        "API Engineer",
+        "Microservice Engineer"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_backend_title",
+          "section_type": "title",
+          "sentences": [
+            "Backend Developer Roadmap: What is Backend Development"
+          ],
+          "text": "Backend Developer Roadmap: What is Backend Development"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_backend_description",
+          "section_type": "description",
+          "sentences": [
+            "Step by step guide to becoming a modern backend developer in 2026"
+          ],
+          "text": "Step by step guide to becoming a modern backend developer in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_backend_summary",
+          "section_type": "summary",
+          "sentences": [
+            "If you are a complete beginner who is just getting started, you can start by learning a backend programming language such as Python, Ruby, Java, Go, etc.",
+            "Once you have gained a basic-to-intermediate understanding of the language, learn about the package manager for that language and learn how to install and use external packages into your applications.",
+            "Learn the basics of some relational database e.g.",
+            "PostgreSQL and learn how to run simple CRUD operations.",
+            "Optionally, you can pick up and learn a web framework for the language of your choice as well.",
+            "Learn how to build a simple RESTful API and implement simple Authentication/Authorization into it.",
+            "While you are learning all the items mentioned above, don't forget to learn about Git and GitHub as well.\" After following all the instructions above, you can start applying for the entry level backend developer jobs.",
+            "Also, look at the backend developer roadmap above to get an idea about the landscape and see what else you are missing.",
+            "A degree in computer science or related field is not always necessary but networking, building a portfolio and actively seeking internships, junior developer positions or consulting can help to start and advance a career as a backend developer.",
+            "Note: remember to create a lot of projects while you are learning to solidify your understanding of the concepts.",
+            "Also, it's important to have the attitude of continuous learning to improve your skills and be prepared for the fast-paced technology evolution in the industry."
+          ],
+          "text": "If you are a complete beginner who is just getting started, you can start by learning a backend programming language such as Python, Ruby, Java, Go, etc. Once you have gained a basic-to-intermediate understanding of the language, learn about the package manager for that language and learn how to install and use external packages into your applications. Learn the basics of some relational database e.g. PostgreSQL and learn how to run simple CRUD operations. Optionally, you can pick up and learn a web framework for the language of your choice as well. Learn how to build a simple RESTful API and implement simple Authentication/Authorization into it. While you are learning all the items mentioned above, don't forget to learn about Git and GitHub as well.\" After following all the instructions above, you can start applying for the entry level backend developer jobs. Also, look at the backend developer roadmap above to get an idea about the landscape and see what else you are missing. A degree in computer science or related field is not always necessary but networking, building a portfolio and actively seeking internships, junior developer positions or consulting can help to start and advance a career as a backend developer. Note: remember to create a lot of projects while you are learning to solidify your understanding of the concepts. Also, it's important to have the attitude of continuous learning to improve your skills and be prepared for the fast-paced technology evolution in the industry."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_backend_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh backend learning roadmap to backend and API platform roles."
+          ],
+          "text": "Maps the roadmap.sh backend learning roadmap to backend and API platform roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_backend_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Backend Developer; API Engineer; Microservice Engineer"
+          ],
+          "text": "Backend Developer; API Engineer; Microservice Engineer"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_backend_tags",
+          "section_type": "tags",
+          "sentences": [
+            "backend, api, microservice"
+          ],
+          "text": "backend, api, microservice"
+        }
+      ],
+      "sha256": "51e2c4f1cef4824dcd1a2984f05c5cfcd5a5b39c64683be217ca716733bd7e52",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/backend",
+      "title": "Backend Developer Roadmap: What is Backend Development"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_cyber_security",
+      "external_id": "cyber-security",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_application_security",
+        "cap_appsec_engineer",
+        "cap_cloud_security_engineer",
+        "cap_penetration_tester",
+        "cap_security_engineering",
+        "cap_security_operations",
+        "cap_soc_analyst",
+        "dir_security",
+        "role_appsec_engineer",
+        "role_cloud_security_engineer",
+        "role_penetration_tester",
+        "role_security_engineer",
+        "role_soc_analyst"
+      ],
+      "profile_id": "roadmap_cyber_security",
+      "profile_tags": [
+        "security",
+        "appsec",
+        "soc"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "Security Engineer",
+        "AppSec Engineer",
+        "SOC Analyst"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_cyber_security_title",
+          "section_type": "title",
+          "sentences": [
+            "Cyber Security Roadmap: Learn to become a Cyber Security Expert"
+          ],
+          "text": "Cyber Security Roadmap: Learn to become a Cyber Security Expert"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_cyber_security_description",
+          "section_type": "description",
+          "sentences": [
+            "Step by step guide to becoming a Cyber Security Expert in 2026"
+          ],
+          "text": "Step by step guide to becoming a Cyber Security Expert in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_cyber_security_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Step by step guide to becoming a Cyber Security Expert in 2026"
+          ],
+          "text": "Step by step guide to becoming a Cyber Security Expert in 2026"
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_cyber_security_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh cybersecurity roadmap to security engineering roles."
+          ],
+          "text": "Maps the roadmap.sh cybersecurity roadmap to security engineering roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_cyber_security_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Security Engineer; AppSec Engineer; SOC Analyst"
+          ],
+          "text": "Security Engineer; AppSec Engineer; SOC Analyst"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_cyber_security_tags",
+          "section_type": "tags",
+          "sentences": [
+            "security, appsec, soc"
+          ],
+          "text": "security, appsec, soc"
+        }
+      ],
+      "sha256": "1ab61ff90c20f6396a2a120c4375149cf739b435c32c830e93cc5385ec73b23a",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/cyber-security",
+      "title": "Cyber Security Roadmap: Learn to become a Cyber Security Expert"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_data_analyst",
+      "external_id": "data-analyst",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_analytics_engineer",
+        "cap_bi_engineer",
+        "cap_data_analysis",
+        "dir_data",
+        "dir_data_analytics",
+        "role_analytics_engineer",
+        "role_bi_engineer",
+        "role_data_analyst"
+      ],
+      "profile_id": "roadmap_data_analyst",
+      "profile_tags": [
+        "analytics",
+        "bi",
+        "data"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "Data Analyst",
+        "Analytics Engineer",
+        "BI Engineer"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_data_analyst_title",
+          "section_type": "title",
+          "sentences": [
+            "Data Analyst Roadmap"
+          ],
+          "text": "Data Analyst Roadmap"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_data_analyst_description",
+          "section_type": "description",
+          "sentences": [
+            "Step by step guide to becoming an Data Analyst in 2026"
+          ],
+          "text": "Step by step guide to becoming an Data Analyst in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_data_analyst_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Data analysis is a good career choice, in fact, it's a great career choice if you think about how technology is at the core of every company, and by definition, company operations produce data that can later be used to gather insights.",
+            "Using these insights to drive decisions, and innovation and decide the future of the company, helps ensure these decisions are based on reality.",
+            "With organizations increasingly relying on data to support decision-making, the demand for professionals who can analyze data, interpret data, and identify future trends is exceptionally high.",
+            "This field not only offers the opportunity to work as a data analyst and develop your findings using different analysis and mining techniques, but also allows you to be a key player in making strategic business decisions.",
+            "The field of data analytics is continuously growing and advancing with new techniques, AI-driven analysis or even new visualization tools, ensuring that a career as a data analyst is both challenging and rewarding for those who want to stay competitive and solve problems with actionable knowledge."
+          ],
+          "text": "Data analysis is a good career choice, in fact, it's a great career choice if you think about how technology is at the core of every company, and by definition, company operations produce data that can later be used to gather insights. Using these insights to drive decisions, and innovation and decide the future of the company, helps ensure these decisions are based on reality. With organizations increasingly relying on data to support decision-making, the demand for professionals who can analyze data, interpret data, and identify future trends is exceptionally high. This field not only offers the opportunity to work as a data analyst and develop your findings using different analysis and mining techniques, but also allows you to be a key player in making strategic business decisions. The field of data analytics is continuously growing and advancing with new techniques, AI-driven analysis or even new visualization tools, ensuring that a career as a data analyst is both challenging and rewarding for those who want to stay competitive and solve problems with actionable knowledge."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_data_analyst_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh data analyst roadmap to analytics-oriented roles."
+          ],
+          "text": "Maps the roadmap.sh data analyst roadmap to analytics-oriented roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_data_analyst_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Data Analyst; Analytics Engineer; BI Engineer"
+          ],
+          "text": "Data Analyst; Analytics Engineer; BI Engineer"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_data_analyst_tags",
+          "section_type": "tags",
+          "sentences": [
+            "analytics, bi, data"
+          ],
+          "text": "analytics, bi, data"
+        }
+      ],
+      "sha256": "3690d9aba0115a99fe2c8879e27338526327e3c81c8fdf875c96d826ddf104a3",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/data-analyst",
+      "title": "Data Analyst Roadmap"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_devops",
+      "external_id": "devops",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_cloud_platform_engineer",
+        "cap_devops_engineering",
+        "cap_observability_engineer",
+        "cap_observability_engineering",
+        "cap_platform_engineering",
+        "cap_release_engineer",
+        "cap_sre_engineering",
+        "dir_devops",
+        "dir_platform",
+        "dir_site_reliability",
+        "role_cloud_platform_engineer",
+        "role_devops_engineer",
+        "role_observability_engineer",
+        "role_platform_engineer",
+        "role_release_engineer",
+        "role_sre_engineer"
+      ],
+      "profile_id": "roadmap_devops",
+      "profile_tags": [
+        "devops",
+        "platform",
+        "sre"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "DevOps Engineer",
+        "SRE",
+        "Platform Engineer"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_devops_title",
+          "section_type": "title",
+          "sentences": [
+            "DevOps Roadmap: Learn to become a DevOps Engineer or SRE"
+          ],
+          "text": "DevOps Roadmap: Learn to become a DevOps Engineer or SRE"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_devops_description",
+          "section_type": "description",
+          "sentences": [
+            "Step by step guide for DevOps, SRE or any other Operations Role in 2026"
+          ],
+          "text": "Step by step guide for DevOps, SRE or any other Operations Role in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_devops_summary",
+          "section_type": "summary",
+          "sentences": [
+            "To become a DevOps Engineer, you need to have a combination of technical and soft skills.",
+            "Technical skills include knowledge of programming languages, automation tools, containerization, cloud platforms, CI/CD pipelines, configuration management tools, and monitoring and logging tools.",
+            "Soft skills include communication, collaboration, problem-solving, and adaptability.",
+            "After all, you'll be dealing with multiple actors, both from the different dev teams you interact with and from ops teams looking to ensure smooth operations and robust performance.",
+            "Gain experience by working on DevOps projects, develop a DevOps mindset, get certified, and apply for DevOps Engineer positions by highlighting your DevOps skills and experience in your resume."
+          ],
+          "text": "To become a DevOps Engineer, you need to have a combination of technical and soft skills. Technical skills include knowledge of programming languages, automation tools, containerization, cloud platforms, CI/CD pipelines, configuration management tools, and monitoring and logging tools. Soft skills include communication, collaboration, problem-solving, and adaptability. After all, you'll be dealing with multiple actors, both from the different dev teams you interact with and from ops teams looking to ensure smooth operations and robust performance. Gain experience by working on DevOps projects, develop a DevOps mindset, get certified, and apply for DevOps Engineer positions by highlighting your DevOps skills and experience in your resume."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_devops_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh DevOps roadmap to platform, SRE and release roles."
+          ],
+          "text": "Maps the roadmap.sh DevOps roadmap to platform, SRE and release roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_devops_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "DevOps Engineer; SRE; Platform Engineer"
+          ],
+          "text": "DevOps Engineer; SRE; Platform Engineer"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_devops_tags",
+          "section_type": "tags",
+          "sentences": [
+            "devops, platform, sre"
+          ],
+          "text": "devops, platform, sre"
+        }
+      ],
+      "sha256": "c0d00f5f9c0cbc6e0669fdc94ae8a829e366b2b493c059720fe95a065c3da809",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/devops",
+      "title": "DevOps Roadmap: Learn to become a DevOps Engineer or SRE"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_frontend",
+      "external_id": "frontend",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_frontend_engineering",
+        "cap_frontend_interaction_engineer",
+        "cap_react_frontend_engineer",
+        "cap_vue_frontend_engineer",
+        "dir_frontend",
+        "role_frontend_engineer",
+        "role_frontend_interaction_engineer",
+        "role_react_frontend_engineer",
+        "role_vue_frontend_engineer"
+      ],
+      "profile_id": "roadmap_frontend",
+      "profile_tags": [
+        "frontend",
+        "web",
+        "interaction"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "Frontend Engineer",
+        "React Engineer",
+        "Vue Engineer"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_frontend_title",
+          "section_type": "title",
+          "sentences": [
+            "Frontend Developer Roadmap: What is Frontend Development?"
+          ],
+          "text": "Frontend Developer Roadmap: What is Frontend Development?"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_frontend_description",
+          "section_type": "description",
+          "sentences": [
+            "Step by step guide to becoming a modern frontend developer in 2026"
+          ],
+          "text": "Step by step guide to becoming a modern frontend developer in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_frontend_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Do frontend developers really code?",
+            "The answer is yes, absolutely.",
+            "The fact that frontend developers are full-time developers who produce an output that is visually appealing (thanks to the designs provided by others) sometimes confuses others, making them believe that frontend developers aren't really coding.",
+            "However, that couldn't be further from the truth.",
+            "As a frontend developer, you'll be coding all the time.",
+            "While in some companies, the frontend developer is also a skilled designer or UX engineer, those are not the typical profiles.",
+            "As a frontend dev, your learning focus should be coding-related (i.e coding best practices, software design patterns, frontend architecture, etc)."
+          ],
+          "text": "Do frontend developers really code? The answer is yes, absolutely. The fact that frontend developers are full-time developers who produce an output that is visually appealing (thanks to the designs provided by others) sometimes confuses others, making them believe that frontend developers aren't really coding. However, that couldn't be further from the truth. As a frontend developer, you'll be coding all the time. While in some companies, the frontend developer is also a skilled designer or UX engineer, those are not the typical profiles. As a frontend dev, your learning focus should be coding-related (i.e coding best practices, software design patterns, frontend architecture, etc)."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_frontend_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh frontend roadmap to frontend family roles."
+          ],
+          "text": "Maps the roadmap.sh frontend roadmap to frontend family roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_frontend_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Frontend Engineer; React Engineer; Vue Engineer"
+          ],
+          "text": "Frontend Engineer; React Engineer; Vue Engineer"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_frontend_tags",
+          "section_type": "tags",
+          "sentences": [
+            "frontend, web, interaction"
+          ],
+          "text": "frontend, web, interaction"
+        }
+      ],
+      "sha256": "b9fafa260dab7975f5345f6ad590965223c52df700e60b487baf4594babc97bb",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/frontend",
+      "title": "Frontend Developer Roadmap: What is Frontend Development?"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_full_stack",
+      "external_id": "full-stack",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_fullstack_engineering",
+        "dir_fullstack",
+        "role_fullstack_engineer"
+      ],
+      "profile_id": "roadmap_full_stack",
+      "profile_tags": [
+        "fullstack",
+        "web",
+        "product_delivery"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "Full Stack Engineer",
+        "Web Application Engineer"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_full_stack_title",
+          "section_type": "title",
+          "sentences": [
+            "Full Stack Developer Roadmap"
+          ],
+          "text": "Full Stack Developer Roadmap"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_full_stack_description",
+          "section_type": "description",
+          "sentences": [
+            "Step by step guide to becoming a modern full stack developer in 2026"
+          ],
+          "text": "Step by step guide to becoming a modern full stack developer in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_full_stack_summary",
+          "section_type": "summary",
+          "sentences": [
+            "You can learn full stack development in 3 months, but only if you are already proficient in either front-end or back-end development, and you just need to pick up the missing half.",
+            "Otherwise, expecting to learn the ins and outs of web development (both front and back end) in such a short amount of time is too much for a single developer.",
+            "Usually mastering full stack development takes more time and a lot of hands-on experience.",
+            "If you only have a 3-month span of time to learn the skill and assuming you already have programming experience, the best thing you can do is to quickly run through the full stack developer roadmap.",
+            "While you won't learn everything you need to be a proficient full stack developer, you'll have a basic notion of everything that entails the role."
+          ],
+          "text": "You can learn full stack development in 3 months, but only if you are already proficient in either front-end or back-end development, and you just need to pick up the missing half. Otherwise, expecting to learn the ins and outs of web development (both front and back end) in such a short amount of time is too much for a single developer. Usually mastering full stack development takes more time and a lot of hands-on experience. If you only have a 3-month span of time to learn the skill and assuming you already have programming experience, the best thing you can do is to quickly run through the full stack developer roadmap. While you won't learn everything you need to be a proficient full stack developer, you'll have a basic notion of everything that entails the role."
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_full_stack_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh full-stack roadmap to the fullstack direction."
+          ],
+          "text": "Maps the roadmap.sh full-stack roadmap to the fullstack direction."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_full_stack_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "Full Stack Engineer; Web Application Engineer"
+          ],
+          "text": "Full Stack Engineer; Web Application Engineer"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_full_stack_tags",
+          "section_type": "tags",
+          "sentences": [
+            "fullstack, web, product_delivery"
+          ],
+          "text": "fullstack, web, product_delivery"
+        }
+      ],
+      "sha256": "67ecfe958763084a2858ea3a9cc9615d0e53c9042bf874eaaab823a0bc67b50c",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/full-stack",
+      "title": "Full Stack Developer Roadmap"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_ios",
+      "external_id": "ios",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_ios_engineer",
+        "cap_ios_engineering",
+        "cap_mobile_engineering",
+        "dir_mobile",
+        "role_ios_engineer",
+        "role_mobile_engineer"
+      ],
+      "profile_id": "roadmap_ios",
+      "profile_tags": [
+        "mobile",
+        "ios",
+        "client"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "iOS Engineer",
+        "Mobile Engineer"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_ios_title",
+          "section_type": "title",
+          "sentences": [
+            "iOS Developer Roadmap: Learn to become an iOS developer"
+          ],
+          "text": "iOS Developer Roadmap: Learn to become an iOS developer"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_ios_description",
+          "section_type": "description",
+          "sentences": [
+            "Step by step guide to becoming an iOS developer in 2026"
+          ],
+          "text": "Step by step guide to becoming an iOS developer in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_ios_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Step by step guide to becoming an iOS developer in 2026"
+          ],
+          "text": "Step by step guide to becoming an iOS developer in 2026"
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_ios_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh iOS roadmap to mobile and iOS roles."
+          ],
+          "text": "Maps the roadmap.sh iOS roadmap to mobile and iOS roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_ios_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "iOS Engineer; Mobile Engineer"
+          ],
+          "text": "iOS Engineer; Mobile Engineer"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_ios_tags",
+          "section_type": "tags",
+          "sentences": [
+            "mobile, ios, client"
+          ],
+          "text": "mobile, ios, client"
+        }
+      ],
+      "sha256": "b68f370d9fdaf664005ab7ed9fbad997f0c0ce6a1521716d5ce3a6e74b0cdd63",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/ios",
+      "title": "iOS Developer Roadmap: Learn to become an iOS developer"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_mlops",
+      "external_id": "mlops",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_ml_engineering",
+        "cap_ml_platform_engineer",
+        "cap_ml_platform_engineering",
+        "cap_mlops_engineer",
+        "dir_machine_learning",
+        "role_ml_engineer",
+        "role_ml_platform_engineer",
+        "role_mlops_engineer"
+      ],
+      "profile_id": "roadmap_mlops",
+      "profile_tags": [
+        "mlops",
+        "ml_platform",
+        "deployment"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "MLOps Engineer",
+        "ML Platform Engineer",
+        "Machine Learning Engineer"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_mlops_title",
+          "section_type": "title",
+          "sentences": [
+            "MLOps Roadmap"
+          ],
+          "text": "MLOps Roadmap"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_mlops_description",
+          "section_type": "description",
+          "sentences": [
+            "Step by step guide to learn MLOps in 2026"
+          ],
+          "text": "Step by step guide to learn MLOps in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_mlops_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Step by step guide to learn MLOps in 2026"
+          ],
+          "text": "Step by step guide to learn MLOps in 2026"
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_mlops_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh MLOps roadmap to ML platform and deployment roles."
+          ],
+          "text": "Maps the roadmap.sh MLOps roadmap to ML platform and deployment roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_mlops_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "MLOps Engineer; ML Platform Engineer; Machine Learning Engineer"
+          ],
+          "text": "MLOps Engineer; ML Platform Engineer; Machine Learning Engineer"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_mlops_tags",
+          "section_type": "tags",
+          "sentences": [
+            "mlops, ml_platform, deployment"
+          ],
+          "text": "mlops, ml_platform, deployment"
+        }
+      ],
+      "sha256": "bb8afafb3812c0f7aa35ca3b9a950f18a17b22e75885083be3ad74bb5dc6d852",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/mlops",
+      "title": "MLOps Roadmap"
+    },
+    {
+      "content_type": "application/json; profile",
+      "doc_id": "roadmap_qa",
+      "external_id": "qa",
+      "language": "en",
+      "license_note": "Derived from locally saved public profile metadata; verify upstream terms before redistribution.",
+      "mapped_node_ids": [
+        "cap_performance_test_engineer",
+        "cap_qa_engineering",
+        "cap_qa_platform_engineer",
+        "dir_quality_assurance",
+        "role_performance_test_engineer",
+        "role_qa_platform_engineer",
+        "role_test_development_engineer"
+      ],
+      "profile_id": "roadmap_qa",
+      "profile_tags": [
+        "qa",
+        "test",
+        "quality"
+      ],
+      "raw_path": "data/sources/raw/roadmap_profiles.json",
+      "sample_job_titles": [
+        "QA Engineer",
+        "Test Development Engineer"
+      ],
+      "sections": [
+        {
+          "raw_field": "source_title",
+          "section_id": "roadmap_qa_title",
+          "section_type": "title",
+          "sentences": [
+            "QA Roadmap: Learn to become a modern QA engineer"
+          ],
+          "text": "QA Roadmap: Learn to become a modern QA engineer"
+        },
+        {
+          "raw_field": "page_description",
+          "section_id": "roadmap_qa_description",
+          "section_type": "description",
+          "sentences": [
+            "Steps to follow in order to become a modern QA Engineer in 2026"
+          ],
+          "text": "Steps to follow in order to become a modern QA Engineer in 2026"
+        },
+        {
+          "raw_field": "summary_excerpt",
+          "section_id": "roadmap_qa_summary",
+          "section_type": "summary",
+          "sentences": [
+            "Steps to follow in order to become a modern QA Engineer in 2026"
+          ],
+          "text": "Steps to follow in order to become a modern QA Engineer in 2026"
+        },
+        {
+          "raw_field": "source_note",
+          "section_id": "roadmap_qa_source_note",
+          "section_type": "note",
+          "sentences": [
+            "Maps the roadmap.sh QA roadmap to software testing and quality roles."
+          ],
+          "text": "Maps the roadmap.sh QA roadmap to software testing and quality roles."
+        },
+        {
+          "raw_field": "sample_job_titles",
+          "section_id": "roadmap_qa_sample_job_titles",
+          "section_type": "sample_job_titles",
+          "sentences": [
+            "QA Engineer; Test Development Engineer"
+          ],
+          "text": "QA Engineer; Test Development Engineer"
+        },
+        {
+          "raw_field": "profile_tags",
+          "section_id": "roadmap_qa_tags",
+          "section_type": "tags",
+          "sentences": [
+            "qa, test, quality"
+          ],
+          "text": "qa, test, quality"
+        }
+      ],
+      "sha256": "d2e7be668f4d2adc7e8b0bb771760b7d98aa33925800ec140992062d1386c5b5",
+      "snapshot_time": "2026-04-17",
+      "source_name": "roadmap_sh",
+      "source_url": "https://roadmap.sh/qa",
+      "title": "QA Roadmap: Learn to become a modern QA engineer"
+    }
+  ],
+  "pipeline_date": "2026-04-21",
+  "pipeline_version": "20260421",
+  "source": "data/sources/raw/*_profiles.json"
+}

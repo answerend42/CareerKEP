@@ -1,0 +1,3017 @@
+{
+  "accepted_top1_count": 31,
+  "mapping_semantics": [
+    "exactMatch",
+    "closeMatch",
+    "broadMatch",
+    "narrowMatch",
+    "relatedMatch"
+  ],
+  "mappings": [
+    {
+      "candidate_rank": 1,
+      "confidence": 0.2057,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0167
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ai_application_engineer",
+      "internal_label": "AI 应用工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0115,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0339
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ai_application_engineer",
+      "internal_label": "AI 应用工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0096,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0282
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ai_application_engineer",
+      "internal_label": "AI 应用工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.1219,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.55,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0351
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_analytics_engineer",
+      "internal_label": "分析工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0142,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0417
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_analytics_engineer",
+      "internal_label": "分析工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0059,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0172
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_analytics_engineer",
+      "internal_label": "分析工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_android_engineer",
+      "internal_label": "Android 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0057,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0167
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_android_engineer",
+      "internal_label": "Android 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0047,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0139
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_android_engineer",
+      "internal_label": "Android 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.2093,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0274
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_api_platform_engineer",
+      "internal_label": "接口平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.1143,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.55,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0125
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_api_platform_engineer",
+      "internal_label": "接口平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_api_platform_engineer",
+      "internal_label": "接口平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9368,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0145,
+        "title_similarity": 0.0323
+      },
+      "external_concept_id": "ext_occ_onet_15_1212_00",
+      "external_id": "15-1212.00",
+      "external_label": "Information Security Analysts",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_appsec_engineer",
+      "internal_label": "应用安全工程师",
+      "mapping_type": "exactMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0142,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0417
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_appsec_engineer",
+      "internal_label": "应用安全工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0059,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0172
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_appsec_engineer",
+      "internal_label": "应用安全工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9178,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0278
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_backend_engineer",
+      "internal_label": "后端开发工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_backend_engineer",
+      "internal_label": "后端开发工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_backend_engineer",
+      "internal_label": "后端开发工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.88,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0408
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_batch_data_engineer",
+      "internal_label": "离线数据工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_batch_data_engineer",
+      "internal_label": "离线数据工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_batch_data_engineer",
+      "internal_label": "离线数据工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.0139,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0408
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_bi_engineer",
+      "internal_label": "BI 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_bi_engineer",
+      "internal_label": "BI 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_bi_engineer",
+      "internal_label": "BI 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9027,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0127
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_cloud_platform_engineer",
+      "internal_label": "云平台工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_cloud_platform_engineer",
+      "internal_label": "云平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_cloud_platform_engineer",
+      "internal_label": "云平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9204,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0145,
+        "title_similarity": 0.0159
+      },
+      "external_concept_id": "ext_occ_onet_15_1212_00",
+      "external_id": "15-1212.00",
+      "external_label": "Information Security Analysts",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_cloud_security_engineer",
+      "internal_label": "云安全工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0142,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0417
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_cloud_security_engineer",
+      "internal_label": "云安全工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0059,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0172
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_cloud_security_engineer",
+      "internal_label": "云安全工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9061,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0161
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_computer_vision_engineer",
+      "internal_label": "计算机视觉工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0131,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0385
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_computer_vision_engineer",
+      "internal_label": "计算机视觉工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0111,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0328
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_computer_vision_engineer",
+      "internal_label": "计算机视觉工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.1141,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.55,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.012
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_cross_platform_engineer",
+      "internal_label": "跨端应用工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0063,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0185
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_cross_platform_engineer",
+      "internal_label": "跨端应用工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0054,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0159
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_cross_platform_engineer",
+      "internal_label": "跨端应用工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.8575,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0175
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_data_analyst",
+      "internal_label": "数据分析师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0145,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0426
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_data_analyst",
+      "internal_label": "数据分析师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0089,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0263
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_data_analyst",
+      "internal_label": "数据分析师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.88,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0426
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_data_engineer",
+      "internal_label": "数据工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.006,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0175
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_data_engineer",
+      "internal_label": "数据工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.006,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0175
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_data_engineer",
+      "internal_label": "数据工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9075,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 0.55,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0625
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_data_warehouse_engineer",
+      "internal_label": "数据仓库工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_data_warehouse_engineer",
+      "internal_label": "数据仓库工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_data_warehouse_engineer",
+      "internal_label": "数据仓库工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.903,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.013
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_devops_engineer",
+      "internal_label": "DevOps 工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0097,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0286
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_devops_engineer",
+      "internal_label": "DevOps 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0071,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0208
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_devops_engineer",
+      "internal_label": "DevOps 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.0071,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0208
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_embedded_engineer",
+      "internal_label": "嵌入式工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.006,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0175
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_embedded_engineer",
+      "internal_label": "嵌入式工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0049,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0145
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_embedded_engineer",
+      "internal_label": "嵌入式工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_firmware_engineer",
+      "internal_label": "固件工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_firmware_engineer",
+      "internal_label": "固件工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0048,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0141
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_firmware_engineer",
+      "internal_label": "固件工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.93,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0526
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_frontend_engineer",
+      "internal_label": "前端工程师",
+      "mapping_type": "exactMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0097,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0286
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_frontend_engineer",
+      "internal_label": "前端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_frontend_engineer",
+      "internal_label": "前端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.93,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0526
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_frontend_interaction_engineer",
+      "internal_label": "前端交互工程师",
+      "mapping_type": "exactMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_frontend_interaction_engineer",
+      "internal_label": "前端交互工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0048,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0141
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_frontend_interaction_engineer",
+      "internal_label": "前端交互工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9182,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0282
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_fullstack_engineer",
+      "internal_label": "全栈工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0069,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0204
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_fullstack_engineer",
+      "internal_label": "全栈工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0059,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0172
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_fullstack_engineer",
+      "internal_label": "全栈工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9174,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0274
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_go_backend_engineer",
+      "internal_label": "Go 后端工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_go_backend_engineer",
+      "internal_label": "Go 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0057,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0167
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_go_backend_engineer",
+      "internal_label": "Go 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ios_engineer",
+      "internal_label": "iOS 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0057,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0167
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ios_engineer",
+      "internal_label": "iOS 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0047,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0139
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ios_engineer",
+      "internal_label": "iOS 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_iot_engineer",
+      "internal_label": "IoT 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0057,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0167
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_iot_engineer",
+      "internal_label": "IoT 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0047,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0139
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_iot_engineer",
+      "internal_label": "IoT 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9174,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0274
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_java_backend_engineer",
+      "internal_label": "Java 后端工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_java_backend_engineer",
+      "internal_label": "Java 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0057,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0167
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_java_backend_engineer",
+      "internal_label": "Java 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.2055,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0161
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_llm_application_engineer",
+      "internal_label": "大模型应用工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0111,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0328
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_llm_application_engineer",
+      "internal_label": "大模型应用工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0093,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0274
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_llm_application_engineer",
+      "internal_label": "大模型应用工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.2094,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0278
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_microservice_engineer",
+      "internal_label": "微服务工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_microservice_engineer",
+      "internal_label": "微服务工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_microservice_engineer",
+      "internal_label": "微服务工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9072,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0172
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ml_engineer",
+      "internal_label": "机器学习工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0069,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0204
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ml_engineer",
+      "internal_label": "机器学习工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0059,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0172
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ml_engineer",
+      "internal_label": "机器学习工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.2057,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0167
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ml_platform_engineer",
+      "internal_label": "机器学习平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.1143,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.55,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0125
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ml_platform_engineer",
+      "internal_label": "机器学习平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_ml_platform_engineer",
+      "internal_label": "机器学习平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.2059,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0172
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_mlops_engineer",
+      "internal_label": "MLOps 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0069,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0204
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_mlops_engineer",
+      "internal_label": "MLOps 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0059,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0172
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_mlops_engineer",
+      "internal_label": "MLOps 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.0071,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0208
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_mobile_engineer",
+      "internal_label": "移动端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.006,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0175
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_mobile_engineer",
+      "internal_label": "移动端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0049,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0145
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_mobile_engineer",
+      "internal_label": "移动端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9069,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_nlp_engineer",
+      "internal_label": "NLP 工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_nlp_engineer",
+      "internal_label": "NLP 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_nlp_engineer",
+      "internal_label": "NLP 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9167,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0267
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_nodejs_backend_engineer",
+      "internal_label": "Node.js 后端工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0064,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0189
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_nodejs_backend_engineer",
+      "internal_label": "Node.js 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0055,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0161
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_nodejs_backend_engineer",
+      "internal_label": "Node.js 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9027,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0127
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_observability_engineer",
+      "internal_label": "可观测平台工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_observability_engineer",
+      "internal_label": "可观测平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_observability_engineer",
+      "internal_label": "可观测平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9203,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0147,
+        "title_similarity": 0.0156
+      },
+      "external_concept_id": "ext_occ_onet_15_1212_00",
+      "external_id": "15-1212.00",
+      "external_label": "Information Security Analysts",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_penetration_tester",
+      "internal_label": "渗透测试工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_penetration_tester",
+      "internal_label": "渗透测试工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0048,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0141
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_penetration_tester",
+      "internal_label": "渗透测试工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.93,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0429
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_performance_test_engineer",
+      "internal_label": "性能测试工程师",
+      "mapping_type": "exactMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0208,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0612
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_performance_test_engineer",
+      "internal_label": "性能测试工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0115,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0339
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_performance_test_engineer",
+      "internal_label": "性能测试工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.2093,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0274
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_php_backend_engineer",
+      "internal_label": "PHP 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_php_backend_engineer",
+      "internal_label": "PHP 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0057,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0167
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_php_backend_engineer",
+      "internal_label": "PHP 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.903,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.013
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_platform_engineer",
+      "internal_label": "平台工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0071,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0208
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_platform_engineer",
+      "internal_label": "平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.006,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0175
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_platform_engineer",
+      "internal_label": "平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9174,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0274
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_python_backend_engineer",
+      "internal_label": "Python 后端工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_python_backend_engineer",
+      "internal_label": "Python 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0057,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0167
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_python_backend_engineer",
+      "internal_label": "Python 后端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9182,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0282
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_qa_platform_engineer",
+      "internal_label": "质量平台工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.1143,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.55,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0125
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_qa_platform_engineer",
+      "internal_label": "质量平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_qa_platform_engineer",
+      "internal_label": "质量平台工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9239,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0339
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_react_frontend_engineer",
+      "internal_label": "React 前端工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_react_frontend_engineer",
+      "internal_label": "React 前端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0047,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0139
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_react_frontend_engineer",
+      "internal_label": "React 前端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.0139,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0408
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_realtime_data_engineer",
+      "internal_label": "实时数据工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_realtime_data_engineer",
+      "internal_label": "实时数据工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_realtime_data_engineer",
+      "internal_label": "实时数据工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9069,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_2051_00",
+      "external_id": "15-2051.00",
+      "external_label": "Data Scientists",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_recommendation_algorithm_engineer",
+      "internal_label": "推荐算法工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_recommendation_algorithm_engineer",
+      "internal_label": "推荐算法工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_recommendation_algorithm_engineer",
+      "internal_label": "推荐算法工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.2043,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0127
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_release_engineer",
+      "internal_label": "发布工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0068,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.02
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_release_engineer",
+      "internal_label": "发布工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0058,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0169
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_release_engineer",
+      "internal_label": "发布工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.2093,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0274
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_rust_backend_engineer",
+      "internal_label": "Rust 服务工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_rust_backend_engineer",
+      "internal_label": "Rust 服务工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0057,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0167
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_rust_backend_engineer",
+      "internal_label": "Rust 服务工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9208,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0147,
+        "title_similarity": 0.0161
+      },
+      "external_concept_id": "ext_occ_onet_15_1212_00",
+      "external_id": "15-1212.00",
+      "external_label": "Information Security Analysts",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_security_engineer",
+      "internal_label": "安全工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0145,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0426
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_security_engineer",
+      "internal_label": "安全工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.006,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0175
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_security_engineer",
+      "internal_label": "安全工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9447,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0147,
+        "title_similarity": 0.0484
+      },
+      "external_concept_id": "ext_occ_onet_15_1212_00",
+      "external_id": "15-1212.00",
+      "external_label": "Information Security Analysts",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_soc_analyst",
+      "internal_label": "SOC 分析师",
+      "mapping_type": "exactMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0139,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0408
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_soc_analyst",
+      "internal_label": "SOC 分析师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0048,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0141
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_soc_analyst",
+      "internal_label": "SOC 分析师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.928,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.038
+      },
+      "external_concept_id": "ext_occ_onet_15_1244_00",
+      "external_id": "15-1244.00",
+      "external_label": "Network and Computer Systems Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_sre_engineer",
+      "internal_label": "SRE 工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0092,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.027
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_sre_engineer",
+      "internal_label": "SRE 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0065,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0192
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_sre_engineer",
+      "internal_label": "SRE 工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.93,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0429
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_test_development_engineer",
+      "internal_label": "测试开发工程师",
+      "mapping_type": "exactMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0136,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.04
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_test_development_engineer",
+      "internal_label": "测试开发工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0093,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0274
+      },
+      "external_concept_id": "ext_occ_onet_15_1252_00",
+      "external_id": "15-1252.00",
+      "external_label": "Software Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_test_development_engineer",
+      "internal_label": "测试开发工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 1,
+      "confidence": 0.9239,
+      "evidence": {
+        "crosswalk_support": true,
+        "family_prior": 1.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0339
+      },
+      "external_concept_id": "ext_occ_onet_15_1254_00",
+      "external_id": "15-1254.00",
+      "external_label": "Web Developers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_vue_frontend_engineer",
+      "internal_label": "Vue 前端工程师",
+      "mapping_type": "closeMatch",
+      "review_status": "reviewed",
+      "reviewed_at": "2026-04-21",
+      "reviewer": "curated_manifest"
+    },
+    {
+      "candidate_rank": 2,
+      "confidence": 0.0067,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0196
+      },
+      "external_concept_id": "ext_occ_onet_15_1242_00",
+      "external_id": "15-1242.00",
+      "external_label": "Database Administrators",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_vue_frontend_engineer",
+      "internal_label": "Vue 前端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    },
+    {
+      "candidate_rank": 3,
+      "confidence": 0.0047,
+      "evidence": {
+        "crosswalk_support": false,
+        "family_prior": 0.0,
+        "skill_overlap": 0.0,
+        "title_similarity": 0.0139
+      },
+      "external_concept_id": "ext_occ_onet_15_1253_00",
+      "external_id": "15-1253.00",
+      "external_label": "Software Quality Assurance Analysts and Testers",
+      "external_scheme": "onet",
+      "internal_concept_id": "role_vue_frontend_engineer",
+      "internal_label": "Vue 前端工程师",
+      "mapping_type": "unmapped",
+      "review_status": "unmapped",
+      "reviewed_at": "",
+      "reviewer": ""
+    }
+  ],
+  "pipeline_date": "2026-04-21",
+  "pipeline_version": "20260421",
+  "review_queue": [],
+  "review_queue_count": 0,
+  "role_count": 50
+}
