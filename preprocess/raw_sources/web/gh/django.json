@@ -1,0 +1,34 @@
+{
+  "documents": [
+    {
+      "doc_id": "web-gh-django-5ff55df41ddf",
+      "source": "web/gh",
+      "title": "django/django README",
+      "text": "======\nDjango\n======\nDjango is a high-level Python web framework that encourages rapid development\nand clean, pragmatic design. Thanks for checking it out.\nAll documentation is in the \"``docs``\" directory and online at\nhttps://docs.djangoproject.com/en/stable/. If you're just getting started,\nhere's how we recommend you read the docs:\n* First, read ``docs/intro/install.txt`` for instructions on installing Django.\n* Next, work through the tutorials in order (``docs/intro/tutorial01.txt``,\n``docs/intro/tutorial02.txt``, etc.).\n* If you want to set up an actual deployment server, read\n``docs/howto/deployment/index.txt`` for instructions.\n* You'll probably want to read through the topical guides (in ``docs/topics``)\nnext; from there you can jump to the HOWTOs (in ``docs/howto``) for specific\nproblems, and check out the reference (``docs/ref``) for gory details.\n* See ``docs/README`` for instructions on building an HTML version of the docs.\nDocs are updated rigorously. If you find any problems in the docs, or think\nthey should be clarified in any way, please take 30 seconds to fill out a\nticket here: https://code.djangoproject.com/newticket\nTo get more help:\n* Join the `Django Discord community `_.\n* Join the community on the `Django Forum `_.\nTo contribute to Django:\n* Check out https://docs.djangoproject.com/en/dev/internals/contributing/ for\ninformation about getting involved.\nTo run Django's test suite:\n* Follow the instructions in the \"Unit tests\" section of\n``docs/internals/contributing/writing-code/unit-tests.txt``, published online at\nhttps://docs.djangoproject.com/en/dev/internals/contributing/writing-code/unit-tests/#running-the-unit-tests\nSupporting the Development of Django\n====================================\nDjango's development depends on your contributions.\nIf you depend on Django, remember to support the Django Software Foundation: https://www.djangoproject.com/fundraising/",
+      "url": "https://github.com/django/django",
+      "license": "BSD-3-Clause",
+      "fetched_at": "2026-05-18T12:53:33+00:00",
+      "entity_hint": "django",
+      "repo_full_name": "django/django",
+      "stars": 87498,
+      "primary_language": "Python",
+      "readme_sha": "b7532e6b5ad352fe5d560962f8c59356d2424fae",
+      "query": "Django"
+    },
+    {
+      "doc_id": "web-gh-django-fee332e0d1e2",
+      "source": "web/gh",
+      "title": "realworld-apps/realworld README",
+      "text": "![RealWorld Example Applications](assets/media/realworld-dual-mode.png)\n\n### See how [_the exact same_ Medium.com clone](https://demo.realworld.show) is built using different [frontends](https://codebase.show/projects/realworld?category=frontend) and [backends](https://codebase.show/projects/realworld?category=backend)\nYou can combine any frontend with any backend, because **they all adhere to the same API spec**\nWhile most \"todo\" demos provide an excellent cursory glance at a framework's capabilities, they typically don't convey the knowledge & perspective required to actually build _real_ applications with it.\n**RealWorld** solves this by allowing you to choose any frontend (React, Angular, & more) and any backend (Node, Django, & more).\n_Read the [full blog post announcing RealWorld on Medium.](https://medium.com/@ericsimons/introducing-realworld-6016654d36b5)_\nJoin us on [GitHub Discussions!](https://github.com/realworld-apps/realworld/discussions) 🎉\n# Implementations\nOver 100 implementations have been created using various languages, libraries, and frameworks.\nExplore them on [**CodebaseShow**](https://codebase.show/projects/realworld).\n## Spec-compliant backends\nThese backends pass the full [API spec test suite](specs/api/):\n- [**Nitro + Prisma + Zod**](https://github.com/realworld-apps/nitro-prisma-zod-realworld-example-app) — TypeScript\n- [**Django Ninja**](https://github.com/c4ffein/realworld-django-ninja) — Python\n# Create a new implementation\n[**Create a new implementation >>>**](https://docs.realworld.show/implementation-creation/introduction)\nOr you can [view upcoming implementations (WIPs)](https://github.com/realworld-apps/realworld/discussions/categories/wip-implementations).\n# Learn more\n- [Documentation introduction](https://docs.realworld.show/introduction/)\n- Every tutorial is built against the same [API spec](specs/api/) to ensure modularity of every frontend & backend\n- A shared [CSS theme](assets/theme/styles.css) is provided to build frontend implementations with identical UI/UX\n- A shared [E2E test suite](specs/e2e/) is available to validate frontend implementations\n- There is a hosted version of the backend API available for public usage at [api.realworld.show](https://api.realworld.show) (with strong account isolation), no API keys are required\n- There is an angular frontend plugged to this backend available at [demo.realworld.show](https://demo.realworld.show)\n- Interested in creating a new RealWorld stack? View our [starter guide & spec](https://docs.realworld.show/implementation-creation/introduction)\n# Logo Attribution\nSee [LICENSES_LOGOS.md](docs/non-included/LICENSES_LOGOS.md) for framework logo licensing and attribution details.\n# Active Maintainers\n- **[c4ffein](https://github.com/c4ffein) - Maintainer** - currently maintains the [demo website](https://demo.realworld.show)\n- **[Manuel Vila](https://github.com/mvila) - Maintainer** - creator of the [Layr framework](https://layrjs.com) and the [CodebaseShow website](https://codebase.show/)",
+      "url": "https://github.com/realworld-apps/realworld",
+      "license": "NOASSERTION",
+      "fetched_at": "2026-05-18T12:53:33+00:00",
+      "entity_hint": "django",
+      "repo_full_name": "realworld-apps/realworld",
+      "stars": 83449,
+      "primary_language": "TypeScript",
+      "readme_sha": "9fa1fff2f9e084b970bbb153cb8008b0a9b9d56d",
+      "query": "Django"
+    }
+  ]
+}

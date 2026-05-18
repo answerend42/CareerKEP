@@ -1,0 +1,49 @@
+{
+  "documents": [
+    {
+      "doc_id": "web-gh-tailwindcss-060fedac22c3",
+      "source": "web/gh",
+      "title": "saadeghi/daisyui README",
+      "text": "[![][logo-url]][docs-url]\n**The most popular, free and open-source component library for Tailwind CSS**\n[![][version]](https://www.npmjs.com/package/daisyui)\n[![][commit]](https://github.com/saadeghi/daisyui)\n[![][license]](https://github.com/saadeghi/daisyui/blob/master/LICENSE)\n[![][stars]](https://github.com/saadeghi/daisyui)\n[![][installs]](https://www.npmjs.com/package/daisyui)\n[![][jsdelivr]](https://cdn.jsdelivr.net/npm/daisyui@5)\n[![][discord]](https://daisyui.com/discord/)\n[![][opencollectivebadge]](https://opencollective.com/daisyui)\n# daisyUI 5\n### 🌼 [Official website →](https://daisyui.com/)\n### 🧩 [See all components →](https://daisyui.com/components/)\n### 🚀 [How to use →](https://daisyui.com/docs/install/)\n### 🤝 [Contribute →](.github/CONTRIBUTING.md)\n---\nSponsors and backers\n[![][backers_org]][opencollective]\n[![][backers]][opencollective]\nContributors\n[![][contributors_img]][contributors]\n༼ つ ◕_◕ ༽つ Please share\n[![][tweet]](https://twitter.com/intent/tweet?text=daisyUI%20%0D%0AComponents%20for%20Tailwind%20CSS%20%0D%0Ahttps://github.com/saadeghi/daisyui)\n[version]: https://badgen.net/github/tag/saadeghi/daisyui?label=Version&color=1AD1A5\n[commit]: https://badgen.net/github/last-commit/saadeghi/daisyui?label=Last%20commit&color=1AD1A5\n[license]: https://badgen.net/github/license/saadeghi/daisyui?label=License&color=1AD1A5\n[stars]: https://badgen.net/github/stars/saadeghi/daisyui?label=GitHub%20stars&color=1AD1A5\n[installs]: https://badgen.net/npm/dt/daisyui?label=NPM%20installs&color=1AD1A5\n[jsdelivr]: https://badgen.net/jsdelivr/hits/npm/daisyui?color=1AD1A5\n[discord]: https://badgen.net/discord/members/S6TZxycVHs?label=Discord&color=1AD1A5\n[opencollectivebadge]: https://badgen.net/opencollective/backers/daisyui?label=Open%20Collective&color=1AD1A5\n[tweet]: https://img.shields.io/twitter/url?label=Share&url=https%3A%2F%2Fgithub.com%2Fsaadeghi%2Fdaisyui\n[docs-url]: https://daisyui.com/\n[logo-url]: https://img.daisyui.com/images/daisyui/daisyui-logo-192.png\n[opencollective]: https://opencollective.com/daisyui\n[sponsors]: https://opencollective.com/daisyui/tiers/premium-sponsor.svg?button=false&avatarHeight=60\n[backers]: https://opencollective.com/daisyui/backers.svg?button=false&width=978&avatarHeight=36\n[backers_org]: https://opencollective.com/daisyui/organizations.svg?button=false&avatarHeight=36\n[contribute]: https://github.com/saadeghi/daisyui/blob/master/.github/CONTRIBUTING.md\n[contributors_img]: https://opencollective.com/daisyui/contributors.svg?width=1060&button=false&avatarHeight=40\n[contributors]: https://github.com/saadeghi/daisyui/graphs/contributors",
+      "url": "https://github.com/saadeghi/daisyui",
+      "license": "MIT",
+      "fetched_at": "2026-05-18T13:02:51+00:00",
+      "entity_hint": "tailwindcss",
+      "repo_full_name": "saadeghi/daisyui",
+      "stars": 40952,
+      "primary_language": "Svelte",
+      "readme_sha": "cad466e72e9b47ab39d75f34ac0c130a4d44fdc4",
+      "query": "Tailwind CSS"
+    },
+    {
+      "doc_id": "web-gh-tailwindcss-5cc6494f3dff",
+      "source": "web/gh",
+      "title": "tailwindlabs/tailwindcss README",
+      "text": "A utility-first CSS framework for rapidly building custom user interfaces.\n\n---\n## Documentation\nFor full documentation, visit [tailwindcss.com](https://tailwindcss.com).\n## Community\nFor help, discussion about best practices, or feature ideas:\n[Discuss Tailwind CSS on GitHub](https://github.com/tailwindlabs/tailwindcss/discussions)\n## Contributing\nIf you're interested in contributing to Tailwind CSS, please read our [contributing docs](https://github.com/tailwindlabs/tailwindcss/blob/main/.github/CONTRIBUTING.md) **before submitting a pull request**.",
+      "url": "https://github.com/tailwindlabs/tailwindcss",
+      "license": "MIT",
+      "fetched_at": "2026-05-18T13:02:51+00:00",
+      "entity_hint": "tailwindcss",
+      "repo_full_name": "tailwindlabs/tailwindcss",
+      "stars": 95047,
+      "primary_language": "TypeScript",
+      "readme_sha": "5f532607d00a72faf633c2c1d613c9369fe27c35",
+      "query": "tailwind"
+    },
+    {
+      "doc_id": "web-gh-tailwindcss-990f1dc1780a",
+      "source": "web/gh",
+      "title": "abi/screenshot-to-code README",
+      "text": "Sponsored by Lilo\n# screenshot-to-code\nA simple tool to convert screenshots, mockups and Figma designs into clean, functional code using AI. Now supporting Gemini 3 and Claude Opus 4.5!\nhttps://github.com/user-attachments/assets/85b911c0-efea-4957-badb-daa97ec402ad\nSupported stacks:\n- HTML + Tailwind\n- HTML + CSS\n- React + Tailwind\n- Vue + Tailwind\n- Bootstrap\n- Ionic + Tailwind\n- SVG\nSupported AI models:\n- Gemini 3 Flash and Pro - Best models! (Google)\n- Claude Opus 4.5 - Best model! (Anthropic)\n- GPT-5.3, GPT-5.2, GPT-4.1 (OpenAI)\n- Other models are available as well but we recommend using the above models.\n- DALL-E 3 or Flux Schnell (using Replicate) for image generation\nSee the [Examples](#-examples) section below for more demos.\nWe have experimental support for taking a video/screen recording of a website in action and turning that into a functional prototype.\n![google in app quick 3](https://github.com/abi/screenshot-to-code/assets/23818/8758ffa4-9483-4b9b-bb66-abd6d1594c33)\n[Learn more about video here](https://github.com/abi/screenshot-to-code/wiki/Screen-Recording-to-Code).\n[Follow me on Twitter for updates](https://twitter.com/_abi_).\n## 🌍 Hosted Version\n[Try it live on the hosted version (paid)](https://screenshottocode.com).\n## 🛠 Getting Started\nThe app has a React/Vite frontend and a FastAPI backend.\nKeys needed:\n- [OpenAI API key](https://github.com/abi/screenshot-to-code/blob/main/Troubleshooting.md), Anthropic key, or Google Gemini key\n- Multiple keys are recommended so you can compare results from different models\nIf you'd like to run the app with Ollama open source models (not recommended due to poor quality results), [follow this comment](https://github.com/abi/screenshot-to-code/issues/354#issuecomment-2435479853).\nRun the backend (I use Poetry for package management - `pip install --upgrade poetry` if you don't have it):\n```bash\ncd backend\necho \"OPENAI_API_KEY=sk-your-key\" > .env\necho \"ANTHROPIC_API_KEY=your-key\" >> .env\necho \"GEMINI_API_KEY=your-key\" >> .env\npoetry install\npoetry env activate\n# run the printed command, e.g. source /path/to/venv/bin/activate\npoetry run uvicorn main:app --reload --port 7001\n```\nYou can also set up the keys using the settings dialog on the front-end (click the gear icon after loading the frontend).\nRun the frontend:\n```bash\ncd frontend\nyarn\nyarn dev\n```\nOpen http://localhost:5173 to use the app.\nIf you prefer to run the backend on a different port, update VITE_WS_BACKEND_URL in `frontend/.env.local`\n## Docker\nIf you have Docker installed on your system, in the root directory, run:\n```bash\necho \"OPENAI_API_KEY=sk-your-key\" > .env\ndocker-compose up -d --build\n```\nThe app will be up and running at http://localhost:5173. Note that you can't develop the application with this setup as the file changes won't trigger a rebuild.\n## 🙋‍♂️ FAQs\n- **I'm running into an error when setting up the backend. How can I fix it?** [Try this](https://github.com/abi/screenshot-to-code/issues/3#issuecomment-1814777959). If that still doesn't work, open an issue.\n- **How do I get an OpenAI API key?** See https://github.com/abi/screenshot-to-code/blob/main/Troubleshooting.md\n- **How can I configure an OpenAI proxy?** - If you're not able to access the OpenAI API directly (due to e.g. country restrictions), you can try a VPN or you can configure the OpenAI base URL to use a proxy: Set OPENAI_BASE_URL in the `backend/.env` or directly in the UI in the settings dialog. Make sure the URL has \"v1\" in the path so it should look like this: `https://xxx.xxxxx.xxx/v1`\n- **How can I update the backend host that my front-end connects to?** - Configure VITE_HTTP_BACKEND_URL and VITE_WS_BACKEND_URL in front/.env.local For example, set VITE_HTTP_BACKEND_URL=http://124.10.20.1:7001\n- **Seeing UTF-8 errors when running the backend?** - On windows, open the .env file with notepad++, then go to Encoding and select UTF-8.\n- **How can I provide feedback?** For feedback, feature requests and bug reports, open an issue or ping me on [Twitter](https://twitter.com/_abi_).\n## 📚 Examples\n**NYTimes**\n| Original | Replica |\n| --------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |\n| | |\n**Instagram**\nhttps://github.com/user-attachments/assets/a335a105-f9cc-40e6-ac6b-64e5390bfc21\n**Hacker News**\nhttps://github.com/user-attachments/assets/205cb5c7-9c3c-438d-acd4-26dfe6e077e5",
+      "url": "https://github.com/abi/screenshot-to-code",
+      "license": "MIT",
+      "fetched_at": "2026-05-18T13:02:51+00:00",
+      "entity_hint": "tailwindcss",
+      "repo_full_name": "abi/screenshot-to-code",
+      "stars": 72622,
+      "primary_language": "TypeScript",
+      "readme_sha": "d9ef088b71c310d6175bb298dfd83c04caed0cce",
+      "query": "tailwind"
+    }
+  ]
+}
