@@ -1,0 +1,21 @@
+{
+  "schema": "career_kep.entity_expansion_pairwise_edges_build.v1",
+  "generated_at": "2026-05-18T16:25:31+00:00",
+  "entity_count": 398,
+  "pairwise_edge_count": 79003,
+  "output_path": "data/entity_expansion/entity_expansion_pairwise_edges.json",
+  "relation_types": [
+    "inhibits",
+    "prefers",
+    "requires",
+    "support"
+  ],
+  "from_seed_edges": 937,
+  "from_heuristics": 78066,
+  "by_relation": {
+    "inhibits": 3120,
+    "prefers": 3158,
+    "requires": 3553,
+    "support": 69172
+  }
+}
