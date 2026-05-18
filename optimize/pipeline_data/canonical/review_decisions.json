@@ -1,0 +1,1184 @@
+{
+  "数据结构与算法": {
+    "action": "pending",
+    "alias_for": "knowledge_data_structures",
+    "score": 0.8426,
+    "note": "pending_human_review"
+  },
+  "了解基础数据结构": {
+    "action": "pending",
+    "alias_for": "knowledge_data_structures",
+    "score": 0.8017,
+    "note": "pending_human_review"
+  },
+  "了解基础算法": {
+    "action": "pending",
+    "alias_for": "knowledge_algorithms",
+    "score": 0.7965,
+    "note": "pending_human_review"
+  },
+  "了解基本的sql语句编写": {
+    "action": "pending",
+    "alias_for": "skill_sql",
+    "score": 0.7707,
+    "note": "pending_human_review"
+  },
+  "推荐算法": {
+    "action": "pending",
+    "alias_for": "knowledge_algorithms",
+    "score": 0.7317,
+    "note": "pending_human_review"
+  },
+  "linux操作系统": {
+    "action": "reject",
+    "alias_for": null,
+    "score": 0.8518,
+    "note": "manual_reject: noisy alias"
+  },
+  "沟通协作能力": {
+    "action": "pending",
+    "alias_for": "soft_communication",
+    "score": 0.7569,
+    "note": "pending_human_review"
+  },
+  "设计模式": {
+    "action": "pending",
+    "alias_for": "knowledge_system_design",
+    "score": 0.7377,
+    "note": "pending_human_review"
+  },
+  "界面绘制": {
+    "action": "pending",
+    "alias_for": "knowledge_ui_ux_basics",
+    "score": 0.7859,
+    "note": "pending_human_review"
+  },
+  "网络传输": {
+    "action": "pending",
+    "alias_for": "knowledge_networks",
+    "score": 0.7292,
+    "note": "pending_human_review"
+  },
+  "面向对象编程": {
+    "action": "pending",
+    "alias_for": "knowledge_oop",
+    "score": 0.7887,
+    "note": "pending_human_review"
+  },
+  "网络协议": {
+    "action": "pending",
+    "alias_for": "knowledge_networks",
+    "score": 0.8023,
+    "note": "pending_human_review"
+  },
+  "sqlite数据库开发": {
+    "action": "pending",
+    "alias_for": "skill_sql",
+    "score": 0.729,
+    "note": "pending_human_review"
+  },
+  "性能优化": {
+    "action": "pending",
+    "alias_for": "project_performance_testing",
+    "score": 0.7812,
+    "note": "pending_human_review"
+  },
+  "测试计划": {
+    "action": "pending",
+    "alias_for": "knowledge_experimentation",
+    "score": 0.7669,
+    "note": "pending_human_review"
+  },
+  "测试方案": {
+    "action": "pending",
+    "alias_for": "knowledge_experimentation",
+    "score": 0.7363,
+    "note": "pending_human_review"
+  },
+  "测试环境": {
+    "action": "pending",
+    "alias_for": "knowledge_experimentation",
+    "score": 0.7461,
+    "note": "pending_human_review"
+  },
+  "自动测试脚本": {
+    "action": "pending",
+    "alias_for": "project_test_automation",
+    "score": 0.7335,
+    "note": "pending_human_review"
+  },
+  "统计分析": {
+    "action": "accept",
+    "alias_for": "knowledge_statistics",
+    "score": 0.8667,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "计算机网络技术": {
+    "action": "accept",
+    "alias_for": "knowledge_networks",
+    "score": 0.8643,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "数据库开发": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.7787,
+    "note": "pending_human_review"
+  },
+  "java设计模式": {
+    "action": "pending",
+    "alias_for": "skill_java",
+    "score": 0.7584,
+    "note": "pending_human_review"
+  },
+  "面向对象编程思想": {
+    "action": "pending",
+    "alias_for": "knowledge_oop",
+    "score": 0.7619,
+    "note": "pending_human_review"
+  },
+  "沟通能力": {
+    "action": "accept",
+    "alias_for": "soft_communication",
+    "score": 0.8566,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "安卓客户端开发": {
+    "action": "pending",
+    "alias_for": "tool_android_studio",
+    "score": 0.7382,
+    "note": "pending_human_review"
+  },
+  "技术文档的撰写": {
+    "action": "pending",
+    "alias_for": "knowledge_technical_documentation",
+    "score": 0.7597,
+    "note": "pending_human_review"
+  },
+  "mvp": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7428,
+    "note": "pending_human_review"
+  },
+  "rxjava": {
+    "action": "pending",
+    "alias_for": "tool_redis",
+    "score": 0.7524,
+    "note": "pending_human_review"
+  },
+  "sql server": {
+    "action": "accept",
+    "alias_for": "skill_sql",
+    "score": 0.8735,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "sql优化": {
+    "action": "accept",
+    "alias_for": "skill_sql",
+    "score": 0.8506,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "数据库优化": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.7292,
+    "note": "pending_human_review"
+  },
+  "数据库优化方式": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.7365,
+    "note": "pending_human_review"
+  },
+  "大型数据库系统开发经验": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.727,
+    "note": "pending_human_review"
+  },
+  "数据库系统": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.8055,
+    "note": "pending_human_review"
+  },
+  "嵌入式系统界面设计": {
+    "action": "pending",
+    "alias_for": "knowledge_ui_ux_basics",
+    "score": 0.8115,
+    "note": "pending_human_review"
+  },
+  "windows操作系统原理": {
+    "action": "pending",
+    "alias_for": "knowledge_operating_systems",
+    "score": 0.7696,
+    "note": "pending_human_review"
+  },
+  "面向对象开发": {
+    "action": "pending",
+    "alias_for": "knowledge_oop",
+    "score": 0.7212,
+    "note": "pending_human_review"
+  },
+  "qt": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7438,
+    "note": "pending_human_review"
+  },
+  "ios": {
+    "action": "pending",
+    "alias_for": "tool_redis",
+    "score": 0.7823,
+    "note": "pending_human_review"
+  },
+  "责任感": {
+    "action": "pending",
+    "alias_for": "soft_ownership",
+    "score": 0.7617,
+    "note": "pending_human_review"
+  },
+  "se": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7903,
+    "note": "pending_human_review"
+  },
+  "sse": {
+    "action": "pending",
+    "alias_for": "tool_redis",
+    "score": 0.7969,
+    "note": "pending_human_review"
+  },
+  "pl": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7473,
+    "note": "pending_human_review"
+  },
+  "软件系统的开发与设计": {
+    "action": "pending",
+    "alias_for": "knowledge_system_design",
+    "score": 0.7578,
+    "note": "pending_human_review"
+  },
+  "性能调优": {
+    "action": "pending",
+    "alias_for": "tool_fastapi",
+    "score": 0.7508,
+    "note": "pending_human_review"
+  },
+  "ioc": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7806,
+    "note": "pending_human_review"
+  },
+  "团队合作": {
+    "action": "accept",
+    "alias_for": "soft_teamwork",
+    "score": 0.8565,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "项目的测试": {
+    "action": "pending",
+    "alias_for": "knowledge_experimentation",
+    "score": 0.7476,
+    "note": "pending_human_review"
+  },
+  "sqlserver": {
+    "action": "accept",
+    "alias_for": "skill_sql",
+    "score": 0.8731,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "独立、主动的学习能力": {
+    "action": "pending",
+    "alias_for": "soft_self_learning",
+    "score": 0.8275,
+    "note": "pending_human_review"
+  },
+  "hr": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7417,
+    "note": "pending_human_review"
+  },
+  "erp": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7245,
+    "note": "pending_human_review"
+  },
+  "etl架构设计": {
+    "action": "pending",
+    "alias_for": "knowledge_etl_modeling",
+    "score": 0.7798,
+    "note": "pending_human_review"
+  },
+  "数据仓库": {
+    "action": "pending",
+    "alias_for": "project_data_warehouse",
+    "score": 0.8481,
+    "note": "pending_human_review"
+  },
+  "标准sql语言": {
+    "action": "pending",
+    "alias_for": "skill_sql",
+    "score": 0.7502,
+    "note": "pending_human_review"
+  },
+  "大数据sql语言": {
+    "action": "pending",
+    "alias_for": "skill_sql",
+    "score": 0.7418,
+    "note": "pending_human_review"
+  },
+  "hdaoop": {
+    "action": "pending",
+    "alias_for": "tool_hadoop",
+    "score": 0.7474,
+    "note": "pending_human_review"
+  },
+  "linux系统": {
+    "action": "accept",
+    "alias_for": "tool_linux",
+    "score": 0.879,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "语言沟通和表达能力": {
+    "action": "pending",
+    "alias_for": "soft_communication",
+    "score": 0.8463,
+    "note": "pending_human_review"
+  },
+  "文档编写能力": {
+    "action": "pending",
+    "alias_for": "soft_documentation",
+    "score": 0.745,
+    "note": "pending_human_review"
+  },
+  "android/ios平台开发经验": {
+    "action": "pending",
+    "alias_for": "tool_android_studio",
+    "score": 0.749,
+    "note": "pending_human_review"
+  },
+  "跨平台项目开发经验": {
+    "action": "pending",
+    "alias_for": "project_cross_platform_app",
+    "score": 0.7767,
+    "note": "pending_human_review"
+  },
+  "android/ios应用开发": {
+    "action": "pending",
+    "alias_for": "tool_android_studio",
+    "score": 0.7732,
+    "note": "pending_human_review"
+  },
+  "网络通信协议": {
+    "action": "pending",
+    "alias_for": "knowledge_networks",
+    "score": 0.7633,
+    "note": "pending_human_review"
+  },
+  "网络安全加密通信": {
+    "action": "pending",
+    "alias_for": "knowledge_cryptography",
+    "score": 0.8278,
+    "note": "pending_human_review"
+  },
+  "http": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7209,
+    "note": "pending_human_review"
+  },
+  "工业自动化软件": {
+    "action": "pending",
+    "alias_for": "project_devops_automation",
+    "score": 0.7392,
+    "note": "pending_human_review"
+  },
+  "数据库软件": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.7668,
+    "note": "pending_human_review"
+  },
+  "团队精神": {
+    "action": "pending",
+    "alias_for": "soft_teamwork",
+    "score": 0.7252,
+    "note": "pending_human_review"
+  },
+  "手机app程序编写": {
+    "action": "pending",
+    "alias_for": "project_mobile_app",
+    "score": 0.7295,
+    "note": "pending_human_review"
+  },
+  "ms sqlserver": {
+    "action": "accept",
+    "alias_for": "skill_sql",
+    "score": 0.8631,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "数据库设计": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.7824,
+    "note": "pending_human_review"
+  },
+  "vc++": {
+    "action": "pending",
+    "alias_for": "skill_cpp",
+    "score": 0.738,
+    "note": "pending_human_review"
+  },
+  "matlab": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7245,
+    "note": "pending_human_review"
+  },
+  "go语言(golang)": {
+    "action": "pending",
+    "alias_for": "skill_golang",
+    "score": 0.8372,
+    "note": "pending_human_review"
+  },
+  "异步io": {
+    "action": "pending",
+    "alias_for": "skill_kotlin",
+    "score": 0.8427,
+    "note": "pending_human_review"
+  },
+  "数据库": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.7818,
+    "note": "pending_human_review"
+  },
+  "客户体验": {
+    "action": "pending",
+    "alias_for": "interest_client_experience",
+    "score": 0.7487,
+    "note": "pending_human_review"
+  },
+  "web技术发展": {
+    "action": "pending",
+    "alias_for": "project_web_ui",
+    "score": 0.7535,
+    "note": "pending_human_review"
+  },
+  "sql语言": {
+    "action": "accept",
+    "alias_for": "skill_sql",
+    "score": 0.8682,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "数据仓库原理及架构": {
+    "action": "accept",
+    "alias_for": "project_data_warehouse",
+    "score": 0.8528,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "etl流程及工具": {
+    "action": "pending",
+    "alias_for": "knowledge_etl_modeling",
+    "score": 0.7771,
+    "note": "pending_human_review"
+  },
+  "沟通表达能力和逻辑思维": {
+    "action": "pending",
+    "alias_for": "soft_communication",
+    "score": 0.7786,
+    "note": "pending_human_review"
+  },
+  "解决问题": {
+    "action": "pending",
+    "alias_for": "soft_problem_solving",
+    "score": 0.7717,
+    "note": "pending_human_review"
+  },
+  "善于沟通": {
+    "action": "pending",
+    "alias_for": "soft_communication",
+    "score": 0.7676,
+    "note": "pending_human_review"
+  },
+  "排错": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7409,
+    "note": "pending_human_review"
+  },
+  "unix": {
+    "action": "pending",
+    "alias_for": "tool_linux",
+    "score": 0.7609,
+    "note": "pending_human_review"
+  },
+  "面向对象技术": {
+    "action": "pending",
+    "alias_for": "knowledge_oop",
+    "score": 0.7413,
+    "note": "pending_human_review"
+  },
+  "android平台": {
+    "action": "pending",
+    "alias_for": "tool_android_studio",
+    "score": 0.7232,
+    "note": "pending_human_review"
+  },
+  "sqlite数据库": {
+    "action": "pending",
+    "alias_for": "skill_sql",
+    "score": 0.7852,
+    "note": "pending_human_review"
+  },
+  "android工程师": {
+    "action": "pending",
+    "alias_for": "tool_android_studio",
+    "score": 0.7789,
+    "note": "pending_human_review"
+  },
+  "oop编程思想": {
+    "action": "pending",
+    "alias_for": "knowledge_oop",
+    "score": 0.7268,
+    "note": "pending_human_review"
+  },
+  "数据结构设计": {
+    "action": "accept",
+    "alias_for": "knowledge_data_structures",
+    "score": 0.8738,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "沟通及协调能力": {
+    "action": "pending",
+    "alias_for": "soft_communication",
+    "score": 0.8078,
+    "note": "pending_human_review"
+  },
+  "php+mysql": {
+    "action": "pending",
+    "alias_for": "tool_mysql",
+    "score": 0.7814,
+    "note": "pending_human_review"
+  },
+  "沟通协作": {
+    "action": "pending",
+    "alias_for": "soft_communication",
+    "score": 0.7416,
+    "note": "pending_human_review"
+  },
+  "协作能力": {
+    "action": "pending",
+    "alias_for": "soft_teamwork",
+    "score": 0.8206,
+    "note": "pending_human_review"
+  },
+  "聚类": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7623,
+    "note": "pending_human_review"
+  },
+  "严谨": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7345,
+    "note": "pending_human_review"
+  },
+  "即席查询": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7332,
+    "note": "pending_human_review"
+  },
+  "数据统计分析方法": {
+    "action": "pending",
+    "alias_for": "knowledge_statistics",
+    "score": 0.8087,
+    "note": "pending_human_review"
+  },
+  "数据分析案例": {
+    "action": "pending",
+    "alias_for": "interest_data",
+    "score": 0.7495,
+    "note": "pending_human_review"
+  },
+  "大数据查询和分析": {
+    "action": "pending",
+    "alias_for": "interest_data",
+    "score": 0.7937,
+    "note": "pending_human_review"
+  },
+  "javascript语言": {
+    "action": "pending",
+    "alias_for": "skill_javascript",
+    "score": 0.7296,
+    "note": "pending_human_review"
+  },
+  "web及移动端系统的前端页面开发": {
+    "action": "pending",
+    "alias_for": "project_web_ui",
+    "score": 0.7538,
+    "note": "pending_human_review"
+  },
+  "系统大数据的查询和分析": {
+    "action": "pending",
+    "alias_for": "interest_data",
+    "score": 0.7297,
+    "note": "pending_human_review"
+  },
+  "winform": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.8049,
+    "note": "pending_human_review"
+  },
+  "数据库调优": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.8047,
+    "note": "pending_human_review"
+  },
+  "android手机应用和产品的开发": {
+    "action": "pending",
+    "alias_for": "interest_mobile",
+    "score": 0.7386,
+    "note": "pending_human_review"
+  },
+  "操作系统版本兼容": {
+    "action": "pending",
+    "alias_for": "knowledge_operating_systems",
+    "score": 0.7255,
+    "note": "pending_human_review"
+  },
+  "数据解析": {
+    "action": "pending",
+    "alias_for": "interest_data",
+    "score": 0.7329,
+    "note": "pending_human_review"
+  },
+  "ie": {
+    "action": "pending",
+    "alias_for": "tool_redis",
+    "score": 0.736,
+    "note": "pending_human_review"
+  },
+  "编写技术文档": {
+    "action": "pending",
+    "alias_for": "knowledge_technical_documentation",
+    "score": 0.7441,
+    "note": "pending_human_review"
+  },
+  "springboot": {
+    "action": "pending",
+    "alias_for": "tool_spring_boot",
+    "score": 0.7605,
+    "note": "pending_human_review"
+  },
+  "db2": {
+    "action": "pending",
+    "alias_for": "tool_dbt",
+    "score": 0.7625,
+    "note": "pending_human_review"
+  },
+  "div": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.8081,
+    "note": "pending_human_review"
+  },
+  "larval": {
+    "action": "pending",
+    "alias_for": "skill_kotlin",
+    "score": 0.7927,
+    "note": "pending_human_review"
+  },
+  "沟通交流能力强": {
+    "action": "accept",
+    "alias_for": "soft_communication",
+    "score": 0.8575,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "有责任心": {
+    "action": "pending",
+    "alias_for": "soft_ownership",
+    "score": 0.7358,
+    "note": "pending_human_review"
+  },
+  "uml": {
+    "action": "pending",
+    "alias_for": "tool_redis",
+    "score": 0.7571,
+    "note": "pending_human_review"
+  },
+  "文档能力": {
+    "action": "pending",
+    "alias_for": "soft_documentation",
+    "score": 0.7906,
+    "note": "pending_human_review"
+  },
+  "vlan": {
+    "action": "pending",
+    "alias_for": "skill_kotlin",
+    "score": 0.7347,
+    "note": "pending_human_review"
+  },
+  "gre": {
+    "action": "pending",
+    "alias_for": "tool_git",
+    "score": 0.7674,
+    "note": "pending_human_review"
+  },
+  "bgp": {
+    "action": "pending",
+    "alias_for": "tool_dbt",
+    "score": 0.7471,
+    "note": "pending_human_review"
+  },
+  "英语读写能力": {
+    "action": "pending",
+    "alias_for": "language_english_reading",
+    "score": 0.79,
+    "note": "pending_human_review"
+  },
+  "团队沟通与协作能力": {
+    "action": "reject",
+    "alias_for": null,
+    "score": 0.8546,
+    "note": "manual_reject: noisy alias"
+  },
+  "saas": {
+    "action": "pending",
+    "alias_for": "tool_redis",
+    "score": 0.7659,
+    "note": "pending_human_review"
+  },
+  "opc": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7274,
+    "note": "pending_human_review"
+  },
+  "大数据": {
+    "action": "pending",
+    "alias_for": "interest_data",
+    "score": 0.7487,
+    "note": "pending_human_review"
+  },
+  "关系型数据库结构设计": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.7941,
+    "note": "pending_human_review"
+  },
+  "java多线程开发": {
+    "action": "pending",
+    "alias_for": "skill_java",
+    "score": 0.7475,
+    "note": "pending_human_review"
+  },
+  "udp": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7868,
+    "note": "pending_human_review"
+  },
+  "smtp": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7709,
+    "note": "pending_human_review"
+  },
+  "微网站开发经验": {
+    "action": "pending",
+    "alias_for": "project_microservice",
+    "score": 0.7291,
+    "note": "pending_human_review"
+  },
+  "maven": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7258,
+    "note": "pending_human_review"
+  },
+  "nosql": {
+    "action": "pending",
+    "alias_for": "skill_sql",
+    "score": 0.7595,
+    "note": "pending_human_review"
+  },
+  "jsse": {
+    "action": "pending",
+    "alias_for": "tool_redis",
+    "score": 0.7604,
+    "note": "pending_human_review"
+  },
+  "自学能力": {
+    "action": "pending",
+    "alias_for": "soft_self_learning",
+    "score": 0.8373,
+    "note": "pending_human_review"
+  },
+  "javascript/jquery": {
+    "action": "accept",
+    "alias_for": "skill_javascript",
+    "score": 0.8646,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "系统总体架构设计": {
+    "action": "accept",
+    "alias_for": "knowledge_system_design",
+    "score": 0.8752,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "vega": {
+    "action": "pending",
+    "alias_for": "tool_redis",
+    "score": 0.7326,
+    "note": "pending_human_review"
+  },
+  "vr项目": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7697,
+    "note": "pending_human_review"
+  },
+  "并发": {
+    "action": "pending",
+    "alias_for": "tool_git",
+    "score": 0.7533,
+    "note": "pending_human_review"
+  },
+  "ibatis/mybatis": {
+    "action": "pending",
+    "alias_for": "tool_mybatis",
+    "score": 0.794,
+    "note": "pending_human_review"
+  },
+  "数据库建模": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.8145,
+    "note": "pending_human_review"
+  },
+  "文档撰写能力": {
+    "action": "pending",
+    "alias_for": "soft_documentation",
+    "score": 0.7383,
+    "note": "pending_human_review"
+  },
+  "业务理解及分析能力": {
+    "action": "reject",
+    "alias_for": null,
+    "score": 0.8728,
+    "note": "manual_reject: noisy alias"
+  },
+  "网络安全": {
+    "action": "pending",
+    "alias_for": "interest_security",
+    "score": 0.7894,
+    "note": "pending_human_review"
+  },
+  "mq异步处理": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7593,
+    "note": "pending_human_review"
+  },
+  "nginxlua": {
+    "action": "pending",
+    "alias_for": "tool_nginx",
+    "score": 0.8104,
+    "note": "pending_human_review"
+  },
+  "php开发框架": {
+    "action": "pending",
+    "alias_for": "skill_php",
+    "score": 0.7285,
+    "note": "pending_human_review"
+  },
+  "调优": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7474,
+    "note": "pending_human_review"
+  },
+  "数据仓库模型设计": {
+    "action": "accept",
+    "alias_for": "knowledge_data_warehouse_modeling",
+    "score": 0.8568,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "android app开发经验": {
+    "action": "pending",
+    "alias_for": "tool_android_studio",
+    "score": 0.7269,
+    "note": "pending_human_review"
+  },
+  "责任心和团队协作精神": {
+    "action": "pending",
+    "alias_for": "soft_teamwork",
+    "score": 0.8286,
+    "note": "pending_human_review"
+  },
+  "ci/cd": {
+    "action": "pending",
+    "alias_for": "project_ci_cd_platform",
+    "score": 0.7637,
+    "note": "pending_human_review"
+  },
+  "技术文档编写": {
+    "action": "pending",
+    "alias_for": "knowledge_technical_documentation",
+    "score": 0.7686,
+    "note": "pending_human_review"
+  },
+  "协作精神": {
+    "action": "pending",
+    "alias_for": "soft_teamwork",
+    "score": 0.8038,
+    "note": "pending_human_review"
+  },
+  ".net framework": {
+    "action": "pending",
+    "alias_for": "tool_dotnet",
+    "score": 0.7538,
+    "note": "pending_human_review"
+  },
+  "android应用开发": {
+    "action": "pending",
+    "alias_for": "tool_android_studio",
+    "score": 0.767,
+    "note": "pending_human_review"
+  },
+  "系统架构": {
+    "action": "pending",
+    "alias_for": "knowledge_system_design",
+    "score": 0.7553,
+    "note": "pending_human_review"
+  },
+  "ndk": {
+    "action": "reject",
+    "alias_for": null,
+    "score": 0.7491,
+    "note": "auto_reject: semantic mismatch"
+  },
+  "coradva": {
+    "action": "reject",
+    "alias_for": null,
+    "score": 0.8672,
+    "note": "manual_reject: semantic mismatch"
+  },
+  "javascript面向对象编程": {
+    "action": "pending",
+    "alias_for": "skill_javascript",
+    "score": 0.7291,
+    "note": "pending_human_review"
+  },
+  "文档的编写": {
+    "action": "pending",
+    "alias_for": "soft_documentation",
+    "score": 0.7426,
+    "note": "pending_human_review"
+  },
+  "javaweb编程": {
+    "action": "pending",
+    "alias_for": "skill_java",
+    "score": 0.811,
+    "note": "pending_human_review"
+  },
+  "android开发项目经验": {
+    "action": "pending",
+    "alias_for": "tool_android_studio",
+    "score": 0.7492,
+    "note": "pending_human_review"
+  },
+  "用户体验的设计": {
+    "action": "pending",
+    "alias_for": "interest_client_experience",
+    "score": 0.7621,
+    "note": "pending_human_review"
+  },
+  "数据仓库架构设计与开发": {
+    "action": "pending",
+    "alias_for": "project_data_warehouse",
+    "score": 0.8384,
+    "note": "pending_human_review"
+  },
+  "数据仓库建设方法论": {
+    "action": "accept",
+    "alias_for": "project_data_warehouse",
+    "score": 0.8739,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "etl开发": {
+    "action": "pending",
+    "alias_for": "knowledge_etl_modeling",
+    "score": 0.7833,
+    "note": "pending_human_review"
+  },
+  "分布式微服务技术": {
+    "action": "pending",
+    "alias_for": "project_microservice",
+    "score": 0.8381,
+    "note": "pending_human_review"
+  },
+  "etl开发工具": {
+    "action": "pending",
+    "alias_for": "knowledge_etl_modeling",
+    "score": 0.7708,
+    "note": "pending_human_review"
+  },
+  "dobbo": {
+    "action": "pending",
+    "alias_for": "skill_kotlin",
+    "score": 0.7594,
+    "note": "pending_human_review"
+  },
+  "ehcache": {
+    "action": "pending",
+    "alias_for": "tool_redis",
+    "score": 0.7395,
+    "note": "pending_human_review"
+  },
+  "shell脚本": {
+    "action": "pending",
+    "alias_for": "skill_bash",
+    "score": 0.7437,
+    "note": "pending_human_review"
+  },
+  "pl/sql": {
+    "action": "accept",
+    "alias_for": "skill_sql",
+    "score": 0.8616,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "对象": {
+    "action": "pending",
+    "alias_for": "knowledge_oop",
+    "score": 0.7706,
+    "note": "pending_human_review"
+  },
+  "数据库性能": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.735,
+    "note": "pending_human_review"
+  },
+  "ocm": {
+    "action": "pending",
+    "alias_for": "tool_pytest",
+    "score": 0.7225,
+    "note": "pending_human_review"
+  },
+  "解决实际问题能力": {
+    "action": "pending",
+    "alias_for": "soft_problem_solving",
+    "score": 0.7889,
+    "note": "pending_human_review"
+  },
+  "算法与数据结构": {
+    "action": "pending",
+    "alias_for": "knowledge_algorithms",
+    "score": 0.7869,
+    "note": "pending_human_review"
+  },
+  "android嵌入式开发": {
+    "action": "pending",
+    "alias_for": "tool_android_studio",
+    "score": 0.74,
+    "note": "pending_human_review"
+  },
+  "ui": {
+    "action": "pending",
+    "alias_for": "tool_redis",
+    "score": 0.7712,
+    "note": "pending_human_review"
+  },
+  "app上线项目": {
+    "action": "pending",
+    "alias_for": "project_mobile_app",
+    "score": 0.7583,
+    "note": "pending_human_review"
+  },
+  "网口、串口等常用接口编程": {
+    "action": "pending",
+    "alias_for": "knowledge_embedded_protocols",
+    "score": 0.7405,
+    "note": "pending_human_review"
+  },
+  "sqlite": {
+    "action": "reject",
+    "alias_for": null,
+    "score": 0.7491,
+    "note": "auto_reject: semantic mismatch"
+  },
+  "linux命令": {
+    "action": "pending",
+    "alias_for": "tool_linux",
+    "score": 0.8191,
+    "note": "pending_human_review"
+  },
+  "数据仓库架构": {
+    "action": "accept",
+    "alias_for": "project_data_warehouse",
+    "score": 0.8585,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "数据产品": {
+    "action": "pending",
+    "alias_for": "interest_data",
+    "score": 0.7254,
+    "note": "pending_human_review"
+  },
+  "复杂sql": {
+    "action": "pending",
+    "alias_for": "skill_sql",
+    "score": 0.7345,
+    "note": "pending_human_review"
+  },
+  "基础数据结构": {
+    "action": "accept",
+    "alias_for": "knowledge_data_structures",
+    "score": 0.8665,
+    "note": "auto_accept: score >= 0.85"
+  },
+  "关系型数据库": {
+    "action": "pending",
+    "alias_for": "knowledge_database_theory",
+    "score": 0.7502,
+    "note": "pending_human_review"
+  },
+  "python开发经验": {
+    "action": "pending",
+    "alias_for": "skill_python",
+    "score": 0.7289,
+    "note": "pending_human_review"
+  },
+  "接口设计": {
+    "action": "pending",
+    "alias_for": "knowledge_ui_ux_basics",
+    "score": 0.7713,
+    "note": "pending_human_review"
+  },
+  "android平台开发经验": {
+    "action": "pending",
+    "alias_for": "tool_android_studio",
+    "score": 0.745,
+    "note": "pending_human_review"
+  },
+  "linux开发环境": {
+    "action": "pending",
+    "alias_for": "tool_linux",
+    "score": 0.7727,
+    "note": "pending_human_review"
+  }
+}

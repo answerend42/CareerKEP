@@ -1,0 +1,3212 @@
+{
+  "total": 458,
+  "top_n": 500,
+  "candidates": [
+    {
+      "surface": "gpa",
+      "normalized": "gpa",
+      "frequency": 650,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "数据结构与算法",
+      "normalized": "数据结构与算法",
+      "frequency": 600,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "编程语言",
+      "normalized": "编程语言",
+      "frequency": 555,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "数据库",
+      "normalized": "数据库",
+      "frequency": 435,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "数据库系统",
+      "normalized": "数据库系统",
+      "frequency": 400,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "cet",
+      "normalized": "cet",
+      "frequency": 351,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "系统架构",
+      "normalized": "系统架构",
+      "frequency": 205,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "开发工具",
+      "normalized": "开发工具",
+      "frequency": 201,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "css",
+      "normalized": "css",
+      "frequency": 199,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ci",
+      "normalized": "ci",
+      "frequency": 150,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "liming@",
+      "normalized": "liming@",
+      "frequency": 150,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "html",
+      "normalized": "html",
+      "frequency": 118,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "html5",
+      "normalized": "html5",
+      "frequency": 114,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "css3",
+      "normalized": "css3",
+      "frequency": 114,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉Linux系统",
+      "normalized": "熟悉linux系统",
+      "frequency": 106,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "技术框架",
+      "normalized": "技术框架",
+      "frequency": 101,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "gitlab",
+      "normalized": "gitlab",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "cd",
+      "normalized": "cd",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "校园资源共享平台",
+      "normalized": "校园资源共享平台",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "优化现有平台",
+      "normalized": "优化现有平台",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "校园二手交易平台",
+      "normalized": "校园二手交易平台",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "simplenote",
+      "normalized": "simplenote",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "pku.edu.cn",
+      "normalized": "pku.edu.cn",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "掌握基本语法和常用库",
+      "normalized": "掌握基本语法和常用库",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "参与模型",
+      "normalized": "参与模型",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "提升系统",
+      "normalized": "提升系统",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "安全架构",
+      "normalized": "安全架构",
+      "frequency": 100,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责数据库",
+      "normalized": "负责数据库",
+      "frequency": 55,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ips",
+      "normalized": "ips",
+      "frequency": 55,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "自然语言",
+      "normalized": "自然语言",
+      "frequency": 54,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "具备系统",
+      "normalized": "具备系统",
+      "frequency": 52,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ids",
+      "normalized": "ids",
+      "frequency": 52,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "工具和框架",
+      "normalized": "工具和框架",
+      "frequency": 51,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "elk",
+      "normalized": "elk",
+      "frequency": 51,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "确保系统",
+      "normalized": "确保系统",
+      "frequency": 51,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "了解自然语言",
+      "normalized": "了解自然语言",
+      "frequency": 51,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责公司核心业务系统",
+      "normalized": "负责公司核心业务系统",
+      "frequency": 51,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉微服务架构",
+      "normalized": "熟悉微服务架构",
+      "frequency": 51,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "了解基础算法",
+      "normalized": "了解基础算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉关系型数据库",
+      "normalized": "熟悉关系型数据库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "简易学生信息管理系统",
+      "normalized": "简易学生信息管理系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责后端逻辑的实现和数据库",
+      "normalized": "负责后端逻辑的实现和数据库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "xyz",
+      "normalized": "xyz",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "zl2020123456.7",
+      "normalized": "zl2020123456.7",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "能够进行系统",
+      "normalized": "能够进行系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责公司内部系统",
+      "normalized": "负责公司内部系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "优化Linux系统",
+      "normalized": "优化linux系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "减少系统",
+      "normalized": "减少系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "设计并实施容器化解决方案",
+      "normalized": "设计并实施容器化解决方案",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "搭建监控系统",
+      "normalized": "搭建监控系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "主导项目的技术选型和架构",
+      "normalized": "主导项目的技术选型和架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "容器技术的自动化部署系统",
+      "normalized": "容器技术的自动化部署系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "rnetes的微服务架构",
+      "normalized": "rnetes的微服务架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "实施DevOps解决方案",
+      "normalized": "实施devops解决方案",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "显著提升开发效率和系统",
+      "normalized": "显著提升开发效率和系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "DevOps架构",
+      "normalized": "devops架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "vs",
+      "normalized": "vs",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "prd",
+      "normalized": "prd",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "rp",
+      "normalized": "rp",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "powerpoint",
+      "normalized": "powerpoint",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "掌握基本的原型设计工具",
+      "normalized": "掌握基本的原型设计工具",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "制定产品优化方案",
+      "normalized": "制定产品优化方案",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "据的校园资源优化分配系统",
+      "normalized": "据的校园资源优化分配系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "划项目和校园资源共享平台",
+      "normalized": "划项目和校园资源共享平台",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "掌握基本的市场分析工具",
+      "normalized": "掌握基本的市场分析工具",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "效传达产品需求和设计方案",
+      "normalized": "效传达产品需求和设计方案",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "werPoint进行方案",
+      "normalized": "werpoint进行方案",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "掌握基本的数据分析工具",
+      "normalized": "掌握基本的数据分析工具",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "学生信息管理系统",
+      "normalized": "学生信息管理系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "计算机操作系统",
+      "normalized": "计算机操作系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "UI框架",
+      "normalized": "ui框架",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉基础语法和常用库",
+      "normalized": "熟悉基础语法和常用库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "了解基本框架",
+      "normalized": "了解基本框架",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉基本SQL语句和数据库",
+      "normalized": "熟悉基本sql语句和数据库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "了解非关系型数据库",
+      "normalized": "了解非关系型数据库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "个人博客系统",
+      "normalized": "个人博客系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责前后端代码编写和数据库",
+      "normalized": "负责前后端代码编写和数据库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "基础算法",
+      "normalized": "基础算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "K近邻等基础算法",
+      "normalized": "k近邻等基础算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "常用库",
+      "normalized": "常用库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "成功构建房价预测模型",
+      "normalized": "成功构建房价预测模型",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "earn实现线性回归模型",
+      "normalized": "earn实现线性回归模型",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "tplotlib展示模型",
+      "normalized": "tplotlib展示模型",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "于线性回归的房价预测模型",
+      "normalized": "于线性回归的房价预测模型",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "探讨线性回归算法",
+      "normalized": "探讨线性回归算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "通过数据预处理和模型",
+      "normalized": "通过数据预处理和模型",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责数据处理和模型",
+      "normalized": "负责数据处理和模型",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "如数据预处理工具",
+      "normalized": "如数据预处理工具",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "tsinghua.edu.cn",
+      "normalized": "tsinghua.edu.cn",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉基本的概念和算法",
+      "normalized": "熟悉基本的概念和算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "OpenCV库",
+      "normalized": "opencv库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "其他工具",
+      "normalized": "其他工具",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责编写人脸检测算法",
+      "normalized": "负责编写人脸检测算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "于深度学习的人脸识别算法",
+      "normalized": "于深度学习的人脸识别算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "优化现有算法",
+      "normalized": "优化现有算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "penCV的人脸检测算法",
+      "normalized": "pencv的人脸检测算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "nltk",
+      "normalized": "nltk",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "blog.csdn.net",
+      "normalized": "blog.csdn.net",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "文本处理库",
+      "normalized": "文本处理库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "aCy等常用文本处理库",
+      "normalized": "acy等常用文本处理库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "于机器学习的情感分析模型",
+      "normalized": "于机器学习的情感分析模型",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "协助完成模型",
+      "normalized": "协助完成模型",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "我对自然语言",
+      "normalized": "我对自然语言",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "成长为一名优秀的自然语言",
+      "normalized": "成长为一名优秀的自然语言",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉常用库",
+      "normalized": "熟悉常用库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "了解推荐系统",
+      "normalized": "了解推荐系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "图书推荐系统",
+      "normalized": "图书推荐系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "推荐算法",
+      "normalized": "推荐算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "了一个简单的图书推荐系统",
+      "normalized": "了一个简单的图书推荐系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "参与推荐算法",
+      "normalized": "参与推荐算法",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉分层架构",
+      "normalized": "熟悉分层架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "事件驱动架构",
+      "normalized": "事件驱动架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "掌握UML建模工具",
+      "normalized": "掌握uml建模工具",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "高并发系统",
+      "normalized": "高并发系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "和分布式数据库",
+      "normalized": "和分布式数据库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "主导微服务架构",
+      "normalized": "主导微服务架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "参与电商平台订单系统",
+      "normalized": "参与电商平台订单系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "参与数据库分库",
+      "normalized": "参与数据库分库",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "电商平台订单系统架构",
+      "normalized": "电商平台订单系统架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责订单处理模块的架构",
+      "normalized": "负责订单处理模块的架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Q等技术社区发表多篇架构",
+      "normalized": "q等技术社区发表多篇架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "分布式事务框架",
+      "normalized": "分布式事务框架",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "拥有1项关于微服务架构",
+      "normalized": "拥有1项关于微服务架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "基于微服务架构",
+      "normalized": "基于微服务架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "的高并发系统",
+      "normalized": "的高并发系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "具备扎实的系统架构",
+      "normalized": "具备扎实的系统架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "和高并发系统",
+      "normalized": "和高并发系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "力于通过技术创新提升系统",
+      "normalized": "力于通过技术创新提升系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "iec",
+      "normalized": "iec",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "aes",
+      "normalized": "aes",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "des",
+      "normalized": "des",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "rsa",
+      "normalized": "rsa",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ecc",
+      "normalized": "ecc",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "sha",
+      "normalized": "sha",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "md5",
+      "normalized": "md5",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "jwt",
+      "normalized": "jwt",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "入侵检测系统",
+      "normalized": "入侵检测系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "入侵防御系统",
+      "normalized": "入侵防御系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "rk等网络扫描和监控工具",
+      "normalized": "rk等网络扫描和监控工具",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉零信任架构",
+      "normalized": "熟悉零信任架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "SDN安全架构",
+      "normalized": "sdn安全架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "了解云安全架构",
+      "normalized": "了解云安全架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "全设计模式和安全评估工具",
+      "normalized": "全设计模式和安全评估工具",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "设计和实施企业级安全架构",
+      "normalized": "设计和实施企业级安全架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "主导身份认证系统",
+      "normalized": "主导身份认证系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "协助开发安全监控平台",
+      "normalized": "协助开发安全监控平台",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "涉及多个业务系统",
+      "normalized": "涉及多个业务系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "零信任架构",
+      "normalized": "零信任架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "安全监控平台",
+      "normalized": "安全监控平台",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责整体架构",
+      "normalized": "负责整体架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "身份认证系统",
+      "normalized": "身份认证系统",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Hub上开源多个安全工具",
+      "normalized": "hub上开源多个安全工具",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "刊发表2篇关于零信任架构",
+      "normalized": "刊发表2篇关于零信任架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉安全架构",
+      "normalized": "熟悉安全架构",
+      "frequency": 50,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "xa0",
+      "normalized": "xa0",
+      "frequency": 34,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "net",
+      "normalized": "net",
+      "frequency": 19,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责系统",
+      "normalized": "负责系统",
+      "frequency": 17,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "xml",
+      "normalized": "xml",
+      "frequency": 16,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "mvc",
+      "normalized": "mvc",
+      "frequency": 16,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ip",
+      "normalized": "ip",
+      "frequency": 14,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "参与系统",
+      "normalized": "参与系统",
+      "frequency": 13,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉Linux操作系统",
+      "normalized": "熟悉linux操作系统",
+      "frequency": 12,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉数据库",
+      "normalized": "熟悉数据库",
+      "frequency": 12,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "IP协议",
+      "normalized": "ip协议",
+      "frequency": 11,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "tcp",
+      "normalized": "tcp",
+      "frequency": 10,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "nlp",
+      "normalized": "nlp",
+      "frequency": 9,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "对数据库",
+      "normalized": "对数据库",
+      "frequency": 7,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "asp",
+      "normalized": "asp",
+      "frequency": 7,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "json",
+      "normalized": "json",
+      "frequency": 7,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "保证系统",
+      "normalized": "保证系统",
+      "frequency": 6,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责数据仓库",
+      "normalized": "负责数据仓库",
+      "frequency": 6,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "struts2",
+      "normalized": "struts2",
+      "frequency": 6,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "dom",
+      "normalized": "dom",
+      "frequency": 6,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ppt",
+      "normalized": "ppt",
+      "frequency": 6,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉分布式系统",
+      "normalized": "熟悉分布式系统",
+      "frequency": 5,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "掌握数据库",
+      "normalized": "掌握数据库",
+      "frequency": 5,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "有数据库",
+      "normalized": "有数据库",
+      "frequency": 5,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "jsp",
+      "normalized": "jsp",
+      "frequency": 5,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Oracle等数据库",
+      "normalized": "oracle等数据库",
+      "frequency": 5,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "成对产品的集成测试与系统",
+      "normalized": "成对产品的集成测试与系统",
+      "frequency": 5,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "vpn",
+      "normalized": "vpn",
+      "frequency": 5,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉HTTP协议",
+      "normalized": "熟悉http协议",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "软件系统",
+      "normalized": "软件系统",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "进行系统",
+      "normalized": "进行系统",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "springboot",
+      "normalized": "springboot",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "http",
+      "normalized": "http",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Mybatis等开源框架",
+      "normalized": "mybatis等开源框架",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉页面架构",
+      "normalized": "熟悉页面架构",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "精通Java语言",
+      "normalized": "精通java语言",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "完成软件系统",
+      "normalized": "完成软件系统",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "包括系统",
+      "normalized": "包括系统",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "通用类库",
+      "normalized": "通用类库",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "数据仓库",
+      "normalized": "数据仓库",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "rest",
+      "normalized": "rest",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责业务系统",
+      "normalized": "负责业务系统",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "cissp",
+      "normalized": "cissp",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "gb",
+      "normalized": "gb",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "技术方案",
+      "normalized": "技术方案",
+      "frequency": 4,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "规划详细的测试方案",
+      "normalized": "规划详细的测试方案",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "年以上Android平台",
+      "normalized": "年以上android平台",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "完成系统",
+      "normalized": "完成系统",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "搭建系统",
+      "normalized": "搭建系统",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "完成系统框架",
+      "normalized": "完成系统框架",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ios平台",
+      "normalized": "ios平台",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "pc",
+      "normalized": "pc",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "xhtml",
+      "normalized": "xhtml",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "xueyan@",
+      "normalized": "xueyan@",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "diit.cn",
+      "normalized": "diit.cn",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "div",
+      "normalized": "div",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "springcloud",
+      "normalized": "springcloud",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "db2",
+      "normalized": "db2",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ospf",
+      "normalized": "ospf",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "和OSI网络模型",
+      "normalized": "和osi网络模型",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "websphere",
+      "normalized": "websphere",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "weblogic",
+      "normalized": "weblogic",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "精通SQL语言",
+      "normalized": "精通sql语言",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "参与公司平台",
+      "normalized": "参与公司平台",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "拥有较好的数据库",
+      "normalized": "拥有较好的数据库",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "datastage",
+      "normalized": "datastage",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉Java语言",
+      "normalized": "熟悉java语言",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "mysql数据库",
+      "normalized": "mysql数据库",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "大数据平台",
+      "normalized": "大数据平台",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "oralce",
+      "normalized": "oralce",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "mssql",
+      "normalized": "mssql",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责大数据平台",
+      "normalized": "负责大数据平台",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉linux操作系统",
+      "normalized": "熟悉linux操作系统",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责软件系统",
+      "normalized": "负责软件系统",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "MySQL等数据库",
+      "normalized": "mysql等数据库",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责数据平台",
+      "normalized": "负责数据平台",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "有管理信息系统",
+      "normalized": "有管理信息系统",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ajax",
+      "normalized": "ajax",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉系统",
+      "normalized": "熟悉系统",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "wifi",
+      "normalized": "wifi",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "bernate等开源框架",
+      "normalized": "bernate等开源框架",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "具备分布式系统",
+      "normalized": "具备分布式系统",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Server数据库",
+      "normalized": "server数据库",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "技术架构",
+      "normalized": "技术架构",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "lstm",
+      "normalized": "lstm",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ner",
+      "normalized": "ner",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责算法",
+      "normalized": "负责算法",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉常见的缺陷管理工具",
+      "normalized": "熟悉常见的缺陷管理工具",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉bug跟踪管理工具",
+      "normalized": "熟悉bug跟踪管理工具",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "知识库",
+      "normalized": "知识库",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责公司信息系统",
+      "normalized": "负责公司信息系统",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "具有良好的语言",
+      "normalized": "具有良好的语言",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "应用系统",
+      "normalized": "应用系统",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "vrrp",
+      "normalized": "vrrp",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ca",
+      "normalized": "ca",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "sh",
+      "normalized": "sh",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "核心技术与一体化解决方案",
+      "normalized": "核心技术与一体化解决方案",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "品交易和风险管理解决方案",
+      "normalized": "品交易和风险管理解决方案",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "cnn",
+      "normalized": "cnn",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "www.macrodatas.cn",
+      "normalized": "www.macrodatas.cn",
+      "frequency": 3,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责Android平台",
+      "normalized": "负责android平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "通Android开发平台",
+      "normalized": "通android开发平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "开发人员讨论缺陷解决方案",
+      "normalized": "开发人员讨论缺陷解决方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "并评估改进方案",
+      "normalized": "并评估改进方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉linux系统",
+      "normalized": "熟悉linux系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "优化工具",
+      "normalized": "优化工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "优化前端架构",
+      "normalized": "优化前端架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "提高系统",
+      "normalized": "提高系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Server等主流数据库",
+      "normalized": "server等主流数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "悉Windows操作系统",
+      "normalized": "悉windows操作系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "pl",
+      "normalized": "pl",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "orm",
+      "normalized": "orm",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责项目架构",
+      "normalized": "负责项目架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "高性能的分布式系统",
+      "normalized": "高性能的分布式系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "sqlserver",
+      "normalized": "sqlserver",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟练掌握SQL语言",
+      "normalized": "熟练掌握sql语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "参与架构",
+      "normalized": "参与架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "精通Android平台",
+      "normalized": "精通android平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟练使用SQLite数据库",
+      "normalized": "熟练使用sqlite数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ndroid应用开发框架",
+      "normalized": "ndroid应用开发框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "开发框架",
+      "normalized": "开发框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "div+",
+      "normalized": "div+",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "JavaScript语言",
+      "normalized": "javascript语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉主流开源框架",
+      "normalized": "熟悉主流开源框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "精通java语言",
+      "normalized": "精通java语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "otstrap等前端框架",
+      "normalized": "otstrap等前端框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "有分布式系统",
+      "normalized": "有分布式系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "MongoDB等数据库",
+      "normalized": "mongodb等数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "openflow",
+      "normalized": "openflow",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉网络抓包分析工具",
+      "normalized": "熟悉网络抓包分析工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "常用的二层和三层隧道协议",
+      "normalized": "常用的二层和三层隧道协议",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "对已有系统",
+      "normalized": "对已有系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "优化系统",
+      "normalized": "优化系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉MySQL等数据库",
+      "normalized": "熟悉mysql等数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "和维护统一的软件开发架构",
+      "normalized": "和维护统一的软件开发架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Mybatis等框架",
+      "normalized": "mybatis等框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "按系统总体架构",
+      "normalized": "按系统总体架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "系统平台",
+      "normalized": "系统平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "程序规划设计及系统",
+      "normalized": "程序规划设计及系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "具有接口及数据库",
+      "normalized": "具有接口及数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "webservice",
+      "normalized": "webservice",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "参与项目系统",
+      "normalized": "参与项目系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉主流数据库",
+      "normalized": "熟悉主流数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉QT应用开发框架",
+      "normalized": "熟悉qt应用开发框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ringMVC等开发框架",
+      "normalized": "ringmvc等开发框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ver或Oracle数据库",
+      "normalized": "ver或oracle数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "精通数据仓库",
+      "normalized": "精通数据仓库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "解决方案",
+      "normalized": "解决方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "UNIX操作系统",
+      "normalized": "unix操作系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉Android系统",
+      "normalized": "熟悉android系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉各种算法",
+      "normalized": "熟悉各种算法",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "求的可行性分析及实现方案",
+      "normalized": "求的可行性分析及实现方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Mysql数据库",
+      "normalized": "mysql数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "x86",
+      "normalized": "x86",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "精通Java开发语言",
+      "normalized": "精通java开发语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "jsp等开发语言",
+      "normalized": "jsp等开发语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "rnate等主流技术框架",
+      "normalized": "rnate等主流技术框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "acle或者db2等数据库",
+      "normalized": "acle或者db2等数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "aix系统",
+      "normalized": "aix系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责根据其他系统",
+      "normalized": "负责根据其他系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "搜索引擎",
+      "normalized": "搜索引擎",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉Android平台",
+      "normalized": "熟悉android平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "地理信息系统",
+      "normalized": "地理信息系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "用至少一种主流ETL工具",
+      "normalized": "用至少一种主流etl工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "独立完成系统",
+      "normalized": "独立完成系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ps",
+      "normalized": "ps",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟练使用数据库",
+      "normalized": "熟练使用数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟练使用C语言",
+      "normalized": "熟练使用c语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "开发语言",
+      "normalized": "开发语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Oracle数据库",
+      "normalized": "oracle数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "项目要求完成总体方案",
+      "normalized": "项目要求完成总体方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责数据仓库系统",
+      "normalized": "负责数据仓库系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "与业务系统",
+      "normalized": "与业务系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "解决系统",
+      "normalized": "解决系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "n+",
+      "normalized": "n+",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Net平台系统框架",
+      "normalized": "net平台系统框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "协助完成公司项目的系统",
+      "normalized": "协助完成公司项目的系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ORM架构",
+      "normalized": "orm架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "net平台",
+      "normalized": "net平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "有底层框架",
+      "normalized": "有底层框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "数据模型",
+      "normalized": "数据模型",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "辅助进行系统",
+      "normalized": "辅助进行系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "mpos",
+      "normalized": "mpos",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "创建数据库",
+      "normalized": "创建数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "能基于大数据平台",
+      "normalized": "能基于大数据平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "把握复杂系统",
+      "normalized": "把握复杂系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "具有金融系统",
+      "normalized": "具有金融系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ORACLE等数据库",
+      "normalized": "oracle等数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "管理工具",
+      "normalized": "管理工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责iOS平台",
+      "normalized": "负责ios平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "es6",
+      "normalized": "es6",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "qq.com",
+      "normalized": "qq.com",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "SQLServer等数据库",
+      "normalized": "sqlserver等数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉常用数据库",
+      "normalized": "熟悉常用数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "web",
+      "normalized": "web",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "mvvm",
+      "normalized": "mvvm",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "oid与iOS等不同平台",
+      "normalized": "oid与ios等不同平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ado",
+      "normalized": "ado",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "NET框架",
+      "normalized": "net框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "mui",
+      "normalized": "mui",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉操作系统",
+      "normalized": "熟悉操作系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "iic",
+      "normalized": "iic",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "spi",
+      "normalized": "spi",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "sas",
+      "normalized": "sas",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉http协议",
+      "normalized": "熟悉http协议",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "group.com",
+      "normalized": "group.com",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "mes",
+      "normalized": "mes",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "SERVER数据库",
+      "normalized": "server数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "mq",
+      "normalized": "mq",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "完成技术解决方案",
+      "normalized": "完成技术解决方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Fuse开源工具",
+      "normalized": "fuse开源工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "掌握扎实的数据库",
+      "normalized": "掌握扎实的数据库",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "和Java语言",
+      "normalized": "和java语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "精通PHP语言",
+      "normalized": "精通php语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "HTTP协议",
+      "normalized": "http协议",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "e.g",
+      "normalized": "e.g",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "分布式架构",
+      "normalized": "分布式架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "消息中间件",
+      "normalized": "消息中间件",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "了解系统",
+      "normalized": "了解系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "pic",
+      "normalized": "pic",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "gru",
+      "normalized": "gru",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "C等编程语言",
+      "normalized": "c等编程语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "保障系统",
+      "normalized": "保障系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "集合等基础框架",
+      "normalized": "集合等基础框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "解压缩算法",
+      "normalized": "解压缩算法",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "arm",
+      "normalized": "arm",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "精通算法",
+      "normalized": "精通算法",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责软件项目的测试方案",
+      "normalized": "负责软件项目的测试方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "白盒测试方法和工具",
+      "normalized": "白盒测试方法和工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "用一种以上的主流测试工具",
+      "normalized": "用一种以上的主流测试工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "及测试管理平台",
+      "normalized": "及测试管理平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "较强的语言",
+      "normalized": "较强的语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "编写测试方案",
+      "normalized": "编写测试方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "较强的分析设计能力和方案",
+      "normalized": "较强的分析设计能力和方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "td",
+      "normalized": "td",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "求及设计文档编写测试方案",
+      "normalized": "求及设计文档编写测试方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "并提出系统",
+      "normalized": "并提出系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "HTTP网络通讯协议",
+      "normalized": "http网络通讯协议",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "具备测试工具和管理系统",
+      "normalized": "具备测试工具和管理系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "解或掌握一门脚本开发语言",
+      "normalized": "解或掌握一门脚本开发语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉或掌握自动化测试工具",
+      "normalized": "熟悉或掌握自动化测试工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉或掌握性能测试工具",
+      "normalized": "熟悉或掌握性能测试工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "测试工具",
+      "normalized": "测试工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "编制测试方案",
+      "normalized": "编制测试方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "性能测试工具",
+      "normalized": "性能测试工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉linux平台",
+      "normalized": "熟悉linux平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "IP网络协议",
+      "normalized": "ip网络协议",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ef",
+      "normalized": "ef",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "zigbee",
+      "normalized": "zigbee",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "www.ashining.com",
+      "normalized": "www.ashining.com",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "良好的职业发展平台",
+      "normalized": "良好的职业发展平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "参与运维自动化平台",
+      "normalized": "参与运维自动化平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "定并实施相关运维技术方案",
+      "normalized": "定并实施相关运维技术方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "现与运维相关的自动化工具",
+      "normalized": "现与运维相关的自动化工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "通过工具",
+      "normalized": "通过工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "3年以上linux系统",
+      "normalized": "3年以上linux系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉计算机网络体系架构",
+      "normalized": "熟悉计算机网络体系架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "Linux操作系统",
+      "normalized": "linux操作系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉主流中间件",
+      "normalized": "熟悉主流中间件",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉主流开源监控系统",
+      "normalized": "熟悉主流开源监控系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "部署系统",
+      "normalized": "部署系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "有成功的自动化平台",
+      "normalized": "有成功的自动化平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "isis",
+      "normalized": "isis",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "vlan",
+      "normalized": "vlan",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "acl",
+      "normalized": "acl",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "unix",
+      "normalized": "unix",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "BGP等常用路由协议",
+      "normalized": "bgp等常用路由协议",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责应用系统",
+      "normalized": "负责应用系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "上主流Linux操作系统",
+      "normalized": "上主流linux操作系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟练掌握至少一种脚本语言",
+      "normalized": "熟练掌握至少一种脚本语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "并提出平台",
+      "normalized": "并提出平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "ioc",
+      "normalized": "ioc",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "CAD工具",
+      "normalized": "cad工具",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "bgp",
+      "normalized": "bgp",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "rds",
+      "normalized": "rds",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "iis",
+      "normalized": "iis",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟悉SQL语言",
+      "normalized": "熟悉sql语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "linux系统",
+      "normalized": "linux系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "客户网络的运维和部分系统",
+      "normalized": "客户网络的运维和部分系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "stp生成树协议",
+      "normalized": "stp生成树协议",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "p路由映射等路由交换协议",
+      "normalized": "p路由映射等路由交换协议",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "aix",
+      "normalized": "aix",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "设信息安全体系和安全架构",
+      "normalized": "设信息安全体系和安全架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责云平台",
+      "normalized": "负责云平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "网络架构",
+      "normalized": "网络架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "良好的语言",
+      "normalized": "良好的语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "作品中最好有管理系统",
+      "normalized": "作品中最好有管理系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "参与多种平台",
+      "normalized": "参与多种平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "python等脚本语言",
+      "normalized": "python等脚本语言",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "出最优的前台技术实现方案",
+      "normalized": "出最优的前台技术实现方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "熟练掌握常用开发框架",
+      "normalized": "熟练掌握常用开发框架",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "对于未来的新架构",
+      "normalized": "对于未来的新架构",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责统一平台整体系统",
+      "normalized": "负责统一平台整体系统",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "审核项目总体技术方案",
+      "normalized": "审核项目总体技术方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "www.ysteq.com",
+      "normalized": "www.ysteq.com",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "acfun",
+      "normalized": "acfun",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "集成方案",
+      "normalized": "集成方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责公司硬件供应商及方案",
+      "normalized": "负责公司硬件供应商及方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "落实改进方案",
+      "normalized": "落实改进方案",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "独立安装公司自主软件平台",
+      "normalized": "独立安装公司自主软件平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "qq",
+      "normalized": "qq",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "负责公司私有云平台",
+      "normalized": "负责公司私有云平台",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "pmp",
+      "normalized": "pmp",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "lovehifi.com",
+      "normalized": "lovehifi.com",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    },
+    {
+      "surface": "mini",
+      "normalized": "mini",
+      "frequency": 2,
+      "status": "candidate",
+      "linked_entity_id": null
+    }
+  ]
+}

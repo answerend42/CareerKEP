@@ -1,0 +1,560 @@
+{
+  "pipeline_version": "v1.0.0",
+  "evidence_nodes": 159,
+  "nodes_with_refs": 41,
+  "total_refs": 63,
+  "alignment": {
+    "skill_python": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/ccd0a1d9-afda-43d9-b901-96344886e14d",
+        "label": "Python (computer programming)",
+        "similarity": 0.7871
+      }
+    ],
+    "skill_java": [],
+    "skill_cpp": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/b633eb55-8f1f-4ae6-ab4c-2022ffe2cb7f",
+        "label": "C++",
+        "similarity": 0.763
+      }
+    ],
+    "skill_c": [],
+    "skill_javascript": [],
+    "skill_typescript": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/867137fb-ff1b-4ca3-99f3-cb6969aa2c68",
+        "label": "TypeScript",
+        "similarity": 0.8333
+      }
+    ],
+    "skill_golang": [],
+    "skill_rust": [],
+    "skill_sql": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/c062bab3-3ea0-4291-9220-a2d8fef4bead",
+        "label": "SQL Server",
+        "similarity": 0.7831
+      }
+    ],
+    "skill_bash": [],
+    "skill_kotlin": [],
+    "skill_swift": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/be80acfc-b6f2-4411-9b8d-b19d9cd2556a",
+        "label": "Swift (computer programming)",
+        "similarity": 0.8102
+      }
+    ],
+    "skill_csharp": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/4c016b68-4116-468c-9dc6-42710c239e4a",
+        "label": "C#",
+        "similarity": 0.8264
+      }
+    ],
+    "skill_php": [],
+    "skill_dart": [],
+    "skill_scala": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/ffddfc7c-a9dd-449f-9e96-882dc447c8b6",
+        "label": "Scala",
+        "similarity": 0.8418
+      }
+    ],
+    "tool_flask": [],
+    "tool_django": [
+      {
+        "source": "onet",
+        "tool_name": "Django",
+        "category": "Web platform development software",
+        "similarity": 0.8082
+      }
+    ],
+    "tool_fastapi": [],
+    "tool_spring_boot": [],
+    "tool_mybatis": [],
+    "tool_nodejs": [],
+    "tool_express": [],
+    "tool_nestjs": [],
+    "tool_gin": [],
+    "tool_echo": [],
+    "tool_laravel": [],
+    "tool_dotnet": [],
+    "tool_react": [],
+    "tool_vue": [],
+    "tool_nextjs": [],
+    "tool_android_studio": [],
+    "tool_xcode": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/449d119b-2d66-43a9-9230-7d27f16afbb6",
+        "label": "Xcode",
+        "similarity": 0.9162
+      },
+      {
+        "source": "onet",
+        "tool_name": "Xcode",
+        "category": "Development environment software",
+        "similarity": 0.7675
+      }
+    ],
+    "tool_flutter": [],
+    "tool_linux": [
+      {
+        "source": "onet",
+        "tool_name": "Linux",
+        "category": "Operating system software",
+        "similarity": 0.8045
+      },
+      {
+        "source": "onet",
+        "tool_name": "UNIX",
+        "category": "Operating system software",
+        "similarity": 0.7504
+      }
+    ],
+    "tool_docker": [],
+    "tool_kubernetes": [],
+    "tool_git": [],
+    "tool_github_actions": [],
+    "tool_jenkins": [],
+    "tool_terraform": [],
+    "tool_nginx": [],
+    "tool_mysql": [],
+    "tool_postgresql": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/a8d07b5a-c1a1-42c6-9d53-db9c7a2ca996",
+        "label": "PostgreSQL",
+        "similarity": 0.9763
+      }
+    ],
+    "tool_redis": [],
+    "tool_mongodb": [],
+    "tool_elasticsearch": [],
+    "tool_clickhouse": [],
+    "tool_hive": [],
+    "tool_snowflake": [],
+    "tool_pandas": [],
+    "tool_numpy": [],
+    "tool_spark": [],
+    "tool_hadoop": [],
+    "tool_flink": [],
+    "tool_kafka": [],
+    "tool_airflow": [],
+    "tool_dbt": [],
+    "tool_superset": [],
+    "tool_pytorch": [],
+    "tool_tensorflow": [],
+    "tool_scikit_learn": [],
+    "tool_opencv": [],
+    "tool_mlflow": [],
+    "tool_ray": [],
+    "tool_selenium": [],
+    "tool_pytest": [],
+    "tool_jmeter": [],
+    "tool_prometheus": [],
+    "tool_grafana": [],
+    "tool_wireshark": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/8fa510d0-a8a6-4932-a361-00f8442cfe23",
+        "label": "Wireshark",
+        "similarity": 0.8825
+      }
+    ],
+    "tool_nmap": [],
+    "tool_burp_suite": [],
+    "tool_aws": [],
+    "tool_aliyun": [],
+    "tool_gcp": [],
+    "tool_azure": [],
+    "language_english_reading": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/7ce196c4-65c5-4aa0-88a2-9ab08eb9fd49",
+        "label": "academic English",
+        "similarity": 0.8274
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/7ee20fe2-facd-4cc5-837b-927429e0e7ac",
+        "label": "understand written English",
+        "similarity": 0.7781
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/64ff8d5f-58a8-4efb-af5a-e161854b3e9a",
+        "label": "understand spoken English",
+        "similarity": 0.7628
+      }
+    ],
+    "knowledge_data_structures": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/03ff0d53-573a-47a0-a0ad-1995815a4339",
+        "label": "information structure",
+        "similarity": 0.8144
+      }
+    ],
+    "knowledge_algorithms": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/54924a2c-daca-40d3-9716-4b38ceb04f38",
+        "label": "algorithms",
+        "similarity": 0.8239
+      }
+    ],
+    "knowledge_oop": [],
+    "knowledge_database_theory": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/29fb0fb5-dfc4-4098-ac9b-3a712000f48f",
+        "label": "manage database",
+        "similarity": 0.8713
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/4463a721-69f3-413d-8321-43e3af13a4f1",
+        "label": "use databases",
+        "similarity": 0.7667
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/43ae58b9-5e56-4524-b45a-b422777a0576",
+        "label": "database",
+        "similarity": 0.7605
+      }
+    ],
+    "knowledge_operating_systems": [
+      {
+        "source": "onet",
+        "tool_name": "Computer operating systems",
+        "category": "Operating system software",
+        "similarity": 0.8088
+      },
+      {
+        "source": "onet",
+        "tool_name": "Operating system software",
+        "category": "Operating system software",
+        "similarity": 0.7691
+      },
+      {
+        "source": "onet",
+        "tool_name": "Ubuntu",
+        "category": "Operating system software",
+        "similarity": 0.7565
+      }
+    ],
+    "knowledge_networks": [],
+    "knowledge_statistics": [],
+    "knowledge_linear_algebra": [],
+    "knowledge_probability": [],
+    "knowledge_system_design": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/fae27053-8924-4bfd-b565-c9fe502044c9",
+        "label": "system design",
+        "similarity": 0.952
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/d560df46-dda4-4407-bab2-b87353a96814",
+        "label": "design control systems",
+        "similarity": 0.761
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/a47d194d-0ffd-4aaa-b695-fbbe0255000e",
+        "label": "design information system",
+        "similarity": 0.7533
+      }
+    ],
+    "knowledge_math_foundation": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/55e910e4-736d-44cf-bfa9-b15adc5d91d2",
+        "label": "algebra",
+        "similarity": 0.7526
+      }
+    ],
+    "knowledge_technical_documentation": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/cffc3e97-e942-4b13-a2f3-0bf4910c06d3",
+        "label": "use technical documentation",
+        "similarity": 0.784
+      }
+    ],
+    "knowledge_distributed_systems": [],
+    "knowledge_microservice_architecture": [
+      {
+        "source": "onet",
+        "tool_name": "Microservices Architecture",
+        "category": "Application server software",
+        "similarity": 0.8656
+      }
+    ],
+    "knowledge_data_warehouse_modeling": [],
+    "knowledge_etl_modeling": [],
+    "knowledge_experimentation": [
+      {
+        "source": "onet",
+        "tool_name": "Design of experiments DOE software",
+        "category": "Analytical or scientific software",
+        "similarity": 0.7714
+      }
+    ],
+    "knowledge_cryptography": [],
+    "knowledge_secure_coding": [
+      {
+        "source": "onet",
+        "tool_name": "Encryption software",
+        "category": "Transaction security and virus protection software",
+        "similarity": 0.7608
+      }
+    ],
+    "knowledge_ui_ux_basics": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/f6868852-9bf6-4899-a5d6-5f9532fb877d",
+        "label": "design component interfaces",
+        "similarity": 0.7574
+      }
+    ],
+    "knowledge_mobile_architecture": [],
+    "knowledge_embedded_protocols": [],
+    "knowledge_hardware_debugging": [],
+    "project_backend_api": [],
+    "project_microservice": [
+      {
+        "source": "onet",
+        "tool_name": "Microservices Architecture",
+        "category": "Application server software",
+        "similarity": 0.7584
+      }
+    ],
+    "project_low_latency_service": [],
+    "project_api_gateway": [],
+    "project_web_ui": [],
+    "project_component_library": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/484df271-bb52-49f1-8f50-f19624bf4df2",
+        "label": "software components libraries",
+        "similarity": 0.7996
+      },
+      {
+        "source": "onet",
+        "tool_name": "Component libraries",
+        "category": "Development environment software",
+        "similarity": 0.7678
+      }
+    ],
+    "project_mobile_app": [
+      {
+        "source": "onet",
+        "tool_name": "Mobile application software",
+        "category": "Mobile operator specific application software",
+        "similarity": 0.7509
+      }
+    ],
+    "project_cross_platform_app": [],
+    "project_data_pipeline": [],
+    "project_real_time_pipeline": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/bf6c5ed4-84af-440f-abcc-7fa5ba19c738",
+        "label": "real-time computing",
+        "similarity": 0.7649
+      }
+    ],
+    "project_dashboard": [],
+    "project_ab_testing": [
+      {
+        "source": "onet",
+        "tool_name": "Aquifer test software",
+        "category": "Analytical or scientific software",
+        "similarity": 0.7605
+      }
+    ],
+    "project_model_training": [],
+    "project_ml_deployment": [],
+    "project_recommendation_system": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/505e4ef3-7ce4-437d-b7b4-5c608f71c258",
+        "label": "build recommender systems",
+        "similarity": 0.766
+      }
+    ],
+    "project_test_automation": [
+      {
+        "source": "onet",
+        "tool_name": "Test automation software",
+        "category": "Analytical or scientific software",
+        "similarity": 0.866
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/6a322874-e32f-4cd8-9683-badce67a7f73",
+        "label": "develop automated software tests",
+        "similarity": 0.8106
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/7557f0f4-b8bc-4ac0-b91e-222ab1ba744f",
+        "label": "tools for ICT test automation",
+        "similarity": 0.7922
+      }
+    ],
+    "project_performance_testing": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/2687dc6e-b245-477a-a115-7abeb7134b78",
+        "label": "performance diagnosis",
+        "similarity": 0.7905
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/bbd57056-80e0-45bb-a2c1-658ed99a1251",
+        "label": "conduct performance tests",
+        "similarity": 0.7834
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/5038b9bb-5eb0-4156-93c2-16ae1a299d65",
+        "label": "guide analysis of a recorded performance",
+        "similarity": 0.7711
+      }
+    ],
+    "project_devops_automation": [],
+    "project_ci_cd_platform": [],
+    "project_security_ctf": [],
+    "project_blue_team_monitoring": [],
+    "project_app_hardening": [],
+    "project_platform_portal": [],
+    "project_observability_platform": [],
+    "project_iot_gateway": [],
+    "project_firmware_delivery": [],
+    "project_data_warehouse": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/3ec2e4d6-7000-4905-bf1a-c5b1679416de",
+        "label": "data warehouse",
+        "similarity": 0.838
+      },
+      {
+        "source": "onet",
+        "tool_name": "Data warehouse software",
+        "category": "Data mining software",
+        "similarity": 0.7656
+      }
+    ],
+    "interest_backend": [],
+    "interest_frontend": [],
+    "interest_data": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/edebd83d-35f6-4ed5-a940-6c203d178c01",
+        "label": "data science",
+        "similarity": 0.758
+      }
+    ],
+    "interest_ml": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/8369c2d6-c100-4cf6-bd83-9668d8678433",
+        "label": "utilise machine learning",
+        "similarity": 0.7766
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/3a2d5b45-56e4-4f5a-a55a-4a4a65afdc43",
+        "label": "machine learning",
+        "similarity": 0.763
+      }
+    ],
+    "interest_devops": [],
+    "interest_security": [],
+    "interest_stable_delivery": [],
+    "interest_visualization": [],
+    "interest_mobile": [],
+    "interest_client_experience": [],
+    "interest_infra_automation": [],
+    "interest_research": [],
+    "interest_low_level_systems": [],
+    "interest_product_delivery": [],
+    "interest_reliability": [
+      {
+        "source": "onet",
+        "tool_name": "Reliability analysis software",
+        "category": "Analytical or scientific software",
+        "similarity": 0.7529
+      }
+    ],
+    "soft_communication": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/15d76317-c71a-4fa2-aadc-2ecc34e627b7",
+        "label": "communication",
+        "similarity": 0.8054
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/477579e7-e0ca-4cc5-8712-17b78d0d8d2a",
+        "label": "communication studies",
+        "similarity": 0.7953
+      }
+    ],
+    "soft_teamwork": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/a5b0cd5c-e13a-4ab3-8d93-4d242adcfb01",
+        "label": "teamwork principles",
+        "similarity": 0.7985
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/60c78287-22eb-4103-9c8c-28deaa460da0",
+        "label": "work in teams",
+        "similarity": 0.7933
+      },
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/229b10cf-6f3a-490c-9706-01c107df0562",
+        "label": "facilitate teamwork between students",
+        "similarity": 0.7912
+      }
+    ],
+    "soft_self_learning": [],
+    "soft_documentation": [],
+    "soft_ownership": [],
+    "soft_problem_solving": [],
+    "soft_business_understanding": [
+      {
+        "source": "esco",
+        "uri": "http://data.europa.eu/esco/skill/3cb68bb2-66fc-495a-af82-012338a9402b",
+        "label": "interpret business information",
+        "similarity": 0.7756
+      }
+    ],
+    "soft_mentoring": [],
+    "constraint_dislike_math_theory": [],
+    "constraint_weak_english": [],
+    "constraint_dislike_oncall": [],
+    "constraint_dislike_ui_polish": [],
+    "constraint_dislike_manual_testing": [],
+    "constraint_dislike_research_uncertainty": [],
+    "constraint_dislike_low_level_debugging": [],
+    "constraint_dislike_customer_communication": []
+  }
+}

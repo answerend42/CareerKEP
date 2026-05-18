@@ -1,0 +1,219 @@
+{
+  "generated_at": "2026-05-18",
+  "mode": "rule",
+  "test_path": "optimize\\CN_skillspan_lkst_test.json",
+  "data_summary": {
+    "samples": 20,
+    "samples_with_gold": 12,
+    "total_gold_markers": 45,
+    "valid_gold_spans": 26,
+    "invalid_gold_spans": 19,
+    "pred_spans": 7,
+    "gold_label_counts": {
+      "L": 1,
+      "S": 24,
+      "T": 1
+    },
+    "raw_marker_label_counts": {
+      "K": 2,
+      "L": 1,
+      "S": 36,
+      "T": 6
+    },
+    "source_domain_counts": {
+      "人工智能招聘": 20
+    },
+    "invalid_gold_rate": 0.4222
+  },
+  "metrics": {
+    "span_exact": {
+      "tp": 0,
+      "fp": 7,
+      "fn": 26,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "typed_exact": {
+      "tp": 0,
+      "fp": 6,
+      "fn": 26,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "relaxed_overlap": {
+      "tp": 3,
+      "fp": 4,
+      "fn": 23,
+      "precision": 0.4286,
+      "recall": 0.1154,
+      "f1": 0.1818
+    }
+  },
+  "by_label": {
+    "L": {
+      "tp": 0,
+      "fp": 1,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "K": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "S": {
+      "tp": 0,
+      "fp": 2,
+      "fn": 24,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "T": {
+      "tp": 0,
+      "fp": 3,
+      "fn": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  "by_source_domain": {
+    "人工智能招聘": {
+      "tp": 0,
+      "fp": 7,
+      "fn": 26,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  "invalid_gold": {
+    "reason_counts": {
+      "overlap_or_nested": 19
+    },
+    "examples": [
+      {
+        "sample_id": "26739",
+        "text": "参与公司无人机飞控系统技术项目开发策划",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26739",
+        "text": "参与公司无人机飞控系统技术项目开发策划、总体方案论证、技术设计",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26739",
+        "text": "无人机飞控系统技术项目开发策划",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26739",
+        "text": "总体方案论证",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26739",
+        "text": "技术设",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26738",
+        "text": "负责无人机航电、载荷的研发管理",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26738",
+        "text": "无人机航电、载荷",
+        "label": "K",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26738",
+        "text": "研发管理",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26747",
+        "text": "用脚本语言经验（BashShell或Python）",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26747",
+        "text": "脚本语言经验（BashShell或Python）",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26747",
+        "text": "Web服务器（Apache，Tomcat）经验5",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26747",
+        "text": "Web服务器（Apache，Tomcat）经验",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26748",
+        "text": "组织性",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26748",
+        "text": "组织性和主动性",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26748",
+        "text": "主动性",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26748",
+        "text": "优秀的沟通能力",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26748",
+        "text": "沟通能力",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26737",
+        "text": "导航设备",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26737",
+        "text": "导航设备",
+        "label": "K",
+        "reason": "overlap_or_nested"
+      }
+    ]
+  }
+}

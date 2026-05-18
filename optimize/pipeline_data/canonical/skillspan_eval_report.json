@@ -1,0 +1,305 @@
+{
+  "generated_at": "2026-05-18",
+  "mode": "rule",
+  "test_path": "optimize\\CN_skillspan_lkst_test.json",
+  "data_summary": {
+    "samples": 2676,
+    "samples_with_gold": 1677,
+    "total_gold_markers": 6069,
+    "valid_gold_spans": 5818,
+    "invalid_gold_spans": 251,
+    "pred_spans": 1283,
+    "gold_label_counts": {
+      "K": 1656,
+      "L": 35,
+      "S": 3102,
+      "T": 1025
+    },
+    "raw_marker_label_counts": {
+      "K": 1713,
+      "L": 37,
+      "S": 3257,
+      "T": 1062
+    },
+    "source_domain_counts": {
+      "人工智能招聘": 1407,
+      "阿里云公开数据集": 457,
+      "事业单位招聘": 812
+    },
+    "invalid_gold_rate": 0.0414
+  },
+  "metrics": {
+    "span_exact": {
+      "tp": 253,
+      "fp": 1014,
+      "fn": 5565,
+      "precision": 0.1997,
+      "recall": 0.0435,
+      "f1": 0.0714
+    },
+    "typed_exact": {
+      "tp": 166,
+      "fp": 628,
+      "fn": 5652,
+      "precision": 0.2091,
+      "recall": 0.0285,
+      "f1": 0.0502
+    },
+    "relaxed_overlap": {
+      "tp": 941,
+      "fp": 342,
+      "fn": 4877,
+      "precision": 0.7334,
+      "recall": 0.1617,
+      "f1": 0.265
+    }
+  },
+  "by_label": {
+    "L": {
+      "tp": 2,
+      "fp": 23,
+      "fn": 33,
+      "precision": 0.08,
+      "recall": 0.0571,
+      "f1": 0.0667
+    },
+    "K": {
+      "tp": 19,
+      "fp": 180,
+      "fn": 1637,
+      "precision": 0.0955,
+      "recall": 0.0115,
+      "f1": 0.0205
+    },
+    "S": {
+      "tp": 87,
+      "fp": 280,
+      "fn": 3015,
+      "precision": 0.2371,
+      "recall": 0.028,
+      "f1": 0.0502
+    },
+    "T": {
+      "tp": 58,
+      "fp": 145,
+      "fn": 967,
+      "precision": 0.2857,
+      "recall": 0.0566,
+      "f1": 0.0945
+    }
+  },
+  "by_source_domain": {
+    "事业单位招聘": {
+      "tp": 4,
+      "fp": 75,
+      "fn": 503,
+      "precision": 0.0506,
+      "recall": 0.0079,
+      "f1": 0.0137
+    },
+    "人工智能招聘": {
+      "tp": 179,
+      "fp": 777,
+      "fn": 3834,
+      "precision": 0.1872,
+      "recall": 0.0446,
+      "f1": 0.072
+    },
+    "阿里云公开数据集": {
+      "tp": 70,
+      "fp": 162,
+      "fn": 1228,
+      "precision": 0.3017,
+      "recall": 0.0539,
+      "f1": 0.0915
+    }
+  },
+  "invalid_gold": {
+    "reason_counts": {
+      "overlap_or_nested": 250,
+      "unable_to_map": 1
+    },
+    "examples": [
+      {
+        "sample_id": "26739",
+        "text": "参与公司无人机飞控系统技术项目开发策划",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26739",
+        "text": "参与公司无人机飞控系统技术项目开发策划、总体方案论证、技术设计",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26739",
+        "text": "无人机飞控系统技术项目开发策划",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26739",
+        "text": "总体方案论证",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26739",
+        "text": "技术设",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26738",
+        "text": "负责无人机航电、载荷的研发管理",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26738",
+        "text": "无人机航电、载荷",
+        "label": "K",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26738",
+        "text": "研发管理",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26747",
+        "text": "用脚本语言经验（BashShell或Python）",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26747",
+        "text": "脚本语言经验（BashShell或Python）",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26747",
+        "text": "Web服务器（Apache，Tomcat）经验5",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26747",
+        "text": "Web服务器（Apache，Tomcat）经验",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26748",
+        "text": "组织性",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26748",
+        "text": "组织性和主动性",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26748",
+        "text": "主动性",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26748",
+        "text": "优秀的沟通能力",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26748",
+        "text": "沟通能力",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26737",
+        "text": "导航设备",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26737",
+        "text": "导航设备",
+        "label": "K",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26760",
+        "text": "提升广告有效性以达到投资回报最大化",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26760",
+        "text": "提升广告有效性",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26768",
+        "text": "，结果导",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26768",
+        "text": "结果导向",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26768",
+        "text": "，逻辑",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26768",
+        "text": "逻辑性",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26772",
+        "text": "运筹优化方向",
+        "label": "K",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26772",
+        "text": "运筹优化",
+        "label": "K",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26773",
+        "text": "对研发的热忱",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26773",
+        "text": "研发的热忱",
+        "label": "T",
+        "reason": "overlap_or_nested"
+      },
+      {
+        "sample_id": "26779",
+        "text": " 运用机器学习相关技术",
+        "label": "S",
+        "reason": "overlap_or_nested"
+      }
+    ]
+  }
+}

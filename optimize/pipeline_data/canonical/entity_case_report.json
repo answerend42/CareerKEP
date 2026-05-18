@@ -1,0 +1,681 @@
+{
+  "generated_at": "2026-05-18",
+  "inputs": {
+    "mentions": "G:\\career-kg\\optimize\\pipeline_data\\staging\\mentions.jsonl",
+    "disambig_log": "G:\\career-kg\\optimize\\pipeline_data\\canonical\\disambiguation_log.jsonl",
+    "clusters": "G:\\career-kg\\optimize\\pipeline_data\\canonical\\new_entity_clusters.json",
+    "alignment": "G:\\career-kg\\optimize\\pipeline_data\\canonical\\external_alignment.json",
+    "skills": "G:\\career-kg\\optimize\\output\\skills_enriched.json",
+    "profiles": "G:\\career-kg\\optimize\\output\\imported_profiles_new.json",
+    "quality_report": "G:\\career-kg\\optimize\\pipeline_data\\canonical\\entity_quality_report.json"
+  },
+  "missing_inputs": [],
+  "summary": {
+    "limit_per_section": 8,
+    "mentions_loaded": 24776,
+    "disambig_records_loaded": 1241,
+    "new_entity_clusters": 45,
+    "alignment_nodes": 159,
+    "quality_errors": 3,
+    "quality_warnings": 7
+  },
+  "rule_match_examples": [
+    {
+      "surface": "数据结构与算法",
+      "entity_id": "knowledge_data_structures",
+      "doc_id": "fairCV_000000",
+      "section_id": "fairCV_000000_education_1",
+      "confidence": null,
+      "link_method": "alias_exact"
+    },
+    {
+      "surface": "Java",
+      "entity_id": "skill_java",
+      "doc_id": "fairCV_000000",
+      "section_id": "fairCV_000000_education_1",
+      "confidence": null,
+      "link_method": "alias_exact"
+    },
+    {
+      "surface": "Python",
+      "entity_id": "skill_python",
+      "doc_id": "fairCV_000000",
+      "section_id": "fairCV_000000_education_1",
+      "confidence": null,
+      "link_method": "alias_exact"
+    },
+    {
+      "surface": "算法（如排序、查找）",
+      "entity_id": "knowledge_algorithms",
+      "doc_id": "fairCV_000000",
+      "section_id": "fairCV_000000_tech_skills_2",
+      "confidence": null,
+      "link_method": "alias_exact"
+    },
+    {
+      "surface": "SQL",
+      "entity_id": "skill_sql",
+      "doc_id": "fairCV_000000",
+      "section_id": "fairCV_000000_tech_skills_2",
+      "confidence": null,
+      "link_method": "alias_exact"
+    },
+    {
+      "surface": "后端",
+      "entity_id": "interest_backend",
+      "doc_id": "fairCV_000000",
+      "section_id": "fairCV_000000_projects_3",
+      "confidence": null,
+      "link_method": "alias_exact"
+    },
+    {
+      "surface": "Spring Boot",
+      "entity_id": "tool_spring_boot",
+      "doc_id": "fairCV_000000",
+      "section_id": "fairCV_000000_projects_3",
+      "confidence": null,
+      "link_method": "alias_exact"
+    },
+    {
+      "surface": "前端",
+      "entity_id": "interest_frontend",
+      "doc_id": "fairCV_000000",
+      "section_id": "fairCV_000000_projects_3",
+      "confidence": null,
+      "link_method": "alias_exact"
+    }
+  ],
+  "auto_confirmed_alias_examples": [
+    {
+      "surface": "基础算法",
+      "entity_id": "knowledge_algorithms",
+      "doc_id": "fairCV_000000",
+      "score": null,
+      "confidence": null,
+      "link_method": "embedding_high"
+    },
+    {
+      "surface": "SQL语句",
+      "entity_id": "skill_sql",
+      "doc_id": "fairCV_000000",
+      "score": null,
+      "confidence": null,
+      "link_method": "embedding_high"
+    },
+    {
+      "surface": "团队合作能力",
+      "entity_id": "soft_teamwork",
+      "doc_id": "jd_cn_skillspan_lkst_1019_f464ae07",
+      "score": null,
+      "confidence": null,
+      "link_method": "embedding_high"
+    },
+    {
+      "surface": "团队合作精神",
+      "entity_id": "soft_teamwork",
+      "doc_id": "jd_cn_skillspan_lkst_1055_d9069de8",
+      "score": null,
+      "confidence": null,
+      "link_method": "embedding_high"
+    },
+    {
+      "surface": "团队合作意识",
+      "entity_id": "soft_teamwork",
+      "doc_id": "jd_cn_skillspan_lkst_1092_271b360e",
+      "score": null,
+      "confidence": null,
+      "link_method": "embedding_high"
+    },
+    {
+      "surface": "自主学习能力",
+      "entity_id": "soft_self_learning",
+      "doc_id": "jd_cn_skillspan_lkst_1092_271b360e",
+      "score": null,
+      "confidence": null,
+      "link_method": "embedding_high"
+    },
+    {
+      "surface": "myql",
+      "entity_id": "tool_mysql",
+      "doc_id": "jd_cn_skillspan_lkst_1168_8c531334",
+      "score": null,
+      "confidence": null,
+      "link_method": "embedding_high"
+    },
+    {
+      "surface": "沟通表达能力",
+      "entity_id": "soft_communication",
+      "doc_id": "jd_cn_skillspan_lkst_1168_8c531334",
+      "score": null,
+      "confidence": null,
+      "link_method": "embedding_high"
+    }
+  ],
+  "needs_review_examples": [
+    {
+      "surface": "基础数据结构",
+      "best_entity": "knowledge_data_structures",
+      "best_score": 0.8665,
+      "entity_type_hint": "knowledge",
+      "candidates": [
+        {
+          "entity_id": "knowledge_data_structures",
+          "score": 0.8665
+        },
+        {
+          "entity_id": "knowledge_database_theory",
+          "score": 0.6959
+        },
+        {
+          "entity_id": "interest_data",
+          "score": 0.6599
+        }
+      ]
+    },
+    {
+      "surface": "关系型数据库",
+      "best_entity": "knowledge_database_theory",
+      "best_score": 0.7502,
+      "entity_type_hint": "knowledge",
+      "candidates": [
+        {
+          "entity_id": "knowledge_database_theory",
+          "score": 0.7502
+        },
+        {
+          "entity_id": "knowledge_data_structures",
+          "score": 0.6176
+        },
+        {
+          "entity_id": "skill_sql",
+          "score": 0.5871
+        }
+      ]
+    },
+    {
+      "surface": "python开发经验",
+      "best_entity": "skill_python",
+      "best_score": 0.7289,
+      "entity_type_hint": "skill",
+      "candidates": [
+        {
+          "entity_id": "skill_python",
+          "score": 0.7289
+        },
+        {
+          "entity_id": "tool_django",
+          "score": 0.4043
+        },
+        {
+          "entity_id": "tool_scikit_learn",
+          "score": 0.3844
+        }
+      ]
+    },
+    {
+      "surface": "接口设计",
+      "best_entity": "knowledge_ui_ux_basics",
+      "best_score": 0.7713,
+      "entity_type_hint": "knowledge",
+      "candidates": [
+        {
+          "entity_id": "knowledge_ui_ux_basics",
+          "score": 0.7713
+        },
+        {
+          "entity_id": "knowledge_embedded_protocols",
+          "score": 0.5847
+        },
+        {
+          "entity_id": "project_backend_api",
+          "score": 0.5659
+        }
+      ]
+    },
+    {
+      "surface": "性能调优",
+      "best_entity": "tool_fastapi",
+      "best_score": 0.7508,
+      "entity_type_hint": "skill",
+      "candidates": [
+        {
+          "entity_id": "tool_fastapi",
+          "score": 0.7508
+        },
+        {
+          "entity_id": "project_performance_testing",
+          "score": 0.7446
+        },
+        {
+          "entity_id": "interest_reliability",
+          "score": 0.5875
+        }
+      ]
+    },
+    {
+      "surface": "android平台开发经验",
+      "best_entity": "tool_android_studio",
+      "best_score": 0.745,
+      "entity_type_hint": "project",
+      "candidates": [
+        {
+          "entity_id": "tool_android_studio",
+          "score": 0.745
+        },
+        {
+          "entity_id": "project_mobile_app",
+          "score": 0.6911
+        },
+        {
+          "entity_id": "interest_mobile",
+          "score": 0.6612
+        }
+      ]
+    },
+    {
+      "surface": "linux开发环境",
+      "best_entity": "tool_linux",
+      "best_score": 0.7727,
+      "entity_type_hint": "tool",
+      "candidates": [
+        {
+          "entity_id": "tool_linux",
+          "score": 0.7727
+        },
+        {
+          "entity_id": "knowledge_operating_systems",
+          "score": 0.5061
+        },
+        {
+          "entity_id": "knowledge_hardware_debugging",
+          "score": 0.4439
+        }
+      ]
+    }
+  ],
+  "extracted_entity_examples": [
+    {
+      "category": "skill",
+      "id": "skill_html",
+      "name": "Html",
+      "aliases": [
+        "html/css/javascript",
+        "xhtml",
+        "css",
+        "html5+css",
+        "css3",
+        "html5"
+      ],
+      "source_note": "cluster_id=1 size=7",
+      "review_status": "needs_review"
+    },
+    {
+      "category": "tool",
+      "id": "tool_openstack",
+      "name": "Openstack",
+      "aliases": [
+        "opengl",
+        "openshift",
+        "openvswitch",
+        "openflow"
+      ],
+      "source_note": "cluster_id=16 size=6",
+      "review_status": "needs_review"
+    },
+    {
+      "category": "tool",
+      "id": "tool_lstm",
+      "name": "Lstm",
+      "aliases": [
+        "lnmp",
+        "lnmp开发"
+      ],
+      "source_note": "cluster_id=27 size=4",
+      "review_status": "needs_review"
+    },
+    {
+      "category": "tool",
+      "id": "tool_oracle",
+      "name": "Oracle",
+      "aliases": [
+        "oracle数据库体系结构",
+        "oracle金银牌",
+        "oracle数据库"
+      ],
+      "source_note": "cluster_id=13 size=4",
+      "review_status": "needs_review"
+    },
+    {
+      "category": "tool",
+      "id": "tool_3d",
+      "name": "3d打印",
+      "aliases": [
+        "3d打印数据处理软件",
+        "3d几何学",
+        "3d图形学原理"
+      ],
+      "source_note": "cluster_id=17 size=4",
+      "review_status": "needs_review"
+    },
+    {
+      "category": "tool",
+      "id": "tool_jquery",
+      "name": "Jquery",
+      "aliases": [
+        "jquery-ui",
+        "jquery ui",
+        "jquery easy ui"
+      ],
+      "source_note": "cluster_id=18 size=4",
+      "review_status": "needs_review"
+    },
+    {
+      "category": "tool",
+      "id": "tool_ps",
+      "name": "Ps",
+      "aliases": [
+        "ssh",
+        "ssh框架"
+      ],
+      "source_note": "cluster_id=42 size=3",
+      "review_status": "needs_review"
+    },
+    {
+      "category": "tool",
+      "id": "tool_asp_net",
+      "name": "asp.net",
+      "aliases": [
+        "asp.net webapi",
+        "asp.net core"
+      ],
+      "source_note": "cluster_id=11 size=3",
+      "review_status": "needs_review"
+    }
+  ],
+  "suspicious_alias_examples": [
+    {
+      "code": "alias_too_long",
+      "message": "alias 可能包含噪声：microservice architecture",
+      "context": "skills_enriched.json.knowledge[13].aliases",
+      "sample": "knowledge_microservice_architecture"
+    },
+    {
+      "code": "alias_contains_noise_keyword",
+      "message": "alias 可能包含噪声：CI/CD 平台项目",
+      "context": "skills_enriched.json.project[18].name",
+      "sample": "project_ci_cd_platform"
+    },
+    {
+      "code": "alias_contains_noise_keyword",
+      "message": "alias 可能包含噪声：团队合作和沟通协作能力",
+      "context": "aliases_enriched.json.extra_aliases.soft_teamwork",
+      "sample": "soft_teamwork"
+    },
+    {
+      "code": "alias_contains_noise_keyword",
+      "message": "alias 可能包含噪声：团队沟通与协作能力",
+      "context": "aliases_enriched.json.extra_aliases.soft_teamwork",
+      "sample": "soft_teamwork"
+    },
+    {
+      "code": "alias_contains_noise_keyword",
+      "message": "alias 可能包含噪声：Linux/UNIX操作系统",
+      "context": "aliases_enriched.json.extra_aliases.tool_linux",
+      "sample": "tool_linux"
+    },
+    {
+      "code": "alias_contains_noise_keyword",
+      "message": "alias 可能包含噪声：业务理解及分析能力",
+      "context": "aliases_enriched.json.extra_aliases.soft_business_understanding",
+      "sample": "soft_business_understanding"
+    },
+    {
+      "code": "alias_contains_noise_keyword",
+      "message": "alias 可能包含噪声：linux操作系统",
+      "context": "aliases_enriched.json.extra_aliases.knowledge_operating_systems",
+      "sample": "knowledge_operating_systems"
+    },
+    {
+      "code": "alias_conflict",
+      "message": "同一 alias 映射到多个实体",
+      "context": "aliases",
+      "sample": {
+        "alias": "dashboard",
+        "normalized_alias": "dashboard",
+        "entity_ids": [
+          "interest_visualization",
+          "project_dashboard"
+        ],
+        "sources": [
+          "skills_enriched.json.project[10].aliases",
+          "skills_enriched.json.interest[7].aliases"
+        ]
+      }
+    }
+  ],
+  "alias_conflict_examples": [
+    {
+      "code": "alias_conflict",
+      "message": "同一 alias 映射到多个实体",
+      "context": "aliases",
+      "sample": {
+        "alias": "dashboard",
+        "normalized_alias": "dashboard",
+        "entity_ids": [
+          "interest_visualization",
+          "project_dashboard"
+        ],
+        "sources": [
+          "skills_enriched.json.project[10].aliases",
+          "skills_enriched.json.interest[7].aliases"
+        ]
+      }
+    },
+    {
+      "code": "alias_conflict",
+      "message": "同一 alias 映射到多个实体",
+      "context": "aliases",
+      "sample": {
+        "alias": "可靠性",
+        "normalized_alias": "可靠性",
+        "entity_ids": [
+          "interest_reliability",
+          "interest_stable_delivery"
+        ],
+        "sources": [
+          "skills_enriched.json.interest[6].aliases",
+          "skills_enriched.json.interest[14].aliases"
+        ]
+      }
+    },
+    {
+      "code": "alias_conflict",
+      "message": "同一 alias 映射到多个实体",
+      "context": "aliases",
+      "sample": {
+        "alias": "后端接口",
+        "normalized_alias": "后端接口",
+        "entity_ids": [
+          "interest_backend",
+          "project_backend_api"
+        ],
+        "sources": [
+          "skills_enriched.json.project[0].aliases",
+          "skills_enriched.json.interest[0].aliases"
+        ]
+      }
+    }
+  ],
+  "external_alignment_examples": {
+    "high_similarity": [
+      {
+        "entity_id": "tool_postgresql",
+        "entity_name": "PostgreSQL",
+        "category": "tool",
+        "source": "esco",
+        "label": "PostgreSQL",
+        "similarity": 0.9763
+      },
+      {
+        "entity_id": "knowledge_system_design",
+        "entity_name": "系统设计",
+        "category": "knowledge",
+        "source": "esco",
+        "label": "system design",
+        "similarity": 0.952
+      },
+      {
+        "entity_id": "tool_xcode",
+        "entity_name": "Xcode",
+        "category": "tool",
+        "source": "esco",
+        "label": "Xcode",
+        "similarity": 0.9162
+      },
+      {
+        "entity_id": "tool_wireshark",
+        "entity_name": "Wireshark",
+        "category": "tool",
+        "source": "esco",
+        "label": "Wireshark",
+        "similarity": 0.8825
+      },
+      {
+        "entity_id": "knowledge_database_theory",
+        "entity_name": "数据库原理",
+        "category": "knowledge",
+        "source": "esco",
+        "label": "manage database",
+        "similarity": 0.8713
+      },
+      {
+        "entity_id": "project_test_automation",
+        "entity_name": "测试自动化项目",
+        "category": "project",
+        "source": "onet",
+        "label": "Test automation software",
+        "similarity": 0.866
+      },
+      {
+        "entity_id": "knowledge_microservice_architecture",
+        "entity_name": "微服务架构",
+        "category": "knowledge",
+        "source": "onet",
+        "label": "Microservices Architecture",
+        "similarity": 0.8656
+      },
+      {
+        "entity_id": "skill_scala",
+        "entity_name": "Scala",
+        "category": "skill",
+        "source": "esco",
+        "label": "Scala",
+        "similarity": 0.8418
+      }
+    ],
+    "low_similarity": [
+      {
+        "entity_id": "tool_linux",
+        "entity_name": "Linux",
+        "category": "tool",
+        "source": "onet",
+        "label": "UNIX",
+        "similarity": 0.7504
+      },
+      {
+        "entity_id": "project_mobile_app",
+        "entity_name": "移动应用项目",
+        "category": "project",
+        "source": "onet",
+        "label": "Mobile application software",
+        "similarity": 0.7509
+      },
+      {
+        "entity_id": "knowledge_math_foundation",
+        "entity_name": "数学基础",
+        "category": "knowledge",
+        "source": "esco",
+        "label": "algebra",
+        "similarity": 0.7526
+      },
+      {
+        "entity_id": "interest_reliability",
+        "entity_name": "偏好可靠性工程",
+        "category": "interest",
+        "source": "onet",
+        "label": "Reliability analysis software",
+        "similarity": 0.7529
+      },
+      {
+        "entity_id": "knowledge_system_design",
+        "entity_name": "系统设计",
+        "category": "knowledge",
+        "source": "esco",
+        "label": "design information system",
+        "similarity": 0.7533
+      },
+      {
+        "entity_id": "knowledge_operating_systems",
+        "entity_name": "操作系统",
+        "category": "knowledge",
+        "source": "onet",
+        "label": "Ubuntu",
+        "similarity": 0.7565
+      },
+      {
+        "entity_id": "knowledge_ui_ux_basics",
+        "entity_name": "界面交互基础",
+        "category": "knowledge",
+        "source": "esco",
+        "label": "design component interfaces",
+        "similarity": 0.7574
+      },
+      {
+        "entity_id": "interest_data",
+        "entity_name": "偏好数据",
+        "category": "interest",
+        "source": "esco",
+        "label": "data science",
+        "similarity": 0.758
+      }
+    ]
+  },
+  "profile_mapping_examples": [
+    {
+      "profile_id": "fairCV_dataset_v1",
+      "source_type": "fairCV",
+      "source_title": "OhMyKing/FairCV: Chinese Simulated Resume Dataset",
+      "mapped_count": 50,
+      "mapped_node_ids_sample": [
+        "interest_backend",
+        "interest_client_experience",
+        "interest_data",
+        "interest_devops",
+        "interest_frontend",
+        "interest_ml",
+        "interest_reliability",
+        "interest_research",
+        "interest_security",
+        "interest_visualization"
+      ]
+    },
+    {
+      "profile_id": "jd_51job_zhilian_v1",
+      "source_type": "jd_crawler",
+      "source_title": "51job & 智联招聘 CS Job Descriptions (2018)",
+      "mapped_count": 50,
+      "mapped_node_ids_sample": [
+        "interest_backend",
+        "interest_client_experience",
+        "interest_data",
+        "interest_devops",
+        "interest_frontend",
+        "interest_low_level_systems",
+        "interest_ml",
+        "interest_mobile",
+        "interest_product_delivery",
+        "interest_reliability"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "generated_at": "2026-05-18",
+  "inputs": {
+    "skills": "G:\\career-kg\\optimize\\output\\skills_enriched.json",
+    "aliases": "G:\\career-kg\\optimize\\output\\aliases_enriched.json",
+    "profiles": "G:\\career-kg\\optimize\\output\\imported_profiles_new.json",
+    "graph_nodes": "G:\\career-kg\\data\\seeds\\nodes.json"
+  },
+  "summary": {
+    "passed": true,
+    "error_count": 0,
+    "warning_count": 2,
+    "entity_count": 173,
+    "category_counts": {
+      "constraint": 8,
+      "interest": 15,
+      "knowledge": 23,
+      "language": 1,
+      "project": 27,
+      "skill": 17,
+      "soft_skill": 8,
+      "tool": 74
+    },
+    "unique_entity_ids": 173,
+    "graph_node_ids": 365,
+    "unique_aliases": 490,
+    "alias_conflicts": 0,
+    "external_refs": 59,
+    "low_similarity_external_refs": 0,
+    "profiles": 2,
+    "profile_mapped_node_ids": 100
+  },
+  "checks": {
+    "entity_id_unique": true,
+    "entity_prefix_valid": true,
+    "alias_conflict_free": true,
+    "extracted_traceable": true,
+    "extracted_needs_review": true,
+    "external_refs_valid": true,
+    "profiles_resolve_mapped_nodes": true
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "code": "alias_too_long",
+      "message": "alias 可能包含噪声：microservice architecture",
+      "context": "skills_enriched.json.knowledge[13].aliases",
+      "sample": "knowledge_microservice_architecture"
+    },
+    {
+      "code": "alias_contains_noise_keyword",
+      "message": "alias 可能包含噪声：CI/CD 平台项目",
+      "context": "skills_enriched.json.project[18].name",
+      "sample": "project_ci_cd_platform"
+    }
+  ],
+  "samples": {
+    "alias_conflicts": [],
+    "suspicious_aliases": [
+      {
+        "code": "alias_too_long",
+        "message": "alias 可能包含噪声：microservice architecture",
+        "context": "skills_enriched.json.knowledge[13].aliases",
+        "sample": "knowledge_microservice_architecture"
+      },
+      {
+        "code": "alias_contains_noise_keyword",
+        "message": "alias 可能包含噪声：CI/CD 平台项目",
+        "context": "skills_enriched.json.project[18].name",
+        "sample": "project_ci_cd_platform"
+      }
+    ],
+    "low_similarity_external_refs": []
+  }
+}
