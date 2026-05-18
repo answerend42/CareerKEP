@@ -1,0 +1,32 @@
+{
+  "documents": [
+    {
+      "doc_id": "web-wiki-docker-a8eff6691b9f",
+      "source": "web/wiki",
+      "title": "Docker",
+      "text": "Docker是一个开放源代码的容器构建、分发与运行的工具链与平台，用于开发、交付和运行应用。Docker允许用户将基础设施（Infrastructure）中的应用单独分割出来，形成更小的颗粒（容器），从而提高交付软件的速度。\n",
+      "url": "https://zh.wikipedia.org/wiki/Docker",
+      "license": "CC-BY-SA-4.0",
+      "fetched_at": "2026-05-17T11:35:05+00:00",
+      "entity_hint": "docker",
+      "lang": "zh",
+      "query": "Docker",
+      "wikibase_item": "Q15206305",
+      "revision": "91737530"
+    },
+    {
+      "doc_id": "web-wiki-docker-fdaab4ff8ff3",
+      "source": "web/wiki",
+      "title": "容器",
+      "text": "容器 是一種基礎工具。泛指任何可以用於容納其它物品的工具，可以部份或完全封閉，被用於容納、儲存、運輸物品。物體可以被放置在容器中，而容器則可以保護內容物。\n",
+      "url": "https://zh.wikipedia.org/wiki/%E5%AE%B9%E5%99%A8",
+      "license": "CC-BY-SA-4.0",
+      "fetched_at": "2026-05-17T11:35:05+00:00",
+      "entity_hint": "docker",
+      "lang": "zh",
+      "query": "容器",
+      "wikibase_item": "Q987767",
+      "revision": "90543350"
+    }
+  ]
+}

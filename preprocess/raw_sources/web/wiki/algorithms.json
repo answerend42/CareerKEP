@@ -1,0 +1,18 @@
+{
+  "documents": [
+    {
+      "doc_id": "web-wiki-algorithms-3ff3df121870",
+      "source": "web/wiki",
+      "title": "算法",
+      "text": "算法，在数学（算学）和计算机科学中指一个被定义好的、计算机可施行其指示的有限步骤或次序，常用于计算、数据处理和自动推理。算法可以使用条件语句通过各种途径转移代码执行（称为自动决策），并推导出有效的推论（称为自动推理），最终实现自动化。\n",
+      "url": "https://zh.wikipedia.org/wiki/%E7%AE%97%E6%B3%95",
+      "license": "CC-BY-SA-4.0",
+      "fetched_at": "2026-05-17T11:34:00+00:00",
+      "entity_hint": "algorithms",
+      "lang": "zh",
+      "query": "算法",
+      "wikibase_item": "Q8366",
+      "revision": "90047180"
+    }
+  ]
+}

@@ -1,22 +1,280 @@
 {
-  "python": ["python", "py", "python开发", "会 python"],
-  "sql": ["sql", "mysql", "postgresql", "数据库", "表设计"],
-  "frontend_project": ["前端项目", "前端项目经验", "web项目", "前端页面", "做过前端项目"],
-  "team_collab": ["团队协作", "协作", "配合", "合作"],
-  "weak_cpp": ["不擅长 c++", "不擅长c++", "c++弱", "不喜欢 c++", "不喜欢c++"],
-  "machine_learning_basics": ["机器学习", "ml", "机器学习基础", "做过机器学习"],
-  "statistics": ["统计", "概率", "数学", "统计基础"],
-  "linux": ["linux", "shell", "命令行", "终端"],
-  "product_thinking": ["产品思维", "用户思维", "懂产品"],
-  "communication": ["沟通", "表达", "沟通表达"],
-  "algorithms": ["算法", "数据结构", "刷题"],
-  "data_cleaning": ["数据清洗", "数据处理", "清洗数据"],
-  "docker": ["docker", "容器", "部署"],
-  "api_design": ["接口设计", "rest api", "api", "后端接口"],
-  "backend_engineering": ["后端", "后端工程", "后端开发"],
-  "web_backend": ["web后端", "web 后端", "服务端开发"],
-  "machine_learning": ["机器学习方向", "ml方向", "算法工程"],
-  "data_direction": ["数据方向", "数据工程方向", "数据开发"],
-  "frontend_direction": ["前端方向", "前端开发方向"]
+  "python": [
+    "python",
+    "py",
+    "python开发",
+    "会 python"
+  ],
+  "sql": [
+    "sql",
+    "mysql",
+    "postgresql",
+    "数据库",
+    "表设计"
+  ],
+  "frontend_project": [
+    "前端项目",
+    "前端项目经验",
+    "web项目",
+    "前端页面",
+    "做过前端项目",
+    "frontend_project"
+  ],
+  "team_collab": [
+    "团队协作",
+    "协作",
+    "配合",
+    "合作",
+    "team_collab"
+  ],
+  "weak_cpp": [
+    "不擅长 c++",
+    "不擅长c++",
+    "c++弱",
+    "不喜欢 c++",
+    "不喜欢c++",
+    "不擅长c",
+    "weak_cpp"
+  ],
+  "machine_learning_basics": [
+    "机器学习",
+    "ml",
+    "机器学习基础",
+    "做过机器学习",
+    "machine_learning_basics"
+  ],
+  "statistics": [
+    "统计",
+    "概率",
+    "数学",
+    "统计基础",
+    "statistics"
+  ],
+  "linux": [
+    "linux",
+    "shell",
+    "命令行",
+    "终端"
+  ],
+  "product_thinking": [
+    "产品思维",
+    "用户思维",
+    "懂产品",
+    "product_thinking"
+  ],
+  "communication": [
+    "沟通",
+    "表达",
+    "沟通表达",
+    "communication"
+  ],
+  "algorithms": [
+    "算法",
+    "数据结构",
+    "刷题",
+    "algorithms",
+    "算法与数据结构"
+  ],
+  "data_cleaning": [
+    "数据清洗",
+    "数据处理",
+    "清洗数据",
+    "data_cleaning"
+  ],
+  "docker": [
+    "docker",
+    "容器",
+    "部署"
+  ],
+  "api_design": [
+    "接口设计",
+    "rest api",
+    "api",
+    "后端接口",
+    "api_design"
+  ],
+  "backend_engineering": [
+    "后端",
+    "后端工程",
+    "后端开发",
+    "backend_engineering",
+    "后端工程能力"
+  ],
+  "web_backend": [
+    "web后端",
+    "web 后端",
+    "服务端开发",
+    "web_backend",
+    "Web 后端方向"
+  ],
+  "machine_learning": [
+    "机器学习方向",
+    "ml方向",
+    "算法工程",
+    "Machine Learning"
+  ],
+  "data_direction": [
+    "数据方向",
+    "数据工程方向",
+    "数据开发",
+    "data_direction",
+    "数据"
+  ],
+  "frontend_direction": [
+    "前端方向",
+    "前端开发方向",
+    "frontend_direction"
+  ],
+  "programming_fundamentals": [
+    "编程基础",
+    "programming_fundamentals",
+    "编程"
+  ],
+  "math_fundamentals": [
+    "数学基础",
+    "math_fundamentals"
+  ],
+  "data_engineering": [
+    "Data Engineering",
+    "数据工程能力",
+    "数据工程",
+    "数据"
+  ],
+  "frontend_engineering": [
+    "frontend_engineering",
+    "前端工程能力",
+    "前端工程",
+    "前端"
+  ],
+  "data_tooling": [
+    "data_tooling",
+    "数据工具链",
+    "数据"
+  ],
+  "ml_basics": [
+    "ml_basics",
+    "机器学习能力"
+  ],
+  "ml_engineering": [
+    "ml-engineering",
+    "机器学习工程能力",
+    "机器学习工程"
+  ],
+  "database_practice": [
+    "database_practice",
+    "数据库实践"
+  ],
+  "data_engineer": [
+    "data-engineer",
+    "数据工程师",
+    "数据"
+  ],
+  "backend_engineer": [
+    "backend_engineer",
+    "后端开发工程师"
+  ],
+  "web_fundamentals": [
+    "web_fundamentals",
+    "Web 基础",
+    "web"
+  ],
+  "backend_tech_stack": [
+    "backend_tech_stack",
+    "后端技术栈"
+  ],
+  "communication_skill": [
+    "communication_skill",
+    "沟通能力"
+  ],
+  "frontend_engineer": [
+    "frontend_engineer",
+    "前端开发工程师",
+    "前端开发",
+    "前端"
+  ],
+  "ml_engineer": [
+    "ml_engineer",
+    "机器学习工程师"
+  ],
+  "pytorch": [
+    "pytorch",
+    "torch"
+  ],
+  "tensorflow": [
+    "tensorflow",
+    "tf"
+  ],
+  "bert": [
+    "bert"
+  ],
+  "transformer": [
+    "transformer",
+    "transformers"
+  ],
+  "nlp": [
+    "nlp",
+    "自然语言处理"
+  ],
+  "spacy": [
+    "spacy"
+  ],
+  "gpt": [
+    "gpt",
+    "gpt-4",
+    "gpt-3"
+  ],
+  "llm": [
+    "llm",
+    "大模型",
+    "large language model"
+  ],
+  "mongodb": [
+    "mongodb",
+    "mongo"
+  ],
+  "git": [
+    "git"
+  ],
+  "fastapi": [
+    "fastapi"
+  ],
+  "redis": [
+    "redis",
+    "缓存"
+  ],
+  "kubernetes": [
+    "kubernetes",
+    "k8s"
+  ],
+  "huggingface": [
+    "huggingface",
+    "hf",
+    "hugging face"
+  ],
+  "langchain": [
+    "langchain"
+  ],
+  "prompt_engineering": [
+    "prompt engineering",
+    "提示词工程",
+    "prompt"
+  ],
+  "fine_tuning": [
+    "fine-tuning",
+    "fine tuning",
+    "微调"
+  ],
+  "rag": [
+    "rag",
+    "retrieval-augmented generation",
+    "检索增强"
+  ],
+  "llama": [
+    "llama",
+    "llama2",
+    "llama3"
+  ],
+  "java": [
+    "java"
+  ]
 }
-

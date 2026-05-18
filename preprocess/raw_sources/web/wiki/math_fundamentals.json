@@ -1,0 +1,18 @@
+{
+  "documents": [
+    {
+      "doc_id": "web-wiki-math_fundamentals-5384fb99eba3",
+      "source": "web/wiki",
+      "title": "数学基础",
+      "text": "数学上，数学基础 一词有时候用于数学的特定领域，例如数理逻辑，公理化集合论，证明论，模型论，和递归论（可計算性理論）。但是寻求数学的基础也是数学哲学的中心问题：在什么终极基础上命题可以称为“真”?\n",
+      "url": "https://zh.wikipedia.org/wiki/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80",
+      "license": "CC-BY-SA-4.0",
+      "fetched_at": "2026-05-17T11:28:58+00:00",
+      "entity_hint": "math_fundamentals",
+      "lang": "zh",
+      "query": "数学基础",
+      "wikibase_item": "Q833585",
+      "revision": "88069448"
+    }
+  ]
+}

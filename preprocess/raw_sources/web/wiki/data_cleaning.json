@@ -1,0 +1,32 @@
+{
+  "documents": [
+    {
+      "doc_id": "web-wiki-data_cleaning-20ce3eab015b",
+      "source": "web/wiki",
+      "title": "数据清洗",
+      "text": "数据清洗 是从记录集、数据库表或数据库中检测和纠正（或删除）损坏或不准确的记录的过程，是指识别数据的不完整、不正确、不准确或不相关部分，然后替换、修改、或删除脏数据或粗数据。数据清洗可以与数据加工工具交互执行，也可以通过脚本进行批处理。\n",
+      "url": "https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97",
+      "license": "CC-BY-SA-4.0",
+      "fetched_at": "2026-05-17T11:35:01+00:00",
+      "entity_hint": "data_cleaning",
+      "lang": "zh",
+      "query": "数据清洗",
+      "wikibase_item": "Q1172378",
+      "revision": "69969659"
+    },
+    {
+      "doc_id": "web-wiki-data_cleaning-e828a2545d4c",
+      "source": "web/wiki",
+      "title": "数据处理",
+      "text": "数据处理通常是指“收集和操作数据项以产生有意义的信息。”\n",
+      "url": "https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86",
+      "license": "CC-BY-SA-4.0",
+      "fetched_at": "2026-05-17T11:35:01+00:00",
+      "entity_hint": "data_cleaning",
+      "lang": "zh",
+      "query": "数据处理",
+      "wikibase_item": "Q6661985",
+      "revision": "91015610"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "documents": [
+    {
+      "doc_id": "web-wiki-python-9e310953b731",
+      "source": "web/wiki",
+      "title": "Python",
+      "text": "Python，是一种广泛使用的解释型、高级和通用的编程语言。Python支持多种编程范型，包括结构化、过程式、反射式、面向对象和函数式编程。它拥有动态类型系统和垃圾回收功能，能够自动管理内存使用，并且其本身拥有一个巨大而广泛的标准库。它的语言结构以及面向对象的方法，旨在帮助程序员为小型的和大型的项目编写逻辑清晰的代码。\n",
+      "url": "https://zh.wikipedia.org/wiki/Python",
+      "license": "CC-BY-SA-4.0",
+      "fetched_at": "2026-05-17T11:37:05+00:00",
+      "entity_hint": "python",
+      "lang": "zh",
+      "query": "Python",
+      "wikibase_item": "Q28865",
+      "revision": "92534102"
+    }
+  ]
+}

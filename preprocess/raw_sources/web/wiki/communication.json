@@ -1,0 +1,18 @@
+{
+  "documents": [
+    {
+      "doc_id": "web-wiki-communication-21b34cfc11e9",
+      "source": "web/wiki",
+      "title": "沟通",
+      "text": "溝通 廣義而言指資訊的傳達。精確定義尚存在分歧，癥結於其是否包含無意和失敗的傳達，以及傳遞意義之外是否也創造意義。耶魯大學教授約翰·杜翰姆·彼得斯定義溝通為“對自我與他人、私人與公共、內在思想和外在言語之間痛苦分歧的明顯答案，此見解描繪我們在歷史此時此刻奇異的人生”。彼得斯認為，定義溝通的困難源於此一事實，即溝通既是一種普遍現象（因為每個人都進行溝通），又是學術研究機構下的特定學門。\n",
+      "url": "https://zh.wikipedia.org/wiki/%E6%B2%9F%E9%80%9A",
+      "license": "CC-BY-SA-4.0",
+      "fetched_at": "2026-05-17T11:34:16+00:00",
+      "entity_hint": "communication",
+      "lang": "zh",
+      "query": "沟通",
+      "wikibase_item": "Q11024",
+      "revision": "92587330"
+    }
+  ]
+}

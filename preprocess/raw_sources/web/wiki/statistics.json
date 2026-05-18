@@ -1,0 +1,18 @@
+{
+  "documents": [
+    {
+      "doc_id": "web-wiki-statistics-727a9f85ce71",
+      "source": "web/wiki",
+      "title": "统计学",
+      "text": "统计学是一门收集数据、分析数据，并根据数据进行推断的艺术和科学。最初与政府收集的数据有关，现在包括了范围广泛的方法和理论。該学科自17世纪中叶产生并逐步发展起来，廣泛地應用在各門學科，從自然科学、社會科學到人文學科，甚至被用於工商業及政府的情報決策。隨著大数据時代來臨，統計的面貌也逐漸改變，與資訊、計算等領域密切結合，是數據科學中的重要主軸之一。\n",
+      "url": "https://zh.wikipedia.org/wiki/%E7%BB%9F%E8%AE%A1%E5%AD%A6",
+      "license": "CC-BY-SA-4.0",
+      "fetched_at": "2026-05-17T11:38:00+00:00",
+      "entity_hint": "statistics",
+      "lang": "zh",
+      "query": "统计",
+      "wikibase_item": "Q12483",
+      "revision": "89301040"
+    }
+  ]
+}

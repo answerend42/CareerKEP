@@ -1,0 +1,18 @@
+{
+  "documents": [
+    {
+      "doc_id": "web-wiki-data_engineering-5ac979be0b09",
+      "source": "web/wiki",
+      "title": "Data engineering",
+      "text": "Data engineering is a software engineering approach to the building of data systems, to enable the collection and usage of data. This data is usually used to enable subsequent analysis and data science, which often involves machine learning. Making the data usable usually involves substantial computing and storage, as well as data processing.",
+      "url": "https://en.wikipedia.org/wiki/Data_engineering",
+      "license": "CC-BY-SA-4.0",
+      "fetched_at": "2026-05-17T11:31:02+00:00",
+      "entity_hint": "data_engineering",
+      "lang": "en",
+      "query": "data_engineering",
+      "wikibase_item": "Q104659521",
+      "revision": "1352232653"
+    }
+  ]
+}
