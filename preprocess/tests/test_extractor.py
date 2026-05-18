@@ -45,8 +45,15 @@ class ExtractorTests(unittest.TestCase):
         """流水线应该能直接产出结构化统计结果。"""
 
         with tempfile.TemporaryDirectory() as tmp_dir:
-            output_dir = Path(tmp_dir) / "output"
-            result = run_pipeline(output_dir=output_dir)
+            tmp_root = Path(tmp_dir)
+            output_dir = tmp_root / "output"
+            # 复制 demo_corpus 到临时输入目录，避免 raw_sources/ 下被 data_engine
+            # 等上游写入新文件后污染本测试的计数预期。
+            input_dir = tmp_root / "input"
+            input_dir.mkdir()
+            demo = Path(__file__).resolve().parents[1] / "raw_sources" / "demo_corpus.json"
+            (input_dir / demo.name).write_bytes(demo.read_bytes())
+            result = run_pipeline(input_dir=input_dir, output_dir=output_dir)
             catalog_payload = json.loads((output_dir / "entity_catalog.json").read_text(encoding="utf-8"))
             alias_index_payload = json.loads((output_dir / "alias_index.json").read_text(encoding="utf-8"))
             disambiguation_trace_payload = json.loads((output_dir / "disambiguation_trace.json").read_text(encoding="utf-8"))
