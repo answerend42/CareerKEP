@@ -5,7 +5,6 @@ import {
   buildRecommendationResponse,
   buildRobustnessReport,
   defaultDemoState,
-  getDemoCopy,
   getRoleOptions,
   scenarioPresets
 } from './demoData';
@@ -13,16 +12,11 @@ import { GraphPane } from './panes/GraphPane';
 import { InputPane } from './panes/InputPane';
 import { ResultPane } from './panes/ResultPane';
 import { TunePane } from './panes/TunePane';
-import type { DemoState, RecommendationResponse, RunStatus } from './types';
+import type { DemoState, RecommendationResponse } from './types';
 
-const stepLabels = ['输入画像', '调整参数', '图谱传播', '结果解释'] as const;
+const stepLabels = ['输入画像', '微调画像', '图谱传播', '结果解释'] as const;
+type StepLabel = (typeof stepLabels)[number];
 const requestTimeoutMs = 6000;
-
-const localRunStatus: RunStatus = {
-  source: 'local-demo',
-  label: '本地模拟结果',
-  detail: '当前由前端 demoData 直接生成，便于离线演示和后端未启动时查看。'
-};
 
 const layerOrder = ['evidence', 'ability', 'composite', 'direction', 'role'] as const;
 const layerLabelMap: Record<string, string> = {
@@ -197,25 +191,40 @@ const pickDefaultSelectedNodeId = (response: RecommendationResponse): string | n
 
 export function AppShell() {
   const [state, setState] = useState<DemoState>(defaultDemoState);
-  const [activeStep, setActiveStep] = useState<(typeof stepLabels)[number]>('输入画像');
+  const [activeStep, setActiveStep] = useState<StepLabel>('输入画像');
+  const [maxUnlockedStepIndex, setMaxUnlockedStepIndex] = useState(0);
   const [lastRun, setLastRun] = useState<RecommendationResponse>(() => buildRecommendationResponse(defaultDemoState));
   const [isRunning, setIsRunning] = useState(false);
-  const [runStatus, setRunStatus] = useState<RunStatus>(localRunStatus);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(() => pickDefaultSelectedNodeId(buildRecommendationResponse(defaultDemoState)));
 
   const roleOptions = useMemo(() => getRoleOptions(), []);
-  const demoCopy = useMemo(() => getDemoCopy(lastRun), [lastRun]);
   const robustnessReport = useMemo(() => buildRobustnessReport(state), [state]);
   const normalPresets = useMemo(() => scenarioPresets.filter((item) => item.kind === 'normal'), []);
   const stressPresets = useMemo(() => scenarioPresets.filter((item) => item.kind === 'stress'), []);
+  const activeStepIndex = stepLabels.indexOf(activeStep);
+  const previousStep = activeStepIndex > 0 ? stepLabels[activeStepIndex - 1] : null;
+  const topRoleLabel = lastRun.recommendations[0]?.label ?? lastRun.targetRoleAnalysis.label;
+
+  const unlockAndGoToStep = (step: StepLabel) => {
+    const stepIndex = stepLabels.indexOf(step);
+    setMaxUnlockedStepIndex((current) => Math.max(current, stepIndex));
+    setActiveStep(step);
+  };
+
+  const goToUnlockedStep = (step: StepLabel) => {
+    const stepIndex = stepLabels.indexOf(step);
+    if (stepIndex <= maxUnlockedStepIndex) {
+      setActiveStep(step);
+    }
+  };
 
   const updateState = <K extends keyof DemoState>(key: K, value: DemoState[K]) => {
     setState((current) => {
       const nextState = { ...current, [key]: value };
       setLastRun(buildRecommendationResponse(nextState));
-      setRunStatus(localRunStatus);
       return nextState;
     });
+    setMaxUnlockedStepIndex(0);
   };
 
   const applyPreset = (presetId: string) => {
@@ -227,8 +236,8 @@ export function AppShell() {
     const nextResponse = buildRecommendationResponse(preset.state);
     setState(preset.state);
     setLastRun(nextResponse);
-    setRunStatus(localRunStatus);
     setSelectedNodeId(pickDefaultSelectedNodeId(nextResponse));
+    setMaxUnlockedStepIndex(0);
     setActiveStep('输入画像');
   };
 
@@ -236,8 +245,8 @@ export function AppShell() {
     const nextResponse = buildRecommendationResponse(defaultDemoState);
     setState(defaultDemoState);
     setLastRun(nextResponse);
-    setRunStatus(localRunStatus);
     setSelectedNodeId(pickDefaultSelectedNodeId(nextResponse));
+    setMaxUnlockedStepIndex(0);
     setActiveStep('输入画像');
   };
 
@@ -270,27 +279,12 @@ export function AppShell() {
       const payload = normalizeRecommendationResponse(rawPayload, state);
       setLastRun(payload);
       setSelectedNodeId(pickDefaultSelectedNodeId(payload));
-      setRunStatus({
-        source: 'backend',
-        label: '后端推荐结果',
-        detail: '当前内容来自 `/api/recommend`，可以直接和本地模拟结果对比。'
-      });
-      setActiveStep('结果解释');
-    } catch (error) {
-      const detail =
-        error instanceof DOMException && error.name === 'AbortError'
-          ? '后端请求超时，页面已回退到本地模拟结果。'
-          : '后端请求失败，页面已回退到本地模拟结果。';
-
+      unlockAndGoToStep('微调画像');
+    } catch {
       const fallbackResponse = buildRecommendationResponse(state);
       setLastRun(fallbackResponse);
       setSelectedNodeId(pickDefaultSelectedNodeId(fallbackResponse));
-      setRunStatus({
-        source: 'local-demo',
-        label: '本地模拟结果',
-        detail
-      });
-      setActiveStep('结果解释');
+      unlockAndGoToStep('微调画像');
     } finally {
       window.clearTimeout(timeoutId);
       setIsRunning(false);
@@ -302,12 +296,10 @@ export function AppShell() {
     setState(nextState);
     setLastRun(nextResponse);
     setSelectedNodeId(pickDefaultSelectedNodeId(nextResponse));
-    setRunStatus(localRunStatus);
   };
 
-  const selectGraphNode = (nodeId: string) => {
+  const selectNode = (nodeId: string) => {
     setSelectedNodeId(nodeId);
-    setActiveStep('图谱传播');
   };
 
   const exportDiagnosticSnapshot = () => {
@@ -342,69 +334,10 @@ export function AppShell() {
     }
   };
 
-  return (
-    <div className="page-shell">
-      <div className="ambient ambient-left" />
-      <div className="ambient ambient-right" />
-
-      <header className="hero-card">
-        <div className="hero-copy">
-          <p className="eyebrow">Career KG 前端工作台</p>
-          <h1>把自然语言画像，变成可解释的职业推荐</h1>
-          <p className="hero-text">
-            这个前端围绕四个阶段展开：输入画像、调整参数、图谱传播、结果解释。你可以直接跑本地演示，也可以接到后端
-            `/api/recommend`。
-          </p>
-          <div className="hero-metrics">
-            <div>
-              <strong>{lastRun.graphSnapshot.nodeCount}</strong>
-              <span>图谱节点</span>
-            </div>
-            <div>
-              <strong>{lastRun.graphSnapshot.edgeCount}</strong>
-              <span>传播边</span>
-            </div>
-            <div>
-              <strong>{lastRun.recommendations.length}</strong>
-              <span>正式推荐</span>
-            </div>
-            <div>
-              <strong>{state.evidence.length}</strong>
-              <span>可调证据</span>
-            </div>
-          </div>
-        </div>
-        <aside className="hero-aside">
-          <div className="summary-card">
-            <span className="summary-label">当前结论</span>
-            <h2>{demoCopy.headline}</h2>
-            <p>{demoCopy.summary}</p>
-            <p className="summary-note">{demoCopy.targetLine}</p>
-            <div className="run-status">
-              <span className={`run-status-badge ${runStatus.source === 'backend' ? 'success' : 'warning'}`}>
-                {runStatus.label}
-              </span>
-              <small>{runStatus.detail}</small>
-            </div>
-          </div>
-          <div className="step-rail" aria-label="四阶段导航">
-            {stepLabels.map((label, index) => (
-              <button
-                key={label}
-                className={`step-pill ${activeStep === label ? 'active' : ''}`}
-                onClick={() => setActiveStep(label)}
-                type="button"
-              >
-                <span>{index + 1}</span>
-                {label}
-              </button>
-            ))}
-          </div>
-        </aside>
-      </header>
-
-      <main className="workspace-grid">
-        <section className="panel panel-input">
+  const renderActivePane = () => {
+    if (activeStep === '输入画像') {
+      return (
+        <section className="pane pane-support">
           <InputPane
             state={state}
             roleOptions={roleOptions}
@@ -417,35 +350,113 @@ export function AppShell() {
             isRunning={isRunning}
           />
         </section>
+      );
+    }
 
-        <section className="panel panel-tune">
+    if (activeStep === '微调画像') {
+      return (
+        <section className="pane pane-support tune-pane">
           <TunePane
             state={state}
             onApply={(nextState) => syncAndPreview(nextState)}
-            activeStep={activeStep}
+            onNext={() => unlockAndGoToStep('图谱传播')}
           />
         </section>
+      );
+    }
 
-        <section className="panel panel-graph">
+    if (activeStep === '图谱传播') {
+      return (
+        <section className="pane pane-graph">
           <GraphPane
             snapshot={lastRun.propagationSnapshot}
-            activeStep={activeStep}
             selectedNodeId={selectedNodeId}
-            onSelectNode={selectGraphNode}
+            onSelectNode={selectNode}
+            onNext={() => unlockAndGoToStep('结果解释')}
           />
         </section>
+      );
+    }
 
-        <section className="panel panel-result">
-          <ResultPane
-            response={lastRun}
-            activeStep={activeStep}
-            robustnessReport={robustnessReport}
-            runStatus={runStatus}
-            onExportSnapshot={exportDiagnosticSnapshot}
-            onCopySnapshot={copyDiagnosticSnapshot}
-            selectedNodeId={selectedNodeId}
-          />
-        </section>
+    return (
+      <section className="pane pane-results">
+        <ResultPane
+          response={lastRun}
+          robustnessReport={robustnessReport}
+          onExportSnapshot={exportDiagnosticSnapshot}
+          onCopySnapshot={copyDiagnosticSnapshot}
+          onSelectNode={selectNode}
+          selectedNodeId={selectedNodeId}
+        />
+      </section>
+    );
+  };
+
+  return (
+    <div className="app-shell app-shell--pager">
+      <nav className="presentation-nav" aria-label="演示页面切换">
+        <div className="deck-title">
+          <span>Career KG</span>
+          <strong>知识图谱职业推荐</strong>
+        </div>
+
+        <div className="page-tabs" role="tablist" aria-label="演示步骤">
+          {stepLabels.map((label, index) => {
+            const isUnlocked = index <= maxUnlockedStepIndex;
+            return (
+              <button
+                key={label}
+                className={`page-tab ${activeStep === label ? 'is-active' : ''} ${isUnlocked ? '' : 'is-locked'}`}
+                type="button"
+                role="tab"
+                aria-selected={activeStep === label}
+                aria-disabled={!isUnlocked}
+                disabled={!isUnlocked}
+                onClick={() => goToUnlockedStep(label)}
+              >
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{label}</strong>
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="deck-actions">
+          {previousStep ? (
+            <button className="ghost-button compact-control" type="button" onClick={() => goToUnlockedStep(previousStep)}>
+              上一步
+            </button>
+          ) : null}
+        </div>
+      </nav>
+
+      <main className="presentation-page">
+        <div key={activeStep} className={`presentation-slide motion-page motion-page--${activeStepIndex + 1}`}>
+          <div className="stage-summary" aria-label="推荐摘要">
+            <div>
+              <h1>{topRoleLabel}</h1>
+            </div>
+            <div className="metric-strip">
+              <span>
+                <strong>{lastRun.graphSnapshot.nodeCount}</strong>
+                图谱节点
+              </span>
+              <span>
+                <strong>{lastRun.graphSnapshot.edgeCount}</strong>
+                传播边
+              </span>
+              <span>
+                <strong>{lastRun.recommendations.length}</strong>
+                正式推荐
+              </span>
+              <span>
+                <strong>{state.evidence.length}</strong>
+                可调证据
+              </span>
+            </div>
+          </div>
+          {renderActivePane()}
+        </div>
       </main>
     </div>
   );

@@ -3,7 +3,7 @@ import type { DemoState } from '../types';
 interface TunePaneProps {
   state: DemoState;
   onApply: (nextState: DemoState) => void;
-  activeStep: string;
+  onNext: () => void;
 }
 
 const updateTuning = (state: DemoState, key: keyof DemoState['tuning'], value: number): DemoState => ({
@@ -14,71 +14,86 @@ const updateTuning = (state: DemoState, key: keyof DemoState['tuning'], value: n
   }
 });
 
-export function TunePane({ state, onApply, activeStep }: TunePaneProps) {
+export function TunePane({ state, onApply, onNext }: TunePaneProps) {
   const applyTuning = (key: keyof DemoState['tuning'], value: number) => {
     const nextState = updateTuning(state, key, value);
     onApply(nextState);
   };
 
   return (
-    <div className="pane-stack">
+    <div className="pane-stack tune-workflow">
       <div className="pane-header">
         <div>
-          <p className="pane-kicker">阶段 2</p>
           <h2>微调画像</h2>
         </div>
-        <span className="status-badge">{activeStep === '微调画像' ? '当前聚焦' : '可调整'}</span>
-      </div>
-
-      <div className="slider-group">
-        <label className="field">
-          <span>信心权重</span>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={state.tuning.confidence}
-            onChange={(event) => applyTuning('confidence', Number(event.target.value))}
-          />
-          <strong>{state.tuning.confidence.toFixed(2)}</strong>
-        </label>
-
-        <label className="field">
-          <span>探索权重</span>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={state.tuning.exploration}
-            onChange={(event) => applyTuning('exploration', Number(event.target.value))}
-          />
-          <strong>{state.tuning.exploration.toFixed(2)}</strong>
-        </label>
-
-        <label className="field">
-          <span>负向容忍度</span>
-          <input
-            type="range"
-            min={0}
-            max={1}
-            step={0.01}
-            value={state.tuning.penaltyTolerance}
-            onChange={(event) => applyTuning('penaltyTolerance', Number(event.target.value))}
-          />
-          <strong>{state.tuning.penaltyTolerance.toFixed(2)}</strong>
-        </label>
-      </div>
-
-      <div className="micro-summary">
-        <div>
-          <span>当前策略</span>
-          <p>更高的信心会放大直接命中，更高的探索会保留更多 bridge 候选。</p>
+        <div className="header-inline-actions">
+          <button className="primary-button next-step-button" type="button" onClick={onNext}>
+            下一步：看图谱
+          </button>
         </div>
-        <div>
-          <span>设计原则</span>
-          <p>前端不直接篡改推荐逻辑，只把画像和场景参数组织成可视化输入。</p>
+      </div>
+
+      <div className="pane-scroll tune-scroll">
+        <div className="tune-list">
+          <article className="tune-row">
+            <div className="tune-name">
+              <span>系统</span>
+              <strong>信心权重</strong>
+            </div>
+            <label className="tune-control">
+              <input
+                className="editor-range"
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={state.tuning.confidence}
+                onChange={(event) => applyTuning('confidence', Number(event.target.value))}
+              />
+              <strong>{state.tuning.confidence.toFixed(2)}</strong>
+              <em>直接命中</em>
+            </label>
+          </article>
+
+          <article className="tune-row">
+            <div className="tune-name">
+              <span>探索</span>
+              <strong>探索权重</strong>
+            </div>
+            <label className="tune-control">
+              <input
+                className="editor-range"
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={state.tuning.exploration}
+                onChange={(event) => applyTuning('exploration', Number(event.target.value))}
+              />
+              <strong>{state.tuning.exploration.toFixed(2)}</strong>
+              <em>候选保留</em>
+            </label>
+          </article>
+
+          <article className="tune-row">
+            <div className="tune-name">
+              <span>约束</span>
+              <strong>负向容忍度</strong>
+            </div>
+            <label className="tune-control">
+              <input
+                className="editor-range"
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={state.tuning.penaltyTolerance}
+                onChange={(event) => applyTuning('penaltyTolerance', Number(event.target.value))}
+              />
+              <strong>{state.tuning.penaltyTolerance.toFixed(2)}</strong>
+              <em>抑制放宽</em>
+            </label>
+          </article>
         </div>
       </div>
     </div>

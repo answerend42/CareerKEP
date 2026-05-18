@@ -11,13 +11,14 @@
     "test": "npm run build && npm run robustness:test"
   },
   "dependencies": {
+    "@antv/g6": "^5.1.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
+    "@types/node": "^24.3.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
-    "@types/node": "^24.3.0",
     "@vitejs/plugin-react": "^5.0.2",
     "typescript": "^5.8.3",
     "vite": "^7.1.2"

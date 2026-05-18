@@ -50,115 +50,126 @@ export function InputPane({
   };
 
   return (
-    <div className="pane-stack">
+    <div className="pane-stack input-workflow">
       <div className="pane-header">
         <div>
-          <p className="pane-kicker">阶段 1</p>
-          <h2>输入画像</h2>
+          <h2>填写个人画像</h2>
         </div>
-        <div className="button-row">
-          <button className="ghost-button" type="button" onClick={onReset} disabled={isRunning}>
+        <div className="header-inline-actions">
+          <button className="ghost-button header-peer-button" type="button" onClick={onReset} disabled={isRunning}>
             重置默认
           </button>
-          <button className="primary-button" type="button" onClick={onRun} disabled={isRunning}>
-            {isRunning ? '正在推荐...' : '执行推荐'}
+          <button className="primary-button next-step-button" type="button" onClick={onRun} disabled={isRunning}>
+            {isRunning ? '正在推荐...' : '生成推荐'}
           </button>
         </div>
       </div>
 
-      <p className="pane-hint">修改文本或证据后会自动重算图谱、推荐和鲁棒性摘要，方便单独调试前端演示。</p>
+      <div className="pane-scroll support-pane-scroll unified-input-flow">
+        <section className="section-card support-panel profile-editor">
+          <label className="field-block">
+            <span className="micro-label">画像描述</span>
+            <textarea
+              className="editor-textarea profile-textarea"
+              value={state.text}
+              onChange={(event) => onChange('text', event.target.value)}
+            />
+          </label>
+        </section>
 
-      <label className="field">
-        <span>自然语言画像</span>
-        <textarea
-          value={state.text}
-          onChange={(event) => onChange('text', event.target.value)}
-          rows={6}
-          placeholder="例如：我会 Python、SQL，做过前端项目，也比较擅长沟通。"
-        />
-      </label>
+        <section className="section-card input-control-panel">
+          <div className="field-grid">
+            <label className="field-block">
+              <span className="micro-label">目标岗位</span>
+              <select className="editor-select" value={state.targetRole} onChange={(event) => onChange('targetRole', event.target.value)}>
+                {roleOptions.map((item) => (
+                  <option key={item.nodeId} value={item.label}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-      <div className="field-grid">
-        <label className="field">
-          <span>目标岗位</span>
-          <select value={state.targetRole} onChange={(event) => onChange('targetRole', event.target.value)}>
-            {roleOptions.map((item) => (
-              <option key={item.nodeId} value={item.label}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="field">
-          <span>Top K</span>
-          <input
-            type="number"
-            min={3}
-            max={10}
-            value={state.topK}
-            onChange={(event) => onChange('topK', Number(event.target.value))}
-          />
-        </label>
-      </div>
-
-      <div className="preset-row">
-        <span className="field-caption">快捷场景</span>
-        <div className="chip-row">
-          {presets.map((preset) => (
-            <button key={preset.id} type="button" className="chip" onClick={() => onPreset(preset.id)}>
-              {preset.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="preset-row">
-        <span className="field-caption">极端测试</span>
-        <div className="chip-row">
-          {stressPresets.map((preset) => (
-            <button key={preset.id} type="button" className="chip stress" onClick={() => onPreset(preset.id)}>
-              {preset.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="evidence-grid">
-        {state.evidence.map((item) => (
-          <article key={item.nodeId} className="evidence-card">
-            <div className="evidence-card-head">
-              <div>
-                <strong>{item.label}</strong>
-                <p>{item.source}</p>
-              </div>
-              <span>{item.score.toFixed(2)}</span>
-            </div>
-
-            <label className="evidence-control">
-              <span>证据权重</span>
+            <label className="field-block">
+              <span className="micro-label">Top K</span>
               <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.01}
-                value={item.score}
-                onChange={(event) => handleEvidenceScoreChange(item.nodeId, Number(event.target.value))}
+                className="editor-input"
+                type="number"
+                min={3}
+                max={10}
+                value={state.topK}
+                onChange={(event) => onChange('topK', Number(event.target.value))}
               />
             </label>
+          </div>
 
-            <label className="evidence-control">
-              <span>证据原文（诊断导出）</span>
-              <textarea
-                rows={3}
-                value={item.rawText}
-                onChange={(event) => handleEvidenceTextChange(item.nodeId, event.target.value)}
-                placeholder="输入该证据在简历或自述里的原始表述"
-              />
-            </label>
-            <small className="evidence-note">权重会即时重算推荐，文本会同步进入诊断快照。</small>
-          </article>
-        ))}
+          <div className="preset-row">
+            <span className="micro-label">快捷场景</span>
+            <div className="chip-row">
+              {presets.map((preset) => (
+                <button key={preset.id} type="button" className="button-chip" onClick={() => onPreset(preset.id)}>
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="preset-row">
+            <span className="micro-label">极端测试</span>
+            <div className="chip-row">
+              {stressPresets.map((preset) => (
+                <button key={preset.id} type="button" className="button-chip stress" onClick={() => onPreset(preset.id)}>
+                  {preset.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section-card evidence-panel">
+          <div className="section-head">
+            <div>
+              <h3>结构化证据</h3>
+            </div>
+            <span className="mini-badge">{state.evidence.length} 条</span>
+          </div>
+          <div className="evidence-grid">
+            {state.evidence.map((item) => (
+              <article key={item.nodeId} className="signal-card evidence-card">
+                <div className="signal-topline">
+                  <div>
+                    <strong>{item.label}</strong>
+                    <p>{item.source}</p>
+                  </div>
+                  <span className="score-badge">{item.score.toFixed(2)}</span>
+                </div>
+
+                <label className="field-block compact-field">
+                  <span className="micro-label">证据权重</span>
+                  <input
+                    className="editor-range"
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={item.score}
+                    onChange={(event) => handleEvidenceScoreChange(item.nodeId, Number(event.target.value))}
+                  />
+                </label>
+
+                <label className="field-block compact-field">
+                  <span className="micro-label">证据原文</span>
+                  <textarea
+                    className="editor-textarea compact"
+                    rows={3}
+                    value={item.rawText}
+                    onChange={(event) => handleEvidenceTextChange(item.nodeId, event.target.value)}
+                  />
+                </label>
+              </article>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );

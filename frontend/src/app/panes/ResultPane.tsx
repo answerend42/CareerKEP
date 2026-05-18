@@ -1,11 +1,10 @@
-import type { RecommendationResponse, RobustnessReport, RunStatus, StageEdge, StageNode } from '../types';
+import type { RecommendationResponse, RobustnessReport, StageEdge, StageNode } from '../types';
 
 interface ResultPaneProps {
   response: RecommendationResponse;
-  activeStep: string;
   robustnessReport: RobustnessReport;
-  runStatus: RunStatus;
   selectedNodeId: string | null;
+  onSelectNode: (nodeId: string) => void;
   onExportSnapshot: () => void;
   onCopySnapshot: () => void;
 }
@@ -72,10 +71,9 @@ const collectReachableNodes = (
 
 export function ResultPane({
   response,
-  activeStep,
   robustnessReport,
-  runStatus,
   selectedNodeId,
+  onSelectNode,
   onExportSnapshot,
   onCopySnapshot
 }: ResultPaneProps) {
@@ -92,228 +90,159 @@ export function ResultPane({
 
   const selectedLayerLabel =
     response.propagationSnapshot.layers.find((layer) => layer.nodes.some((node) => node.id === selectedNodeId))?.label ?? '未选择';
+  const selectableResults = response.recommendations.length
+    ? response.recommendations
+    : response.nearMissRoles.length
+      ? response.nearMissRoles
+      : [];
+  const activeResult = selectableResults.find((item) => item.nodeId === selectedNodeId) ?? selectableResults[0] ?? null;
 
   return (
-    <div className="pane-stack">
-      <div className="pane-header">
-        <div>
-          <p className="pane-kicker">阶段 4</p>
-          <h2>结果解释</h2>
+    <div className="pane-stack result-workflow">
+      <div className="result-browser">
+        <div className="result-browser-head">
+          <h3>结果解释</h3>
+          <label className="field-block result-picker result-select-field">
+            <select
+              className="editor-select result-select-control"
+              value={activeResult?.nodeId ?? ''}
+              onChange={(event) => onSelectNode(event.target.value)}
+            >
+              {selectableResults.map((item) => (
+                <option key={item.nodeId} value={item.nodeId}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          {activeResult ? <strong className="result-degree">推荐分 {formatPercent(activeResult.score)}</strong> : null}
         </div>
-        <span className="status-badge">{activeStep === '结果解释' ? '当前焦点' : '输出摘要'}</span>
+
+        <section className="section-card detail-panel result-reveal">
+          <div className="section-head result-detail-head">
+            <div>
+              <h3>{activeResult?.label ?? ''}</h3>
+            </div>
+          </div>
+
+          {activeResult ? (
+            <ol className="path-cluster result-path-list">
+              <li className="result-path-row">
+                <span className="score-badge path-score-badge">{formatPercent(activeResult.score)}</span>
+                <div className="path-track">
+                  {(activeResult.path.length ? activeResult.path : [activeResult.label]).map((label, labelIndex) => (
+                    <div key={`${activeResult.nodeId}-${label}-${labelIndex}`} className="path-node">
+                      <span>{label}</span>
+                      {labelIndex < activeResult.path.length - 1 ? <i>→</i> : null}
+                    </div>
+                  ))}
+                </div>
+              </li>
+            </ol>
+          ) : null}
+
+          <div className="detail-grid">
+            <div className="mini-panel">
+              <h4>目标岗位分析</h4>
+              <div className="tag-row">
+                {response.targetRoleAnalysis.strengths.map((item) => (
+                  <span key={item} className="soft-chip accent-chip">
+                    {item}
+                  </span>
+                ))}
+                {response.targetRoleAnalysis.gaps.map((item) => (
+                  <span key={item} className="soft-chip warning-chip">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="mini-panel">
+              <h4>图谱锚点</h4>
+              {selectedNode ? (
+                <ul className="list-stack compact-list">
+                  <li>
+                    <span>节点</span>
+                    <strong>{selectedNode.label}</strong>
+                  </li>
+                  <li>
+                    <span>层级</span>
+                    <strong>{selectedLayerLabel}</strong>
+                  </li>
+                  <li>
+                    <span>关联边</span>
+                    <strong>{incomingEdges.length} 入 / {outgoingEdges.length} 出</strong>
+                  </li>
+                  <li>
+                    <span>可达岗位</span>
+                    <strong>{reachableRoles.length} 个</strong>
+                  </li>
+                </ul>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="detail-grid">
+            <div className="mini-panel">
+              <h4>正式推荐</h4>
+              <div className="result-card-list">
+                {response.recommendations.map((item) => (
+                  <button
+                    key={item.nodeId}
+                    type="button"
+                    className={`result-card result-card-button ${item.nodeId === selectedNodeId ? 'is-selected' : ''}`}
+                    onClick={() => onSelectNode(item.nodeId)}
+                  >
+                    <div className="node-row">
+                      <strong>{item.label}</strong>
+                      <span>{formatPercent(item.score)}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mini-panel">
+              <h4>Near Miss / Bridge</h4>
+              <div className="result-card-list">
+                {response.nearMissRoles.map((item) => (
+                  <button key={item.nodeId} type="button" className="result-card result-card-button" onClick={() => onSelectNode(item.nodeId)}>
+                    <div className="node-row">
+                      <strong>{item.label}</strong>
+                      <span>{formatPercent(item.score)}</span>
+                    </div>
+                    <div className="tag-row">
+                      {item.missing.map((missingItem) => (
+                        <span key={missingItem} className="soft-chip warning-chip">{missingItem}</span>
+                      ))}
+                    </div>
+                  </button>
+                ))}
+                {response.bridgeRecommendations.map((item) => (
+                  <button key={item.nodeId} type="button" className="result-card result-card-button" onClick={() => onSelectNode(item.nodeId)}>
+                    <div className="node-row">
+                      <strong>{item.label}</strong>
+                      <span>{formatPercent(item.score)}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
 
-      <section className="analysis-card run-status-panel">
-        <div>
-          <p className="pane-kicker">运行来源</p>
-          <h3>{runStatus.label}</h3>
-          <p>{runStatus.detail}</p>
-        </div>
-        <span className={`run-status-badge ${runStatus.source === 'backend' ? 'success' : 'warning'}`}>
-          {runStatus.source === 'backend' ? '后端接口' : '本地回退'}
-        </span>
-      </section>
-
-      <section className="analysis-card graph-detail">
-        <div className="section-head">
-          <h3>当前图谱锚点</h3>
-          <span>{selectedLayerLabel}</span>
-        </div>
-        {selectedNode ? (
-          <>
-            <div className="graph-detail-head">
-              <div>
-                <strong>{selectedNode.label}</strong>
-                <p>{selectedNode.detail}</p>
-              </div>
-              <span>{formatPercent(selectedNode.score)}</span>
-            </div>
-            <div className="graph-detail-stats">
-              <div>
-                <span>节点 ID</span>
-                <strong>{selectedNode.id}</strong>
-              </div>
-              <div>
-                <span>层级</span>
-                <strong>{selectedLayerLabel}</strong>
-              </div>
-              <div>
-                <span>关联边</span>
-                <strong>
-                  {incomingEdges.length} 入 / {outgoingEdges.length} 出
-                </strong>
-              </div>
-            </div>
-            <div className="graph-edge-grid">
-              <div className="graph-edge-column">
-                <span>入边</span>
-                {incomingEdges.length ? (
-                  incomingEdges.map((edge) => (
-                    <div key={`${edge.source}-${edge.target}`} className="graph-edge-item">
-                      <strong>
-                        {edge.source} {'→'} {edge.target}
-                      </strong>
-                      <p>{edge.relation}</p>
-                      <small>{formatPercent(edge.contribution)}</small>
-                    </div>
-                  ))
-                ) : (
-                  <p className="graph-edge-empty">没有入边</p>
-                )}
-              </div>
-              <div className="graph-edge-column">
-                <span>出边</span>
-                {outgoingEdges.length ? (
-                  outgoingEdges.map((edge) => (
-                    <div key={`${edge.source}-${edge.target}`} className="graph-edge-item">
-                      <strong>
-                        {edge.source} {'→'} {edge.target}
-                      </strong>
-                      <p>{edge.relation}</p>
-                      <small>{formatPercent(edge.contribution)}</small>
-                    </div>
-                  ))
-                ) : (
-                  <p className="graph-edge-empty">没有出边</p>
-                )}
-              </div>
-            </div>
-          </>
-        ) : (
-          <p className="result-intro">点击左侧图谱中的任意节点，查看它在推荐链路中的位置和关联边。</p>
-        )}
-      </section>
-
-      <section className="analysis-card reachable-card">
-        <div className="section-head">
-          <h3>从当前节点可达的岗位</h3>
-          <span>{reachableRoles.length} 个</span>
-        </div>
-        {selectedNode ? (
-          reachableRoles.length ? (
-            <div className="reachable-list">
-              {reachableRoles.map((node) => (
-                <article key={node.id} className="reachable-item">
-                  <div className="node-row">
-                    <strong>{node.label}</strong>
-                    <span>{formatPercent(node.score)}</span>
-                  </div>
-                  <p>{node.detail}</p>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <p className="result-intro">当前节点还没有直接连到岗位层级，可以继续点更下游的方向节点。</p>
-          )
-        ) : (
-          <p className="result-intro">先在图谱里选一个节点，这里会显示它能影响到的岗位节点。</p>
-        )}
-      </section>
-
-      <section className="result-block">
-        <div className="section-head">
-          <h3>正式推荐</h3>
-          <span>{response.recommendations.length} 个</span>
-        </div>
-        <div className="result-list">
-          {response.recommendations.map((item) => {
-            const isSelectedRole = item.nodeId === selectedNodeId;
-            return (
-              <article key={item.nodeId} className={`result-card strong ${isSelectedRole ? 'active' : ''}`}>
-                <div className="node-row">
-                  <strong>{item.label}</strong>
-                  <span>{formatPercent(item.score)}</span>
-                </div>
-                <p>{item.reason.join('、')}</p>
-                <small>路径：{item.path.join(' -> ')}</small>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="result-block">
-        <div className="section-head">
-          <h3>near miss</h3>
-          <span>{response.nearMissRoles.length} 个</span>
-        </div>
-        <div className="result-list compact">
-          {response.nearMissRoles.map((item) => (
-            <article key={item.nodeId} className="result-card">
-              <div className="node-row">
-                <strong>{item.label}</strong>
-                <span>{formatPercent(item.score)}</span>
-              </div>
-              <p>缺少：{item.missing.join('、') || '无'}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="result-grid">
-        <article className="analysis-card">
-          <div className="section-head">
-            <h3>目标岗位分析</h3>
-            <span>{formatPercent(response.targetRoleAnalysis.coverage)}</span>
-          </div>
-          <p>{response.targetRoleAnalysis.label}</p>
-          <div className="tag-row">
-            {response.targetRoleAnalysis.strengths.map((item) => (
-              <span key={item} className="tag success">
-                {item}
-              </span>
-            ))}
-            {response.targetRoleAnalysis.gaps.map((item) => (
-              <span key={item} className="tag warning">
-                {item}
-              </span>
-            ))}
-          </div>
-        </article>
-
-        <article className="analysis-card">
-          <div className="section-head">
-            <h3>桥接建议</h3>
-            <span>{response.bridgeRecommendations.length} 条</span>
-          </div>
-          <div className="bridge-list">
-            {response.bridgeRecommendations.map((item) => (
-              <div key={item.nodeId} className="bridge-row">
-                <div>
-                  <strong>{item.label}</strong>
-                  <p>{item.why}</p>
-                </div>
-                <span>{formatPercent(item.score)}</span>
-              </div>
-            ))}
-          </div>
-        </article>
-      </section>
-
-      <section className="result-block">
+      <section className="section-card robustness-card">
         <div className="section-head">
           <h3>鲁棒性测试</h3>
           <div className="section-actions">
             <span>{formatPercent(robustnessReport.averageTopScore)}</span>
-            <button className="chip" type="button" onClick={onExportSnapshot}>
+            <button className="button-chip" type="button" onClick={onExportSnapshot}>
               导出快照
             </button>
-            <button className="chip" type="button" onClick={onCopySnapshot}>
+            <button className="button-chip" type="button" onClick={onCopySnapshot}>
               复制快照
             </button>
           </div>
-        </div>
-        <p className="result-intro">{robustnessReport.headline}</p>
-        <div className="analysis-card advice-card">
-          <div className="section-head">
-            <h3>下一步调参建议</h3>
-            <span>{robustnessReport.tuningAdvice.length} 条</span>
-          </div>
-          <ul className="advice-list">
-            {robustnessReport.tuningAdvice.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
         </div>
         <div className="result-summary-row">
           <div className="result-summary-card">
@@ -335,12 +264,12 @@ export function ResultPane({
           <div className="result-summary-card">
             <span>最佳提升</span>
             <strong>{robustnessReport.bestImprovementLabel}</strong>
-            <small className="summary-note-inline">{formatDelta(robustnessReport.bestImprovementDelta)}</small>
+            <span className="summary-note-inline">{formatDelta(robustnessReport.bestImprovementDelta)}</span>
           </div>
           <div className="result-summary-card">
             <span>最差回落</span>
             <strong>{robustnessReport.worstRegressionLabel}</strong>
-            <small className="summary-note-inline">{formatDelta(robustnessReport.worstRegressionDelta)}</small>
+            <span className="summary-note-inline">{formatDelta(robustnessReport.worstRegressionDelta)}</span>
           </div>
           <div className="result-summary-card">
             <span>改善率</span>
@@ -354,13 +283,13 @@ export function ResultPane({
                 <strong>{item.label}</strong>
                 <span>{formatPercent(item.topScore)}</span>
               </div>
-              <p>{item.description}</p>
-              <small>
-                {item.warning} | 基线 {formatPercent(item.baselineTopScore)} | 变化 {formatDelta(item.scoreDelta)} | 推荐{' '}
-                {item.recommendationCount} 个 | near miss {item.nearMissCount} 个 | 覆盖率 {formatPercent(item.coverage)}
-              </small>
               <div className="tag-row">
-                <span className={`tag ${item.scoreDelta >= 0 ? 'success' : 'warning'}`}>
+                <span className="soft-chip">基线 {formatPercent(item.baselineTopScore)}</span>
+                <span className="soft-chip">变化 {formatDelta(item.scoreDelta)}</span>
+                <span className="soft-chip">推荐 {item.recommendationCount}</span>
+                <span className="soft-chip">near miss {item.nearMissCount}</span>
+                <span className="soft-chip">覆盖率 {formatPercent(item.coverage)}</span>
+                <span className={`soft-chip ${item.scoreDelta >= 0 ? 'accent-chip' : 'warning-chip'}`}>
                   {item.scoreDelta >= 0 ? '调参提升' : '调参回落'}
                 </span>
               </div>
@@ -369,7 +298,7 @@ export function ResultPane({
         </div>
       </section>
 
-      <section className="result-block trace-panel">
+      <section className="section-card trace-panel">
         <div className="section-head">
           <h3>输入追踪</h3>
           <span>{response.inputTrace.resolvedTargetRole}</span>
@@ -388,57 +317,19 @@ export function ResultPane({
             <span>否定信号</span>
           </div>
         </div>
-        <div className="trace-summary">
-          <div className="trace-box">
-            <span>命中证据</span>
-            <p>{response.inputTrace.signalTrace.matchedSignals.join('、') || '暂无明确命中'}</p>
-          </div>
-          <div className="trace-box">
-            <span>否定信号</span>
-            <p>{response.inputTrace.signalTrace.negatedSignals.join('、') || '暂无否定信号'}</p>
-          </div>
-        </div>
         <div className="trace-summary compact">
           <div className="trace-box">
             <span>图谱节点</span>
-            <p>{response.graphSnapshot.nodeCount} 个</p>
+            <strong>{response.graphSnapshot.nodeCount} 个</strong>
           </div>
           <div className="trace-box">
             <span>图谱边</span>
-            <p>{response.graphSnapshot.edgeCount} 条</p>
+            <strong>{response.graphSnapshot.edgeCount} 条</strong>
           </div>
           <div className="trace-box">
             <span>目标覆盖</span>
-            <p>{formatPercent(response.targetRoleAnalysis.coverage)}</p>
+            <strong>{formatPercent(response.targetRoleAnalysis.coverage)}</strong>
           </div>
-        </div>
-        <div className="structured-evidence">
-          {response.inputTrace.structuredEvidence.map((item) => (
-            <article key={item.nodeId} className="evidence-mini-card">
-              <div className="node-row">
-                <strong>{item.label}</strong>
-                <span>{formatPercent(item.score)}</span>
-              </div>
-              <p>{item.rawText}</p>
-              <small>
-                来源：{item.source} | 节点：{item.nodeId}
-              </small>
-              <div className="score-bar">
-                <span style={{ width: `${Math.round(item.score * 100)}%` }} />
-              </div>
-            </article>
-          ))}
-        </div>
-        <details className="json-toggle">
-          <summary>查看原始 JSON 快照</summary>
-          <pre>{JSON.stringify(response.inputTrace, null, 2)}</pre>
-        </details>
-        <div className="clause-list">
-          {response.inputTrace.signalTrace.clauses.map((clause, index) => (
-            <span key={`${index}-${clause}`} className="clause-chip">
-              {clause}
-            </span>
-          ))}
         </div>
       </section>
     </div>
