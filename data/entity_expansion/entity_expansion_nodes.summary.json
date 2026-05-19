@@ -1,0 +1,35 @@
+{
+  "schema": "career_kep.entity_expansion_nodes_build.v1",
+  "generated_at": "2026-05-19T05:48:24+00:00",
+  "node_count": 398,
+  "existing_nodes": 365,
+  "new_nodes": 33,
+  "output_path": "data/entity_expansion/entity_expansion_nodes.json",
+  "layers": [
+    "evidence",
+    "ability",
+    "composite",
+    "direction",
+    "role"
+  ],
+  "by_layer": {
+    "evidence": 187,
+    "ability": 84,
+    "composite": 63,
+    "direction": 14,
+    "role": 50
+  },
+  "by_node_type": {
+    "ability_unit": 84,
+    "career_direction": 14,
+    "career_role": 50,
+    "compound_capability": 63,
+    "constraint": 8,
+    "interest": 15,
+    "knowledge": 23,
+    "language": 1,
+    "project": 27,
+    "skill": 105,
+    "soft_skill": 8
+  }
+}
