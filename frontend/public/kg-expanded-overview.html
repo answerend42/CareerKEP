@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Career KG Expansion Overview</title>
+</head>
+
+<body>
+    <p>正在打开知识图谱扩展结果视图...</p>
+    <p><a id="fallbackLink" href="./kg-overview.html">如果没有自动跳转，请点击这里。</a></p>
+    <script>
+        const params = new URLSearchParams({
+            data: "kg-expanded-overview-data.json",
+            kicker: "Career KG Expansion",
+            title: "知识图谱扩展结果",
+            documentTitle: "Career KG Expansion Overview",
+            hint: "扩展图审查视图。滚轮缩放，拖拽平移，点击节点查看相关边、审核状态与置信度。",
+        });
+        const target = `./kg-overview.html?${params.toString()}`;
+        document.querySelector("#fallbackLink").setAttribute("href", target);
+        window.location.replace(target);
+    </script>
+</body>
+
+</html>
