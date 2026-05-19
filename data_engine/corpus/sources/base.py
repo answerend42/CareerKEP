@@ -13,7 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Protocol
 
-from ..config import SourceConfig
+from ...config import SourceConfig
 from ..doc_writer import WebDocument
 from ..http_client import HttpClient
 from ..targets import Target

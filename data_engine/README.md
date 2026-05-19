@@ -9,6 +9,7 @@ nodes  54 → 151    edges  118 → 328    alias entries  170 → 361    mention
 
 ## 目录
 
+- [流水线分步（PIPELINE.md）](PIPELINE.md)
 - [目录结构](#目录结构)
 - [模块说明（core / proposals / graph / nodes_auto）](#模块说明core--proposals--graph--nodes_auto)
 - [它能做什么](#它能做什么)
@@ -32,31 +33,28 @@ nodes  54 → 151    edges  118 → 328    alias entries  170 → 361    mention
 
 ## 目录结构
 
-模块按 **语料链 / 扩图链** 两条子系统组织（完整树见 [`STRUCTURE.md`](STRUCTURE.md)）：
+模块按 **流水线步骤** 组织（分步说明见 [`PIPELINE.md`](PIPELINE.md)，完整树见 [`STRUCTURE.md`](STRUCTURE.md)）：
 
 ```
 data_engine/
-├── cli.py, config.json          # 入口与配置
-│
-├── 【语料链】pipeline.py, targets.py, http_client.py, cache.py,
-│              doc_id.py, normalizer.py, doc_writer.py, struct_writer.py, sources/
-│
-├── 【扩图链】core/, proposals/, proposers/, graph/, scripts/
-│
-├── 根目录 shim                  # applier / review / viz / proposals_io 转发
-├── tests/
-└── output/                      # proposals/, graph_view.html, run_report.json
+├── config.json                  # Step 0 配置
+├── corpus/                      # Step 1 语料抓取 → preprocess/raw_sources/web/
+├── proposers/ + proposals/        # Step 3 候选 → output/proposals/
+├── graph/                       # Step 4 写 seeds / review / viz
+├── core/                        # 共享 paths、NodePackage
+├── scripts/                     # curated 批量扩图
+└── output/                      # 运行产物
 ```
 
-| 子系统 | 包 / 模块 | 职责 |
-| --- | --- | --- |
-| **语料链** | `pipeline`, `sources/*`, `http_client`, `cache`, `doc_writer`… | 抓 API → 落盘 `preprocess/raw_sources/web/` |
-| **扩图链** | [`core/`](core/) | [`NodePackage`](core/package.py)、[`paths`](core/paths.py) |
-| | [`proposals/`](proposals/) | [`store.py`](proposals/store.py)：proposals 中间 JSON |
-| | [`proposers/`](proposers/) | 候选生成；[`nodes_auto/`](proposers/nodes_auto/) 半自动 evidence |
-| | [`graph/`](graph/) | [`applier`](graph/applier.py)、[`packages`](graph/packages.py)、[`review`](graph/review.py)、[`viz`](graph/viz.py) |
-| | [`scripts/`](scripts/) | curated 批量（如 [`v5_balanced_batch.py`](scripts/v5_balanced_batch.py)） |
-| 兼容 | 根目录 shim | 旧 import 仍可用 |
+| 步骤 | 目录 | CLI | 产出 |
+| --- | --- | --- | --- |
+| 1 语料 | [`corpus/`](corpus/) | `run` `fetch` `verify` | `preprocess/raw_sources/web/` |
+| 2 抽取 | `preprocess/`（仓库外） | `python -m preprocess` | `preprocess/output/*.json` |
+| 3 候选 | [`proposers/`](proposers/) | `propose` | `output/proposals/` |
+| 4 落盘 | [`graph/`](graph/) | `apply` `review` | `backend/data/seeds/` |
+| 5 可视 | [`graph/viz.py`](graph/viz.py) | `viz` | `output/graph_view.html` |
+
+根目录 `pipeline.py`、`doc_writer.py` 等为**兼容 shim**；新代码请用 `data_engine.corpus.*`。
 
 ---
 

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any, List
 
-from ..config import SourceConfig
+from ...config import SourceConfig
 from ..doc_writer import WebDocument
 from ..http_client import HttpClient
 from ..targets import Target

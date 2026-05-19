@@ -24,19 +24,19 @@ from pathlib import Path
 from typing import Any, List
 
 from . import applier as graph_applier
-from .cache import HttpCache
 from .config import load_config
-from .doc_id import is_data_engine_doc
-from .doc_writer import scan_existing_doc_ids
+from .corpus import run, write_run_report
+from .corpus.cache import HttpCache
+from .corpus.doc_id import is_data_engine_doc
+from .corpus.doc_writer import scan_existing_doc_ids
+from .corpus.pipeline import _make_http_client
+from .corpus.sources import all_fetchers, get_fetcher
+from .corpus.targets import Target, build_targets
 from .graph.packages import apply_node_packages
-from .pipeline import _make_http_client, run
 from .proposals.store import read_proposals, write_node_packages, write_proposals
 from .proposers import all_proposers, get_proposer
 from .proposers.nodes_auto import NodeAutoProposer
-from .reporting import write_run_report
 from .review import apply_auto, review_kind, review_node_packages
-from .sources.base import all_fetchers, get_fetcher
-from .targets import Target, build_targets
 
 
 def _split_csv(value: str | None) -> List[str]:

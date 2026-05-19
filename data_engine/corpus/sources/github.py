@@ -14,7 +14,7 @@ import os
 from typing import Any, List
 from urllib.parse import urlencode
 
-from ..config import SourceConfig
+from ...config import SourceConfig
 from ..doc_writer import WebDocument
 from ..doc_id import make as make_doc_id
 from ..http_client import HttpClient, HttpStatusError

@@ -21,7 +21,7 @@ import logging
 from typing import Any, Dict, List, Tuple
 
 from ..config import DataEngineConfig, REPO_ROOT
-from ..struct_writer import iter_struct
+from ..corpus.struct_writer import iter_struct
 from .base import register
 from .candidate import Candidate
 
