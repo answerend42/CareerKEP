@@ -403,7 +403,7 @@ class RoleGapAnalyzer:
     ) -> dict[str, dict[str, Any]]:
         candidates: dict[str, dict[str, Any]] = {}
         for edge in self.graph.incoming.get(target_node_id, []):
-            if edge.relation not in {"supports", "evidences", "requires"}:
+            if edge.relation not in {"supports", "requires"}:
                 continue
             self._walk_positive_evidence(
                 states=states,
@@ -446,7 +446,7 @@ class RoleGapAnalyzer:
             return
 
         for edge in self.graph.incoming.get(node_id, []):
-            if edge.relation not in {"supports", "evidences", "requires"}:
+            if edge.relation not in {"supports", "requires"}:
                 continue
             self._walk_positive_evidence(
                 states=states,

@@ -10,10 +10,11 @@
 
 1. 用户输入自然语言或结构化信号。
 2. 输入被映射成标准图谱节点和 `0..1` 分值。
-3. 后端加载 `data/seeds/nodes.json` 与 `data/seeds/edges.json`，按 DAG 拓扑序传播分数。
-4. 图谱边的语义决定分数如何流动：支持、要求、偏好、抑制、证据。
-5. 只对 `role` 层职业节点排序，输出正式推荐、near miss 和 bridge recommendation。
-6. 解释器从职业节点反向回溯高贡献路径，前端用 `propagation_snapshot` 展示传播过程。
+3. 后端默认加载 `data/seeds/nodes.json` 与 `data/seeds/edges.json`；也可以通过 `CAREER_KEP_GRAPH_BUNDLE` 加载扩展图谱。
+4. 图谱边先被编译成 core / aux / similarity / explain 通道，再按 DAG 拓扑序传播分数。
+5. 正式推荐只允许 core 通道打开岗位门槛；LLM 扩展边默认只作为 aux 信号服务 near miss、bridge 和候选扩展。
+6. 只对 `role` 层职业节点排序，输出正式推荐、near miss 和 bridge recommendation。
+7. 解释器从职业节点反向回溯高贡献路径，前端用 `propagation_snapshot` 展示传播过程。
 
 运行时图谱固定为五层：
 
@@ -27,11 +28,19 @@
 
 边类型：
 
-- `supports`：常规正向支持。
-- `evidences`：项目、课程等实践证据，权重略低于普通支持。
+- `supports`：常规正向支持。历史数据里的 `support` / `evidences` 会在加载时统一归并到这一类。
 - `requires`：关键前置，参与门槛判断。
 - `prefers`：偏好加成，贡献较温和。
 - `inhibits`：抑制项，会在最后扣分。
+
+扩展图谱的边还会带运行时评分策略：
+
+- `channel`：`core` / `aux` / `similarity` / `explain`。
+- `scoring_policy`：区分正向支持、软要求、硬要求、辅助偏好、相似关系、仅解释等用途。
+- `provenance` / `trust`：区分 curated seed 与未审阅 LLM 边。
+- `eligible_for_gate`：只有 curated core `requires` 可以打开正式岗位门槛。
+
+设计记录见 `docs/scoring_graph_policy_experiment.md`。
 
 ## 分数计算过程
 
@@ -40,6 +49,9 @@
 - `score`：节点最终分数。
 - `direct_input`：用户是否直接输入了这个节点。
 - `evidence`：哪些根证据贡献了这个分数。
+- `core_score`：只由 core 通道产生，用于正式推荐资格。
+- `aux_score`：由 LLM 辅助通道产生，带严格上限。
+- `formal_eligible`：role 是否具备进入正式推荐的 core 门槛。
 - `parent_contributions`：父节点通过边传来的贡献。
 - `diagnostics`：支持、要求、偏好、抑制等诊断分量。
 
@@ -68,7 +80,7 @@ evidence = { node_id: direct_input }
 非 evidence 节点会读取所有入边。每条边先计算父节点对当前节点的直接贡献：
 
 ```text
-contribution = parent_score * edge_weight * relation_factor
+contribution = parent_score * edge_weight * relation_factor * edge_trust
 ```
 
 当前 relation factor 为：
@@ -76,7 +88,6 @@ contribution = parent_score * edge_weight * relation_factor
 | 关系 | factor |
 | --- | ---: |
 | `supports` | `1.00` |
-| `evidences` | `0.92` |
 | `requires` | `1.00` |
 | `prefers` | `0.75` |
 | `inhibits` | `1.00` |
@@ -97,14 +108,20 @@ root_contribution = root_value * edge_weight * relation_factor
 relation_root_maps[relation][root_id] = max(existing, root_contribution)
 ```
 
-这样可以减少重复计分。例如同一个 Python 证据同时支持“编程基础”和“后端基础”，再汇入同一职业时，不会因为路径多就被无限叠加。
-
-### 4. 四类诊断分量
-
-节点聚合前会先得到四个主要分量：
+之后各关系分量用 noisy-or 聚合：
 
 ```text
-support_total = sum(support roots) + 0.92 * sum(evidence roots)
+noisy_or(xs) = 1 - Π(1 - x_i)
+```
+
+这样可以减少重复计分。例如同一个 Python 证据同时支持“编程基础”和“后端基础”，再汇入同一职业时，不会因为路径多就被无限叠加。
+
+### 4. 双通道诊断分量
+
+节点聚合前会分别得到 core 与 aux 的四类分量：
+
+```text
+support_total = sum(support roots)
 require_total = sum(require roots)
 prefer_total  = sum(prefer roots * 0.75)
 inhibit_total = sum(inhibit roots)
@@ -112,14 +129,17 @@ inhibit_total = sum(inhibit roots)
 
 说明：
 
-- `evidences` 在边传播阶段已经乘过 `0.92`，汇总到 `support_total` 时仍按证据关系再降权，体现实践证据“强但不无限放大”的策略。
-- `prefers` 在边传播阶段按 `0.75` 降权，进入偏好汇总时再次按 `0.75` 温和处理，因此偏好不会压过能力和要求。
+- `supports` 已经包含原来的 evidence/support 两类正向关系，不再做额外 evidence 折扣。
+- `requires` 主要用于 gate；在正向分中低于普通 `supports`，避免要求边同时“开门”和“强加分”。
+- LLM aux 分量可以提高 near miss / bridge 排序，但不能打开正式 role gate。
+- `prefers` 按 `0.75` 温和处理，因此偏好不会压过能力和要求。
 - `inhibits` 不参与正向 base score，而是在最终阶段扣分。
 
 基础正向分：
 
 ```text
-base_positive = min(cap, support_total + require_total + prefer_total + direct_input)
+core_base_positive = min(cap, support_total + require_total * 0.65 + prefer_total + direct_input)
+aux_positive       = min(aux_cap, aux_support + aux_require * 0.55 + aux_prefer * 0.45)
 ```
 
 `cap` 来自节点参数，默认是 `1.0`。
@@ -129,7 +149,7 @@ base_positive = min(cap, support_total + require_total + prefer_total + direct_i
 部分节点要求多个父节点共同支撑。系统会统计有效父节点数量：
 
 ```text
-support_parent_count = count(parent relation in supports/evidences/requires and contribution >= 0.05)
+support_parent_count = count(parent relation in supports/requires and contribution >= 0.02)
 coverage = min(1.0, support_parent_count / min_support_count)
 ```
 
@@ -149,10 +169,10 @@ score = direct_input
 
 #### `weighted_sum_capped`
 
-这是默认思路：把支持、要求、偏好和直接输入相加，再受 `cap` 限制：
+这是默认思路：把支持、折扣后的要求、偏好和直接输入相加，再受 `cap` 限制：
 
 ```text
-base_score = min(cap, support_total + require_total + prefer_total + direct_input)
+base_score = min(cap, support_total + require_total * 0.65 + prefer_total + direct_input)
 ```
 
 #### `max_pool`
@@ -160,7 +180,7 @@ base_score = min(cap, support_total + require_total + prefer_total + direct_inpu
 适合“一个强证据就足以显著激活”的节点：
 
 ```text
-best_parent = max(parent contributions from supports/evidences/requires, direct_input)
+best_parent = max(parent contributions from supports/requires, direct_input)
 base_score = min(cap, best_parent + prefer_total * 0.45)
 ```
 
@@ -210,10 +230,18 @@ base_score = base_score * gate_multiplier
 最后统一处理抑制项：
 
 ```text
-final_score = min(cap, max(0, base_score - inhibit_total * 0.82))
+core_score = min(cap, max(0, base_score - inhibit_total * 0.82))
 ```
 
 `0.82` 是当前 `INHIBIT_FACTOR`。它让“不擅长 C++”“不喜欢频繁 on-call”等负向画像可以明显影响职业方向，但不会直接覆盖所有正向能力证据。
+
+随后叠加带上限的辅助信号：
+
+```text
+final_score = min(cap, core_score + aux_score)
+```
+
+其中 role 的 `aux_score` 上限为 `0.08`，非 role 节点上限为 `0.12`。
 
 ### 8. 证据贡献缩放
 
@@ -232,9 +260,9 @@ evidence[root_id] = root_value * scale
 
 ### 9. 职业排序、near miss 和 bridge
 
-`backend/app/api/recommend.py` 会把所有 `role` 节点按最终 `score` 排序：
+`backend/app/api/recommend.py` 会把所有 `role` 节点按最终 `score` 排序，但正式推荐还必须满足 `formal_eligible`：
 
-1. 分数达到正式推荐阈值的进入 `recommendations`。
+1. core 分数达到正式推荐阈值、且专项岗位锚点通过的进入 `recommendations`。
 2. 未正式推荐但有潜在信号的岗位进入 `near_miss_roles`，用于展示“差一点”的岗位和缺口。
 3. 如果输入稀疏或没有足够岗位命中，会从能力、方向等中间层生成 `bridge_recommendations`，告诉用户可以往哪个方向补充信息或能力。
 
@@ -282,7 +310,3 @@ career-kg/
     run_recommendation_benchmark.py # 推荐与解释回归
     run_planning_benchmark.py       # 规划与行动模拟回归
 ```
-
-
-
-

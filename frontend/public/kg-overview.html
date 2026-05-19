@@ -387,11 +387,11 @@
         unknown: "未分层",
       };
       const RELATION_COLORS = {
+        support: "oklch(0.58 0.13 205)",
         supports: "oklch(0.58 0.13 205)",
         requires: "oklch(0.67 0.15 80)",
-        inhibits: "oklch(0.58 0.18 31)",
-        evidences: "oklch(0.5 0.14 252)",
         prefers: "oklch(0.57 0.12 155)",
+        inhibits: "oklch(0.58 0.18 31)",
         unknown: "oklch(0.55 0.03 220)",
       };
       const NODE_COLORS = {
@@ -432,6 +432,14 @@
         return typeof value === "object" && value ? value.id || value.key || value.node_id : value;
       }
 
+      function normalizeRelation(value) {
+        const relation = String(value || "").trim().toLowerCase();
+        if (["support", "supports", "evidence", "evidences"].includes(relation)) {
+          return "supports";
+        }
+        return relation || "unknown";
+      }
+
       function normalizeGraph(payload) {
         const rawNodes = payload.nodes || payload.vertices || payload.graph?.nodes || [];
         const rawEdges = payload.edges || payload.links || payload.graph?.edges || payload.graph?.links || [];
@@ -464,7 +472,7 @@
             id: String(valueOf(edge, ["id", "key"], `edge_${index}`)),
             source: String(endpoint(valueOf(edge, ["source", "from", "source_id"]))),
             target: String(endpoint(valueOf(edge, ["target", "to", "target_id"]))),
-            relation: String(valueOf(edge, ["relation", "type", "label", "kind"], "unknown")),
+            relation: normalizeRelation(valueOf(edge, ["relation", "type", "label", "kind"], "unknown")),
             weight: Number(valueOf(edge, ["weight", "value", "score", "strength"], 1)) || 0,
             note: String(valueOf(edge, ["note", "description", "summary"], "")),
           }))

@@ -31,6 +31,40 @@ MIN_NEAR_MISS_SCORE = 0.05
 MIN_BRIDGE_SCORE = 0.03
 MAX_NEAR_MISS_ITEMS = 4
 MAX_BRIDGE_ITEMS = 4
+SPECIALIZED_ANCHOR_THRESHOLD = 0.12
+SPECIALIZATION_STOP_TOKENS = {
+    "role",
+    "engineer",
+    "developer",
+    "development",
+    "backend",
+    "frontend",
+    "service",
+    "services",
+    "application",
+    "applications",
+    "platform",
+    "data",
+    "test",
+    "testing",
+    "analyst",
+}
+TECH_SPECIALIZATION_TOKENS = {
+    "python",
+    "java",
+    "golang",
+    "go",
+    "nodejs",
+    "php",
+    "rust",
+    "react",
+    "vue",
+    "android",
+    "ios",
+    "mlops",
+    "nlp",
+    "llm",
+}
 CONSTRAINT_BRIDGE_FALLBACKS = {
     "constraint_weak_english": [
         {
@@ -124,7 +158,11 @@ class RecommendationService:
             key=lambda node_id: (states[node_id].score, self.graph.nodes[node_id].name),
             reverse=True,
         )
-        ranked_roles = [role_id for role_id in ranked_roles if states[role_id].score >= MIN_RECOMMENDATION_SCORE]
+        ranked_roles = [
+            role_id
+            for role_id in ranked_roles
+            if self._is_formal_recommendation_role(states, role_id)
+        ]
         selected_role_ids = ranked_roles[: request.top_k]
 
         recommendations: list[RecommendationItem] = []
@@ -162,6 +200,8 @@ class RecommendationService:
             "graph_stats": {
                 "node_count": len(self.graph.nodes),
                 "edge_count": len(self.graph.edges),
+                "aux_edge_count": len(self.graph.aux_edges),
+                "all_edge_count": len(self.graph.all_edges),
                 "activated_node_count": sum(1 for state in states.values() if state.score >= 0.05),
                 **self.provenance_summary,
             },
@@ -237,6 +277,87 @@ class RecommendationService:
             **source_payload,
         )
 
+    def _is_formal_recommendation_role(self, states: dict[str, NodeState], role_id: str) -> bool:
+        state = states[role_id]
+        diagnostics = state.diagnostics
+        if not state.formal_eligible or state.score < MIN_RECOMMENDATION_SCORE:
+            return False
+
+        if not self._role_needs_specialized_anchor(role_id):
+            return True
+
+        anchor_score, anchor_ids = self._specialized_anchor_signal(states, role_id)
+        diagnostics["specialized_anchor_score"] = round(anchor_score, 4)
+        diagnostics["specialized_anchor_ids"] = anchor_ids
+        diagnostics["specialized_anchor_gate_closed"] = anchor_score < SPECIALIZED_ANCHOR_THRESHOLD
+        return anchor_score >= SPECIALIZED_ANCHOR_THRESHOLD
+
+    def _specialized_anchor_signal(self, states: dict[str, NodeState], role_id: str) -> tuple[float, list[str]]:
+        tokens = self._specialization_tokens(role_id)
+        if not tokens:
+            return 0.0, []
+
+        scored_anchors: list[tuple[float, str]] = []
+        for node_id, state in states.items():
+            if state.direct_input <= 0:
+                continue
+            if self._node_matches_specialization_tokens(node_id, tokens):
+                scored_anchors.append((state.direct_input, node_id))
+
+        role_state = states[role_id]
+        for root_id, value in role_state.core_evidence.items():
+            if self._node_matches_specialization_tokens(root_id, tokens):
+                scored_anchors.append((value, root_id))
+
+        for contribution in role_state.parent_contributions:
+            if contribution.channel != "core" or contribution.value <= 0:
+                continue
+            source = self.graph.nodes[contribution.parent_id]
+            if source.metadata.get("role_kind") != "specialization":
+                continue
+            if self._node_matches_specialization_tokens(contribution.parent_id, tokens):
+                source_state = states[contribution.parent_id]
+                if source_state.direct_input > 0:
+                    scored_anchors.append((source_state.direct_input, contribution.parent_id))
+                for root_id, value in source_state.core_evidence.items():
+                    if self._node_matches_specialization_tokens(root_id, tokens):
+                        scored_anchors.append((value, root_id))
+
+        if not scored_anchors:
+            return 0.0, []
+
+        best_by_id: dict[str, float] = {}
+        for score, node_id in scored_anchors:
+            best_by_id[node_id] = max(best_by_id.get(node_id, 0.0), score)
+        ranked = sorted(best_by_id.items(), key=lambda item: (item[1], self.graph.nodes[item[0]].name), reverse=True)
+        return ranked[0][1], [node_id for node_id, _ in ranked[:5]]
+
+    def _role_needs_specialized_anchor(self, role_id: str) -> bool:
+        role = self.graph.nodes[role_id]
+        if role.metadata.get("role_kind") == "specialization":
+            return True
+        return bool(self._specialization_tokens(role_id) & TECH_SPECIALIZATION_TOKENS)
+
+    def _specialization_tokens(self, role_id: str) -> set[str]:
+        tokens = {
+            token
+            for token in role_id.lower().replace("-", "_").split("_")
+            if token and token not in SPECIALIZATION_STOP_TOKENS
+        }
+        role_name = self.graph.nodes[role_id].name.lower()
+        if "node.js" in role_name or "nodejs" in role_name:
+            tokens.add("nodejs")
+        return tokens
+
+    def _node_matches_specialization_tokens(self, node_id: str, tokens: set[str]) -> bool:
+        node = self.graph.nodes[node_id]
+        haystacks = {
+            node_id.lower().replace(".", ""),
+            node.name.lower().replace(".", ""),
+            node.node_type.lower().replace(".", ""),
+        }
+        return any(token in haystack for token in tokens for haystack in haystacks)
+
     def _build_near_miss_items(
         self,
         states: dict[str, NodeState],
@@ -289,11 +410,17 @@ class RecommendationService:
         require_total = float(diagnostics.get("require_total", 0.0) or 0.0)
         prefer_total = float(diagnostics.get("prefer_total", 0.0) or 0.0)
         inhibit_total = float(diagnostics.get("inhibit_total", 0.0) or 0.0)
+        aux_support_total = float(diagnostics.get("aux_support_total", 0.0) or 0.0)
+        aux_require_total = float(diagnostics.get("aux_require_total", 0.0) or 0.0)
+        aux_prefer_total = float(diagnostics.get("aux_prefer_total", 0.0) or 0.0)
+        aux_signal = aux_support_total + aux_require_total * 0.55 + aux_prefer_total * 0.45
         near_miss_score = max(
             state.score,
-            support_total + require_total + prefer_total * 0.6 - inhibit_total * 0.25,
+            support_total + require_total * 0.6 + prefer_total * 0.6 + aux_signal - inhibit_total * 0.25,
         )
         if diagnostics.get("missing_requirements"):
+            near_miss_score += 0.015
+        if not state.formal_eligible and aux_signal > 0:
             near_miss_score += 0.015
         return round(max(0.0, min(1.0, near_miss_score)), 4)
 
@@ -311,9 +438,13 @@ class RecommendationService:
         require_total = float(diagnostics.get("require_total", 0.0) or 0.0)
         prefer_total = float(diagnostics.get("prefer_total", 0.0) or 0.0)
         inhibit_total = float(diagnostics.get("inhibit_total", 0.0) or 0.0)
+        aux_support_total = float(diagnostics.get("aux_support_total", 0.0) or 0.0)
+        aux_require_total = float(diagnostics.get("aux_require_total", 0.0) or 0.0)
+        aux_prefer_total = float(diagnostics.get("aux_prefer_total", 0.0) or 0.0)
+        aux_signal = aux_support_total + aux_require_total * 0.55 + aux_prefer_total * 0.45
         return max(
             state.score,
-            support_total + require_total + prefer_total * 0.55 - inhibit_total * 0.2,
+            support_total + require_total * 0.55 + prefer_total * 0.55 + aux_signal - inhibit_total * 0.2,
         )
 
     def _build_bridge_items(
@@ -390,7 +521,7 @@ class RecommendationService:
         grouped: dict[str, dict[str, Any]] = {}
 
         for contribution in state.parent_contributions:
-            if contribution.relation not in {"requires", "supports", "evidences"}:
+            if contribution.relation not in {"requires", "supports"}:
                 continue
             entry = grouped.setdefault(
                 contribution.parent_id,
@@ -663,6 +794,8 @@ class RecommendationService:
             "graph_stats": {
                 "node_count": len(self.graph.nodes),
                 "edge_count": len(self.graph.edges),
+                "aux_edge_count": len(self.graph.aux_edges),
+                "all_edge_count": len(self.graph.all_edges),
                 "evidence_node_count": len(self.graph.evidence_ids),
                 "role_count": len(self.graph.role_ids),
                 **self.provenance_summary,
@@ -909,6 +1042,11 @@ class RecommendationService:
                         "relation": contribution.relation,
                         "value": contribution.value,
                         "note": contribution.note,
+                        "channel": contribution.channel,
+                        "scoring_policy": contribution.scoring_policy,
+                        "provenance": contribution.provenance,
+                        "eligible_for_gate": contribution.eligible_for_gate,
+                        "eligible_for_formal_score": contribution.eligible_for_formal_score,
                     }
                 )
         edges.sort(key=lambda item: item["value"], reverse=True)

@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import os
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from backend.app.api.recommend import RecommendationService
 from backend.app.services.graph_loader import GraphLoader
@@ -19,6 +21,29 @@ class GraphScaleTests(unittest.TestCase):
         self.assertGreaterEqual(len(graph.edges), 700)
         self.assertGreaterEqual(len(graph.role_ids), 25)
         self.assertEqual(len(graph.topological_order), len(graph.nodes))
+        self.assertNotIn("evidences", {edge.relation for edge in graph.edges})
+        self.assertLessEqual(
+            {edge.relation for edge in graph.edges},
+            {"supports", "requires", "prefers", "inhibits"},
+        )
+
+    def test_expanded_graph_bundle_loads_as_four_relation_runtime_dag(self) -> None:
+        with patch.dict(
+            os.environ,
+            {"CAREER_KEP_GRAPH_BUNDLE": "data/entity_expansion/llm_expanded_graph.clean.json"},
+        ):
+            graph = GraphLoader(ROOT).load_graph()
+
+        self.assertEqual(len(graph.nodes), 398)
+        self.assertGreaterEqual(len(graph.edges), 2500)
+        self.assertGreaterEqual(len(graph.aux_edges), 800)
+        self.assertEqual(len(graph.all_edges), 3395)
+        self.assertLess(len(graph.edges), 3395)
+        self.assertEqual(len(graph.topological_order), len(graph.nodes))
+        self.assertLessEqual(
+            {edge.relation for edge in graph.edges},
+            {"supports", "requires", "prefers", "inhibits"},
+        )
 
 
 class RecommendationInferenceTests(unittest.TestCase):
@@ -36,8 +61,8 @@ class RecommendationInferenceTests(unittest.TestCase):
         top_five_ids = [item["job_id"] for item in result["recommendations"][:5]]
         self.assertNotIn("role_rust_backend_engineer", top_five_ids)
         backend_score = next(item["score"] for item in result["recommendations"] if item["job_id"] == "role_backend_engineer")
-        data_engineer_score = next(item["score"] for item in result["recommendations"] if item["job_id"] == "role_data_engineer")
-        self.assertGreater(backend_score, data_engineer_score)
+        python_backend_score = next(item["score"] for item in result["recommendations"] if item["job_id"] == "role_python_backend_engineer")
+        self.assertGreater(backend_score, python_backend_score)
 
     def test_broad_backend_interest_without_skills_does_not_return_roles(self) -> None:
         result = self.service.recommend(
@@ -110,6 +135,101 @@ class RecommendationInferenceTests(unittest.TestCase):
             self.assertTrue(any("抑制因素" in message for message in weak_ml["limitations"]))
         else:
             self.assertEqual(weak_scores.get("role_ml_engineer", 0.0), 0.0)
+
+
+class ExpandedGraphPolicyTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        with patch.dict(
+            os.environ,
+            {"CAREER_KEP_GRAPH_BUNDLE": "data/entity_expansion/llm_expanded_graph.clean.json"},
+        ):
+            cls.service = RecommendationService(ROOT)
+
+    def test_python_only_does_not_open_formal_roles_from_llm_edges(self) -> None:
+        result = self.service.recommend(
+            {
+                "signals": [{"entity": "Python", "score": 0.9}],
+                "top_k": 20,
+            }
+        )
+
+        self.assertEqual(result["recommendations"], [])
+        self.assertGreater(len(result["bridge_recommendations"]), 0)
+        self.assertGreater(result["graph_stats"]["aux_edge_count"], 800)
+
+    def test_html_only_stays_out_of_security_devops_and_qa_formal_recommendations(self) -> None:
+        result = self.service.recommend(
+            {
+                "signals": [{"entity": "HTML", "score": 0.9}],
+                "top_k": 20,
+            }
+        )
+
+        formal_role_ids = {item["job_id"] for item in result["recommendations"]}
+        self.assertEqual(formal_role_ids, set())
+        self.assertFalse(
+            {"role_security_engineer", "role_devops_engineer", "role_qa_platform_engineer"} & formal_role_ids
+        )
+
+    def test_llm_only_is_near_miss_or_bridge_not_formal_role(self) -> None:
+        result = self.service.recommend(
+            {
+                "signals": [{"entity": "LLM", "score": 0.9}],
+                "top_k": 20,
+            }
+        )
+
+        formal_role_ids = {item["job_id"] for item in result["recommendations"]}
+        self.assertNotIn("role_llm_application_engineer", formal_role_ids)
+        self.assertEqual(result["recommendations"], [])
+        self.assertTrue(
+            {"role_llm_application_engineer", "role_ai_application_engineer"}
+            & {item["job_id"] for item in result["near_miss_roles"]}
+        )
+        self.assertGreater(len(result["bridge_recommendations"]), 0)
+
+    def test_backend_bundle_without_rust_keeps_rust_as_near_miss(self) -> None:
+        result = self.service.recommend(
+            {
+                "signals": [
+                    {"entity": "Python", "score": 0.85},
+                    {"entity": "Java", "score": 0.8},
+                    {"entity": "Spring Boot", "score": 0.82},
+                    {"entity": "MySQL", "score": 0.8},
+                    {"entity": "后端项目", "score": 0.9},
+                    {"entity": "偏好后端", "score": 0.9},
+                ],
+                "top_k": 20,
+            }
+        )
+
+        formal_role_ids = [item["job_id"] for item in result["recommendations"]]
+        self.assertIn("role_java_backend_engineer", formal_role_ids)
+        self.assertIn("role_backend_engineer", formal_role_ids)
+        self.assertNotIn("role_rust_backend_engineer", formal_role_ids)
+        self.assertIn(
+            "role_rust_backend_engineer",
+            {item["job_id"] for item in result["near_miss_roles"]},
+        )
+
+    def test_rust_anchor_can_open_rust_role(self) -> None:
+        result = self.service.recommend(
+            {
+                "signals": [
+                    {"entity": "Rust", "score": 0.9},
+                    {"entity": "Linux", "score": 0.8},
+                    {"entity": "低延迟服务项目", "score": 0.85},
+                    {"entity": "偏好后端", "score": 0.7},
+                ],
+                "top_k": 20,
+            }
+        )
+
+        self.assertIn(
+            "role_rust_backend_engineer",
+            {item["job_id"] for item in result["recommendations"]},
+        )
 
 
 if __name__ == "__main__":
