@@ -126,6 +126,11 @@ export interface GraphSnapshotEdge {
   relation: string;
   value: number;
   note: string;
+  channel?: string;
+  scoring_policy?: string;
+  provenance?: string;
+  eligible_for_gate?: boolean;
+  eligible_for_formal_score?: boolean;
 }
 
 export interface PropagationSnapshot {
@@ -136,6 +141,8 @@ export interface PropagationSnapshot {
 export interface GraphStats {
   node_count: number;
   edge_count: number;
+  aux_edge_count?: number;
+  all_edge_count?: number;
   evidence_node_count?: number;
   role_count?: number;
   activated_node_count?: number;

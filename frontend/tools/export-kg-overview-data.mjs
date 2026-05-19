@@ -4,8 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "../..");
-const nodesPath = resolve(root, "data/seeds/nodes.json");
-const edgesPath = resolve(root, "data/seeds/edges.json");
+const graphBundlePath = resolve(root, "data/entity_expansion/llm_expanded_graph.clean.json");
 const outputPath = resolve(root, "frontend/public/kg-overview-data.json");
 
 function countBy(items, key) {
@@ -16,27 +15,38 @@ function countBy(items, key) {
   }, {});
 }
 
-const [nodes, edges] = await Promise.all([
-  readFile(nodesPath, "utf8").then(JSON.parse),
-  readFile(edgesPath, "utf8").then(JSON.parse),
-]);
+function normalizeRelation(relation) {
+  const value = String(relation || "").trim().toLowerCase();
+  if (["support", "supports", "evidence", "evidences"].includes(value)) {
+    return "supports";
+  }
+  return value || "unknown";
+}
+
+const graphBundle = await readFile(graphBundlePath, "utf8").then(JSON.parse);
+const nodes = graphBundle.nodes || [];
+const edges = graphBundle.edges || [];
+
+const runtimeEdges = edges.map((edge) => ({
+  ...edge,
+  relation: normalizeRelation(edge.relation),
+}));
 
 const payload = {
   schema_version: "career-kg-overview/v1",
   generated_at: new Date().toISOString(),
   source: {
-    nodes: "data/seeds/nodes.json",
-    edges: "data/seeds/edges.json",
+    graph_bundle: "data/entity_expansion/llm_expanded_graph.clean.json",
   },
   stats: {
     node_count: nodes.length,
-    edge_count: edges.length,
+    edge_count: runtimeEdges.length,
     layers: countBy(nodes, "layer"),
     node_types: countBy(nodes, "node_type"),
-    relations: countBy(edges, "relation"),
+    relations: countBy(runtimeEdges, "relation"),
   },
   nodes,
-  edges,
+  edges: runtimeEdges,
 };
 
 await mkdir(dirname(outputPath), { recursive: true });

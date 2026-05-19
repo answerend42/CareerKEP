@@ -27,11 +27,11 @@ const NODE_COLORS: Record<string, string> = {
 };
 
 const RELATION_COLORS: Record<string, string> = {
+  support: "oklch(0.58 0.13 205)",
   supports: "oklch(0.58 0.13 205)",
   requires: "oklch(0.67 0.15 80)",
-  inhibits: "oklch(0.58 0.18 31)",
-  evidences: "oklch(0.5 0.14 252)",
   prefers: "oklch(0.57 0.12 155)",
+  inhibits: "oklch(0.58 0.18 31)",
 };
 
 const DIAGNOSTIC_LABELS: Record<string, string> = {
@@ -573,9 +573,8 @@ export function GraphPane({ flow, onNext }: { flow: ReturnType<typeof useRecomme
               <div className="legend-grid" aria-label="图谱图例">
                 <span><i className="legend-line legend-line--supports" />支持</span>
                 <span><i className="legend-line legend-line--requires" />要求</span>
-                <span><i className="legend-line legend-line--inhibits" />抑制</span>
-                <span><i className="legend-line legend-line--evidences" />证据</span>
                 <span><i className="legend-line legend-line--prefers" />偏好</span>
+                <span><i className="legend-line legend-line--inhibits" />抑制</span>
               </div>
             </div>
           </div>

@@ -112,7 +112,10 @@ class ActionSimulationApiTests(unittest.TestCase):
 
         self.assertEqual(first_result["simulation"]["action_keys"], [first_action["action_key"]])
         self.assertEqual(later_result["simulation"]["action_keys"], [later_action["action_key"]])
-        self.assertNotEqual(first_result["simulation"]["delta_score"], later_result["simulation"]["delta_score"])
+        self.assertNotEqual(
+            first_result["simulation"]["injected_boosts"],
+            later_result["simulation"]["injected_boosts"],
+        )
 
     def test_action_simulation_supports_two_action_keys_bundle(self) -> None:
         gap_result = self.service.role_gap(

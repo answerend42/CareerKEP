@@ -8,7 +8,7 @@ from .inference_engine import NodeState
 from .role_gap_analyzer import RoleGapAnalyzer
 
 
-MIN_STEP_DELTA = 0.03
+MIN_STEP_DELTA = 0.02
 MAX_ROADMAP_STEPS = 4
 TARGET_READY_SCORE = 0.62
 
