@@ -32,33 +32,31 @@ nodes  54 → 151    edges  118 → 328    alias entries  170 → 361    mention
 
 ## 目录结构
 
-模块按职责拆成子包（完整树见 [`STRUCTURE.md`](STRUCTURE.md)）：
+模块按 **语料链 / 扩图链** 两条子系统组织（完整树见 [`STRUCTURE.md`](STRUCTURE.md)）：
 
 ```
 data_engine/
 ├── cli.py, config.json          # 入口与配置
-├── core/                        # 共享类型与路径常量
-├── proposals/                   # 提案中间文件读写
-├── proposers/                   # 候选生成
-│   ├── discovery.py             # 从 web/gh 挖新 token（nodes + nodes_auto 共用）
-│   ├── nodes.py                 # 仅 node 候选 → review
-│   └── nodes_auto/              # 半自动 evidence 节点包
-├── graph/                       # 写 seeds、审核、viz
-├── pipeline.py, sources/        # 语料抓取（历史布局，仍在根目录）
-├── scripts/                     # curated 批量脚本（如 v5_balanced_batch.py）
-├── tests/                       # 含 test_nodes_auto.py
-└── output/
-    ├── proposals/               # aliases.json, edges.json, node_packages.json, …
-    └── graph_view.html
+│
+├── 【语料链】pipeline.py, targets.py, http_client.py, cache.py,
+│              doc_id.py, normalizer.py, doc_writer.py, struct_writer.py, sources/
+│
+├── 【扩图链】core/, proposals/, proposers/, graph/, scripts/
+│
+├── 根目录 shim                  # applier / review / viz / proposals_io 转发
+├── tests/
+└── output/                      # proposals/, graph_view.html, run_report.json
 ```
 
-| 子包 | 职责 |
-| --- | --- |
-| [`core/`](core/) | [`NodePackage`](core/package.py)、[`paths`](core/paths.py)（`SEED_*` / `PROPOSALS_DIR`） |
-| [`proposals/`](proposals/) | [`store.py`](proposals/store.py)：读写 `proposals/*.json` 与 **`node_packages.json`** |
-| [`proposers/`](proposers/) | 各 Proposer；[`nodes_auto/`](proposers/nodes_auto/) 为新增组件 |
-| [`graph/`](graph/) | [`applier`](graph/applier.py)、[`packages`](graph/packages.py)、[`review`](graph/review.py)、[`viz`](graph/viz.py) |
-| 根目录 shim | [`applier.py`](applier.py)、[`review.py`](review.py)、[`viz.py`](viz.py)、[`proposals_io.py`](proposals_io.py) 转发到子包，**旧 import 仍可用** |
+| 子系统 | 包 / 模块 | 职责 |
+| --- | --- | --- |
+| **语料链** | `pipeline`, `sources/*`, `http_client`, `cache`, `doc_writer`… | 抓 API → 落盘 `preprocess/raw_sources/web/` |
+| **扩图链** | [`core/`](core/) | [`NodePackage`](core/package.py)、[`paths`](core/paths.py) |
+| | [`proposals/`](proposals/) | [`store.py`](proposals/store.py)：proposals 中间 JSON |
+| | [`proposers/`](proposers/) | 候选生成；[`nodes_auto/`](proposers/nodes_auto/) 半自动 evidence |
+| | [`graph/`](graph/) | [`applier`](graph/applier.py)、[`packages`](graph/packages.py)、[`review`](graph/review.py)、[`viz`](graph/viz.py) |
+| | [`scripts/`](scripts/) | curated 批量（如 [`v5_balanced_batch.py`](scripts/v5_balanced_batch.py)） |
+| 兼容 | 根目录 shim | 旧 import 仍可用 |
 
 ---
 
