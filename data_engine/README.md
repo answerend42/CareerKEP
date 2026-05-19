@@ -9,6 +9,8 @@ nodes  54 → 151    edges  118 → 328    alias entries  170 → 361    mention
 
 ## 目录
 
+- [目录结构](#目录结构)
+- [模块说明（core / proposals / graph / nodes_auto）](#模块说明core--proposals--graph--nodes_auto)
 - [它能做什么](#它能做什么)
 - [30 秒上手](#30-秒上手)
 - [两套子系统](#两套子系统)
@@ -25,6 +27,106 @@ nodes  54 → 151    edges  118 → 328    alias entries  170 → 361    mention
 - [常见问题](#常见问题)
 - [扩展开发](#扩展开发)
 - [实测扩图历程](#实测扩图历程)
+
+---
+
+## 目录结构
+
+模块按职责拆成子包（完整树见 [`STRUCTURE.md`](STRUCTURE.md)）：
+
+```
+data_engine/
+├── cli.py, config.json          # 入口与配置
+├── core/                        # 共享类型与路径常量
+├── proposals/                   # 提案中间文件读写
+├── proposers/                   # 候选生成
+│   ├── discovery.py             # 从 web/gh 挖新 token（nodes + nodes_auto 共用）
+│   ├── nodes.py                 # 仅 node 候选 → review
+│   └── nodes_auto/              # 半自动 evidence 节点包
+├── graph/                       # 写 seeds、审核、viz
+├── pipeline.py, sources/        # 语料抓取（历史布局，仍在根目录）
+├── scripts/                     # curated 批量脚本（如 v5_balanced_batch.py）
+├── tests/                       # 含 test_nodes_auto.py
+└── output/
+    ├── proposals/               # aliases.json, edges.json, node_packages.json, …
+    └── graph_view.html
+```
+
+| 子包 | 职责 |
+| --- | --- |
+| [`core/`](core/) | [`NodePackage`](core/package.py)、[`paths`](core/paths.py)（`SEED_*` / `PROPOSALS_DIR`） |
+| [`proposals/`](proposals/) | [`store.py`](proposals/store.py)：读写 `proposals/*.json` 与 **`node_packages.json`** |
+| [`proposers/`](proposers/) | 各 Proposer；[`nodes_auto/`](proposers/nodes_auto/) 为新增组件 |
+| [`graph/`](graph/) | [`applier`](graph/applier.py)、[`packages`](graph/packages.py)、[`review`](graph/review.py)、[`viz`](graph/viz.py) |
+| 根目录 shim | [`applier.py`](applier.py)、[`review.py`](review.py)、[`viz.py`](viz.py)、[`proposals_io.py`](proposals_io.py) 转发到子包，**旧 import 仍可用** |
+
+---
+
+## 模块说明（core / proposals / graph / nodes_auto）
+
+### `core.NodePackage`——自动加节点的原子单元
+
+单独 `apply_nodes` 加 evidence 会因「无出边」被 [`graph_quality`](../backend/app/services/graph_quality.py) 拒绝。`NodePackage` 把 **node + 必选边 + 可选别名** 绑在一起，经 [`graph.applier.apply_batch`](graph/applier.py) 一次事务写入。
+
+| 字段 | 含义 |
+| --- | --- |
+| `package_id` | 如 `pkg::redis` |
+| `node` / `edges` / `aliases` | 标准 [`Candidate`](proposers/candidate.py) |
+| `auto_eligible` | 是否允许 `apply --type node_packages` 自动落地 |
+
+落盘：`data_engine/output/proposals/node_packages.json`。
+
+### `proposers.nodes_auto`——半自动 evidence 扩图
+
+| 文件 | 作用 |
+| --- | --- |
+| [`corpus_index.py`](proposers/nodes_auto/corpus_index.py) | **单次**扫描 `preprocess/raw_sources/web/gh/`（约 151 个 JSON），建 `token → 父实体共现` 索引 |
+| [`rules.py`](proposers/nodes_auto/rules.py) | `config.proposers.nodes_auto.parent_rules` 正则 → 父节点 |
+| [`rule_boost.py`](proposers/nodes_auto/rule_boost.py) | 对命中规则的低频词补候选（避免被 TF top_k 截断） |
+| [`parent_attach.py`](proposers/nodes_auto/parent_attach.py) | 规则优先；否则用共现索引 + `min_parent_margin` 判定 |
+| [`discovery_filters.py`](proposers/discovery_filters.py) | 过滤 README 高频英文词，只留像技术名的 token |
+| [`builder.py`](proposers/nodes_auto/builder.py) | 组装 `NodePackage`（evidence + supports 边 + 别名） |
+| [`proposer.py`](proposers/nodes_auto/proposer.py) | `NodeAutoProposer.propose_packages()` |
+
+**与 `NodeProposer` 的分工**：
+
+| | [`nodes`](proposers/nodes.py) | [`nodes_auto`](proposers/nodes_auto/) |
+| --- | --- | --- |
+| 输出 | `proposals/nodes.json` | `proposals/node_packages.json` |
+| 自动应用 | 否（必 review） | 仅高置信 **evidence**（默认最多 10 个/次） |
+| 父节点 | `evidence.suggested_parent` 供人工参考 | 自动写 `supports` 边 |
+
+**启用方式**（默认 `enabled: false`）：
+
+```bash
+# config.json → "proposers.nodes_auto.enabled": true
+python3 -m data_engine propose --proposer nodes_auto
+python3 -m data_engine apply --type node_packages --dry-run
+python3 -m data_engine apply --type node_packages
+python3 -m data_engine review --type node_packages   # 未达 auto 条件的包
+```
+
+Windows 本机示例：`py -3.12 -m data_engine ...`（需 Python ≥ 3.10）。
+
+**耗时说明**：`nodes_auto` 会扫描约 151 个 gh 语料文件 **2 遍**（建索引 + 挖 token），通常 **30–60 秒**；若超过 10 分钟，检查是否在跑 `preprocess` 或全量 `propose`（五个 proposer 串联）。
+
+**已跑通示例**（`enabled: true` 时）：
+
+```bash
+py -3.12 -m data_engine propose --proposer nodes_auto   # → 4 auto packages（agent/protocol/…）
+py -3.12 -m data_engine apply --type node_packages --dry-run
+py -3.12 -m data_engine apply --type node_packages      # 写入 seeds + aliases
+py -3.12 -m backend.app.main validate-graph
+```
+
+### `graph` 子包
+
+| 模块 | 说明 |
+| --- | --- |
+| [`graph.applier`](graph/applier.py) | `apply_aliases` / `apply_edges` / `apply_nodes` / **`apply_batch`**、回滚 |
+| [`graph.packages`](graph/packages.py) | **`apply_node_packages()`**——读 `node_packages.json` 批量落地 |
+| [`graph.review`](graph/review.py) | 交互审核；接受 **evidence 节点** 时若有 `suggested_parent` 自动走 `apply_batch` |
+| [`graph.viz`](graph/viz.py) | 离线 SVG 图谱 |
 
 ---
 
@@ -149,13 +251,16 @@ set -a; . data_engine/.env; set +a
 python3 -m data_engine run --mode full --limit-per-target 2
 python3 -m preprocess
 
-# Phase 2: 自动扩图
-python3 -m data_engine propose
-python3 -m data_engine apply --dry-run    # 看会改什么
-python3 -m data_engine apply              # 落地全部 auto-eligible
+# Phase 2: 自动扩图（别名 + 边；可选半自动 evidence 节点包）
+python3 -m data_engine propose              # 或拆开：--proposer aliases 等
+# 若已开启 nodes_auto.enabled：
+#   python3 -m data_engine propose --proposer nodes_auto
+python3 -m data_engine apply --dry-run
+python3 -m data_engine apply                # 含 node_packages（若已 propose）
 
-# Phase 3: 人工审核新节点（layer 归属是语义判断，机器不做）
-python3 -m data_engine review --type nodes
+# Phase 3: 人工审核
+python3 -m data_engine review --type nodes          # 非 evidence / 无可靠父节点
+python3 -m data_engine review --type node_packages  # nodes_auto 未 auto 的包
 
 # Phase 4: 大批量人工策划（可选）—— 比 review CLI 快一个数量级
 PYTHONPATH=. python3 data_engine/scripts/v5_balanced_batch.py
@@ -178,9 +283,9 @@ python3 -m data_engine viz
 | `fetch --source X --query "..."` | 单点调试某个查询 | 排查 fetcher 行为 |
 | `verify` | 扫 `raw_sources/web/` 校验 schema + doc_id 唯一性 | CI 兜底 |
 | `clean-cache [--source X]` | 清 sqlite 缓存（按 fetcher 自带 hints 精确匹配） | 强制重抓 |
-| `propose [--proposer X]` | 扫 preprocess 信号生成扩图候选清单 | 扩图前置 |
-| `apply [--type X] [--dry-run]` | 把所有 `auto_apply_eligible=True` 的候选事务式写入 seeds | 自动扩图主入口 |
-| `review --type {aliases,edges,roadmap_edges,nodes}` | 交互式 y/n/s/e/q 审核非 auto 候选 | 加新节点 |
+| `propose [--proposer X]` | 生成扩图候选；`nodes_auto` → `node_packages.json` | 扩图前置 |
+| `apply [--type X] [--dry-run]` | 落地 auto 候选；**`node_packages`** 走 `apply_batch` | 自动扩图主入口 |
+| `review --type {aliases,edges,roadmap_edges,node_packages,nodes}` | 交互审核；`nodes` 接受 evidence 时可带父边 batch 写入 | 人工兜底 |
 | `list-backups` | 列出 `data_engine/.cache/seed_backups/` 的所有快照 | 看历史 |
 | `rollback --to <timestamp>` | 从指定快照恢复 seeds | 反悔 |
 | `viz [--output PATH]` | 把 seeds 渲染成离线 SVG 网页 | 可视化检查 |
@@ -191,22 +296,25 @@ python3 -m data_engine viz
 
 ## Proposer 自动化矩阵
 
-四个 proposer 按可信度排序——别名最稳、新节点必人审。**这是整个扩图体系最核心的设计决定**：
-
-| Proposer | 类型 | 信号源 | 默认自动应用条件 | 实战命中率 |
+| Proposer | 类型 | 信号源 | 默认自动应用 | 输出文件 |
 | --- | --- | --- | --- | --- |
-| [`AliasProposer`](proposers/aliases.py) | alias | `preprocess/output/mentions.json` 的 surface 变体 | `avg_conf ≥ 0.85` AND `doc_count ≥ 3` AND 不在 `alias_ambiguity` near-tie 集合 AND 无 cross-entity collision | ~10-15% 进 auto |
-| [`CooccurrenceEdgeProposer`](proposers/edges_cooccurrence.py) | edge | `document_entities.json` 共现矩阵 | `cooc_count ≥ 30` AND layer 顺序合法（低层→高层）AND 应用后图仍是 DAG | ~30-40% 进 auto |
-| [`RoadmapEdgeProposer`](proposers/edges_roadmap.py) | edge | `data_engine/output/roadmap_struct/<role>.json` 的 react-flow JSON 树 | layer 方向合规 + 不重复 | 几乎 100% auto |
-| [`NodeProposer`](proposers/nodes.py) | node | `raw_sources/web/gh/*.json` 的 README token TF（启发式过滤 stopwords / URL 片段 / 用户名） | **永不 auto**——layer 归属是语义判断 | 0%（必走 review 或 batch script） |
+| [`AliasProposer`](proposers/aliases.py) | alias | `mentions.json` | 高置信 + 无 collision | `aliases.json` |
+| [`CooccurrenceEdgeProposer`](proposers/edges_cooccurrence.py) | edge | `document_entities.json` 共现 | `cooc ≥ 30` + 层序合法 | `edges.json` |
+| [`RoadmapEdgeProposer`](proposers/edges_roadmap.py) | edge | `roadmap_struct/*.json` | 几乎全 auto | `roadmap_edges.json` |
+| [`NodeProposer`](proposers/nodes.py) | node | [`discovery.py`](proposers/discovery.py) 挖 gh token | **永不 auto** | `nodes.json` |
+| [`NodeAutoProposer`](proposers/nodes_auto/proposer.py) | **node_package** | discovery + [`corpus_index`](proposers/nodes_auto/corpus_index.py) + `parent_rules` | 仅 **evidence** 且父节点达标；`max_auto_per_run` 封顶 | **`node_packages.json`** |
 
-阈值在 [`config.json`](config.json) 的 `proposers` 节调，分别对应 `auto_apply_*` 和 `review_*`。降低阈值 = 更多候选进 auto = 更高自动化但也更高错误率。
+`nodes_auto` 配置项（[`config.json`](config.json) → `proposers.nodes_auto`）：
 
-**为什么 NodeProposer 永不 auto？** 加一个新节点要回答两个问题：
-1. **挂哪一层**（evidence / ability / composite / direction / role）
-2. **挂哪个父节点**（"PyTorch 是 ml_engineering 的支撑还是 ml_basics 的支撑"）
+| 键 | 默认 | 含义 |
+| --- | ---: | --- |
+| `enabled` | `false` | 总开关 |
+| `min_doc_count` / `min_token_count` | 12 / 40 | 比 `nodes` 更严，减少候选 |
+| `min_parent_cooc` / `min_parent_cooc_ratio` | 5 / 0.55 | 共现父节点阈值 |
+| `max_auto_per_run` | 10 | 单次最多自动落地包数 |
+| `parent_rules` | 见 config | 正则 → 父 entity_id（优先于共现） |
 
-机器只能看到 surface 出现 92 次，但分不清这是工具/能力/职业。所以 NodeProposer 只产候选清单 + 启发式建议，最终决策必须是人。
+**设计原则**：`ability` / `composite` / `direction` / `role` 仍应用 [`apply_batch`](graph/applier.py) 策划脚本或人工 review；`nodes_auto` 只自动加「工具型 evidence + 一条 supports 父边」。
 
 ---
 
@@ -484,24 +592,29 @@ python3 -m data_engine rollback --to 20260518T080501Z
 ## 测试
 
 ```bash
+# 仓库根目录
 python3 -m unittest discover -s data_engine/tests
+
+# 仅新组件
+python3 -m unittest data_engine.tests.test_nodes_auto -v
 ```
 
-71 个 testcase，**完全离线可跑**——所有网络调用走 `unittest.mock.patch("data_engine.http_client.urlopen")` 或依赖注入。
+75+ testcase，离线可跑。新增 [`test_nodes_auto.py`](tests/test_nodes_auto.py) 覆盖：`parent_rules`、`NodePackage` 序列化、`NodeAutoProposer` 开关与打包逻辑。
 
 | 测试文件 | 覆盖 |
 | --- | --- |
-| `test_doc_id.py` | 命名规则、与 demo_corpus.json 不冲突、is_data_engine_doc 识别 |
-| `test_normalizer.py` | HTML / wikitext / disambiguation / split_long 切片不切坏句子 |
-| `test_targets.py` | query 扩展去重、incremental 软降级 |
-| `test_doc_writer.py` | 落盘 schema、按 doc_id 合并、license 强制 |
-| `test_http_client.py` | UA / 重试 / 429 退避 / 节流 |
-| `test_cache.py` | sqlite cache `clear()` 子串过滤 |
-| `test_sources_roadmap.py` | layer 过滤 + role-name 命中 entity_id |
-| `test_pipeline_e2e.py` | tmp_path 跑完 → 调 `preprocess.collector` 验证可消费 |
-| `test_struct_writer_and_candidate.py` | roadmap_struct 落盘 + Candidate signature |
-| `test_proposers.py` | collision 检测、layer 方向、空 corpus 软降级、NodeProposer 永不 auto |
-| `test_applier.py` | dry-run 不写、apply_batch 原子写入、failure 回滚、rollback 恢复 |
+| **`test_nodes_auto.py`** | **规则父节点、NodePackage、proposer 开关与 mock 打包** |
+| `test_applier.py` | 事务写入 / 回滚（针对 `graph.applier`） |
+| `test_proposers.py` | alias collision、边层序、NodeProposer 不 auto |
+| `test_doc_id.py` … `test_pipeline_e2e.py` | 语料链路与其它 proposer |
+
+**冒烟（需已存在 web/gh 语料）**：
+
+```bash
+# 1. 临时打开 nodes_auto（或改 config.json enabled=true）
+python3 -m data_engine propose --proposer nodes_auto
+python3 -m data_engine apply --type node_packages --dry-run
+```
 
 ---
 
@@ -538,6 +651,13 @@ python3 -m unittest discover -s data_engine/tests
 ### preprocess 跑得很慢（30+ 分钟）
 
 正常。在 150 节点 + 1700 文档量级时，preprocess 的 mention 抽取 + 消歧是 O(节点 × 文档 × 平均 surface 数)，几十分钟内属正常。优化空间在 preprocess 自己，与 data_engine 无关。
+
+### `propose` / `nodes_auto` 跑很久、终端无输出
+
+- **不是卡死**：默认几乎不打进度日志；`nodes_auto` 会顺序执行「建共现索引 → 挖 token → 逐条推断父节点」。
+- **不要**在无 `--proposer` 时误以为只跑了 `nodes_auto`——`python3 -m data_engine propose` 会串行跑 **5 个** proposer（含扫全库的 `nodes`）。
+- 建议：拆开跑 `propose --proposer nodes_auto`；调试时把 `top_k`、`max_auto_per_run` 调小。
+- 若仍要跑全量 `nodes`，也会扫一遍 151 个 `web/gh/*.json`，约 1–2 分钟量级。
 
 ---
 

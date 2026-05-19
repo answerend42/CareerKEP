@@ -9,6 +9,7 @@ from . import aliases  # noqa: F401
 from . import edges_cooccurrence  # noqa: F401
 from . import edges_roadmap  # noqa: F401
 from . import nodes  # noqa: F401
+from . import nodes_auto  # noqa: F401
 from .base import BaseProposer, all_proposers, get_proposer, register
 from .candidate import Candidate
 

@@ -105,21 +105,26 @@ class EdgeCooccurrenceTests(unittest.TestCase):
 class NodeProposerTests(unittest.TestCase):
     def test_empty_corpus_returns_none(self):
         # 用不存在的 web/gh/ 路径 → 空候选
-        from data_engine.proposers import nodes as node_mod
+        from data_engine.proposers import discovery as discovery_mod
 
         with tempfile.TemporaryDirectory() as td:
             config = load_config()
-            with patch.object(node_mod, "WEB_GH_ROOT", Path(td) / "nonexistent"):
-                cands = node_mod.NodeProposer().propose(config)
+            with patch.object(discovery_mod, "WEB_GH_ROOT", Path(td) / "nonexistent"):
+                from data_engine.proposers.nodes import NodeProposer
+
+                cands = NodeProposer().propose(config)
                 self.assertEqual(cands, [])
 
     def test_no_auto_apply_on_node(self):
-        # 即使有候选，node 永远 auto=False
-        proposer = get_proposer("nodes")
+        from data_engine.proposers.discovery import TokenHit
+        from data_engine.proposers.nodes import NodeProposer
+
         config = load_config()
-        cands = proposer.propose(config)
-        for c in cands:
-            self.assertFalse(c.auto_apply_eligible, f"NodeProposer 永不应自动应用: {c.payload}")
+        fake_hit = TokenHit("vitess", "Vitess", "vitess", 20, 100, ["d1"])
+        with patch("data_engine.proposers.nodes.discover_new_tokens", return_value=[fake_hit]):
+            cands = NodeProposer().propose(config)
+        self.assertEqual(len(cands), 1)
+        self.assertFalse(cands[0].auto_apply_eligible)
 
 
 if __name__ == "__main__":

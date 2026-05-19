@@ -28,11 +28,13 @@ from .cache import HttpCache
 from .config import load_config
 from .doc_id import is_data_engine_doc
 from .doc_writer import scan_existing_doc_ids
+from .graph.packages import apply_node_packages
 from .pipeline import _make_http_client, run
-from .proposals_io import read_proposals, write_proposals
+from .proposals.store import read_proposals, write_node_packages, write_proposals
 from .proposers import all_proposers, get_proposer
+from .proposers.nodes_auto import NodeAutoProposer
 from .reporting import write_run_report
-from .review import apply_auto, review_kind
+from .review import apply_auto, review_kind, review_node_packages
 from .sources.base import all_fetchers, get_fetcher
 from .targets import Target, build_targets
 
@@ -183,6 +185,7 @@ _PROPOSER_TO_PROPOSAL_KIND = {
     "edges_cooccurrence": "edges",
     "edges_roadmap": "roadmap_edges",
     "nodes": "nodes",
+    "nodes_auto": "node_packages",
 }
 
 
@@ -200,6 +203,21 @@ def _cmd_propose(args: argparse.Namespace) -> int:
         if proposer is None:
             print(f"未知 proposer: {name!r}，可用: {sorted(proposers.keys())}", file=sys.stderr)
             return 2
+        if name == "nodes_auto":
+            if not isinstance(proposer, NodeAutoProposer):
+                print(f"proposer {name!r} 类型异常", file=sys.stderr)
+                return 2
+            packages = proposer.propose_packages(config)
+            target = write_node_packages(packages)
+            auto = sum(1 for p in packages if p.auto_eligible)
+            summary[name] = {
+                "total": len(packages),
+                "auto_apply_eligible": auto,
+                "review_needed": len(packages) - auto,
+                "path": str(target),
+            }
+            continue
+
         cands = proposer.propose(config)
         kind = _PROPOSER_TO_PROPOSAL_KIND.get(name, name)
         target = write_proposals(kind, cands)
@@ -218,15 +236,21 @@ def _cmd_apply(args: argparse.Namespace) -> int:
     kinds = (
         [args.type]
         if args.type
-        else ["aliases", "edges", "roadmap_edges", "nodes"]
+        else ["aliases", "edges", "roadmap_edges", "node_packages", "nodes"]
     )
     summary: dict[str, Any] = {}
     for kind in kinds:
-        # nodes 类型默认不进 auto，因为 NodeProposer 永不标 auto_apply_eligible=True；
-        # 如果用户编辑后 review 时已写入 applied，则不会再次走这里。这里仅处理可自动的。
+        if kind == "node_packages":
+            try:
+                report = apply_node_packages(dry_run=args.dry_run)
+                summary[kind] = report.to_dict()
+            except graph_applier.ApplyError as exc:
+                summary[kind] = {"error": str(exc)}
+            continue
+
         if args.dry_run:
             cands = read_proposals(kind)
-            from .proposals_io import load_signatures
+            from .proposals.store import load_signatures
 
             applied_sigs = load_signatures("applied")
             rejected_sigs = load_signatures("rejected")
@@ -262,10 +286,12 @@ def _cmd_apply(args: argparse.Namespace) -> int:
 
 
 def _cmd_review(args: argparse.Namespace) -> int:
-    kinds = [args.type] if args.type else ["aliases", "edges", "roadmap_edges", "nodes"]
+    kinds = [args.type] if args.type else ["aliases", "edges", "roadmap_edges", "node_packages", "nodes"]
     aggregated: dict[str, Any] = {}
     for kind in kinds:
-        # apply_fn 闭包让 review 把每条 approved 立即落盘
+        if kind == "node_packages":
+            aggregated[kind] = review_node_packages().to_dict()
+            continue
         if kind == "aliases":
             apply_fn = graph_applier.apply_aliases
         elif kind in ("edges", "roadmap_edges"):
@@ -298,10 +324,10 @@ def _cmd_list_backups(args: argparse.Namespace) -> int:
 
 
 def _cmd_viz(args: argparse.Namespace) -> int:
-    from . import viz
+    from data_engine.graph import viz as graph_viz
 
     output = Path(args.output) if args.output else None
-    target = viz.render(output)
+    target = graph_viz.render(output)
     print(json.dumps({"output": str(target)}, ensure_ascii=False))
     return 0
 
@@ -343,12 +369,20 @@ def main(argv: List[str] | None = None) -> int:
     propose_parser.set_defaults(func=_cmd_propose)
 
     apply_parser = sub.add_parser("apply", help="把 auto_apply_eligible 的候选写入 backend seeds")
-    apply_parser.add_argument("--type", choices=("aliases", "edges", "roadmap_edges", "nodes"), default=None)
+    apply_parser.add_argument(
+        "--type",
+        choices=("aliases", "edges", "roadmap_edges", "node_packages", "nodes"),
+        default=None,
+    )
     apply_parser.add_argument("--dry-run", action="store_true")
     apply_parser.set_defaults(func=_cmd_apply)
 
     review_parser = sub.add_parser("review", help="交互审核非 auto 候选")
-    review_parser.add_argument("--type", choices=("aliases", "edges", "roadmap_edges", "nodes"), default=None)
+    review_parser.add_argument(
+        "--type",
+        choices=("aliases", "edges", "roadmap_edges", "node_packages", "nodes"),
+        default=None,
+    )
     review_parser.set_defaults(func=_cmd_review)
 
     rollback_parser = sub.add_parser("rollback", help="从 seed_backups 恢复")

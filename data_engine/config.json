@@ -75,6 +75,28 @@
       "min_doc_count": 8,
       "min_token_count": 30,
       "top_k": 60
+    },
+    "nodes_auto": {
+      "enabled": true,
+      "min_doc_count": 2,
+      "min_token_count": 8,
+      "top_k": 30,
+      "min_parent_cooc": 15,
+      "min_parent_cooc_ratio": 0.28,
+      "min_parent_margin": 1.2,
+      "default_edge_weight": 0.55,
+      "max_auto_per_run": 10,
+      "parent_rules": [
+        {"pattern": "^(react|vue|angular|nextjs|svelte|storybook|remix|vite|webpack)$", "parent": "frontend_engineering"},
+        {"pattern": "^(aws|gcp|azure|terraform|kubernetes|docker|helm|istio)$", "parent": "cloud_native_practice"},
+        {"pattern": "^(postgresql|mysql|mongodb|redis|elasticsearch|cassandra|sqlite)$", "parent": "database_practice"},
+        {"pattern": "^(pytorch|tensorflow|pandas|numpy|scikit_learn|mlflow|xgboost)$", "parent": "ml_basics"},
+        {"pattern": "^(deno|bun|fastify|nestjs|prisma|supabase)$", "parent": "backend_tech_stack"},
+        {"pattern": "^(langgraph|chromadb|milvus|qdrant|ollama)$", "parent": "llm_practice"},
+        {"pattern": "^google$", "parent": "cloud_native_practice"},
+        {"pattern": "^(protocol|grpc|mqtt|amqp)$", "parent": "backend_tech_stack"},
+        {"pattern": "^agent$", "parent": "llm_practice"}
+      ]
     }
   }
 }

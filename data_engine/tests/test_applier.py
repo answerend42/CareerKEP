@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from data_engine import applier as ap
+from data_engine.graph import applier as ap
 from data_engine.proposers.candidate import Candidate
 
 
